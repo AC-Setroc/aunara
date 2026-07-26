@@ -1,0 +1,26 @@
+{
+  "name": "Repbook — Personal training",
+  "short_name": "Repbook",
+  "description": "Private training routines, recovery check-ins, and nutrition context.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f2efe4",
+  "theme_color": "#c9f43d",
+  "categories": ["fitness", "health", "sports"],
+  "icons": [
+    {
+      "src": "/icons/repbook-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/repbook-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
