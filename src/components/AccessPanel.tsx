@@ -1,11 +1,12 @@
 import {
+  Apple,
+  Bot,
   Check,
   Cloud,
   Download,
   LockKeyhole,
   LogOut,
   Mail,
-  Smartphone,
   UserRound,
   X,
 } from "lucide-react";
@@ -26,6 +27,8 @@ export interface CreateAccountInput {
 }
 
 export type PasswordSignInInput = Omit<CreateAccountInput, "name">;
+export type AccessMode = "create" | "sign-in";
+export type InstallTarget = "android" | "ios" | null;
 
 interface AccessPanelProps {
   cloud: CloudAccessState;
@@ -36,6 +39,8 @@ interface AccessPanelProps {
   onSignOut: () => void;
   onInstall: (() => void) | null;
   onClose: () => void;
+  initialMode?: AccessMode;
+  installTarget?: InstallTarget;
 }
 
 const STATUS_LABELS: Record<CloudAccessState["status"], string> = {
@@ -54,8 +59,10 @@ export function AccessPanel({
   onSignOut,
   onInstall,
   onClose,
+  initialMode = "create",
+  installTarget = null,
 }: AccessPanelProps) {
-  const [mode, setMode] = useState<"create" | "sign-in">("create");
+  const [mode, setMode] = useState<AccessMode>(initialMode);
   const [name, setName] = useState(profileName);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -161,12 +168,12 @@ export function AccessPanel({
             <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> Install Repbook now</button>
           )}
           <div className="install-guides">
-            <article className={installGuide === "android" ? "is-current" : ""}>
-              <Smartphone size={20} />
+            <article className={(installTarget ?? installGuide) === "android" ? "is-current" : ""}>
+              <Bot size={20} />
               <div><strong>Android</strong><p>Open Repbook in Chrome, tap the menu, then choose “Install app” or “Add to Home screen”.</p></div>
             </article>
-            <article className={installGuide === "ios" ? "is-current" : ""}>
-              <Smartphone size={20} />
+            <article className={(installTarget ?? installGuide) === "ios" ? "is-current" : ""}>
+              <Apple size={20} />
               <div><strong>iPhone</strong><p>Open Repbook in Safari, tap Share, then choose “Add to Home Screen”.</p></div>
             </article>
           </div>

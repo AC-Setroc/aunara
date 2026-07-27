@@ -2,11 +2,23 @@
 
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import App from "../App";
 import type { Exercise, HealthProfile, TrainingTrack } from "../types";
 import { ProfilePanel } from "./ProfilePanel";
 import { TrainingTracks } from "./TrainingTracks";
 import { WorkoutPanel } from "./WorkoutPanel";
+
+vi.mock("../hooks/useCloudSync", () => ({
+  useCloudSync: () => ({
+    configured: true,
+    email: "athlete@example.com",
+    status: "synced",
+    createAccount: vi.fn(),
+    signIn: vi.fn(),
+    signOut: vi.fn(),
+  }),
+}));
+
+import App from "../App";
 
 const exercise: Exercise = {
   id: "0514",
@@ -229,7 +241,7 @@ describe("profile access", () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Open account and installation" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
 
     expect(screen.getByRole("dialog", { name: "Access Repbook anywhere" })).toBeTruthy();
     expect(screen.getByText("Android")).toBeTruthy();

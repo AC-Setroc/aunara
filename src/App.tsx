@@ -1,5 +1,7 @@
 import {
+  Apple,
   ArrowDown,
+  Bot,
   Cloud,
   Dumbbell,
   Heart,
@@ -10,7 +12,11 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { AccessPanel } from "./components/AccessPanel";
+import {
+  AccessPanel,
+  type AccessMode,
+  type InstallTarget,
+} from "./components/AccessPanel";
 import { ExerciseCard } from "./components/ExerciseCard";
 import { ExerciseDetail } from "./components/ExerciseDetail";
 import { ProfilePanel } from "./components/ProfilePanel";
@@ -69,6 +75,8 @@ function App() {
   const [workoutOpen, setWorkoutOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(false);
+  const [accessMode, setAccessMode] = useState<AccessMode>("create");
+  const [installTarget, setInstallTarget] = useState<InstallTarget>(null);
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installGuide, setInstallGuide] = useState<InstallGuide>(() => {
     const navigatorWithStandalone = navigator as Navigator & { standalone?: boolean };
@@ -77,7 +85,7 @@ function App() {
       || navigatorWithStandalone.standalone === true;
     return getInstallGuide(navigator.userAgent, standalone);
   });
-  const [language, setLanguage] = useStoredState<LanguageCode>("repbook-language", "en");
+  const [language, setLanguage] = useStoredState<LanguageCode>("repbook-language", "es");
   const [profileName, setProfileName] = useStoredState<string>("repbook-profile-name", "My profile");
   const [favoriteIds, setFavoriteIds] = useStoredState<string[]>("repbook-favorites", []);
   const [legacyWorkout] = useStoredState<WorkoutItem[]>("repbook-workout", []);
@@ -127,7 +135,7 @@ function App() {
 
   const clearSignedOutProfile = useCallback(() => {
     setProfileName("My profile");
-    setLanguage("en");
+    setLanguage("es");
     setFavoriteIds([]);
     setTracks([]);
     setActiveTrackId("");
@@ -150,6 +158,7 @@ function App() {
     onRemoteSnapshot: applyRemoteSnapshot,
     onSignedOut: clearSignedOutProfile,
   });
+  const hasAppAccess = !cloud.configured || Boolean(cloud.email);
 
   useEffect(() => {
     const captureInstallPrompt = (event: Event) => {
@@ -356,38 +365,73 @@ function App() {
     setFavoritesOnly(false);
   }
 
+  function openAccess(mode: AccessMode, target: InstallTarget = null) {
+    setAccessMode(mode);
+    setInstallTarget(target);
+    setAccessOpen(true);
+  }
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Repbook home">
           <span className="brand-mark">R/B</span>
           <span><strong>REPBOOK</strong><small>Personal field notes</small></span>
         </a>
 
-        <nav aria-label="App controls">
-          <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => setAccessOpen(true)} aria-label="Open account and installation">
-            <Cloud size={17} />
-            <span>{cloud.email ? "Synced" : "Devices"}</span>
-          </button>
-          <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label="Open profile">
-            <UserRound size={17} />
-            <span>{profileName.trim() || "My profile"}</span>
-          </button>
-          <label className="language-select">
-            <Languages size={16} />
-            <span className="sr-only">Instruction language</span>
-            <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
-              {LANGUAGE_OPTIONS.map((option) => (
-                <option key={option.code} value={option.code}>{option.label}</option>
-              ))}
-            </select>
-          </label>
-          <button className="workout-trigger" type="button" onClick={() => setWorkoutOpen(true)}>
-            <Dumbbell size={18} />
-            <span>{activeTrack?.name ?? "Today’s workout"}</span>
-            <strong>{workout.length}</strong>
-          </button>
-        </nav>
+        {hasAppAccess ? (
+          <nav aria-label="App controls">
+            <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => openAccess("create")} aria-label="Open account and synchronization">
+              <Cloud size={17} />
+              <span>{cloud.email ? "Synced" : "Account"}</span>
+            </button>
+            <button className="device-trigger" type="button" onClick={() => openAccess("create", "android")} aria-label="Android installation instructions">
+              <Bot size={18} />
+            </button>
+            <button className="device-trigger" type="button" onClick={() => openAccess("create", "ios")} aria-label="iPhone installation instructions">
+              <Apple size={18} />
+            </button>
+            <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label="Open profile">
+              <UserRound size={17} />
+              <span>{profileName.trim() || "My profile"}</span>
+            </button>
+            <label className="language-select">
+              <Languages size={16} />
+              <span className="sr-only">Instruction language</span>
+              <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <option key={option.code} value={option.code}>{option.label}</option>
+                ))}
+              </select>
+            </label>
+            <button className="workout-trigger" type="button" onClick={() => setWorkoutOpen(true)}>
+              <Dumbbell size={18} />
+              <span>{activeTrack?.name ?? "Today’s workout"}</span>
+              <strong>{workout.length}</strong>
+            </button>
+          </nav>
+        ) : (
+          <nav className="guest-nav" aria-label="Public controls">
+            <a className="guest-home-link" href="#top">Home</a>
+            <button className="device-trigger" type="button" onClick={() => openAccess("create", "android")} aria-label="Android installation instructions">
+              <Bot size={18} />
+            </button>
+            <button className="device-trigger" type="button" onClick={() => openAccess("create", "ios")} aria-label="iPhone installation instructions">
+              <Apple size={18} />
+            </button>
+            <label className="language-select">
+              <Languages size={16} />
+              <span className="sr-only">Instruction language</span>
+              <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <option key={option.code} value={option.code}>{option.label}</option>
+                ))}
+              </select>
+            </label>
+            <button className="guest-account-button" type="button" onClick={() => openAccess("sign-in")}>Log in</button>
+            <button className="guest-account-button is-primary" type="button" onClick={() => openAccess("create")}>Sign up</button>
+          </nav>
+        )}
       </header>
 
       <main id="top">
@@ -407,7 +451,7 @@ function App() {
           </div>
         </section>
 
-        {exercises.length > 0 && (
+        {hasAppAccess && exercises.length > 0 && (
           <TrainingTracks
             tracks={tracks}
             activeTrackId={activeTrack?.id ?? ""}
@@ -418,7 +462,7 @@ function App() {
           />
         )}
 
-        <section className="library" aria-labelledby="library-title">
+        {hasAppAccess && <section className="library" aria-labelledby="library-title">
           <div className="section-heading">
             <div>
               <p className="eyebrow">Browse / filter / build</p>
@@ -516,19 +560,19 @@ function App() {
           {filtersActive && filtered.length > 0 && (
             <button className="reset-filters" type="button" onClick={clearFilters}>Reset filters</button>
           )}
-        </section>
+        </section>}
       </main>
 
-      <footer>
+      {hasAppAccess && <footer>
         <div><strong>REPBOOK</strong><span>One profile. More than one priority.</span></div>
         <p>Exercise data © Hasan Emir Yıldırım, MIT. Visual media © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
-      </footer>
+      </footer>}
 
-      <button className="mobile-workout" type="button" onClick={() => setWorkoutOpen(true)}>
+      {hasAppAccess && <button className="mobile-workout" type="button" onClick={() => setWorkoutOpen(true)}>
         <Dumbbell size={19} /> {activeTrack?.name ?? "Today’s workout"} <strong>{workout.length}</strong>
-      </button>
+      </button>}
 
-      {selectedExercise && (
+      {hasAppAccess && selectedExercise && (
         <ExerciseDetail
           exercise={selectedExercise}
           language={language}
@@ -540,7 +584,7 @@ function App() {
         />
       )}
 
-      {workoutOpen && activeTrack && routineAnalysis && (
+      {hasAppAccess && workoutOpen && activeTrack && routineAnalysis && (
         <>
           <button className="panel-backdrop" type="button" onClick={() => setWorkoutOpen(false)} aria-label="Close workout" />
           <WorkoutPanel
@@ -564,7 +608,7 @@ function App() {
         </>
       )}
 
-      {profileOpen && (
+      {hasAppAccess && profileOpen && (
         <ProfilePanel
           name={profileName}
           tracks={tracks}
@@ -597,6 +641,8 @@ function App() {
           onInstall={installPrompt ? () => {
             installPrompt.prompt().finally(() => setInstallPrompt(null));
           } : null}
+          initialMode={accessMode}
+          installTarget={installTarget}
           onClose={() => setAccessOpen(false)}
         />
       )}
