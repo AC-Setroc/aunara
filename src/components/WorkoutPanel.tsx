@@ -127,7 +127,11 @@ export function WorkoutPanel({
                     </div>
                     {replacingId === item.exerciseId && (
                       <div className="alternatives-list">
-                        <span>{track.equipment === "bodyweight" ? "Bodyweight alternatives" : "Similar movements"}</span>
+                        <span>{
+                          track.equipment === "bodyweight"
+                            ? "Bodyweight alternatives"
+                            : track.equipment === "mixed" ? "Mixed alternatives" : "Similar movements"
+                        }</span>
                         {alternatives.length ? alternatives.map((alternative) => (
                           <button
                             key={alternative.id}

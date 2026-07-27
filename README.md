@@ -19,8 +19,8 @@ Then open the local address printed by Vite.
 - A persistent favorites list
 - Separate goal and sport tracks that can be active at the same time
 - Track cards open their routine directly and can be removed with confirmation
-- Suggested routines for strength, muscle gain, fitness, endurance, mobility, beach volleyball, running, cycling, tennis/padel, and soccer
-- Bodyweight-only routines and equipment-aware movement replacements
+- Suggested routines for strength, muscle gain, fitness, endurance, mobility, beach volleyball, running, cycling, mountain biking, swimming, tennis/padel, and soccer
+- All-equipment, mixed, or bodyweight-only routines with equipment-aware movement replacements
 - Animated demonstrations and step-by-step instructions from both the library and routine panel
 - A persistent personal profile summary with weekly load, tracks, and saved exercises
 - A personal health context and weekly check-ins for routine guidance

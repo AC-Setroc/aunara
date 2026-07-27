@@ -32,6 +32,8 @@ const SPORT_OPTIONS: { value: TrackFocus; label: string }[] = [
   { value: "beach-volleyball", label: "Beach volleyball" },
   { value: "running", label: "Running" },
   { value: "cycling", label: "Cycling" },
+  { value: "mountain-biking", label: "Mountain biking (MTB)" },
+  { value: "swimming", label: "Swimming" },
   { value: "tennis-padel", label: "Tennis / padel" },
   { value: "soccer", label: "Soccer" },
 ];
@@ -88,7 +90,11 @@ export function TrainingTracks({
                 <strong>{track.name}</strong>
                 <span className="track-focus">{trackFocusLabel(track.focus)}</span>
                 <span className="track-meta">
-                  {track.daysPerWeek}× weekly · {track.sessionMinutes} min · {track.equipment === "bodyweight" ? "Bodyweight" : "All equipment"}
+                  {track.daysPerWeek}× weekly · {track.sessionMinutes} min · {
+                    track.equipment === "bodyweight"
+                      ? "Bodyweight"
+                      : track.equipment === "mixed" ? "Mixed" : "All equipment"
+                  }
                 </span>
                 <span className="track-status">
                   {active ? "Open active routine" : "Switch & open routine"}
@@ -231,6 +237,7 @@ function TrackCreator({ onClose, onCreate }: TrackCreatorProps) {
             <span>Equipment</span>
             <select value={equipment} onChange={(event) => setEquipment(event.target.value as EquipmentPreference)}>
               <option value="any">All equipment</option>
+              <option value="mixed">Mixed</option>
               <option value="bodyweight">Bodyweight only</option>
             </select>
           </label>

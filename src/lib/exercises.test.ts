@@ -51,6 +51,24 @@ const strengthExercises: Exercise[] = [
   { ...squat, id: "0276", name: "dead bug", body_part: "waist", target: "abs" },
 ];
 
+const mountainBikeExercises: Exercise[] = [
+  { ...squat, id: "3470", name: "forward lunge (male)" },
+  { ...squat, id: "1373", name: "bodyweight standing calf raise", body_part: "lower legs", target: "calves" },
+  { ...squat, id: "3645", name: "single leg bridge with outstretched leg" },
+  { ...squat, id: "0276", name: "dead bug", body_part: "waist", target: "abs" },
+  { ...squat, id: "0630", name: "mountain climber", body_part: "cardio", target: "cardiovascular system" },
+  { ...squat, id: "1599", name: "hamstring stretch", target: "hamstrings" },
+];
+
+const swimmingExercises: Exercise[] = [
+  { ...squat, id: "3433", name: "swimmer kicks v. 2 (male)" },
+  { ...squat, id: "0662", name: "push-up", body_part: "chest", target: "pectorals" },
+  { ...squat, id: "0276", name: "dead bug", body_part: "waist", target: "abs" },
+  { ...squat, id: "2122", name: "rear deltoid stretch", body_part: "shoulders", target: "delts" },
+  { ...squat, id: "1271", name: "chest and front of shoulder stretch", body_part: "chest", target: "pectorals" },
+  { ...squat, id: "1942", name: "spine stretch", body_part: "back", target: "spine" },
+];
+
 describe("exercise helpers", () => {
   it("searches names and secondary muscles without case sensitivity", () => {
     const results = filterExercises([baseExercise, squat], {
@@ -139,6 +157,45 @@ describe("training tracks", () => {
 
     expect(workout).toHaveLength(6);
     expect(workout.every((item) => bodyweightStrengthExercises.find((exercise) => exercise.id === item.exerciseId)?.equipment === "body weight")).toBe(true);
+  });
+
+  it("balances a mixed strength routine across equipment and bodyweight movements", () => {
+    const mixedStrengthExercises: Exercise[] = [
+      ...strengthExercises,
+      { ...squat, id: "0514", name: "jump squat" },
+      { ...squat, id: "0662", name: "push-up", body_part: "chest", target: "pectorals" },
+      { ...squat, id: "3470", name: "forward lunge (male)" },
+    ];
+
+    const workout = exerciseLibrary.generateTrackWorkout(mixedStrengthExercises, {
+      focus: "strength",
+      equipment: "mixed",
+    });
+    const selectedEquipment = workout.map((item) => (
+      mixedStrengthExercises.find((exercise) => exercise.id === item.exerciseId)?.equipment
+    ));
+
+    expect(workout).toHaveLength(6);
+    expect(selectedEquipment.filter((item) => item === "body weight")).toHaveLength(3);
+    expect(selectedEquipment.filter((item) => item !== "body weight")).toHaveLength(3);
+  });
+
+  it("builds a bodyweight support routine for mountain biking", () => {
+    const workout = exerciseLibrary.generateTrackWorkout(mountainBikeExercises, {
+      focus: "mountain-biking",
+      equipment: "bodyweight",
+    });
+
+    expect(workout).toHaveLength(6);
+  });
+
+  it("builds a bodyweight support routine for swimming", () => {
+    const workout = exerciseLibrary.generateTrackWorkout(swimmingExercises, {
+      focus: "swimming",
+      equipment: "bodyweight",
+    });
+
+    expect(workout).toHaveLength(6);
   });
 
   it("exposes an immutable track workout updater", () => {

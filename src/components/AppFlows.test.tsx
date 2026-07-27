@@ -112,6 +112,38 @@ describe("training track controls", () => {
       expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "null")).toEqual([]);
     });
   });
+
+  it("offers a mixed equipment preference when creating a track", () => {
+    render(<TrainingTracks
+      tracks={[]}
+      activeTrackId=""
+      onOpen={vi.fn()}
+      onCreate={vi.fn()}
+      onGenerate={vi.fn()}
+      onDelete={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+
+    expect(screen.getByRole("option", { name: "Mixed" })).toBeTruthy();
+  });
+
+  it("offers mountain biking and swimming as sport tracks", () => {
+    render(<TrainingTracks
+      tracks={[]}
+      activeTrackId=""
+      onOpen={vi.fn()}
+      onCreate={vi.fn()}
+      onGenerate={vi.fn()}
+      onDelete={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Sport" }));
+
+    expect(screen.getByRole("option", { name: "Mountain biking (MTB)" })).toBeTruthy();
+    expect(screen.getByRole("option", { name: "Swimming" })).toBeTruthy();
+  });
 });
 
 describe("routine exercise controls", () => {

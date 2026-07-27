@@ -117,6 +117,14 @@ const TRACK_MOVEMENTS: Record<string, TrackMovementPreset> = {
     any: ["jump squat", "forward lunge (male)", "single leg bridge with outstretched leg", "dead bug", "hamstring stretch", "calf stretch with hands against wall"],
     bodyweight: ["jump squat", "forward lunge (male)", "single leg bridge with outstretched leg", "dead bug", "hamstring stretch", "calf stretch with hands against wall"],
   },
+  "mountain-biking": {
+    any: ["dumbbell step-up", "dumbbell single leg deadlift", "cable standing calf raise", "dead bug", "mountain climber", "hamstring stretch"],
+    bodyweight: ["forward lunge (male)", "bodyweight standing calf raise", "single leg bridge with outstretched leg", "dead bug", "mountain climber", "hamstring stretch"],
+  },
+  swimming: {
+    any: ["cable lat pulldown full range of motion", "cable standing shoulder external rotation", "dumbbell rear lateral raise", "swimmer kicks v. 2 (male)", "dead bug", "chest and front of shoulder stretch"],
+    bodyweight: ["swimmer kicks v. 2 (male)", "push-up", "dead bug", "rear deltoid stretch", "chest and front of shoulder stretch", "spine stretch"],
+  },
   "tennis-padel": {
     any: ["jump squat", "forward lunge (male)", "push-up", "dead bug", "rear deltoid stretch", "chest and front of shoulder stretch"],
     bodyweight: ["jump squat", "forward lunge (male)", "push-up", "dead bug", "rear deltoid stretch", "chest and front of shoulder stretch"],
@@ -136,6 +144,8 @@ const TRACK_PRESCRIPTIONS: Record<string, { sets: number; reps: number }> = {
   "beach-volleyball": { sets: 3, reps: 10 },
   running: { sets: 3, reps: 12 },
   cycling: { sets: 3, reps: 12 },
+  "mountain-biking": { sets: 3, reps: 12 },
+  swimming: { sets: 3, reps: 12 },
   "tennis-padel": { sets: 3, reps: 10 },
   soccer: { sets: 3, reps: 10 },
 };
@@ -148,9 +158,22 @@ export function generateTrackWorkout(
     ? exercises.filter((exercise) => exercise.equipment === "body weight")
     : exercises;
   const preset = TRACK_MOVEMENTS[track.focus];
-  const preferredNames = preset
+  let preferredNames = preset
     ? track.equipment === "bodyweight" ? preset.bodyweight : preset.any
     : [];
+  if (preset && track.equipment === "mixed") {
+    const candidates = Array.from(new Set([...preset.any, ...preset.bodyweight]))
+      .map((name) => exercises.find((exercise) => exercise.name === name))
+      .filter((exercise): exercise is Exercise => Boolean(exercise));
+    const equipped = candidates.filter((exercise) => exercise.equipment !== "body weight").slice(0, 3);
+    const bodyweight = candidates.filter((exercise) => exercise.equipment === "body weight").slice(0, 3);
+    const selected = [...equipped, ...bodyweight];
+    const selectedIds = new Set(selected.map((exercise) => exercise.id));
+    preferredNames = [
+      ...selected,
+      ...candidates.filter((exercise) => !selectedIds.has(exercise.id)),
+    ].slice(0, 6).map((exercise) => exercise.name);
+  }
   const prescription = TRACK_PRESCRIPTIONS[track.focus] ?? { sets: 3, reps: 10 };
 
   return preferredNames

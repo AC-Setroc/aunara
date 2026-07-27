@@ -45,10 +45,12 @@ export type TrackFocus =
   | "beach-volleyball"
   | "running"
   | "cycling"
+  | "mountain-biking"
+  | "swimming"
   | "tennis-padel"
   | "soccer";
 
-export type EquipmentPreference = "any" | "bodyweight";
+export type EquipmentPreference = "any" | "mixed" | "bodyweight";
 
 export interface TrainingTrack {
   id: string;

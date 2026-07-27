@@ -30,6 +30,8 @@ const FOCUS_LABELS: Record<string, string> = {
   "beach-volleyball": "Beach volleyball",
   running: "Running",
   cycling: "Cycling",
+  "mountain-biking": "Mountain biking (MTB)",
+  swimming: "Swimming",
   "tennis-padel": "Tennis / padel",
   soccer: "Soccer",
 };

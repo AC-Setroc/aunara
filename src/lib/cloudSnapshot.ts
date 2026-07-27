@@ -30,10 +30,12 @@ const TRACK_FOCUSES = [
   "beach-volleyball",
   "running",
   "cycling",
+  "mountain-biking",
+  "swimming",
   "tennis-padel",
   "soccer",
 ];
-const EQUIPMENT_PREFERENCES = ["any", "bodyweight"];
+const EQUIPMENT_PREFERENCES = ["any", "mixed", "bodyweight"];
 const METABOLIC_SEXES = ["unspecified", "female", "male"];
 const ACTIVITY_LEVELS = ["sedentary", "light", "moderate", "very-active"];
 const TRAINING_EXPERIENCE = ["beginner", "intermediate", "advanced"];
