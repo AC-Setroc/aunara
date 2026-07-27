@@ -1,4 +1,6 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rename, rm, writeFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const workerSource = `const worker = {
   async fetch(request, env) {
@@ -16,5 +18,28 @@ const workerSource = `const worker = {
 export default worker;
 `;
 
-await mkdir(new URL("../dist/server/", import.meta.url), { recursive: true });
-await writeFile(new URL("../dist/server/index.js", import.meta.url), workerSource);
+export async function prepareSitesDist(projectRoot) {
+  const distDirectory = join(projectRoot, "dist");
+  const clientDirectory = join(distDirectory, "client");
+  const serverDirectory = join(distDirectory, "server");
+
+  await rm(clientDirectory, { recursive: true, force: true });
+  await mkdir(clientDirectory, { recursive: true });
+  await mkdir(serverDirectory, { recursive: true });
+
+  const entries = await readdir(distDirectory, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.name === "client" || entry.name === "server" || entry.name === ".openai") continue;
+    await rename(
+      join(distDirectory, entry.name),
+      join(clientDirectory, entry.name),
+    );
+  }
+
+  await writeFile(join(serverDirectory, "index.js"), workerSource);
+}
+
+const modulePath = fileURLToPath(import.meta.url);
+if (process.argv[1] && resolve(process.argv[1]) === modulePath) {
+  await prepareSitesDist(resolve(dirname(modulePath), ".."));
+}
