@@ -1,7 +1,5 @@
 import {
-  Apple,
   ArrowDown,
-  Bot,
   Cloud,
   Dumbbell,
   Heart,
@@ -15,7 +13,6 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "rea
 import {
   AccessPanel,
   type AccessMode,
-  type InstallTarget,
 } from "./components/AccessPanel";
 import { ExerciseCard } from "./components/ExerciseCard";
 import { ExerciseDetail } from "./components/ExerciseDetail";
@@ -76,7 +73,6 @@ function App() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(false);
   const [accessMode, setAccessMode] = useState<AccessMode>("create");
-  const [installTarget, setInstallTarget] = useState<InstallTarget>(null);
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installGuide, setInstallGuide] = useState<InstallGuide>(() => {
     const navigatorWithStandalone = navigator as Navigator & { standalone?: boolean };
@@ -365,9 +361,8 @@ function App() {
     setFavoritesOnly(false);
   }
 
-  function openAccess(mode: AccessMode, target: InstallTarget = null) {
+  function openAccess(mode: AccessMode) {
     setAccessMode(mode);
-    setInstallTarget(target);
     setAccessOpen(true);
   }
 
@@ -384,12 +379,6 @@ function App() {
             <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => openAccess("create")} aria-label="Open account and synchronization">
               <Cloud size={17} />
               <span>{cloud.email ? "Synced" : "Account"}</span>
-            </button>
-            <button className="device-trigger" type="button" onClick={() => openAccess("create", "android")} aria-label="Android installation instructions">
-              <Bot size={18} />
-            </button>
-            <button className="device-trigger" type="button" onClick={() => openAccess("create", "ios")} aria-label="iPhone installation instructions">
-              <Apple size={18} />
             </button>
             <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label="Open profile">
               <UserRound size={17} />
@@ -413,12 +402,6 @@ function App() {
         ) : (
           <nav className="guest-nav" aria-label="Public controls">
             <a className="guest-home-link" href="#top">Home</a>
-            <button className="device-trigger" type="button" onClick={() => openAccess("create", "android")} aria-label="Android installation instructions">
-              <Bot size={18} />
-            </button>
-            <button className="device-trigger" type="button" onClick={() => openAccess("create", "ios")} aria-label="iPhone installation instructions">
-              <Apple size={18} />
-            </button>
             <label className="language-select">
               <Languages size={16} />
               <span className="sr-only">Instruction language</span>
@@ -428,8 +411,7 @@ function App() {
                 ))}
               </select>
             </label>
-            <button className="guest-account-button" type="button" onClick={() => openAccess("sign-in")}>Log in</button>
-            <button className="guest-account-button is-primary" type="button" onClick={() => openAccess("create")}>Sign up</button>
+            <button className="guest-account-button is-primary" type="button" onClick={() => openAccess("sign-in")}>Login</button>
           </nav>
         )}
       </header>
@@ -642,7 +624,6 @@ function App() {
             installPrompt.prompt().finally(() => setInstallPrompt(null));
           } : null}
           initialMode={accessMode}
-          installTarget={installTarget}
           onClose={() => setAccessOpen(false)}
         />
       )}

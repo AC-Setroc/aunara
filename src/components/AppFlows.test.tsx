@@ -241,6 +241,8 @@ describe("profile access", () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     render(<App />);
 
+    expect(screen.queryByRole("button", { name: "Android installation instructions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "iPhone installation instructions" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
 
     expect(screen.getByRole("dialog", { name: "Access Repbook anywhere" })).toBeTruthy();

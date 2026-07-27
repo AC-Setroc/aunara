@@ -33,10 +33,10 @@ describe("signed-out home", () => {
 
     expect(screen.getByRole("link", { name: "Repbook home" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Home" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Log in" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Sign up" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Android installation instructions" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "iPhone installation instructions" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Login" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Sign up" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Android installation instructions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "iPhone installation instructions" })).toBeNull();
     expect(screen.queryByRole("heading", { name: "Training tracks" })).toBeNull();
     expect(screen.queryByRole("heading", { name: "Exercise library" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Open profile" })).toBeNull();
@@ -48,26 +48,22 @@ describe("signed-out home", () => {
     expect((screen.getByLabelText("Instruction language") as HTMLSelectElement).value).toBe("es");
   });
 
-  it("opens the requested phone instructions from each device icon", () => {
+  it("keeps both phone installation guides inside the login panel", () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Android installation instructions" }));
-    expect(screen.getByText("Android").closest("article")?.classList.contains("is-current")).toBe(true);
-
-    fireEvent.click(screen.getByRole("button", { name: "Close access panel" }));
-    fireEvent.click(screen.getByRole("button", { name: "iPhone installation instructions" }));
-    expect(screen.getByText("iPhone").closest("article")?.classList.contains("is-current")).toBe(true);
+    fireEvent.click(screen.getByRole("button", { name: "Login" }));
+    expect(screen.getByText("Android")).toBeTruthy();
+    expect(screen.getByText("iPhone")).toBeTruthy();
   });
 
-  it("opens log in and sign up in the corresponding account mode", () => {
+  it("uses one login entry while preserving both account choices", () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Log in" }));
+    fireEvent.click(screen.getByRole("button", { name: "Login" }));
     expect(screen.getByRole("button", { name: "Sign in" })).toBeTruthy();
     expect(screen.queryByLabelText("Name")).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Close access panel" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     expect(screen.getByRole("button", { name: "Create my account" })).toBeTruthy();
     expect(screen.getByLabelText("Name")).toBeTruthy();
   });

@@ -79,7 +79,7 @@ a { color: inherit; }
 .brand small { color: var(--muted); font: 500 10px/1.2 "Courier New", monospace; text-transform: uppercase; letter-spacing: 0.08em; }
 
 .site-header nav { display: flex; align-items: center; gap: 10px; }
-.profile-trigger, .sync-trigger, .device-trigger, .guest-account-button {
+.profile-trigger, .sync-trigger, .guest-account-button {
   height: 42px;
   padding: 0 12px;
   display: flex;
@@ -91,8 +91,7 @@ a { color: inherit; }
   font-size: .76rem;
   font-weight: 800;
 }
-.device-trigger { width: 42px; padding: 0; justify-content: center; }
-.profile-trigger:hover, .sync-trigger:hover, .device-trigger:hover, .guest-account-button:hover { border-color: var(--ink); background: var(--acid); }
+.profile-trigger:hover, .sync-trigger:hover, .guest-account-button:hover { border-color: var(--ink); background: var(--acid); }
 .guest-home-link {
   min-height: 42px;
   padding: 0 8px;
@@ -632,7 +631,7 @@ footer a { text-underline-offset: 3px; }
 @media (max-width: 760px) {
   .site-header { min-height: 66px; padding: 0 18px; }
   .brand small, .language-select svg, .workout-trigger, .profile-trigger span, .sync-trigger span { display: none; }
-  .profile-trigger, .sync-trigger, .device-trigger { width: 38px; height: 38px; padding: 0; justify-content: center; }
+  .profile-trigger, .sync-trigger { width: 38px; height: 38px; padding: 0; justify-content: center; }
   .language-select { height: 38px; padding: 0 8px; }
   .guest-nav { gap: 5px !important; }
   .guest-home-link { display: none; }
