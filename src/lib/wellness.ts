@@ -1,4 +1,5 @@
-import type { HealthProfile, TrainingTrack, WeeklyCheckIn } from "../types";
+import { tr } from "./i18n";
+import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
 
 export interface WellnessSummary {
   bmi: { value: number; label: string } | null;
@@ -46,11 +47,11 @@ export function calculateBmi(heightCm: number, weightKg: number): number | null 
   return roundTo(weightKg / ((heightCm / 100) ** 2));
 }
 
-function bmiLabel(value: number): string {
-  if (value < 18.5) return "Below general reference";
-  if (value < 25) return "General reference range";
-  if (value < 30) return "Above general reference";
-  return "Well above general reference";
+function bmiLabel(value: number, language: LanguageCode): string {
+  if (value < 18.5) return tr(language, "Below general reference", "Debajo de la referencia general");
+  if (value < 25) return tr(language, "General reference range", "Rango de referencia general");
+  if (value < 30) return tr(language, "Above general reference", "Sobre la referencia general");
+  return tr(language, "Well above general reference", "Muy por encima de la referencia general");
 }
 
 function estimateMaintenanceCalories(profile: HealthProfile): { min: number; max: number } | null {
@@ -66,14 +67,14 @@ function estimateMaintenanceCalories(profile: HealthProfile): { min: number; max
   };
 }
 
-export function createWellnessSummary(profile: HealthProfile): WellnessSummary {
+export function createWellnessSummary(profile: HealthProfile, language: LanguageCode = "en"): WellnessSummary {
   const bmiValue = profile.heightCm && profile.currentWeightKg
     ? calculateBmi(profile.heightCm, profile.currentWeightKg)
     : null;
   const weight = profile.currentWeightKg;
 
   return {
-    bmi: bmiValue === null ? null : { value: bmiValue, label: bmiLabel(bmiValue) },
+    bmi: bmiValue === null ? null : { value: bmiValue, label: bmiLabel(bmiValue, language) },
     proteinGrams: weight ? {
       min: Math.round(weight * 1.2),
       max: Math.round(weight * 1.6),
@@ -93,17 +94,37 @@ export function buildRoutineAnalysis(
   track: TrainingTrack,
   profile: HealthProfile,
   checkIn?: WeeklyCheckIn,
+  language: LanguageCode = "en",
 ): RoutineAnalysis {
-  const focus = FOCUS_LABELS[track.focus] ?? track.focus;
+  const focus = language === "en"
+    ? FOCUS_LABELS[track.focus] ?? track.focus
+    : ({
+      strength: "Fuerza",
+      "muscle-gain": "Ganancia muscular",
+      "general-fitness": "Condición física general",
+      endurance: "Resistencia",
+      mobility: "Movilidad",
+      "beach-volleyball": "Vóley playa",
+      running: "Running",
+      cycling: "Ciclismo",
+      "mountain-biking": "Ciclismo de montaña (MTB)",
+      swimming: "Natación",
+      "tennis-padel": "Tenis / pádel",
+      soccer: "Fútbol",
+    }[track.focus] ?? track.focus);
   const points = [
-    `${focus} is the primary focus across ${track.daysPerWeek} weekly ${track.sessionMinutes}-minute sessions.`,
+    tr(
+      language,
+      `${focus} is the primary focus across ${track.daysPerWeek} weekly ${track.sessionMinutes}-minute sessions.`,
+      `${focus} es el foco principal en ${track.daysPerWeek} sesiones semanales de ${track.sessionMinutes} minutos.`,
+    ),
   ];
 
   if (!profile.heightCm || !profile.currentWeightKg) {
-    points.push("Complete your body profile to add weight, recovery, and nutrition context.");
+    points.push(tr(language, "Complete your body profile to add weight, recovery, and nutrition context.", "Completá tu perfil corporal para agregar contexto de peso, recuperación y nutrición."));
     return {
       tone: "setup",
-      headline: "Add context before personalizing",
+      headline: tr(language, "Add context before personalizing", "Agregá contexto antes de personalizar"),
       points,
     };
   }
@@ -115,24 +136,26 @@ export function buildRoutineAnalysis(
       || checkIn.stress >= 4),
   );
   if (lowRecovery) {
-    points.push("Your latest check-in suggests limited recovery; keep intensity flexible and stop if form deteriorates.");
+    points.push(tr(language, "Your latest check-in suggests limited recovery; keep intensity flexible and stop if form deteriorates.", "Tu registro reciente sugiere recuperación limitada; mantené la intensidad flexible y pará si se deteriora la técnica."));
   } else if (checkIn) {
-    points.push("Your latest sleep, energy, and stress check-in supports the planned workload.");
+    points.push(tr(language, "Your latest sleep, energy, and stress check-in supports the planned workload.", "Tu registro reciente de sueño, energía y estrés respalda la carga planeada."));
   } else {
-    points.push("Add a weekly check-in so the routine can reflect sleep, energy, and stress.");
+    points.push(tr(language, "Add a weekly check-in so the routine can reflect sleep, energy, and stress.", "Agregá un registro semanal para que la rutina refleje sueño, energía y estrés."));
   }
 
-  const summary = createWellnessSummary(profile);
+  const summary = createWellnessSummary(profile, language);
   if (summary.targetDeltaKg !== null && summary.targetDeltaKg !== 0) {
-    points.push("Use gradual body-weight trends alongside performance, waist, and recovery—not a single ideal-weight number.");
+    points.push(tr(language, "Use gradual body-weight trends alongside performance, waist, and recovery—not a single ideal-weight number.", "Usá tendencias graduales de peso junto con rendimiento, cintura y recuperación; no un único número de peso ideal."));
   }
   if (profile.healthNotes.trim()) {
-    points.push("Review your saved health notes before training and replace any movement that conflicts with professional advice.");
+    points.push(tr(language, "Review your saved health notes before training and replace any movement that conflicts with professional advice.", "Revisá tus notas de salud antes de entrenar y reemplazá cualquier movimiento que contradiga indicaciones profesionales."));
   }
 
   return {
     tone: lowRecovery ? "watch" : "ready",
-    headline: lowRecovery ? "Recovery needs attention" : "Context supports this plan",
+    headline: lowRecovery
+      ? tr(language, "Recovery needs attention", "Tu recuperación necesita atención")
+      : tr(language, "Context supports this plan", "Tu contexto respalda este plan"),
     points,
   };
 }

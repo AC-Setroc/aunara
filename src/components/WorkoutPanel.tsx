@@ -1,10 +1,12 @@
 import { Activity, Dumbbell, Minus, Play, Plus, RefreshCw, Trash2, UserRound, X } from "lucide-react";
 import { useState } from "react";
 import { findExerciseAlternatives, titleCase } from "../lib/exercises";
+import { tr } from "../lib/i18n";
 import type { RoutineAnalysis } from "../lib/wellness";
-import type { Exercise, TrainingTrack, WorkoutItem } from "../types";
+import type { Exercise, LanguageCode, TrainingTrack, WorkoutItem } from "../types";
 
 interface WorkoutPanelProps {
+  language?: LanguageCode;
   items: WorkoutItem[];
   exerciseMap: Map<string, Exercise>;
   exercises: Exercise[];
@@ -21,6 +23,7 @@ interface WorkoutPanelProps {
 }
 
 export function WorkoutPanel({
+  language = "en",
   items,
   exerciseMap,
   exercises,
@@ -39,43 +42,43 @@ export function WorkoutPanel({
   const totalSets = items.reduce((sum, item) => sum + item.sets, 0);
 
   return (
-    <aside className="workout-panel" aria-label={`${track.name} workout`}>
+    <aside className="workout-panel" aria-label={`${track.name} ${tr(language, "workout", "entrenamiento")}`}>
       <div className="workout-heading">
         <div>
-          <p className="eyebrow">{track.kind === "sport" ? "Sport track" : "Goal track"} · {track.daysPerWeek}× weekly</p>
+          <p className="eyebrow">{track.kind === "sport" ? tr(language, "Sport track", "Ruta deportiva") : tr(language, "Goal track", "Ruta de meta")} · {track.daysPerWeek}× {tr(language, "weekly", "por semana")}</p>
           <h2>{track.name}</h2>
         </div>
-        <button className="close-button inline" type="button" onClick={onClose} aria-label="Close workout">
+        <button className="close-button inline" type="button" onClick={onClose} aria-label={tr(language, "Close workout", "Cerrar entrenamiento")}>
           <X size={20} />
         </button>
       </div>
 
-      <section className={`routine-analysis is-${analysis.tone}`} aria-label="Routine context">
+      <section className={`routine-analysis is-${analysis.tone}`} aria-label={tr(language, "Routine context", "Contexto de la rutina")}>
         <div className="routine-analysis-heading">
           <span>{analysis.tone === "watch" ? <Activity size={17} /> : <UserRound size={17} />}</span>
-          <div><p>Why this routine</p><h3>{analysis.headline}</h3></div>
+          <div><p>{tr(language, "Why this routine", "Por qué esta rutina")}</p><h3>{analysis.headline}</h3></div>
         </div>
         <ul>{analysis.points.map((point) => <li key={point}>{point}</li>)}</ul>
-        <button type="button" onClick={onOpenProfile} aria-label="Review health profile">Review health profile</button>
+        <button type="button" onClick={onOpenProfile} aria-label={tr(language, "Review health profile", "Revisar perfil de salud")}>{tr(language, "Review health profile", "Revisar perfil de salud")}</button>
       </section>
 
       {items.length === 0 ? (
         <div className="empty-workout">
           <Dumbbell size={30} strokeWidth={1.5} />
-          <h3>This routine is empty.</h3>
-          <p>Start with a suggested routine, then adjust it movement by movement.</p>
+          <h3>{tr(language, "This routine is empty.", "Esta rutina está vacía.")}</h3>
+          <p>{tr(language, "Start with a suggested routine, then adjust it movement by movement.", "Empezá con una rutina sugerida y ajustala movimiento por movimiento.")}</p>
           <button className="suggest-routine-button" type="button" onClick={onGenerate}>
-            <RefreshCw size={15} /> Suggest this routine
+            <RefreshCw size={15} /> {tr(language, "Suggest this routine", "Sugerir esta rutina")}
           </button>
         </div>
       ) : (
         <>
           <div className="workout-summary">
             <strong>{items.length}</strong>
-            <span>movements</span>
+            <span>{tr(language, "movements", "movimientos")}</span>
             <i />
             <strong>{totalSets}</strong>
-            <span>working sets</span>
+            <span>{tr(language, "working sets", "series de trabajo")}</span>
           </div>
 
           <ol className="workout-list">
@@ -94,14 +97,14 @@ export function WorkoutPanel({
                     <p>{titleCase(exercise.target)}</p>
                     <div className="stepper-row">
                       <Stepper
-                        label="sets"
+                        label={tr(language, "sets", "series")}
                         value={item.sets}
                         onDecrease={() => onUpdate(item.exerciseId, "sets", -1)}
                         onIncrease={() => onUpdate(item.exerciseId, "sets", 1)}
                       />
                       <span className="times">×</span>
                       <Stepper
-                        label="reps"
+                        label={tr(language, "reps", "repeticiones")}
                         value={item.reps}
                         onDecrease={() => onUpdate(item.exerciseId, "reps", -1)}
                         onIncrease={() => onUpdate(item.exerciseId, "reps", 1)}
@@ -112,9 +115,9 @@ export function WorkoutPanel({
                         className="demo-trigger"
                         type="button"
                         onClick={() => onOpenExercise(exercise)}
-                        aria-label={`View ${titleCase(exercise.name)} demo and steps`}
+                        aria-label={`${tr(language, "View", "Ver")} ${titleCase(exercise.name)} ${tr(language, "demo and steps", "demostración y pasos")}`}
                       >
-                        <Play size={13} /> View demo & steps
+                        <Play size={13} /> {tr(language, "View demo & steps", "Ver demostración y pasos")}
                       </button>
                       <button
                         className="swap-trigger"
@@ -122,15 +125,15 @@ export function WorkoutPanel({
                         onClick={() => setReplacingId((current) => current === item.exerciseId ? null : item.exerciseId)}
                       >
                         <RefreshCw size={13} />
-                        {replacingId === item.exerciseId ? "Close alternatives" : "Replace movement"}
+                        {replacingId === item.exerciseId ? tr(language, "Close alternatives", "Cerrar alternativas") : tr(language, "Replace movement", "Reemplazar movimiento")}
                       </button>
                     </div>
                     {replacingId === item.exerciseId && (
                       <div className="alternatives-list">
                         <span>{
                           track.equipment === "bodyweight"
-                            ? "Bodyweight alternatives"
-                            : track.equipment === "mixed" ? "Mixed alternatives" : "Similar movements"
+                            ? tr(language, "Bodyweight alternatives", "Alternativas de autocarga")
+                            : track.equipment === "mixed" ? tr(language, "Mixed alternatives", "Alternativas mixtas") : tr(language, "Similar movements", "Movimientos similares")
                         }</span>
                         {alternatives.length ? alternatives.map((alternative) => (
                           <button
@@ -144,7 +147,7 @@ export function WorkoutPanel({
                             <strong>{titleCase(alternative.name)}</strong>
                             <small>{titleCase(alternative.equipment)}</small>
                           </button>
-                        )) : <p>No close alternative found in this equipment set.</p>}
+                        )) : <p>{tr(language, "No close alternative found in this equipment set.", "No encontramos una alternativa cercana con este equipo.")}</p>}
                       </div>
                     )}
                   </div>
@@ -152,7 +155,7 @@ export function WorkoutPanel({
                     className="remove-button"
                     type="button"
                     onClick={() => onRemove(item.exerciseId)}
-                    aria-label={`Remove ${exercise.name}`}
+                    aria-label={`${tr(language, "Remove", "Quitar")} ${exercise.name}`}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -161,7 +164,7 @@ export function WorkoutPanel({
             })}
           </ol>
 
-          <button className="clear-button" type="button" onClick={onClear}>Clear workout</button>
+          <button className="clear-button" type="button" onClick={onClear}>{tr(language, "Clear workout", "Vaciar entrenamiento")}</button>
         </>
       )}
     </aside>

@@ -28,7 +28,7 @@ describe("access and installation panel", () => {
     const onCreateAccount = vi.fn();
     render(<AccessPanel
       cloud={{ configured: true, email: null, status: "local" }}
-      profileName="Alejandro"
+      profileName="My profile"
       installGuide="desktop"
       onCreateAccount={onCreateAccount}
       onSignIn={vi.fn()}
@@ -37,7 +37,11 @@ describe("access and installation panel", () => {
       onClose={vi.fn()}
     />);
 
-    fireEvent.change(screen.getByLabelText("Name"), {
+    const nameInput = screen.getByLabelText("Name") as HTMLInputElement;
+    expect(nameInput.value).toBe("");
+    expect(nameInput.placeholder).toBe("Your name");
+
+    fireEvent.change(nameInput, {
       target: { value: "Alejandro Y." },
     });
     fireEvent.change(screen.getByLabelText("Email address"), {
@@ -53,6 +57,85 @@ describe("access and installation panel", () => {
       email: "alejandro@example.com",
       password: "strong-pass-123",
     });
+  });
+
+  it("shows and hides the password without changing its value", () => {
+    render(<AccessPanel
+      cloud={{ configured: true, email: null, status: "local" }}
+      profileName=""
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClose={vi.fn()}
+    />);
+
+    const password = screen.getByLabelText("Password") as HTMLInputElement;
+    fireEvent.change(password, { target: { value: "strong-pass-123" } });
+    fireEvent.click(screen.getByRole("button", { name: "Show password" }));
+
+    expect(password.type).toBe("text");
+    expect(password.value).toBe("strong-pass-123");
+
+    fireEvent.click(screen.getByRole("button", { name: "Hide password" }));
+    expect(password.type).toBe("password");
+  });
+
+  it("replaces the signup form with six-digit account verification", () => {
+    const onVerifyAccount = vi.fn();
+    const props = {
+      cloud: {
+        configured: true,
+        email: null,
+        status: "local",
+        pendingVerification: {
+          name: "Alejandro Cortés",
+          email: "alejandro@example.com",
+        },
+      },
+      profileName: "Alejandro Cortés",
+      installGuide: "desktop",
+      onCreateAccount: vi.fn(),
+      onVerifyAccount,
+      onResendVerification: vi.fn(),
+      onSignIn: vi.fn(),
+      onSignOut: vi.fn(),
+      onInstall: null,
+      onClose: vi.fn(),
+    } as any;
+    render(<AccessPanel {...props} />);
+
+    expect(screen.getByText("Alejandro Cortés")).toBeTruthy();
+    expect(screen.getByText("alejandro@example.com")).toBeTruthy();
+    expect(screen.queryByLabelText("Password")).toBeNull();
+
+    fireEvent.change(screen.getByLabelText("Six-digit confirmation code"), {
+      target: { value: "123456" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Confirm account" }));
+
+    expect(onVerifyAccount).toHaveBeenCalledWith({
+      email: "alejandro@example.com",
+      token: "123456",
+    });
+  });
+
+  it("keeps both account choices the same width", () => {
+    render(<AccessPanel
+      cloud={{ configured: true, email: null, status: "local" }}
+      profileName=""
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClose={vi.fn()}
+    />);
+
+    const mode = screen.getByRole("group", { name: "Account access choice" });
+    expect(mode.classList.contains("access-mode")).toBe(true);
+    expect(mode.querySelectorAll("button")).toHaveLength(2);
   });
 
   it("signs in an existing account with email and password", () => {

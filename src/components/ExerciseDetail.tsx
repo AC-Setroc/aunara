@@ -1,6 +1,7 @@
 import { Check, Heart, Plus, X } from "lucide-react";
 import { useEffect } from "react";
 import { mediaUrl, titleCase } from "../lib/exercises";
+import { tr } from "../lib/i18n";
 import type { Exercise, LanguageCode } from "../types";
 
 interface ExerciseDetailProps {
@@ -34,7 +35,10 @@ export function ExerciseDetail({
     };
   }, [onClose]);
 
-  const steps = exercise.instruction_steps[language];
+  const steps = exercise.instruction_steps[language]?.length
+    ? exercise.instruction_steps[language]
+    : exercise.instruction_steps.en;
+  const instructions = exercise.instructions[language] || exercise.instructions.en;
 
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
@@ -45,41 +49,41 @@ export function ExerciseDetail({
         aria-labelledby="exercise-title"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <button className="close-button" type="button" onClick={onClose} aria-label="Close details">
+        <button className="close-button" type="button" onClick={onClose} aria-label={tr(language, "Close details", "Cerrar detalles")}>
           <X size={20} />
         </button>
 
         <div className="detail-media">
-          <img src={mediaUrl(exercise.gif_url)} alt={`Animated demonstration of ${exercise.name}`} />
+          <img src={mediaUrl(exercise.gif_url)} alt={`${tr(language, "Animated demonstration of", "Demostración animada de")} ${exercise.name}`} />
           <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">
             © Gym visual
           </a>
         </div>
 
         <div className="detail-copy">
-          <p className="eyebrow">Movement #{exercise.id} · {titleCase(exercise.body_part)}</p>
+          <p className="eyebrow">{tr(language, "Movement", "Movimiento")} #{exercise.id} · {titleCase(exercise.body_part)}</p>
           <h2 id="exercise-title">{titleCase(exercise.name)}</h2>
 
           <dl className="detail-facts">
-            <div><dt>Target</dt><dd>{titleCase(exercise.target)}</dd></div>
-            <div><dt>Equipment</dt><dd>{titleCase(exercise.equipment)}</dd></div>
-            <div><dt>Supports</dt><dd>{titleCase(exercise.muscle_group)}</dd></div>
+            <div><dt>{tr(language, "Target", "Objetivo")}</dt><dd>{titleCase(exercise.target)}</dd></div>
+            <div><dt>{tr(language, "Equipment", "Equipo")}</dt><dd>{titleCase(exercise.equipment)}</dd></div>
+            <div><dt>{tr(language, "Supports", "Grupo muscular")}</dt><dd>{titleCase(exercise.muscle_group)}</dd></div>
           </dl>
 
           <div className="instruction-block">
-            <p className="section-kicker">How to perform</p>
+            <p className="section-kicker">{tr(language, "How to perform", "Cómo realizarlo")}</p>
             {steps?.length ? (
               <ol>
                 {steps.map((step, index) => <li key={`${exercise.id}-${index}`}>{step}</li>)}
               </ol>
             ) : (
-              <p>{exercise.instructions[language]}</p>
+              <p>{instructions}</p>
             )}
           </div>
 
           {exercise.secondary_muscles.length > 0 && (
             <div className="secondary-list">
-              <span>Also works</span>
+              <span>{tr(language, "Also works", "También trabaja")}</span>
               {exercise.secondary_muscles.map((muscle) => (
                 <em key={muscle}>{titleCase(muscle)}</em>
               ))}
@@ -89,11 +93,11 @@ export function ExerciseDetail({
           <div className="detail-actions">
             <button className="favorite-button" type="button" onClick={onToggleFavorite}>
               <Heart size={18} fill={isFavorite ? "currentColor" : "none"} />
-              {isFavorite ? "Saved" : "Save movement"}
+              {isFavorite ? tr(language, "Saved", "Guardado") : tr(language, "Save movement", "Guardar movimiento")}
             </button>
             <button className="primary-button" type="button" onClick={onAdd} disabled={inWorkout}>
               {inWorkout ? <Check size={18} /> : <Plus size={18} />}
-              {inWorkout ? "In today’s workout" : "Add to workout"}
+              {inWorkout ? tr(language, "In today’s workout", "En el entrenamiento de hoy") : tr(language, "Add to workout", "Agregar al entrenamiento")}
             </button>
           </div>
         </div>

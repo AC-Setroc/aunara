@@ -1,8 +1,10 @@
 import { Check, Heart, Plus } from "lucide-react";
 import { mediaUrl, titleCase } from "../lib/exercises";
-import type { Exercise } from "../types";
+import { tr } from "../lib/i18n";
+import type { Exercise, LanguageCode } from "../types";
 
 interface ExerciseCardProps {
+  language?: LanguageCode;
   exercise: Exercise;
   isFavorite: boolean;
   inWorkout: boolean;
@@ -12,6 +14,7 @@ interface ExerciseCardProps {
 }
 
 export function ExerciseCard({
+  language = "en",
   exercise,
   isFavorite,
   inWorkout,
@@ -21,7 +24,7 @@ export function ExerciseCard({
 }: ExerciseCardProps) {
   return (
     <article className="exercise-card">
-      <button className="card-visual" type="button" onClick={onOpen} aria-label={`Open ${exercise.name}`}>
+      <button className="card-visual" type="button" onClick={onOpen} aria-label={`${tr(language, "Open", "Abrir")} ${exercise.name}`}>
         <img src={mediaUrl(exercise.image)} alt="" loading="lazy" />
         <span className="body-tag">{titleCase(exercise.body_part)}</span>
         <span className="card-number" aria-hidden="true">#{exercise.id}</span>
@@ -39,7 +42,7 @@ export function ExerciseCard({
           className={`icon-button ${isFavorite ? "is-active" : ""}`}
           type="button"
           onClick={onToggleFavorite}
-          aria-label={isFavorite ? `Remove ${exercise.name} from favorites` : `Favorite ${exercise.name}`}
+          aria-label={isFavorite ? `${tr(language, "Remove", "Quitar")} ${exercise.name} ${tr(language, "from favorites", "de favoritos")}` : `${tr(language, "Favorite", "Guardar")} ${exercise.name}`}
           aria-pressed={isFavorite}
         >
           <Heart size={17} fill={isFavorite ? "currentColor" : "none"} />
@@ -51,7 +54,7 @@ export function ExerciseCard({
           disabled={inWorkout}
         >
           {inWorkout ? <Check size={17} /> : <Plus size={17} />}
-          {inWorkout ? "Added" : "Add"}
+          {inWorkout ? tr(language, "Added", "Agregado") : tr(language, "Add", "Agregar")}
         </button>
       </div>
     </article>

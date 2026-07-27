@@ -69,6 +69,11 @@ export type TrainingExperience = "beginner" | "intermediate" | "advanced";
 export type DietaryPattern = "omnivore" | "vegetarian" | "vegan" | "pescatarian" | "other";
 
 export interface HealthProfile {
+  onboardingCompleted?: boolean;
+  primaryGoal?: TrackFocus;
+  equipmentPreference?: EquipmentPreference;
+  trainingDaysPerWeek?: number;
+  sessionMinutes?: number;
   ageYears: number | null;
   metabolicSex: MetabolicSex;
   heightCm: number | null;

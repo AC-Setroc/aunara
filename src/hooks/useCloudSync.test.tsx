@@ -5,10 +5,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRepbookSnapshot } from "../lib/cloudSnapshot";
 import type { supabaseClient } from "../lib/supabaseClient";
 
-const { signUp, signInWithPassword, signOut } = vi.hoisted(() => ({
+const { signUp, signInWithPassword, signOut, verifyOtp, resend } = vi.hoisted(() => ({
   signUp: vi.fn(),
   signInWithPassword: vi.fn(),
   signOut: vi.fn(),
+  verifyOtp: vi.fn(),
+  resend: vi.fn(),
 }));
 
 import { useCloudSync } from "./useCloudSync";
@@ -22,6 +24,8 @@ const testClient = {
     signUp,
     signInWithPassword,
     signOut,
+    verifyOtp,
+    resend,
   },
 } as unknown as NonNullable<typeof supabaseClient>;
 
@@ -52,6 +56,14 @@ beforeEach(() => {
   signUp.mockResolvedValue({ data: { session: null }, error: null });
   signInWithPassword.mockResolvedValue({ data: {}, error: null });
   signOut.mockResolvedValue({ error: null });
+  verifyOtp.mockResolvedValue({
+    data: {
+      session: { user: { id: "user-1", email: "alejandro@example.com" } },
+      user: { id: "user-1", email: "alejandro@example.com" },
+    },
+    error: null,
+  });
+  resend.mockResolvedValue({ data: {}, error: null });
 });
 
 describe("password account access", () => {
@@ -72,12 +84,57 @@ describe("password account access", () => {
       email: "alejandro@example.com",
       password: "strong-pass-123",
       options: {
-        data: { display_name: "Alejandro" },
+        data: { display_name: "Alejandro", language: "es" },
         emailRedirectTo: window.location.origin,
       },
     });
     await waitFor(() => {
-      expect(result.current.message).toContain("email");
+      expect(result.current.message).toContain("correo");
+    });
+    expect((result.current as any).pendingVerification).toEqual({
+      name: "Alejandro",
+      email: "alejandro@example.com",
+    });
+  });
+
+  it("verifies the six-digit signup code and clears the pending account", async () => {
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: testClient,
+    }));
+
+    await act(() => result.current.createAccount({
+      name: "Alejandro",
+      email: "alejandro@example.com",
+      password: "strong-pass-123",
+    }));
+    await act(() => (result.current as any).verifyAccount({
+      email: "alejandro@example.com",
+      token: "123456",
+    }));
+
+    expect(verifyOtp).toHaveBeenCalledWith({
+      email: "alejandro@example.com",
+      token: "123456",
+      type: "signup",
+    });
+    expect((result.current as any).pendingVerification).toBeNull();
+  });
+
+  it("resends the signup confirmation code", async () => {
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: testClient,
+    }));
+
+    await act(() => (result.current as any).resendVerification("alejandro@example.com"));
+
+    expect(resend).toHaveBeenCalledWith({
+      type: "signup",
+      email: "alejandro@example.com",
+      options: { emailRedirectTo: window.location.origin },
     });
   });
 

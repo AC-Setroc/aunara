@@ -3,7 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   CloudAccessState,
   CreateAccountInput,
+  PendingVerification,
   PasswordSignInInput,
+  VerifyAccountInput,
 } from "../components/AccessPanel";
 import {
   normalizeRepbookSnapshot,
@@ -11,6 +13,7 @@ import {
   type RepbookCloudSnapshot,
 } from "../lib/cloudSnapshot";
 import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
+import { tr } from "../lib/i18n";
 import { cloudConfigured, supabaseClient } from "../lib/supabaseClient";
 
 interface UseCloudSyncOptions {
@@ -22,6 +25,8 @@ interface UseCloudSyncOptions {
 
 interface CloudSyncController extends CloudAccessState {
   createAccount: (input: CreateAccountInput) => Promise<void>;
+  verifyAccount: (input: VerifyAccountInput) => Promise<void>;
+  resendVerification: (email: string) => Promise<void>;
   signIn: (input: PasswordSignInInput) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -35,6 +40,7 @@ export function useCloudSync({
   const [user, setUser] = useState<User | null>(null);
   const [status, setStatus] = useState<CloudAccessState["status"]>("local");
   const [message, setMessage] = useState<string>();
+  const [pendingVerification, setPendingVerification] = useState<PendingVerification | null>(null);
   const latestSnapshot = useRef(snapshot);
   const onRemoteSnapshotRef = useRef(onRemoteSnapshot);
   const onSignedOutRef = useRef(onSignedOut);
@@ -134,9 +140,10 @@ export function useCloudSync({
     email,
     password,
   }: CreateAccountInput) => {
+    const language = latestSnapshot.current.language;
     if (!client) {
       setStatus("error");
-      setMessage("Cloud setup is not connected yet.");
+      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
       return;
     }
     setStatus("syncing");
@@ -145,7 +152,7 @@ export function useCloudSync({
       email,
       password,
       options: {
-        data: { display_name: name },
+        data: { display_name: name, language },
         emailRedirectTo: window.location.origin,
       },
     });
@@ -155,18 +162,69 @@ export function useCloudSync({
       return;
     }
     if (data.session) {
+      setPendingVerification(null);
       setStatus("syncing");
-      setMessage("Account created. Saving all your Repbook data…");
+      setMessage(tr(language, "Account created. Saving all your Repbook data…", "Cuenta creada. Estamos guardando tus datos de Repbook…"));
+      return;
+    }
+    setPendingVerification({ name, email });
+    setStatus("local");
+    setMessage(tr(language, "Account created. Enter the six-digit code from your email to confirm it.", "Cuenta creada. Ingresá el código de seis dígitos que te enviamos por correo."));
+  }, [client]);
+
+  const verifyAccount = useCallback(async ({ email, token }: VerifyAccountInput) => {
+    const language = latestSnapshot.current.language;
+    if (!client) {
+      setStatus("error");
+      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      return;
+    }
+    setStatus("syncing");
+    setMessage(undefined);
+    const { data, error } = await client.auth.verifyOtp({
+      email,
+      token,
+      type: "signup",
+    });
+    if (error) {
+      setStatus("error");
+      setMessage(error.message);
+      return;
+    }
+    setPendingVerification(null);
+    setUser(data.user ?? data.session?.user ?? null);
+    setStatus("syncing");
+    setMessage(tr(language, "Account confirmed. Saving your Repbook data…", "Cuenta confirmada. Estamos guardando tus datos de Repbook…"));
+  }, [client]);
+
+  const resendVerification = useCallback(async (email: string) => {
+    const language = latestSnapshot.current.language;
+    if (!client) {
+      setStatus("error");
+      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      return;
+    }
+    setStatus("syncing");
+    setMessage(undefined);
+    const { error } = await client.auth.resend({
+      type: "signup",
+      email,
+      options: { emailRedirectTo: window.location.origin },
+    });
+    if (error) {
+      setStatus("error");
+      setMessage(error.message);
       return;
     }
     setStatus("local");
-    setMessage("Account created. Confirm the email on this device, then your current Repbook data will be saved.");
+    setMessage(tr(language, "A new six-digit code was sent to your email.", "Te enviamos un nuevo código de seis dígitos al correo."));
   }, [client]);
 
   const signIn = useCallback(async ({ email, password }: PasswordSignInInput) => {
+    const language = latestSnapshot.current.language;
     if (!client) {
       setStatus("error");
-      setMessage("Cloud setup is not connected yet.");
+      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
       return;
     }
     setStatus("syncing");
@@ -180,7 +238,7 @@ export function useCloudSync({
       setMessage(error.message);
       return;
     }
-    setMessage("Signed in. Loading your Repbook data…");
+    setMessage(tr(language, "Signed in. Loading your Repbook data…", "Sesión iniciada. Estamos cargando tus datos de Repbook…"));
   }, [client]);
 
   const signOut = useCallback(async () => {
@@ -191,6 +249,7 @@ export function useCloudSync({
       setMessage(error.message);
       return;
     }
+    setPendingVerification(null);
     onSignedOutRef.current?.();
   }, [client]);
 
@@ -199,7 +258,10 @@ export function useCloudSync({
     email: user?.email ?? null,
     status,
     message,
+    pendingVerification,
     createAccount,
+    verifyAccount,
+    resendVerification,
     signIn,
     signOut,
   };

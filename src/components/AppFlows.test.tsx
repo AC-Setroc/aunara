@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Exercise, HealthProfile, TrainingTrack } from "../types";
 import { ProfilePanel } from "./ProfilePanel";
 import { TrainingTracks } from "./TrainingTracks";
@@ -62,6 +62,14 @@ const healthProfile: HealthProfile = {
   allergies: "",
   healthNotes: "",
 };
+
+beforeEach(() => {
+  localStorage.setItem("repbook-language", JSON.stringify("en"));
+  localStorage.setItem("repbook-health-profile", JSON.stringify({
+    ...healthProfile,
+    onboardingCompleted: true,
+  }));
+});
 
 afterEach(() => {
   cleanup();
@@ -341,7 +349,8 @@ describe("profile access", () => {
       onClose={vi.fn()}
     />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Nutrition" }));
+    expect(screen.queryByRole("button", { name: "Nutrition" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
     expect(screen.getByText("98–131 g")).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Search USDA foods"), { target: { value: "banana" } });
     fireEvent.click(screen.getByRole("button", { name: "Search foods" }));

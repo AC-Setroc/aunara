@@ -16,6 +16,7 @@ import {
 } from "./components/AccessPanel";
 import { ExerciseCard } from "./components/ExerciseCard";
 import { ExerciseDetail } from "./components/ExerciseDetail";
+import { OnboardingPanel } from "./components/OnboardingPanel";
 import { ProfilePanel } from "./components/ProfilePanel";
 import { TrainingTracks, type NewTrackInput } from "./components/TrainingTracks";
 import { WorkoutPanel } from "./components/WorkoutPanel";
@@ -24,6 +25,7 @@ import { useStoredState } from "./hooks/useStoredState";
 import { createRepbookSnapshot, type RepbookCloudSnapshot } from "./lib/cloudSnapshot";
 import { filterExercises, generateTrackWorkout, removeTrainingTrack, replaceTrackWorkout, titleCase, uniqueSorted } from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
+import { tr } from "./lib/i18n";
 import { addWeeklyCheckIn, buildRoutineAnalysis } from "./lib/wellness";
 import type { Exercise, HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn, WorkoutItem } from "./types";
 
@@ -34,6 +36,11 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const DEFAULT_HEALTH_PROFILE: HealthProfile = {
+  onboardingCompleted: false,
+  primaryGoal: "strength",
+  equipmentPreference: "mixed",
+  trainingDaysPerWeek: 3,
+  sessionMinutes: 45,
   ageYears: null,
   metabolicSex: "unspecified",
   heightCm: null,
@@ -47,16 +54,8 @@ const DEFAULT_HEALTH_PROFILE: HealthProfile = {
   healthNotes: "",
 };
 const LANGUAGE_OPTIONS: { code: LanguageCode; label: string }[] = [
-  { code: "en", label: "English" },
   { code: "es", label: "Español" },
-  { code: "fr", label: "Français" },
-  { code: "it", label: "Italiano" },
-  { code: "tr", label: "Türkçe" },
-  { code: "ru", label: "Русский" },
-  { code: "zh", label: "中文" },
-  { code: "hi", label: "हिन्दी" },
-  { code: "pl", label: "Polski" },
-  { code: "ko", label: "한국어" },
+  { code: "en", label: "English" },
 ];
 
 function App() {
@@ -82,7 +81,7 @@ function App() {
     return getInstallGuide(navigator.userAgent, standalone);
   });
   const [language, setLanguage] = useStoredState<LanguageCode>("repbook-language", "es");
-  const [profileName, setProfileName] = useStoredState<string>("repbook-profile-name", "My profile");
+  const [profileName, setProfileName] = useStoredState<string>("repbook-profile-name", "Mi perfil");
   const [favoriteIds, setFavoriteIds] = useStoredState<string[]>("repbook-favorites", []);
   const [legacyWorkout] = useStoredState<WorkoutItem[]>("repbook-workout", []);
   const [tracks, setTracks] = useStoredState<TrainingTrack[]>("repbook-training-tracks", []);
@@ -130,14 +129,14 @@ function App() {
   ]);
 
   const clearSignedOutProfile = useCallback(() => {
-    setProfileName("My profile");
+    setProfileName("Mi perfil");
     setLanguage("es");
     setFavoriteIds([]);
     setTracks([]);
     setActiveTrackId("");
     setHealthProfile(DEFAULT_HEALTH_PROFILE);
     setCheckIns([]);
-    setTracksInitialized(true);
+    setTracksInitialized(false);
   }, [
     setActiveTrackId,
     setCheckIns,
@@ -155,6 +154,14 @@ function App() {
     onSignedOut: clearSignedOutProfile,
   });
   const hasAppAccess = !cloud.configured || Boolean(cloud.email);
+  const onboardingRequired = cloud.configured
+    && Boolean(cloud.email)
+    && healthProfile.onboardingCompleted !== true;
+  const canUseTraining = hasAppAccess && !onboardingRequired;
+
+  useEffect(() => {
+    if (language !== "en" && language !== "es") setLanguage("es");
+  }, [language, setLanguage]);
 
   useEffect(() => {
     const captureInstallPrompt = (event: Event) => {
@@ -197,8 +204,8 @@ function App() {
   const bodyParts = useMemo(() => uniqueSorted(exercises, "body_part"), [exercises]);
   const equipmentOptions = useMemo(() => uniqueSorted(exercises, "equipment"), [exercises]);
   const routineAnalysis = useMemo(
-    () => activeTrack ? buildRoutineAnalysis(activeTrack, healthProfile, latestCheckIn) : null,
-    [activeTrack, healthProfile, latestCheckIn],
+    () => activeTrack ? buildRoutineAnalysis(activeTrack, healthProfile, latestCheckIn, language) : null,
+    [activeTrack, healthProfile, language, latestCheckIn],
   );
 
   const filtered = useMemo(
@@ -215,7 +222,7 @@ function App() {
   const filtersActive = Boolean(query || bodyPart || equipment || favoritesOnly);
 
   useEffect(() => {
-    if (!exercises.length || tracksInitialized) return;
+    if (!canUseTraining || !exercises.length || tracksInitialized) return;
 
     // Existing users already have tracks but not the initialization marker yet.
     if (tracks.length) {
@@ -223,33 +230,27 @@ function App() {
       return;
     }
 
+    const primaryFocus = healthProfile.primaryGoal ?? "strength";
     const strengthTrack: TrainingTrack = {
-      id: "goal-strength",
-      name: "Strength base",
-      kind: "goal",
-      focus: "strength",
-      equipment: "any",
-      sessionMinutes: 45,
-      daysPerWeek: 2,
+      id: `goal-${primaryFocus}`,
+      name: tr(language, "My first route", "Mi primera ruta"),
+      kind: ["beach-volleyball", "running", "cycling", "mountain-biking", "swimming", "tennis-padel", "soccer"].includes(primaryFocus) ? "sport" : "goal",
+      focus: primaryFocus,
+      equipment: healthProfile.equipmentPreference ?? "mixed",
+      sessionMinutes: healthProfile.sessionMinutes ?? 45,
+      daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
       workout: legacyWorkout.length
         ? legacyWorkout
-        : generateTrackWorkout(exercises, { focus: "strength", equipment: "any" }),
-    };
-    const sportTrack: TrainingTrack = {
-      id: "sport-beach-volleyball",
-      name: "Beach volleyball",
-      kind: "sport",
-      focus: "beach-volleyball",
-      equipment: "bodyweight",
-      sessionMinutes: 45,
-      daysPerWeek: 2,
-      workout: generateTrackWorkout(exercises, { focus: "beach-volleyball", equipment: "bodyweight" }),
+        : generateTrackWorkout(exercises, {
+          focus: primaryFocus,
+          equipment: healthProfile.equipmentPreference ?? "mixed",
+        }),
     };
 
-    setTracks([strengthTrack, sportTrack]);
+    setTracks([strengthTrack]);
     setActiveTrackId(strengthTrack.id);
     setTracksInitialized(true);
-  }, [exercises, legacyWorkout, setActiveTrackId, setTracks, setTracksInitialized, tracks.length, tracksInitialized]);
+  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, language, legacyWorkout, setActiveTrackId, setTracks, setTracksInitialized, tracks.length, tracksInitialized]);
 
   useEffect(() => {
     if (tracks.length && !tracks.some((track) => track.id === activeTrackId)) {
@@ -369,49 +370,49 @@ function App() {
   return (
     <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Repbook home">
+        <a className="brand" href="#top" aria-label={tr(language, "Repbook home", "Inicio de Repbook")}>
           <span className="brand-mark">R/B</span>
-          <span><strong>REPBOOK</strong><small>Personal field notes</small></span>
+          <span><strong>REPBOOK</strong><small>{tr(language, "Personal field notes", "Bitácora personal")}</small></span>
         </a>
 
         {hasAppAccess ? (
-          <nav aria-label="App controls">
-            <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => openAccess("create")} aria-label="Open account and synchronization">
+          <nav aria-label={tr(language, "App controls", "Controles de la app")}>
+            <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => openAccess("create")} aria-label={tr(language, "Open account and synchronization", "Abrir cuenta y sincronización")}>
               <Cloud size={17} />
-              <span>{cloud.email ? "Synced" : "Account"}</span>
+              <span>{cloud.email ? tr(language, "Synced", "Sincronizado") : tr(language, "Account", "Cuenta")}</span>
             </button>
-            <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label="Open profile">
+            {!onboardingRequired && <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label={tr(language, "Open profile", "Abrir perfil")}>
               <UserRound size={17} />
-              <span>{profileName.trim() || "My profile"}</span>
-            </button>
+              <span>{profileName.trim() || tr(language, "My profile", "Mi perfil")}</span>
+            </button>}
             <label className="language-select">
               <Languages size={16} />
-              <span className="sr-only">Instruction language</span>
+              <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
               <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
                 {LANGUAGE_OPTIONS.map((option) => (
                   <option key={option.code} value={option.code}>{option.label}</option>
                 ))}
               </select>
             </label>
-            <button className="workout-trigger" type="button" onClick={() => setWorkoutOpen(true)}>
+            {!onboardingRequired && <button className="workout-trigger" type="button" onClick={() => setWorkoutOpen(true)}>
               <Dumbbell size={18} />
-              <span>{activeTrack?.name ?? "Today’s workout"}</span>
+              <span>{activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")}</span>
               <strong>{workout.length}</strong>
-            </button>
+            </button>}
           </nav>
         ) : (
-          <nav className="guest-nav" aria-label="Public controls">
-            <a className="guest-home-link" href="#top">Home</a>
+          <nav className="guest-nav" aria-label={tr(language, "Public controls", "Controles públicos")}>
+            <a className="guest-home-link" href="#top">{tr(language, "Home", "Inicio")}</a>
             <label className="language-select">
               <Languages size={16} />
-              <span className="sr-only">Instruction language</span>
+              <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
               <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
                 {LANGUAGE_OPTIONS.map((option) => (
                   <option key={option.code} value={option.code}>{option.label}</option>
                 ))}
               </select>
             </label>
-            <button className="guest-account-button is-primary" type="button" onClick={() => openAccess("sign-in")}>Login</button>
+            <button className="guest-account-button is-primary" type="button" onClick={() => openAccess("sign-in")}>{tr(language, "Login", "Ingresar")}</button>
           </nav>
         )}
       </header>
@@ -420,21 +421,22 @@ function App() {
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-index" aria-hidden="true">001—1324</div>
           <div className="hero-copy">
-            <p className="eyebrow">The movement archive</p>
-            <h1 id="hero-title">Train with<br /><em>intention.</em></h1>
+            <p className="eyebrow">{tr(language, "The movement archive", "El archivo de movimiento")}</p>
+            <h1 id="hero-title">{tr(language, "Train with", "Entrená con")}<br /><em>{tr(language, "intention.", "intención.")}</em></h1>
             <p className="hero-description">
-              Build distinct routines for personal goals and sport performance—without losing either one.
+              {tr(language, "Build distinct routines for personal goals and sport performance—without losing either one.", "Creá rutinas distintas para tus metas personales y tu rendimiento deportivo, sin dejar ninguna de lado.")}
             </p>
           </div>
           <div className="hero-note">
-            <span>FIELD NOTE / 01</span>
-            <p>Good training is repeatable. Choose fewer movements. Record the work. Return stronger.</p>
+            <span>{tr(language, "FIELD NOTE / 01", "NOTA DE CAMPO / 01")}</span>
+            <p>{tr(language, "Good training is repeatable. Choose fewer movements. Record the work. Return stronger.", "Un buen entrenamiento se puede repetir. Elegí menos movimientos, registrá el trabajo y volvé más fuerte.")}</p>
             <ArrowDown size={20} />
           </div>
         </section>
 
-        {hasAppAccess && exercises.length > 0 && (
+        {canUseTraining && exercises.length > 0 && (
           <TrainingTracks
+            language={language}
             tracks={tracks}
             activeTrackId={activeTrack?.id ?? ""}
             onOpen={openTrack}
@@ -444,47 +446,47 @@ function App() {
           />
         )}
 
-        {hasAppAccess && <section className="library" aria-labelledby="library-title">
+        {canUseTraining && <section className="library" aria-labelledby="library-title">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Browse / filter / build</p>
-              <h2 id="library-title">Exercise library</h2>
+              <p className="eyebrow">{tr(language, "Browse / filter / build", "Explorá / filtrá / armá")}</p>
+              <h2 id="library-title">{tr(language, "Exercise library", "Biblioteca de ejercicios")}</h2>
             </div>
             <p className="result-count">
               <strong>{filtered.length.toLocaleString()}</strong>
-              <span>{filtered.length === 1 ? "movement" : "movements"}</span>
+              <span>{filtered.length === 1 ? tr(language, "movement", "movimiento") : tr(language, "movements", "movimientos")}</span>
             </p>
           </div>
 
           <div className="filter-station">
             <label className="search-field">
               <Search size={20} />
-              <span className="sr-only">Search exercises</span>
+              <span className="sr-only">{tr(language, "Search exercises", "Buscar ejercicios")}</span>
               <input
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search movement, muscle, equipment…"
+                placeholder={tr(language, "Search movement, muscle, equipment…", "Buscá movimiento, músculo o equipo…")}
               />
               {query && (
-                <button type="button" onClick={() => setQuery("")} aria-label="Clear search"><X size={16} /></button>
+                <button type="button" onClick={() => setQuery("")} aria-label={tr(language, "Clear search", "Limpiar búsqueda")}><X size={16} /></button>
               )}
             </label>
 
             <div className="select-row">
               <label>
                 <SlidersHorizontal size={16} />
-                <span className="sr-only">Body part</span>
+                <span className="sr-only">{tr(language, "Body part", "Parte del cuerpo")}</span>
                 <select value={bodyPart} onChange={(event) => setBodyPart(event.target.value)}>
-                  <option value="">All body parts</option>
+                  <option value="">{tr(language, "All body parts", "Todas las partes del cuerpo")}</option>
                   {bodyParts.map((part) => <option key={part} value={part}>{titleCase(part)}</option>)}
                 </select>
               </label>
               <label>
                 <Dumbbell size={16} />
-                <span className="sr-only">Equipment</span>
+                <span className="sr-only">{tr(language, "Equipment", "Equipo")}</span>
                 <select value={equipment} onChange={(event) => setEquipment(event.target.value)}>
-                  <option value="">All equipment</option>
+                  <option value="">{tr(language, "All equipment", "Todo el equipo")}</option>
                   {equipmentOptions.map((item) => <option key={item} value={item}>{titleCase(item)}</option>)}
                 </select>
               </label>
@@ -495,30 +497,31 @@ function App() {
                 aria-pressed={favoritesOnly}
               >
                 <Heart size={16} fill={favoritesOnly ? "currentColor" : "none"} />
-                Saved <span>{favoriteIds.length}</span>
+                {tr(language, "Saved", "Guardados")} <span>{favoriteIds.length}</span>
               </button>
             </div>
           </div>
 
           {loadingError ? (
             <div className="status-card error">
-              <h3>Library unavailable</h3><p>{loadingError}</p>
+              <h3>{tr(language, "Library unavailable", "Biblioteca no disponible")}</h3><p>{loadingError}</p>
             </div>
           ) : exercises.length === 0 ? (
-            <div className="loading-grid" aria-label="Loading exercise library">
+            <div className="loading-grid" aria-label={tr(language, "Loading exercise library", "Cargando biblioteca de ejercicios")}>
               {Array.from({ length: 8 }, (_, index) => <span key={index} />)}
             </div>
           ) : filtered.length === 0 ? (
             <div className="status-card">
-              <h3>No movement fits that brief.</h3>
-              <p>Try a broader search or remove one of your filters.</p>
-              <button type="button" onClick={clearFilters}>Clear all filters</button>
+              <h3>{tr(language, "No movement fits that brief.", "Ningún movimiento coincide con esos filtros.")}</h3>
+              <p>{tr(language, "Try a broader search or remove one of your filters.", "Probá una búsqueda más amplia o quitá uno de los filtros.")}</p>
+              <button type="button" onClick={clearFilters}>{tr(language, "Clear all filters", "Limpiar filtros")}</button>
             </div>
           ) : (
             <>
               <div className="exercise-grid">
                 {visibleExercises.map((exercise) => (
                   <ExerciseCard
+                    language={language}
                     key={exercise.id}
                     exercise={exercise}
                     isFavorite={favorites.has(exercise.id)}
@@ -532,7 +535,7 @@ function App() {
 
               {visibleCount < filtered.length && (
                 <button className="load-more" type="button" onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}>
-                  Load the next {Math.min(PAGE_SIZE, filtered.length - visibleCount)}
+                  {tr(language, "Load the next", "Cargar los siguientes")} {Math.min(PAGE_SIZE, filtered.length - visibleCount)}
                   <ArrowDown size={17} />
                 </button>
               )}
@@ -540,21 +543,30 @@ function App() {
           )}
 
           {filtersActive && filtered.length > 0 && (
-            <button className="reset-filters" type="button" onClick={clearFilters}>Reset filters</button>
+            <button className="reset-filters" type="button" onClick={clearFilters}>{tr(language, "Reset filters", "Restablecer filtros")}</button>
           )}
         </section>}
       </main>
 
-      {hasAppAccess && <footer>
-        <div><strong>REPBOOK</strong><span>One profile. More than one priority.</span></div>
+      {onboardingRequired && (
+        <OnboardingPanel
+          language={language}
+          name={profileName}
+          profile={healthProfile}
+          onComplete={setHealthProfile}
+        />
+      )}
+
+      {canUseTraining && <footer>
+        <div><strong>REPBOOK</strong><span>{tr(language, "One profile. More than one priority.", "Un perfil. Más de una prioridad.")}</span></div>
         <p>Exercise data © Hasan Emir Yıldırım, MIT. Visual media © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
       </footer>}
 
-      {hasAppAccess && <button className="mobile-workout" type="button" onClick={() => setWorkoutOpen(true)}>
-        <Dumbbell size={19} /> {activeTrack?.name ?? "Today’s workout"} <strong>{workout.length}</strong>
+      {canUseTraining && <button className="mobile-workout" type="button" onClick={() => setWorkoutOpen(true)}>
+        <Dumbbell size={19} /> {activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")} <strong>{workout.length}</strong>
       </button>}
 
-      {hasAppAccess && selectedExercise && (
+      {canUseTraining && selectedExercise && (
         <ExerciseDetail
           exercise={selectedExercise}
           language={language}
@@ -566,10 +578,11 @@ function App() {
         />
       )}
 
-      {hasAppAccess && workoutOpen && activeTrack && routineAnalysis && (
+      {canUseTraining && workoutOpen && activeTrack && routineAnalysis && (
         <>
-          <button className="panel-backdrop" type="button" onClick={() => setWorkoutOpen(false)} aria-label="Close workout" />
+          <button className="panel-backdrop" type="button" onClick={() => setWorkoutOpen(false)} aria-label={tr(language, "Close workout", "Cerrar entrenamiento")} />
           <WorkoutPanel
+            language={language}
             items={workout}
             exerciseMap={exerciseMap}
             exercises={exercises}
@@ -590,8 +603,9 @@ function App() {
         </>
       )}
 
-      {hasAppAccess && profileOpen && (
+      {canUseTraining && profileOpen && (
         <ProfilePanel
+          language={language}
           name={profileName}
           tracks={tracks}
           activeTrackId={activeTrack?.id ?? ""}
@@ -611,6 +625,7 @@ function App() {
 
       {accessOpen && (
         <AccessPanel
+          language={language}
           cloud={cloud}
           profileName={profileName}
           installGuide={installGuide}
@@ -618,6 +633,8 @@ function App() {
             setProfileName(input.name);
             void cloud.createAccount(input);
           }}
+          onVerifyAccount={(input) => void cloud.verifyAccount(input)}
+          onResendVerification={(email) => void cloud.resendVerification(email)}
           onSignIn={(input) => void cloud.signIn(input)}
           onSignOut={cloud.signOut}
           onInstall={installPrompt ? () => {
