@@ -24,6 +24,7 @@ const ACTIVITY_FACTORS = {
 
 const FOCUS_LABELS: Record<string, string> = {
   strength: "Strength",
+  "weight-loss": "Weight loss",
   "muscle-gain": "Muscle gain",
   "general-fitness": "General fitness",
   endurance: "Endurance",
@@ -84,10 +85,8 @@ export function calculateBmi(heightCm: number, weightKg: number): number | null 
 }
 
 function bmiLabel(value: number, language: LanguageCode): string {
-  if (value < 18.5) return tr(language, "Below general reference", "Debajo de la referencia general");
-  if (value < 25) return tr(language, "General reference range", "Rango de referencia general");
-  if (value < 30) return tr(language, "Above general reference", "Sobre la referencia general");
-  return tr(language, "Well above general reference", "Muy por encima de la referencia general");
+  void value;
+  return tr(language, "Numerical reference only", "Solo referencia numérica");
 }
 
 function estimateMaintenanceCalories(profile: HealthProfile): { min: number; max: number } | null {
@@ -139,6 +138,7 @@ export function buildRoutineAnalysis(
     ? FOCUS_LABELS[track.focus] ?? track.focus
     : ({
       strength: "Fuerza",
+      "weight-loss": "Pérdida de peso",
       "muscle-gain": "Ganancia muscular",
       "general-fitness": "Condición física general",
       endurance: "Resistencia",

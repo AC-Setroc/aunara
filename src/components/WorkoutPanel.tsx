@@ -1,9 +1,9 @@
 import { Activity, Dumbbell, Minus, Play, Plus, RefreshCw, Trash2, UserRound, X } from "lucide-react";
 import { useState } from "react";
-import { findExerciseAlternatives, titleCase } from "../lib/exercises";
+import { findExerciseAlternatives, titleCase, WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { RoutineAnalysis } from "../lib/wellness";
-import type { Exercise, LanguageCode, TrainingTrack, WorkoutItem } from "../types";
+import type { Exercise, LanguageCode, TrainingTrack, Weekday, WorkoutItem } from "../types";
 
 interface WorkoutPanelProps {
   language?: LanguageCode;
@@ -13,6 +13,10 @@ interface WorkoutPanelProps {
   track: TrainingTrack;
   onClose: () => void;
   onUpdate: (exerciseId: string, field: "sets" | "reps", delta: number) => void;
+  onUpdateItem?: (itemId: string, changes: Partial<WorkoutItem>) => void;
+  onSetDayLabel?: (day: Weekday, label: string) => void;
+  onAddExercise?: (exerciseId: string) => void;
+  onLogLoad?: (itemId: string) => void;
   onRemove: (exerciseId: string) => void;
   onSwap: (exerciseId: string, replacementId: string) => void;
   onClear: () => void;
@@ -30,6 +34,10 @@ export function WorkoutPanel({
   track,
   onClose,
   onUpdate,
+  onUpdateItem,
+  onSetDayLabel,
+  onAddExercise,
+  onLogLoad,
   onRemove,
   onSwap,
   onClear,
@@ -39,7 +47,24 @@ export function WorkoutPanel({
   onOpenProfile,
 }: WorkoutPanelProps) {
   const [replacingId, setReplacingId] = useState<string | null>(null);
+  const [exerciseToAdd, setExerciseToAdd] = useState(exercises[0]?.id ?? "");
   const totalSets = items.reduce((sum, item) => sum + item.sets, 0);
+  const orderedItems = [...items].sort((left, right) => (
+    WEEKDAYS.indexOf(left.day ?? "monday") - WEEKDAYS.indexOf(right.day ?? "monday")
+  ));
+  const usedDays = WEEKDAYS.filter((day) => items.some((item) => (item.day ?? "monday") === day));
+  const dayLabel = (day: Weekday) => {
+    const labels: Record<Weekday, [string, string]> = {
+      monday: ["Monday", "Lunes"],
+      tuesday: ["Tuesday", "Martes"],
+      wednesday: ["Wednesday", "Miércoles"],
+      thursday: ["Thursday", "Jueves"],
+      friday: ["Friday", "Viernes"],
+      saturday: ["Saturday", "Sábado"],
+      sunday: ["Sunday", "Domingo"],
+    };
+    return tr(language, ...labels[day]);
+  };
 
   return (
     <aside className="workout-panel" aria-label={`${track.name} ${tr(language, "workout", "entrenamiento")}`}>
@@ -81,33 +106,106 @@ export function WorkoutPanel({
             <span>{tr(language, "working sets", "series de trabajo")}</span>
           </div>
 
+          <div className="workout-day-labels">
+            {usedDays.map((day) => (
+              <label key={day}>
+                <span>{dayLabel(day)}</span>
+                <input
+                  aria-label={`${tr(language, "Day focus", "Enfoque del día")} ${dayLabel(day)}`}
+                  value={track.dayLabels?.[day] ?? ""}
+                  placeholder={tr(language, "e.g. Lower body", "ej. Tren inferior")}
+                  onChange={(event) => onSetDayLabel?.(day, event.target.value)}
+                />
+              </label>
+            ))}
+          </div>
+
           <ol className="workout-list">
-            {items.map((item, index) => {
+            {orderedItems.map((item, index) => {
               const exercise = exerciseMap.get(item.exerciseId);
               if (!exercise) return null;
-              const alternatives = replacingId === item.exerciseId
+              const itemId = item.id ?? item.exerciseId;
+              const exerciseName = titleCase(exercise.name);
+              const alternatives = replacingId === itemId
                 ? findExerciseAlternatives(exercises, exercise, track.equipment, 3)
                 : [];
 
               return (
-                <li key={item.exerciseId}>
+                <li key={itemId}>
                   <span className="set-order">{String(index + 1).padStart(2, "0")}</span>
                   <div className="workout-item-copy">
-                    <h3>{titleCase(exercise.name)}</h3>
+                    <span className="workout-day-tag">{dayLabel(item.day ?? "monday")}{track.dayLabels?.[item.day ?? "monday"] ? ` · ${track.dayLabels?.[item.day ?? "monday"]}` : ""}</span>
+                    <h3>{exerciseName}</h3>
                     <p>{titleCase(exercise.target)}</p>
+                    <div className="workout-prescription-grid">
+                      <label>
+                        <span>{tr(language, "Training day", "Día de entrenamiento")}</span>
+                        <select
+                          aria-label={`${tr(language, "Training day for", "Día de entrenamiento para")} ${exerciseName}`}
+                          value={item.day ?? "monday"}
+                          onChange={(event) => onUpdateItem?.(itemId, { day: event.target.value as Weekday })}
+                        >
+                          {WEEKDAYS.map((day) => <option key={day} value={day}>{dayLabel(day)}</option>)}
+                        </select>
+                      </label>
+                      <label>
+                        <span>{tr(language, "Set plan", "Plan de series")}</span>
+                        <input
+                          aria-label={`${tr(language, "Set plan for", "Plan de series para")} ${exerciseName}`}
+                          value={item.setPlan ?? `${item.sets} × ${item.reps}`}
+                          placeholder={tr(language, "e.g. 3 × 8 + 3 to failure", "ej. 3 × 8 + 3 al fallo")}
+                          onChange={(event) => onUpdateItem?.(itemId, { setPlan: event.target.value })}
+                        />
+                      </label>
+                      <label>
+                        <span>{tr(language, "Load (kg)", "Carga (kg)")}</span>
+                        <input
+                          aria-label={`${tr(language, "Load in kilograms for", "Carga en kilogramos para")} ${exerciseName}`}
+                          type="number"
+                          min={0}
+                          step={0.5}
+                          value={item.loadKg ?? ""}
+                          onChange={(event) => onUpdateItem?.(itemId, {
+                            loadKg: event.target.value === "" ? null : Number(event.target.value),
+                          })}
+                        />
+                      </label>
+                      <label>
+                        <span>{tr(language, "Load note", "Nota de carga")}</span>
+                        <input
+                          aria-label={`${tr(language, "Load note for", "Nota de carga para")} ${exerciseName}`}
+                          value={item.loadNote ?? ""}
+                          placeholder={tr(language, "e.g. two 15 kg dumbbells", "ej. dos mancuernas de 15 kg")}
+                          onChange={(event) => onUpdateItem?.(itemId, { loadNote: event.target.value })}
+                        />
+                      </label>
+                    </div>
+                    <button
+                      className="log-load-button"
+                      type="button"
+                      onClick={() => onLogLoad?.(itemId)}
+                      aria-label={`${tr(language, "Log today’s load for", "Registrar la carga de hoy para")} ${exerciseName}`}
+                    >
+                      {tr(language, "Log today’s load", "Registrar carga de hoy")}
+                    </button>
+                    {item.loadHistory?.length ? (
+                      <small className="load-history-summary">
+                        {tr(language, "Last logged load", "Última carga registrada")}: {item.loadHistory.at(-1)?.loadKg ?? "—"} kg · {item.loadHistory.at(-1)?.setPlan}
+                      </small>
+                    ) : null}
                     <div className="stepper-row">
                       <Stepper
                         label={tr(language, "sets", "series")}
                         value={item.sets}
-                        onDecrease={() => onUpdate(item.exerciseId, "sets", -1)}
-                        onIncrease={() => onUpdate(item.exerciseId, "sets", 1)}
+                        onDecrease={() => onUpdate(itemId, "sets", -1)}
+                        onIncrease={() => onUpdate(itemId, "sets", 1)}
                       />
                       <span className="times">×</span>
                       <Stepper
                         label={tr(language, "reps", "repeticiones")}
                         value={item.reps}
-                        onDecrease={() => onUpdate(item.exerciseId, "reps", -1)}
-                        onIncrease={() => onUpdate(item.exerciseId, "reps", 1)}
+                        onDecrease={() => onUpdate(itemId, "reps", -1)}
+                        onIncrease={() => onUpdate(itemId, "reps", 1)}
                       />
                     </div>
                     <div className="workout-item-actions">
@@ -122,13 +220,13 @@ export function WorkoutPanel({
                       <button
                         className="swap-trigger"
                         type="button"
-                        onClick={() => setReplacingId((current) => current === item.exerciseId ? null : item.exerciseId)}
+                        onClick={() => setReplacingId((current) => current === itemId ? null : itemId)}
                       >
                         <RefreshCw size={13} />
-                        {replacingId === item.exerciseId ? tr(language, "Close alternatives", "Cerrar alternativas") : tr(language, "Replace movement", "Reemplazar movimiento")}
+                        {replacingId === itemId ? tr(language, "Close alternatives", "Cerrar alternativas") : tr(language, "Replace movement", "Reemplazar movimiento")}
                       </button>
                     </div>
-                    {replacingId === item.exerciseId && (
+                    {replacingId === itemId && (
                       <div className="alternatives-list">
                         <span>{
                           track.equipment === "bodyweight"
@@ -140,7 +238,7 @@ export function WorkoutPanel({
                             key={alternative.id}
                             type="button"
                             onClick={() => {
-                              onSwap(item.exerciseId, alternative.id);
+                              onSwap(itemId, alternative.id);
                               setReplacingId(null);
                             }}
                           >
@@ -154,7 +252,7 @@ export function WorkoutPanel({
                   <button
                     className="remove-button"
                     type="button"
-                    onClick={() => onRemove(item.exerciseId)}
+                    onClick={() => onRemove(itemId)}
                     aria-label={`${tr(language, "Remove", "Quitar")} ${exercise.name}`}
                   >
                     <Trash2 size={16} />
@@ -163,6 +261,20 @@ export function WorkoutPanel({
               );
             })}
           </ol>
+
+          {onAddExercise && (
+            <div className="manual-exercise-adder">
+              <label>
+                <span>{tr(language, "Add another exercise", "Agregar otro ejercicio")}</span>
+                <select value={exerciseToAdd} onChange={(event) => setExerciseToAdd(event.target.value)}>
+                  {exercises.map((exercise) => <option key={exercise.id} value={exercise.id}>{titleCase(exercise.name)} · {titleCase(exercise.equipment)}</option>)}
+                </select>
+              </label>
+              <button type="button" onClick={() => exerciseToAdd && onAddExercise(exerciseToAdd)}>
+                <Plus size={15} /> {tr(language, "Add exercise", "Agregar ejercicio")}
+              </button>
+            </div>
+          )}
 
           <button className="clear-button" type="button" onClick={onClear}>{tr(language, "Clear workout", "Vaciar entrenamiento")}</button>
         </>

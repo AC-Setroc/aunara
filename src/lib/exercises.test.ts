@@ -96,6 +96,22 @@ describe("exercise helpers", () => {
     expect(uniqueSorted([squat, baseExercise, squat], "equipment")).toEqual(["barbell", "body weight"]);
   });
 
+  it("limits equipment choices to the selected body part", () => {
+    expect(exerciseLibrary.equipmentOptionsForBodyPart).toBeTypeOf("function");
+    if (typeof exerciseLibrary.equipmentOptionsForBodyPart !== "function") return;
+
+    const equipment = exerciseLibrary.equipmentOptionsForBodyPart(
+      [
+        baseExercise,
+        squat,
+        { ...squat, id: "smith-squat", equipment: "smith machine" },
+      ],
+      "upper legs",
+    );
+
+    expect(equipment).toEqual(["body weight", "smith machine"]);
+  });
+
   it("builds pinned source media URLs and formats labels", () => {
     expect(mediaUrl("images/a.jpg")).toContain("/7455efae41b330c265e7cd4b78dfa848e7ce5ebd/images/a.jpg");
     expect(titleCase("upper arms")).toBe("Upper Arms");
@@ -140,6 +156,24 @@ describe("training tracks", () => {
 
     expect(workout).toHaveLength(6);
     expect(workout.every((item) => item.sets === 4 && item.reps === 6)).toBe(true);
+  });
+
+  it("builds an editable weight-loss starting routine", () => {
+    const workout = exerciseLibrary.generateTrackWorkout([
+      { ...squat, id: "0514", name: "jump squat" },
+      { ...squat, id: "0662", name: "push-up", body_part: "chest", target: "pectorals" },
+      { ...squat, id: "0652", name: "pull-up", body_part: "back", target: "lats" },
+      { ...squat, id: "3470", name: "forward lunge (male)" },
+      { ...squat, id: "0276", name: "dead bug", body_part: "waist", target: "abs" },
+      { ...squat, id: "0630", name: "mountain climber", body_part: "cardio", target: "cardiovascular system" },
+    ], {
+      focus: "weight-loss",
+      equipment: "mixed",
+      daysPerWeek: 3,
+    });
+
+    expect(workout).toHaveLength(6);
+    expect(workout.every((item) => item.id && item.day && item.setPlan)).toBe(true);
   });
 
   it("uses six bodyweight alternatives for an equipment-free strength track", () => {
@@ -247,6 +281,39 @@ describe("training tracks", () => {
     expect(updated[0].workout).toEqual(nextWorkout);
     expect(updated[1]).toBe(tracks[1]);
     expect(tracks[0].workout).toBe(goalWorkout);
+  });
+
+  it("edits one scheduled exercise and records its load history immutably", () => {
+    expect(exerciseLibrary.updateWorkoutItem).toBeTypeOf("function");
+    expect(exerciseLibrary.logWorkoutLoad).toBeTypeOf("function");
+    if (
+      typeof exerciseLibrary.updateWorkoutItem !== "function"
+      || typeof exerciseLibrary.logWorkoutLoad !== "function"
+    ) return;
+
+    const item = {
+      id: "monday-squat",
+      exerciseId: "0043",
+      sets: 3,
+      reps: 8,
+      day: "monday" as const,
+      setPlan: "3 × 8",
+      loadKg: 90,
+    };
+    const edited = exerciseLibrary.updateWorkoutItem([item], item.id, {
+      setPlan: "3 × 8 + 2 al fallo",
+      day: "wednesday",
+    });
+    const logged = exerciseLibrary.logWorkoutLoad(edited, item.id, "2026-07-27");
+
+    expect(edited[0]).toMatchObject({
+      day: "wednesday",
+      setPlan: "3 × 8 + 2 al fallo",
+    });
+    expect(logged[0].loadHistory).toEqual([
+      expect.objectContaining({ date: "2026-07-27", loadKg: 90 }),
+    ]);
+    expect(item).not.toHaveProperty("loadHistory");
   });
 
   it("exposes equipment-aware exercise alternatives", () => {

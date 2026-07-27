@@ -123,6 +123,7 @@ export function OnboardingPanel({
               <span>{tr(language, "Primary goal", "Objetivo principal")}</span>
               <select aria-label={tr(language, "Primary goal", "Objetivo principal")} value={draft.primaryGoal} onChange={(event) => update("primaryGoal", event.target.value as TrackFocus)}>
                 <option value="strength">{tr(language, "Strength", "Fuerza")}</option>
+                <option value="weight-loss">{tr(language, "Weight loss", "Pérdida de peso")}</option>
                 <option value="muscle-gain">{tr(language, "Muscle gain", "Ganancia muscular")}</option>
                 <option value="general-fitness">{tr(language, "General fitness", "Condición física general")}</option>
                 <option value="endurance">{tr(language, "Endurance", "Resistencia")}</option>
@@ -143,11 +144,12 @@ export function OnboardingPanel({
             <label className="health-field">
               <span>{tr(language, "Daily activity", "Actividad diaria")}</span>
               <select value={draft.activityLevel} onChange={(event) => update("activityLevel", event.target.value as HealthProfile["activityLevel"])}>
-                <option value="sedentary">{tr(language, "Mostly seated", "Mayormente sentado/a")}</option>
-                <option value="light">{tr(language, "Lightly active", "Actividad ligera")}</option>
-                <option value="moderate">{tr(language, "Moderately active", "Actividad moderada")}</option>
-                <option value="very-active">{tr(language, "Very active", "Muy activo/a")}</option>
+                <option value="sedentary">{tr(language, "Mostly seated · little purposeful activity", "Mayormente sentado/a · poca actividad intencional")}</option>
+                <option value="light">{tr(language, "Lightly active · 1–2 active days/week", "Actividad ligera · 1–2 días activos/semana")}</option>
+                <option value="moderate">{tr(language, "Moderately active · 3–5 active days/week", "Actividad moderada · 3–5 días activos/semana")}</option>
+                <option value="very-active">{tr(language, "Very active · 6–7 active days or physical work", "Muy activo/a · 6–7 días activos o trabajo físico")}</option>
               </select>
+              <small>{tr(language, "Count work, walking, sport and training—not only gym sessions.", "Contá trabajo, caminatas, deporte y entrenamientos; no solo el gimnasio.")}</small>
             </label>
             <label className="health-field">
               <span>{tr(language, "Training experience", "Experiencia entrenando")}</span>

@@ -14,6 +14,7 @@ export interface RepbookCloudSnapshot {
   activeTrackId: string;
   healthProfile: HealthProfile;
   checkIns: WeeklyCheckIn[];
+  tracksInitialized?: boolean;
 }
 
 type SnapshotInput = Omit<RepbookCloudSnapshot, "schemaVersion">;
@@ -23,6 +24,7 @@ const LANGUAGES: LanguageCode[] = ["en", "es", "it", "tr", "ru", "zh", "hi", "pl
 const TRACK_KINDS = ["goal", "sport"];
 const TRACK_FOCUSES = [
   "strength",
+  "weight-loss",
   "muscle-gain",
   "general-fitness",
   "endurance",
@@ -59,7 +61,24 @@ function isWorkoutItem(value: unknown): boolean {
     && typeof value.sets === "number"
     && Number.isFinite(value.sets)
     && typeof value.reps === "number"
-    && Number.isFinite(value.reps);
+    && Number.isFinite(value.reps)
+    && (value.id === undefined || typeof value.id === "string")
+    && (value.day === undefined || ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].includes(value.day as string))
+    && (value.setPlan === undefined || typeof value.setPlan === "string")
+    && (value.loadKg === undefined || isNullableNumber(value.loadKg))
+    && (value.loadNote === undefined || typeof value.loadNote === "string")
+    && (value.notes === undefined || typeof value.notes === "string")
+    && (value.loadHistory === undefined || (
+      Array.isArray(value.loadHistory)
+      && value.loadHistory.every((entry) => (
+        isRecord(entry)
+        && typeof entry.id === "string"
+        && typeof entry.date === "string"
+        && isNullableNumber(entry.loadKg)
+        && (entry.loadNote === undefined || typeof entry.loadNote === "string")
+        && typeof entry.setPlan === "string"
+      ))
+    ));
 }
 
 function isTrainingTrack(value: unknown): boolean {
@@ -88,11 +107,18 @@ function isHealthProfile(value: unknown): boolean {
     && isNullableNumber(value.currentWeightKg)
     && isNullableNumber(value.targetWeightKg)
     && isNullableNumber(value.waistCm)
+    && (value.bodyFatPercent === undefined || isNullableNumber(value.bodyFatPercent))
+    && (value.musclePercent === undefined || isNullableNumber(value.musclePercent))
+    && (value.visceralFatLevel === undefined || isNullableNumber(value.visceralFatLevel))
     && isEnumValue(value.activityLevel, ACTIVITY_LEVELS)
     && isEnumValue(value.experience, TRAINING_EXPERIENCE)
     && isEnumValue(value.dietaryPattern, DIETARY_PATTERNS)
     && typeof value.allergies === "string"
-    && typeof value.healthNotes === "string";
+    && typeof value.healthNotes === "string"
+    && (value.preferredIngredients === undefined || (
+      Array.isArray(value.preferredIngredients)
+      && value.preferredIngredients.every((item) => typeof item === "string")
+    ));
 }
 
 function isWeeklyCheckIn(value: unknown): boolean {
@@ -130,6 +156,7 @@ export function normalizeRepbookSnapshot(
     && Array.isArray(candidate.tracks)
     && candidate.tracks.every(isTrainingTrack)
     && typeof candidate.activeTrackId === "string"
+    && (candidate.tracksInitialized === undefined || typeof candidate.tracksInitialized === "boolean")
     && isHealthProfile(candidate.healthProfile)
     && Array.isArray(candidate.checkIns)
     && candidate.checkIns.every(isWeeklyCheckIn);

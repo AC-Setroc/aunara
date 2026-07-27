@@ -149,6 +149,52 @@ describe("training track controls", () => {
     expect(screen.getByRole("option", { name: "Mixed" })).toBeTruthy();
   });
 
+  it("creates a manual weight-loss track with free session minutes", () => {
+    const onCreate = vi.fn();
+    render(<TrainingTracks
+      tracks={[]}
+      activeTrackId=""
+      onOpen={vi.fn()}
+      onCreate={onCreate}
+      onGenerate={vi.fn()}
+      onDelete={vi.fn()}
+      onEdit={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.change(screen.getByLabelText("Goal"), { target: { value: "weight-loss" } });
+    fireEvent.click(screen.getByRole("button", { name: "Manual routine" }));
+    fireEvent.change(screen.getByLabelText("Session minutes"), { target: { value: "75" } });
+    fireEvent.click(screen.getByRole("button", { name: "Create manual track" }));
+
+    expect(onCreate).toHaveBeenCalledWith(expect.objectContaining({
+      focus: "weight-loss",
+      sessionMinutes: 75,
+      creationMode: "manual",
+    }));
+  });
+
+  it("edits an existing track without deleting its routine", () => {
+    const onEdit = vi.fn();
+    render(<TrainingTracks
+      tracks={[track]}
+      activeTrackId={track.id}
+      onOpen={vi.fn()}
+      onCreate={vi.fn()}
+      onGenerate={vi.fn()}
+      onDelete={vi.fn()}
+      onEdit={onEdit}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit Strength base" }));
+    fireEvent.change(screen.getByLabelText("Routine name"), { target: { value: "Lower / upper split" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save track changes" }));
+
+    expect(onEdit).toHaveBeenCalledWith(track.id, expect.objectContaining({
+      name: "Lower / upper split",
+    }));
+  });
+
   it("offers mountain biking and swimming as sport tracks", () => {
     render(<TrainingTracks
       tracks={[]}
@@ -243,6 +289,51 @@ describe("routine exercise controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Review health profile" }));
     expect(onOpenProfile).toHaveBeenCalledOnce();
   });
+
+  it("edits day, set plan and load, then logs the exercise load", () => {
+    const onUpdateItem = vi.fn();
+    const onLogLoad = vi.fn();
+    const scheduledTrack = {
+      ...track,
+      dayLabels: { monday: "Lower body" },
+      workout: [{
+        ...track.workout[0],
+        id: "monday-jump-squat",
+        day: "monday" as const,
+        setPlan: "3 × 8",
+        loadKg: 90,
+      }],
+    };
+    render(<WorkoutPanel
+      items={scheduledTrack.workout}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={scheduledTrack}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onUpdateItem={onUpdateItem}
+      onSetDayLabel={vi.fn()}
+      onAddExercise={vi.fn()}
+      onLogLoad={onLogLoad}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "Context supports this plan", points: ["Strength is the primary focus."] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.change(screen.getByLabelText("Training day for Jump Squat"), { target: { value: "wednesday" } });
+    fireEvent.change(screen.getByLabelText("Set plan for Jump Squat"), { target: { value: "3 × 8 + 2 to failure" } });
+    fireEvent.change(screen.getByLabelText("Load in kilograms for Jump Squat"), { target: { value: "95" } });
+    fireEvent.click(screen.getByRole("button", { name: "Log today’s load for Jump Squat" }));
+
+    expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ day: "wednesday" }));
+    expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ setPlan: "3 × 8 + 2 to failure" }));
+    expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ loadKg: 95 }));
+    expect(onLogLoad).toHaveBeenCalledWith("monday-jump-squat");
+  });
 });
 
 describe("profile access", () => {
@@ -298,6 +389,77 @@ describe("profile access", () => {
       ...healthProfile,
       currentWeightKg: 81.5,
     });
+  });
+
+  it("uses neutral BMI context and optional body-composition fields", () => {
+    const onHealthProfileChange = vi.fn();
+    render(<ProfilePanel
+      name="My profile"
+      tracks={[track]}
+      activeTrackId={track.id}
+      favoriteCount={0}
+      healthProfile={healthProfile}
+      checkIns={[]}
+      onNameChange={vi.fn()}
+      onHealthProfileChange={onHealthProfileChange}
+      onAddCheckIn={vi.fn()}
+      onOpenTrack={vi.fn()}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
+
+    expect(screen.getByText(/BMI does not distinguish bone, muscle, fat distribution/)).toBeTruthy();
+    fireEvent.change(screen.getByLabelText("Body fat percentage"), { target: { value: "24.5" } });
+    fireEvent.change(screen.getByLabelText("Muscle percentage"), { target: { value: "38" } });
+    fireEvent.change(screen.getByLabelText("Visceral fat level"), { target: { value: "10" } });
+
+    expect(onHealthProfileChange).toHaveBeenCalledWith({ ...healthProfile, bodyFatPercent: 24.5 });
+    expect(onHealthProfileChange).toHaveBeenCalledWith({ ...healthProfile, musclePercent: 38 });
+    expect(onHealthProfileChange).toHaveBeenCalledWith({ ...healthProfile, visceralFatLevel: 10 });
+  });
+
+  it("creates daily food options and recipe ideas from preferred ingredients", () => {
+    render(<ProfilePanel
+      name="My profile"
+      tracks={[track]}
+      activeTrackId={track.id}
+      favoriteCount={0}
+      healthProfile={{ ...healthProfile, preferredIngredients: ["eggs", "rice", "vegetables"] }}
+      checkIns={[]}
+      onNameChange={vi.fn()}
+      onHealthProfileChange={vi.fn()}
+      onAddCheckIn={vi.fn()}
+      onOpenTrack={vi.fn()}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create daily food options" }));
+
+    expect(screen.getByRole("heading", { name: "Breakfast" })).toBeTruthy();
+    expect(screen.getByText(/Protein target/)).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Create recipe ideas" }));
+    expect(screen.getByText(/Egg and vegetable rice bowl/)).toBeTruthy();
+  });
+
+  it("shows only equipment matching the selected body part", async () => {
+    const upperLegSmith = { ...exercise, id: "smith", equipment: "smith machine" };
+    const chestBarbell = { ...exercise, id: "barbell", body_part: "chest", equipment: "barbell" };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue([exercise, upperLegSmith, chestBarbell]),
+    }));
+    render(<App />);
+
+    await screen.findByRole("heading", { name: "Exercise library" });
+    fireEvent.change(screen.getByLabelText("Body part"), { target: { value: "upper legs" } });
+
+    const equipmentSelect = screen.getByLabelText("Equipment");
+    expect(equipmentSelect.querySelector('option[value="smith machine"]')).not.toBeNull();
+    expect(equipmentSelect.querySelector('option[value="body weight"]')).not.toBeNull();
+    expect(equipmentSelect.querySelector('option[value="barbell"]')).toBeNull();
   });
 
   it("saves a weekly recovery check-in", () => {

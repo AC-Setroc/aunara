@@ -66,6 +66,21 @@ describe("cloud snapshots", () => {
     });
   });
 
+  it("persists whether the initial routine suggestion has already been created", () => {
+    const snapshot = createRepbookSnapshot({
+      profileName: "Alejandro",
+      language: "es",
+      favoriteIds: [],
+      tracks: [],
+      activeTrackId: "",
+      healthProfile,
+      checkIns: [],
+      tracksInitialized: true,
+    });
+
+    expect(snapshot.tracksInitialized).toBe(true);
+  });
+
   it("rejects malformed remote data instead of overwriting valid local data", () => {
     const local = createRepbookSnapshot({
       profileName: "Alejandro",

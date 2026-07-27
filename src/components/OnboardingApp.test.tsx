@@ -39,6 +39,8 @@ describe("mandatory starting profile", () => {
 
     expect(screen.getByRole("dialog", { name: "Conocé tu punto de partida" })).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Rutas de entrenamiento" })).toBeNull();
+    expect(screen.getByRole("option", { name: "Pérdida de peso" })).toBeTruthy();
+    expect(screen.getByRole("option", { name: /Actividad moderada.*3–5 días/ })).toBeTruthy();
 
     const birthDate = `${new Date().getFullYear() - 36}-01-01`;
     fireEvent.change(screen.getByLabelText("Fecha de nacimiento"), { target: { value: birthDate } });

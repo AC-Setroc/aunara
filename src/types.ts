@@ -29,15 +29,40 @@ export interface Exercise {
 }
 
 export interface WorkoutItem {
+  id?: string;
   exerciseId: string;
   sets: number;
   reps: number;
+  day?: Weekday;
+  setPlan?: string;
+  loadKg?: number | null;
+  loadNote?: string;
+  notes?: string;
+  loadHistory?: WorkoutLoadEntry[];
+}
+
+export type Weekday =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
+export interface WorkoutLoadEntry {
+  id: string;
+  date: string;
+  loadKg: number | null;
+  loadNote?: string;
+  setPlan: string;
 }
 
 export type TrackKind = "goal" | "sport";
 
 export type TrackFocus =
   | "strength"
+  | "weight-loss"
   | "muscle-gain"
   | "general-fitness"
   | "endurance"
@@ -51,6 +76,7 @@ export type TrackFocus =
   | "soccer";
 
 export type EquipmentPreference = "any" | "mixed" | "bodyweight";
+export type TrackCreationMode = "suggested" | "manual";
 
 export interface TrainingTrack {
   id: string;
@@ -61,6 +87,8 @@ export interface TrainingTrack {
   sessionMinutes: number;
   daysPerWeek: number;
   workout: WorkoutItem[];
+  creationMode?: TrackCreationMode;
+  dayLabels?: Partial<Record<Weekday, string>>;
 }
 
 export type MetabolicSex = "unspecified" | "female" | "male";
@@ -81,11 +109,15 @@ export interface HealthProfile {
   currentWeightKg: number | null;
   targetWeightKg: number | null;
   waistCm: number | null;
+  bodyFatPercent?: number | null;
+  musclePercent?: number | null;
+  visceralFatLevel?: number | null;
   activityLevel: ActivityLevel;
   experience: TrainingExperience;
   dietaryPattern: DietaryPattern;
   allergies: string;
   healthNotes: string;
+  preferredIngredients?: string[];
 }
 
 export interface WeeklyCheckIn {

@@ -1,7 +1,7 @@
-import { Activity, ArrowRight, CalendarDays, Dumbbell, Plus, RefreshCw, Trash2, Trophy, X } from "lucide-react";
+import { Activity, ArrowRight, CalendarDays, Dumbbell, Pencil, Plus, RefreshCw, Trash2, Trophy, X } from "lucide-react";
 import { useState } from "react";
 import { tr } from "../lib/i18n";
-import type { EquipmentPreference, LanguageCode, TrackFocus, TrackKind, TrainingTrack } from "../types";
+import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack } from "../types";
 
 export interface NewTrackInput {
   name: string;
@@ -10,6 +10,7 @@ export interface NewTrackInput {
   equipment: EquipmentPreference;
   sessionMinutes: number;
   daysPerWeek: number;
+  creationMode: TrackCreationMode;
 }
 
 interface TrainingTracksProps {
@@ -20,10 +21,12 @@ interface TrainingTracksProps {
   onCreate: (input: NewTrackInput) => void;
   onGenerate: (trackId: string) => void;
   onDelete: (trackId: string) => void;
+  onEdit?: (trackId: string, changes: Partial<TrainingTrack>) => void;
 }
 
 const GOAL_OPTIONS: { value: TrackFocus; label: string }[] = [
   { value: "strength", label: "Strength" },
+  { value: "weight-loss", label: "Weight loss" },
   { value: "muscle-gain", label: "Muscle gain" },
   { value: "general-fitness", label: "General fitness" },
   { value: "endurance", label: "Endurance" },
@@ -42,6 +45,7 @@ const SPORT_OPTIONS: { value: TrackFocus; label: string }[] = [
 
 const SPANISH_FOCUS_LABELS: Record<TrackFocus, string> = {
   strength: "Fuerza",
+  "weight-loss": "Pérdida de peso",
   "muscle-gain": "Ganancia muscular",
   "general-fitness": "Condición física general",
   endurance: "Resistencia",
@@ -69,8 +73,10 @@ export function TrainingTracks({
   onCreate,
   onGenerate,
   onDelete,
+  onEdit,
 }: TrainingTracksProps) {
   const [creatorOpen, setCreatorOpen] = useState(false);
+  const [editingTrack, setEditingTrack] = useState<TrainingTrack | null>(null);
   const [deletingTrack, setDeletingTrack] = useState<TrainingTrack | null>(null);
   const plannedDays = tracks.reduce((sum, track) => sum + track.daysPerWeek, 0);
 
@@ -100,6 +106,14 @@ export function TrainingTracks({
                 aria-label={`${tr(language, "Delete", "Eliminar")} ${track.name}`}
               >
                 <Trash2 size={15} />
+              </button>
+              <button
+                className="track-edit"
+                type="button"
+                onClick={() => setEditingTrack(track)}
+                aria-label={`${tr(language, "Edit", "Editar")} ${track.name}`}
+              >
+                <Pencil size={15} />
               </button>
               <button className="track-select" type="button" onClick={() => onOpen(track.id)} aria-pressed={active}>
                 <span className="track-index">{tr(language, "TRACK", "RUTA")} / {String(index + 1).padStart(2, "0")}</span>
@@ -152,6 +166,19 @@ export function TrainingTracks({
         />
       )}
 
+      {editingTrack && (
+        <TrackCreator
+          language={language}
+          initialTrack={editingTrack}
+          onClose={() => setEditingTrack(null)}
+          onCreate={() => undefined}
+          onSave={(changes) => {
+            onEdit?.(editingTrack.id, changes);
+            setEditingTrack(null);
+          }}
+        />
+      )}
+
       {deletingTrack && (
         <TrackDeleteDialog
           language={language}
@@ -200,16 +227,20 @@ interface TrackCreatorProps {
   language: LanguageCode;
   onClose: () => void;
   onCreate: (input: NewTrackInput) => void;
+  initialTrack?: TrainingTrack;
+  onSave?: (changes: Partial<TrainingTrack>) => void;
 }
 
-function TrackCreator({ language, onClose, onCreate }: TrackCreatorProps) {
-  const [kind, setKind] = useState<TrackKind>("goal");
-  const [focus, setFocus] = useState<TrackFocus>("strength");
-  const [name, setName] = useState("");
-  const [equipment, setEquipment] = useState<EquipmentPreference>("any");
-  const [sessionMinutes, setSessionMinutes] = useState(45);
-  const [daysPerWeek, setDaysPerWeek] = useState(2);
+function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: TrackCreatorProps) {
+  const [kind, setKind] = useState<TrackKind>(initialTrack?.kind ?? "goal");
+  const [focus, setFocus] = useState<TrackFocus>(initialTrack?.focus ?? "strength");
+  const [name, setName] = useState(initialTrack?.name ?? "");
+  const [equipment, setEquipment] = useState<EquipmentPreference>(initialTrack?.equipment ?? "any");
+  const [sessionMinutes, setSessionMinutes] = useState(initialTrack?.sessionMinutes ?? 45);
+  const [daysPerWeek, setDaysPerWeek] = useState(initialTrack?.daysPerWeek ?? 2);
+  const [creationMode, setCreationMode] = useState<TrackCreationMode>(initialTrack?.creationMode ?? "suggested");
   const focusOptions = kind === "goal" ? GOAL_OPTIONS : SPORT_OPTIONS;
+  const editing = Boolean(initialTrack);
 
   function chooseKind(nextKind: TrackKind) {
     setKind(nextKind);
@@ -218,14 +249,20 @@ function TrackCreator({ language, onClose, onCreate }: TrackCreatorProps) {
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onCreate({
+    const input = {
       name: name.trim() || trackFocusLabel(focus, language),
       kind,
       focus,
       equipment,
       sessionMinutes,
       daysPerWeek,
-    });
+      creationMode,
+    };
+    if (editing) {
+      onSave?.(input);
+      return;
+    }
+    onCreate(input);
   }
 
   return (
@@ -246,15 +283,26 @@ function TrackCreator({ language, onClose, onCreate }: TrackCreatorProps) {
 
         <label className="creator-field">
           <span>{kind === "goal" ? tr(language, "Goal", "Meta") : tr(language, "Sport", "Deporte")}</span>
-          <select value={focus} onChange={(event) => setFocus(event.target.value as TrackFocus)}>
+          <select aria-label={kind === "goal" ? tr(language, "Goal", "Meta") : tr(language, "Sport", "Deporte")} value={focus} onChange={(event) => setFocus(event.target.value as TrackFocus)}>
             {focusOptions.map((option) => <option key={option.value} value={option.value}>{trackFocusLabel(option.value, language)}</option>)}
           </select>
         </label>
 
         <label className="creator-field">
           <span>{tr(language, "Routine name", "Nombre de la rutina")}</span>
-          <input value={name} onChange={(event) => setName(event.target.value)} placeholder={`${tr(language, "e.g.", "ej.")} ${trackFocusLabel(focus, language)} base`} />
+          <input aria-label={tr(language, "Routine name", "Nombre de la rutina")} value={name} onChange={(event) => setName(event.target.value)} placeholder={`${tr(language, "e.g.", "ej.")} ${trackFocusLabel(focus, language)} base`} />
         </label>
+
+        {!editing && (
+          <div className="kind-switch creation-mode-switch" role="group" aria-label={tr(language, "Routine creation mode", "Modo de creación de rutina")}>
+            <button className={creationMode === "suggested" ? "is-active" : ""} type="button" onClick={() => setCreationMode("suggested")}>
+              {tr(language, "Suggested routine", "Rutina sugerida")}
+            </button>
+            <button className={creationMode === "manual" ? "is-active" : ""} type="button" onClick={() => setCreationMode("manual")}>
+              {tr(language, "Manual routine", "Rutina manual")}
+            </button>
+          </div>
+        )}
 
         <div className="creator-row">
           <label className="creator-field">
@@ -266,12 +314,16 @@ function TrackCreator({ language, onClose, onCreate }: TrackCreatorProps) {
             </select>
           </label>
           <label className="creator-field">
-            <span>{tr(language, "Session", "Sesión")}</span>
-            <select value={sessionMinutes} onChange={(event) => setSessionMinutes(Number(event.target.value))}>
-              <option value={30}>30 {tr(language, "minutes", "minutos")}</option>
-              <option value={45}>45 {tr(language, "minutes", "minutos")}</option>
-              <option value={60}>60 {tr(language, "minutes", "minutos")}</option>
-            </select>
+            <span>{tr(language, "Session minutes", "Minutos por sesión")}</span>
+            <input
+              aria-label={tr(language, "Session minutes", "Minutos por sesión")}
+              type="number"
+              min={15}
+              max={240}
+              step={5}
+              value={sessionMinutes}
+              onChange={(event) => setSessionMinutes(Number(event.target.value))}
+            />
           </label>
           <label className="creator-field">
             <span>{tr(language, "Weekly", "Semanal")}</span>
@@ -282,7 +334,13 @@ function TrackCreator({ language, onClose, onCreate }: TrackCreatorProps) {
         </div>
 
         <button className="create-track-button" type="submit">
-          <Dumbbell size={18} /> {tr(language, "Create track & suggest routine", "Crear ruta y sugerir rutina")}
+          <Dumbbell size={18} /> {
+            editing
+              ? tr(language, "Save track changes", "Guardar cambios de la ruta")
+              : creationMode === "manual"
+                ? tr(language, "Create manual track", "Crear ruta manual")
+                : tr(language, "Create track & suggest routine", "Crear ruta y sugerir rutina")
+          }
         </button>
       </form>
     </div>

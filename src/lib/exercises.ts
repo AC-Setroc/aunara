@@ -1,4 +1,4 @@
-import type { Exercise, WorkoutItem } from "../types";
+import type { Exercise, Weekday, WorkoutItem } from "../types";
 
 export const DATASET_COMMIT = "7455efae41b330c265e7cd4b78dfa848e7ce5ebd";
 const MEDIA_ROOT = `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/${DATASET_COMMIT}`;
@@ -52,6 +52,16 @@ export function uniqueSorted(exercises: Exercise[], key: keyof Exercise): string
   ).sort((a, b) => a.localeCompare(b));
 }
 
+export function equipmentOptionsForBodyPart(
+  exercises: Exercise[],
+  bodyPart: string,
+): string[] {
+  const matchingExercises = bodyPart
+    ? exercises.filter((exercise) => exercise.body_part === bodyPart)
+    : exercises;
+  return uniqueSorted(matchingExercises, "equipment");
+}
+
 export function titleCase(value: string): string {
   return value.replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
@@ -81,6 +91,10 @@ const TRACK_MOVEMENTS: Record<string, TrackMovementPreset> = {
       "dead bug",
     ],
     bodyweight: BODYWEIGHT_STRENGTH,
+  },
+  "weight-loss": {
+    any: ["jump squat", "push-up", "pull-up", "forward lunge (male)", "dead bug", "mountain climber"],
+    bodyweight: ["jump squat", "push-up", "jack jump (male)", "forward lunge (male)", "dead bug", "mountain climber"],
   },
   "muscle-gain": {
     any: [
@@ -137,6 +151,7 @@ const TRACK_MOVEMENTS: Record<string, TrackMovementPreset> = {
 
 const TRACK_PRESCRIPTIONS: Record<string, { sets: number; reps: number }> = {
   strength: { sets: 4, reps: 6 },
+  "weight-loss": { sets: 3, reps: 12 },
   "muscle-gain": { sets: 3, reps: 10 },
   "general-fitness": { sets: 3, reps: 12 },
   endurance: { sets: 3, reps: 15 },
@@ -150,9 +165,19 @@ const TRACK_PRESCRIPTIONS: Record<string, { sets: number; reps: number }> = {
   soccer: { sets: 3, reps: 10 },
 };
 
+export const WEEKDAYS: Weekday[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
+
 export function generateTrackWorkout(
   exercises: Exercise[],
-  track: { focus: string; equipment: string },
+  track: { focus: string; equipment: string; daysPerWeek?: number },
 ): WorkoutItem[] {
   const eligible = track.equipment === "bodyweight"
     ? exercises.filter((exercise) => exercise.equipment === "body weight")
@@ -179,13 +204,52 @@ export function generateTrackWorkout(
   return preferredNames
     .map((name) => eligible.find((exercise) => exercise.name === name))
     .filter((exercise): exercise is Exercise => Boolean(exercise))
-    .map((exercise, index) => ({
-      exerciseId: exercise.id,
-      sets: track.focus === "beach-volleyball" && index === preferredNames.length - 1
+    .map((exercise, index) => {
+      const sets = track.focus === "beach-volleyball" && index === preferredNames.length - 1
         ? 2
-        : prescription.sets,
-      reps: prescription.reps,
-    }));
+        : prescription.sets;
+      const dayCount = Math.max(1, Math.min(7, track.daysPerWeek ?? 1));
+      return {
+        id: `${track.focus}-${exercise.id}-${index}`,
+        exerciseId: exercise.id,
+        sets,
+        reps: prescription.reps,
+        day: WEEKDAYS[index % dayCount],
+        setPlan: `${sets} × ${prescription.reps}`,
+        loadKg: null,
+        loadHistory: [],
+      };
+    });
+}
+
+function matchesWorkoutItem(item: WorkoutItem, itemId: string): boolean {
+  return (item.id ?? item.exerciseId) === itemId;
+}
+
+export function updateWorkoutItem(
+  workout: WorkoutItem[],
+  itemId: string,
+  changes: Partial<WorkoutItem>,
+): WorkoutItem[] {
+  return workout.map((item) => matchesWorkoutItem(item, itemId) ? { ...item, ...changes } : item);
+}
+
+export function logWorkoutLoad(
+  workout: WorkoutItem[],
+  itemId: string,
+  date: string,
+): WorkoutItem[] {
+  return workout.map((item) => {
+    if (!matchesWorkoutItem(item, itemId)) return item;
+    const entry = {
+      id: `${itemId}-${date}-${item.loadHistory?.length ?? 0}`,
+      date,
+      loadKg: item.loadKg ?? null,
+      loadNote: item.loadNote,
+      setPlan: item.setPlan ?? `${item.sets} × ${item.reps}`,
+    };
+    return { ...item, loadHistory: [...(item.loadHistory ?? []), entry] };
+  });
 }
 
 export function replaceTrackWorkout<T extends { id: string; workout: WorkoutItem[] }>(

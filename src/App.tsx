@@ -23,11 +23,21 @@ import { WorkoutPanel } from "./components/WorkoutPanel";
 import { useCloudSync } from "./hooks/useCloudSync";
 import { useStoredState } from "./hooks/useStoredState";
 import { createRepbookSnapshot, type RepbookCloudSnapshot } from "./lib/cloudSnapshot";
-import { filterExercises, generateTrackWorkout, removeTrainingTrack, replaceTrackWorkout, titleCase, uniqueSorted } from "./lib/exercises";
+import {
+  equipmentOptionsForBodyPart,
+  filterExercises,
+  generateTrackWorkout,
+  logWorkoutLoad,
+  removeTrainingTrack,
+  replaceTrackWorkout,
+  titleCase,
+  uniqueSorted,
+  updateWorkoutItem,
+} from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
 import { addWeeklyCheckIn, buildRoutineAnalysis } from "./lib/wellness";
-import type { Exercise, HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn, WorkoutItem } from "./types";
+import type { Exercise, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
 
 const PAGE_SIZE = 48;
 
@@ -99,6 +109,7 @@ function App() {
     activeTrackId,
     healthProfile,
     checkIns,
+    tracksInitialized,
   }), [
     activeTrackId,
     checkIns,
@@ -107,6 +118,7 @@ function App() {
     language,
     profileName,
     tracks,
+    tracksInitialized,
   ]);
 
   const applyRemoteSnapshot = useCallback((snapshot: RepbookCloudSnapshot) => {
@@ -117,7 +129,7 @@ function App() {
     setActiveTrackId(snapshot.activeTrackId);
     setHealthProfile(snapshot.healthProfile);
     setCheckIns(snapshot.checkIns);
-    setTracksInitialized(true);
+    setTracksInitialized(snapshot.tracksInitialized ?? snapshot.tracks.length > 0);
   }, [
     setActiveTrackId,
     setCheckIns,
@@ -203,7 +215,10 @@ function App() {
   const workoutIds = useMemo(() => new Set(workout.map((item) => item.exerciseId)), [workout]);
   const exerciseMap = useMemo(() => new Map(exercises.map((exercise) => [exercise.id, exercise])), [exercises]);
   const bodyParts = useMemo(() => uniqueSorted(exercises, "body_part"), [exercises]);
-  const equipmentOptions = useMemo(() => uniqueSorted(exercises, "equipment"), [exercises]);
+  const equipmentOptions = useMemo(
+    () => equipmentOptionsForBodyPart(exercises, bodyPart),
+    [bodyPart, exercises],
+  );
   const routineAnalysis = useMemo(
     () => activeTrack ? buildRoutineAnalysis(activeTrack, healthProfile, latestCheckIn, language) : null,
     [activeTrack, healthProfile, language, latestCheckIn],
@@ -245,7 +260,9 @@ function App() {
         : generateTrackWorkout(exercises, {
           focus: primaryFocus,
           equipment: healthProfile.equipmentPreference ?? "mixed",
+          daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
         }),
+      creationMode: "suggested",
     };
 
     setTracks([strengthTrack]);
@@ -266,6 +283,10 @@ function App() {
 
   useEffect(() => setVisibleCount(PAGE_SIZE), [deferredQuery, bodyPart, equipment, favoritesOnly]);
 
+  useEffect(() => {
+    if (equipment && !equipmentOptions.includes(equipment)) setEquipment("");
+  }, [equipment, equipmentOptions]);
+
   function toggleFavorite(exerciseId: string) {
     setFavoriteIds((current) => current.includes(exerciseId)
       ? current.filter((id) => id !== exerciseId)
@@ -282,24 +303,59 @@ function App() {
     });
   }
 
-  function addToWorkout(exerciseId: string) {
-    updateActiveWorkout((current) => current.some((item) => item.exerciseId === exerciseId)
+  function appendWorkoutExercise(exerciseId: string, allowDuplicate = false) {
+    updateActiveWorkout((current) => !allowDuplicate && current.some((item) => item.exerciseId === exerciseId)
       ? current
-      : [...current, { exerciseId, sets: 3, reps: 10 }]);
+      : [...current, {
+        id: typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `movement-${Date.now()}`,
+        exerciseId,
+        sets: 3,
+        reps: 10,
+        day: "monday",
+        setPlan: "3 × 10",
+        loadKg: null,
+        loadHistory: [],
+      }]);
   }
 
-  function updateWorkout(exerciseId: string, field: "sets" | "reps", delta: number) {
+  function addToWorkout(exerciseId: string) {
+    appendWorkoutExercise(exerciseId);
+  }
+
+  function updateWorkout(itemId: string, field: "sets" | "reps", delta: number) {
     updateActiveWorkout((current) => current.map((item) => {
-      if (item.exerciseId !== exerciseId) return item;
+      if ((item.id ?? item.exerciseId) !== itemId) return item;
       const maximum = field === "sets" ? 12 : 100;
-      return { ...item, [field]: Math.min(maximum, Math.max(1, item[field] + delta)) };
+      const nextValue = Math.min(maximum, Math.max(1, item[field] + delta));
+      return {
+        ...item,
+        [field]: nextValue,
+        setPlan: item.setPlan === `${item.sets} × ${item.reps}`
+          ? `${field === "sets" ? nextValue : item.sets} × ${field === "reps" ? nextValue : item.reps}`
+          : item.setPlan,
+      };
     }));
   }
 
-  function swapWorkoutExercise(exerciseId: string, replacementId: string) {
-    updateActiveWorkout((current) => current.map((item) => item.exerciseId === exerciseId
+  function swapWorkoutExercise(itemId: string, replacementId: string) {
+    updateActiveWorkout((current) => current.map((item) => (item.id ?? item.exerciseId) === itemId
       ? { ...item, exerciseId: replacementId }
       : item));
+  }
+
+  function updateWorkoutItemFields(itemId: string, changes: Partial<WorkoutItem>) {
+    updateActiveWorkout((current) => updateWorkoutItem(current, itemId, changes));
+  }
+
+  function setTrainingDayLabel(day: Weekday, label: string) {
+    if (!activeTrack) return;
+    setTracks((current) => current.map((track) => track.id === activeTrack.id
+      ? { ...track, dayLabels: { ...track.dayLabels, [day]: label } }
+      : track));
+  }
+
+  function logCurrentWorkoutLoad(itemId: string) {
+    updateActiveWorkout((current) => logWorkoutLoad(current, itemId, new Date().toISOString().slice(0, 10)));
   }
 
   function selectTrack(trackId: string) {
@@ -330,11 +386,18 @@ function App() {
     const track: TrainingTrack = {
       id,
       ...input,
-      workout: generateTrackWorkout(exercises, input),
+      workout: input.creationMode === "manual" ? [] : generateTrackWorkout(exercises, input),
     };
     setTracks((current) => [...current, track]);
     setActiveTrackId(id);
     setEquipment(track.equipment === "bodyweight" ? "body weight" : "");
+    setWorkoutOpen(true);
+  }
+
+  function editTrack(trackId: string, changes: Partial<TrainingTrack>) {
+    setTracks((current) => current.map((track) => track.id === trackId
+      ? { ...track, ...changes, id: track.id, workout: track.workout }
+      : track));
   }
 
   function deleteTrack(trackId: string) {
@@ -444,6 +507,7 @@ function App() {
             onCreate={createTrack}
             onGenerate={generateRoutine}
             onDelete={deleteTrack}
+            onEdit={editTrack}
           />
         )}
 
@@ -590,7 +654,11 @@ function App() {
             track={activeTrack}
             onClose={() => setWorkoutOpen(false)}
             onUpdate={updateWorkout}
-            onRemove={(exerciseId) => updateActiveWorkout((current) => current.filter((item) => item.exerciseId !== exerciseId))}
+            onUpdateItem={updateWorkoutItemFields}
+            onSetDayLabel={setTrainingDayLabel}
+            onAddExercise={(exerciseId) => appendWorkoutExercise(exerciseId, true)}
+            onLogLoad={logCurrentWorkoutLoad}
+            onRemove={(itemId) => updateActiveWorkout((current) => current.filter((item) => (item.id ?? item.exerciseId) !== itemId))}
             onSwap={swapWorkoutExercise}
             onClear={() => updateActiveWorkout(() => [])}
             onGenerate={() => generateRoutine(activeTrack.id)}

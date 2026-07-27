@@ -6,7 +6,6 @@ import {
   Heart,
   Ruler,
   Search,
-  ShieldCheck,
   Sparkles,
   Trophy,
   UserRound,
@@ -16,6 +15,7 @@ import {
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { searchFoodData, type FoodSearchResult } from "../lib/foodData";
 import { tr } from "../lib/i18n";
+import { createDailyFoodOptions, createRecipeIdeas } from "../lib/nutritionPlanning";
 import { adultBirthDateBounds, calculateAgeFromBirthDate, createWellnessSummary } from "../lib/wellness";
 import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
@@ -66,6 +66,8 @@ export function ProfilePanel({
   const [foodResults, setFoodResults] = useState<FoodSearchResult[]>([]);
   const [foodLoading, setFoodLoading] = useState(false);
   const [foodError, setFoodError] = useState("");
+  const [showMealOptions, setShowMealOptions] = useState(false);
+  const [showRecipeIdeas, setShowRecipeIdeas] = useState(false);
   const [checkInSaved, setCheckInSaved] = useState(false);
   const [checkIn, setCheckIn] = useState<WeeklyCheckIn>(() => ({
     id: today(),
@@ -226,14 +228,18 @@ export function ProfilePanel({
               <NumericField label={tr(language, "Current weight", "Peso actual")} accessibleLabel={tr(language, "Current weight in kilograms", "Peso actual en kilogramos")} value={healthProfile.currentWeightKg} unit="kg" min={30} max={350} step="0.1" onChange={(value) => updateHealth("currentWeightKg", value)} />
               <NumericField label={tr(language, "Goal weight", "Meta de peso")} accessibleLabel={tr(language, "Goal weight in kilograms", "Meta de peso en kilogramos")} value={healthProfile.targetWeightKg} unit="kg" min={30} max={350} step="0.1" onChange={(value) => updateHealth("targetWeightKg", value)} />
               <NumericField label={tr(language, "Waist", "Cintura")} accessibleLabel={tr(language, "Waist circumference in centimeters", "Circunferencia de cintura en centímetros")} value={healthProfile.waistCm} unit="cm" min={40} max={220} step="0.1" onChange={(value) => updateHealth("waistCm", value)} />
+              <NumericField label={tr(language, "Body fat (optional)", "Grasa corporal (opcional)")} accessibleLabel={tr(language, "Body fat percentage", "Porcentaje de grasa corporal")} value={healthProfile.bodyFatPercent ?? null} unit="%" min={1} max={70} step="0.1" onChange={(value) => updateHealth("bodyFatPercent", value)} />
+              <NumericField label={tr(language, "Muscle (optional)", "Músculo (opcional)")} accessibleLabel={tr(language, "Muscle percentage", "Porcentaje de músculo")} value={healthProfile.musclePercent ?? null} unit="%" min={1} max={80} step="0.1" onChange={(value) => updateHealth("musclePercent", value)} />
+              <NumericField label={tr(language, "Visceral fat (optional)", "Grasa visceral (opcional)")} accessibleLabel={tr(language, "Visceral fat level", "Nivel de grasa visceral")} value={healthProfile.visceralFatLevel ?? null} unit={tr(language, "level", "nivel")} min={1} max={60} step="0.1" onChange={(value) => updateHealth("visceralFatLevel", value)} />
               <label className="health-field">
                 <span>{tr(language, "Daily activity", "Actividad diaria")}</span>
                 <select value={healthProfile.activityLevel} onChange={(event) => updateHealth("activityLevel", event.target.value as HealthProfile["activityLevel"])}>
-                  <option value="sedentary">{tr(language, "Mostly seated", "Mayormente sentado/a")}</option>
-                  <option value="light">{tr(language, "Lightly active", "Actividad ligera")}</option>
-                  <option value="moderate">{tr(language, "Moderately active", "Actividad moderada")}</option>
-                  <option value="very-active">{tr(language, "Very active", "Muy activo/a")}</option>
+                  <option value="sedentary">{tr(language, "Mostly seated · little purposeful activity", "Mayormente sentado/a · poca actividad intencional")}</option>
+                  <option value="light">{tr(language, "Lightly active · 1–2 active days/week", "Actividad ligera · 1–2 días activos/semana")}</option>
+                  <option value="moderate">{tr(language, "Moderately active · 3–5 active days/week", "Actividad moderada · 3–5 días activos/semana")}</option>
+                  <option value="very-active">{tr(language, "Very active · 6–7 active days or physical work", "Muy activo/a · 6–7 días activos o trabajo físico")}</option>
                 </select>
+                <small>{tr(language, "Include work, walking, sport and training.", "Incluí trabajo, caminatas, deporte y entrenamiento.")}</small>
               </label>
               <label className="health-field">
                 <span>{tr(language, "Training experience", "Experiencia entrenando")}</span>
@@ -256,10 +262,9 @@ export function ProfilePanel({
             </label>
 
             <div className="reference-card">
-              <ShieldCheck size={20} />
               <div>
                 <strong>{wellness.bmi ? `${wellness.bmi.value} · ${wellness.bmi.label}` : tr(language, "Reference appears when height and weight are complete", "La referencia aparece al completar estatura y peso")}</strong>
-                <p>{tr(language, "BMI is shown only as a general screening reference. Progress also includes performance, recovery, waist trend, and how you feel.", "El IMC se muestra solo como referencia general. El progreso también incluye rendimiento, recuperación, tendencia de cintura y cómo te sentís.")}</p>
+                <p>{tr(language, "BMI does not distinguish bone, muscle, fat distribution, body frame, or training history. It is only a rough numerical ratio—not a diagnosis. Interpret it with body composition, waist trend, performance, recovery, how you feel, and professional assessment when needed.", "El IMC no distingue masa ósea, músculo, distribución de grasa, contextura ni historial de entrenamiento. Es solo una relación numérica aproximada, no un diagnóstico. Interpretalo junto con composición corporal, tendencia de cintura, rendimiento, recuperación, cómo te sentís y valoración profesional cuando sea necesario.")}</p>
               </div>
             </div>
           </div>
@@ -351,6 +356,72 @@ export function ProfilePanel({
                 <input value={healthProfile.allergies} onChange={(event) => updateHealth("allergies", event.target.value)} placeholder={tr(language, "Example: peanuts, lactose", "Ejemplo: maní, lactosa")} />
               </label>
             </div>
+
+            <section className="meal-planner">
+              <div>
+                <p className="section-kicker">{tr(language, "Daily food options", "Opciones alimentarias diarias")}</p>
+                <h4>{tr(language, "Plan quantities by meal, then choose ingredients you enjoy.", "Organizá cantidades por comida y luego elegí ingredientes que te gusten.")}</h4>
+                <p>{tr(language, "These are flexible planning references for protein, vegetables and carbohydrates—not a prescribed diet.", "Son referencias flexibles de proteína, vegetales y carbohidratos; no una dieta prescrita.")}</p>
+              </div>
+              <button type="button" onClick={() => setShowMealOptions(true)}>
+                {tr(language, "Create daily food options", "Crear opciones alimentarias diarias")}
+              </button>
+
+              {showMealOptions && (
+                <>
+                  <p className="meal-protein-heading">{tr(language, "Protein target per meal", "Meta de proteína por comida")}</p>
+                  <div className="meal-options-grid">
+                    {createDailyFoodOptions(healthProfile, language).map((meal) => (
+                      <article key={meal.key}>
+                        <h4>{meal.name}</h4>
+                        <p><strong>{tr(language, "Protein", "Proteína")}:</strong> {meal.proteinTarget}</p>
+                        <p><strong>{tr(language, "Vegetables / fruit", "Vegetales / fruta")}:</strong> {meal.vegetables}</p>
+                        <p><strong>{tr(language, "Carbohydrates", "Carbohidratos")}:</strong> {meal.carbohydrates}</p>
+                      </article>
+                    ))}
+                  </div>
+                  <fieldset className="ingredient-picker">
+                    <legend>{tr(language, "Ingredients you enjoy", "Ingredientes que te gustan")}</legend>
+                    {([
+                      ["eggs", "Eggs", "Huevos"],
+                      ["chicken", "Chicken", "Pollo"],
+                      ["fish", "Fish", "Pescado"],
+                      ["legumes", "Legumes", "Legumbres"],
+                      ["tofu", "Tofu", "Tofu"],
+                      ["rice", "Rice", "Arroz"],
+                      ["potato", "Potato", "Papa"],
+                      ["oats", "Oats", "Avena"],
+                      ["vegetables", "Vegetables", "Vegetales"],
+                    ] as const).map(([value, english, spanish]) => (
+                      <label key={value}>
+                        <input
+                          type="checkbox"
+                          checked={(healthProfile.preferredIngredients ?? []).includes(value)}
+                          onChange={(event) => {
+                            const current = healthProfile.preferredIngredients ?? [];
+                            updateHealth("preferredIngredients", event.target.checked
+                              ? [...new Set([...current, value])]
+                              : current.filter((item) => item !== value));
+                          }}
+                        />
+                        {tr(language, english, spanish)}
+                      </label>
+                    ))}
+                  </fieldset>
+                  <button type="button" onClick={() => setShowRecipeIdeas(true)}>
+                    {tr(language, "Create recipe ideas", "Crear ideas de recetas")}
+                  </button>
+                </>
+              )}
+
+              {showRecipeIdeas && (
+                <div className="recipe-ideas">
+                  {createRecipeIdeas(healthProfile.preferredIngredients ?? [], language).map((recipe) => (
+                    <article key={recipe.name}><h4>{recipe.name}</h4><p>{recipe.description}</p></article>
+                  ))}
+                </div>
+              )}
+            </section>
 
             <form className="food-search" onSubmit={searchFoods}>
               <div>
