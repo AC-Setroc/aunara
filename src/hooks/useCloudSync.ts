@@ -169,7 +169,11 @@ export function useCloudSync({
     }
     setPendingVerification({ name, email });
     setStatus("local");
-    setMessage(tr(language, "Account created. Enter the six-digit code from your email to confirm it.", "Cuenta creada. Ingresá el código de seis dígitos que te enviamos por correo."));
+    setMessage(tr(
+      language,
+      "Account created. Open the confirmation email to activate it.",
+      "Cuenta creada. Abrí el correo de confirmación para activarla.",
+    ));
   }, [client]);
 
   const verifyAccount = useCallback(async ({ email, token }: VerifyAccountInput) => {
@@ -217,7 +221,11 @@ export function useCloudSync({
       return;
     }
     setStatus("local");
-    setMessage(tr(language, "A new six-digit code was sent to your email.", "Te enviamos un nuevo código de seis dígitos al correo."));
+    setMessage(tr(
+      language,
+      "We sent you a new confirmation email.",
+      "Te enviamos un nuevo correo de confirmación.",
+    ));
   }, [client]);
 
   const signIn = useCallback(async ({ email, password }: PasswordSignInInput) => {

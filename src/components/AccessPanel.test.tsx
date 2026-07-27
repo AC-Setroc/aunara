@@ -82,7 +82,7 @@ describe("access and installation panel", () => {
     expect(password.type).toBe("password");
   });
 
-  it("replaces the signup form with six-digit account verification", () => {
+  it("replaces the signup form with email confirmation and optional code entry", () => {
     const onVerifyAccount = vi.fn();
     const props = {
       cloud: {
@@ -108,6 +108,7 @@ describe("access and installation panel", () => {
 
     expect(screen.getByText("Alejandro Cortés")).toBeTruthy();
     expect(screen.getByText("alejandro@example.com")).toBeTruthy();
+    expect(screen.getByText(/Open the confirmation link in your email/)).toBeTruthy();
     expect(screen.queryByLabelText("Password")).toBeNull();
 
     fireEvent.change(screen.getByLabelText("Six-digit confirmation code"), {

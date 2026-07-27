@@ -122,7 +122,7 @@ describe("password account access", () => {
     expect((result.current as any).pendingVerification).toBeNull();
   });
 
-  it("resends the signup confirmation code", async () => {
+  it("resends the signup confirmation email", async () => {
     const { result } = renderHook(() => useCloudSync({
       snapshot,
       onRemoteSnapshot: vi.fn(),

@@ -183,7 +183,11 @@ export function AccessPanel({
                 <strong>{cloud.pendingVerification.name}</strong>
                 <small>{cloud.pendingVerification.email}</small>
               </div>
-              <p>{tr(language, "Enter the six-digit code we sent to your email to confirm this account.", "Ingresá el código de seis dígitos que te enviamos al correo para confirmar la cuenta.")}</p>
+              <p>{tr(
+                language,
+                "Open the confirmation link in your email. This account will activate automatically. If your email includes a six-digit code, you can enter it below.",
+                "Abrí el enlace de confirmación que te enviamos al correo. La cuenta se activará automáticamente. Si tu correo incluye un código de seis dígitos, también podés ingresarlo abajo.",
+              )}</p>
               <label>
                 <span>{tr(language, "Confirmation code", "Código de confirmación")}</span>
                 <span>
@@ -209,7 +213,7 @@ export function AccessPanel({
                 onClick={() => onResendVerification?.(cloud.pendingVerification!.email)}
                 disabled={cloud.status === "syncing"}
               >
-                {tr(language, "Send a new code", "Enviar otro código")}
+                {tr(language, "Resend confirmation email", "Reenviar correo de confirmación")}
               </button>
               {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
             </form>
