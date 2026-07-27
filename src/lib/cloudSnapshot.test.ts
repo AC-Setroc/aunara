@@ -7,6 +7,7 @@ import {
 } from "./cloudSnapshot";
 
 const healthProfile: HealthProfile = {
+  birthDate: "1992-01-01",
   ageYears: 34,
   metabolicSex: "male",
   heightCm: 180,
@@ -96,6 +97,10 @@ describe("cloud snapshots", () => {
     expect(normalizeRepbookSnapshot({
       ...local,
       healthProfile: { ...healthProfile, currentWeightKg: "82" },
+    }, local)).toBe(local);
+    expect(normalizeRepbookSnapshot({
+      ...local,
+      healthProfile: { ...healthProfile, birthDate: 19920101 },
     }, local)).toBe(local);
     expect(normalizeRepbookSnapshot({
       ...local,

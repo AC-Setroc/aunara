@@ -40,7 +40,8 @@ describe("mandatory starting profile", () => {
     expect(screen.getByRole("dialog", { name: "Conocé tu punto de partida" })).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Rutas de entrenamiento" })).toBeNull();
 
-    fireEvent.change(screen.getByLabelText("Edad"), { target: { value: "34" } });
+    const birthDate = `${new Date().getFullYear() - 36}-01-01`;
+    fireEvent.change(screen.getByLabelText("Fecha de nacimiento"), { target: { value: birthDate } });
     fireEvent.change(screen.getByLabelText("Estatura en centímetros"), { target: { value: "180" } });
     fireEvent.change(screen.getByLabelText("Peso actual en kilogramos"), { target: { value: "82" } });
     fireEvent.change(screen.getByLabelText("Objetivo principal"), { target: { value: "strength" } });
@@ -51,6 +52,11 @@ describe("mandatory starting profile", () => {
     await waitFor(() => {
       expect(screen.queryByRole("dialog", { name: "Conocé tu punto de partida" })).toBeNull();
     });
-    expect(JSON.parse(localStorage.getItem("repbook-health-profile") ?? "{}").onboardingCompleted).toBe(true);
+    const storedProfile = JSON.parse(localStorage.getItem("repbook-health-profile") ?? "{}");
+    expect(storedProfile).toMatchObject({
+      onboardingCompleted: true,
+      birthDate,
+      ageYears: 36,
+    });
   });
 });

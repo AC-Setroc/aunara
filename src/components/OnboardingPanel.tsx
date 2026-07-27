@@ -1,6 +1,7 @@
 import { Activity, Dumbbell, HeartPulse, ShieldCheck } from "lucide-react";
 import { type FormEvent, useMemo, useState } from "react";
 import { tr } from "../lib/i18n";
+import { adultBirthDateBounds, calculateAgeFromBirthDate } from "../lib/wellness";
 import type { EquipmentPreference, HealthProfile, LanguageCode, TrackFocus } from "../types";
 
 interface OnboardingPanelProps {
@@ -28,8 +29,13 @@ export function OnboardingPanel({
     equipmentPreference: profile.equipmentPreference ?? "mixed",
     trainingDaysPerWeek: profile.trainingDaysPerWeek ?? 3,
     sessionMinutes: profile.sessionMinutes ?? 45,
+    birthDate: profile.birthDate ?? "",
   });
-  const ready = draft.ageYears !== null
+  const calculatedAge = calculateAgeFromBirthDate(draft.birthDate ?? "");
+  const birthDateBounds = adultBirthDateBounds();
+  const ready = calculatedAge !== null
+    && calculatedAge >= 18
+    && calculatedAge <= 100
     && draft.heightCm !== null
     && draft.currentWeightKg !== null
     && Boolean(draft.primaryGoal)
@@ -55,6 +61,14 @@ export function OnboardingPanel({
     setDraft((current) => ({ ...current, [key]: value }));
   }
 
+  function updateBirthDate(value: string) {
+    setDraft((current) => ({
+      ...current,
+      birthDate: value,
+      ageYears: calculateAgeFromBirthDate(value),
+    }));
+  }
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!ready) return;
@@ -76,8 +90,19 @@ export function OnboardingPanel({
         <form onSubmit={submit}>
           <div className="onboarding-grid">
             <label className="health-field">
-              <span>{tr(language, "Age", "Edad")}</span>
-              <input aria-label={tr(language, "Age", "Edad")} type="number" min="18" max="100" value={draft.ageYears ?? ""} onChange={(event) => update("ageYears", optionalNumber(event.target.value))} required />
+              <span>{tr(language, "Date of birth", "Fecha de nacimiento")}</span>
+              <input
+                aria-label={tr(language, "Date of birth", "Fecha de nacimiento")}
+                type="date"
+                min={birthDateBounds.min}
+                max={birthDateBounds.max}
+                value={draft.birthDate ?? ""}
+                onChange={(event) => updateBirthDate(event.target.value)}
+                required
+              />
+              <small>{calculatedAge === null
+                ? tr(language, "Used to calculate your age", "Se usa para calcular tu edad")
+                : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
             </label>
             <label className="health-field">
               <span>{tr(language, "Height", "Estatura")}</span>

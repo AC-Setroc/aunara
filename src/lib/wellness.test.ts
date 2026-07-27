@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { HealthProfile, TrainingTrack, WeeklyCheckIn } from "../types";
 import {
   addWeeklyCheckIn,
@@ -8,6 +8,7 @@ import {
 } from "./wellness";
 
 const healthProfile: HealthProfile = {
+  birthDate: "1992-01-01",
   ageYears: 34,
   metabolicSex: "male",
   heightCm: 180,
@@ -47,6 +48,42 @@ describe("wellness calculations", () => {
     expect(summary.hydrationLiters).toEqual({ min: 2.5, max: 2.9 });
     expect(summary.maintenanceCalories?.min).toBeLessThan(summary.maintenanceCalories?.max ?? 0);
     expect(summary.targetDeltaKg).toBe(-4);
+  });
+
+  it("calculates age from birth date before this year's birthday", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-07-27T12:00:00"));
+    const fromBirthDate = createWellnessSummary({
+      ...healthProfile,
+      birthDate: "1990-07-28",
+      ageYears: null,
+    });
+    const fromAge = createWellnessSummary({
+      ...healthProfile,
+      birthDate: "",
+      ageYears: 35,
+    });
+    vi.useRealTimers();
+
+    expect(fromBirthDate.maintenanceCalories).toEqual(fromAge.maintenanceCalories);
+  });
+
+  it("increments calculated age on the birthday", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-07-27T12:00:00"));
+    const fromBirthDate = createWellnessSummary({
+      ...healthProfile,
+      birthDate: "1990-07-27",
+      ageYears: null,
+    });
+    const fromAge = createWellnessSummary({
+      ...healthProfile,
+      birthDate: "",
+      ageYears: 36,
+    });
+    vi.useRealTimers();
+
+    expect(fromBirthDate.maintenanceCalories).toEqual(fromAge.maintenanceCalories);
   });
 
   it("avoids inventing nutrition targets when body data is missing", () => {

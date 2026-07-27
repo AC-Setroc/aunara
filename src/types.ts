@@ -74,6 +74,7 @@ export interface HealthProfile {
   equipmentPreference?: EquipmentPreference;
   trainingDaysPerWeek?: number;
   sessionMinutes?: number;
+  birthDate?: string;
   ageYears: number | null;
   metabolicSex: MetabolicSex;
   heightCm: number | null;

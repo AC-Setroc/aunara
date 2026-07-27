@@ -16,7 +16,7 @@ import {
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { searchFoodData, type FoodSearchResult } from "../lib/foodData";
 import { tr } from "../lib/i18n";
-import { createWellnessSummary } from "../lib/wellness";
+import { adultBirthDateBounds, calculateAgeFromBirthDate, createWellnessSummary } from "../lib/wellness";
 import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
 
@@ -78,6 +78,8 @@ export function ProfilePanel({
   }));
   const plannedSessions = tracks.reduce((sum, track) => sum + track.daysPerWeek, 0);
   const wellness = useMemo(() => createWellnessSummary(healthProfile, language), [healthProfile, language]);
+  const calculatedAge = calculateAgeFromBirthDate(healthProfile.birthDate ?? "");
+  const birthDateBounds = adultBirthDateBounds();
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -93,6 +95,14 @@ export function ProfilePanel({
 
   function updateHealth<Key extends keyof HealthProfile>(key: Key, value: HealthProfile[Key]) {
     onHealthProfileChange({ ...healthProfile, [key]: value });
+  }
+
+  function updateBirthDate(value: string) {
+    onHealthProfileChange({
+      ...healthProfile,
+      birthDate: value,
+      ageYears: calculateAgeFromBirthDate(value),
+    });
   }
 
   function saveCheckIn(event: FormEvent<HTMLFormElement>) {
@@ -189,7 +199,20 @@ export function ProfilePanel({
             </div>
 
             <div className="health-form-grid">
-              <NumericField label={tr(language, "Age", "Edad")} value={healthProfile.ageYears} unit={tr(language, "years", "años")} min={18} max={100} onChange={(value) => updateHealth("ageYears", value)} />
+              <label className="health-field">
+                <span>{tr(language, "Date of birth", "Fecha de nacimiento")}</span>
+                <input
+                  aria-label={tr(language, "Date of birth", "Fecha de nacimiento")}
+                  type="date"
+                  min={birthDateBounds.min}
+                  max={birthDateBounds.max}
+                  value={healthProfile.birthDate ?? ""}
+                  onChange={(event) => updateBirthDate(event.target.value)}
+                />
+                <small>{calculatedAge === null
+                  ? tr(language, "Add it to calculate your age", "Agregala para calcular tu edad")
+                  : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
+              </label>
               <label className="health-field">
                 <span>{tr(language, "Metabolic reference", "Referencia metabólica")}</span>
                 <select value={healthProfile.metabolicSex} onChange={(event) => updateHealth("metabolicSex", event.target.value as HealthProfile["metabolicSex"])}>

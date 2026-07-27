@@ -50,6 +50,7 @@ const track: TrainingTrack = {
 };
 
 const healthProfile: HealthProfile = {
+  birthDate: "1992-01-01",
   ageYears: 34,
   metabolicSex: "male",
   heightCm: 180,
@@ -284,8 +285,15 @@ describe("profile access", () => {
     />);
 
     fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
+    const nextBirthDate = `${new Date().getFullYear() - 36}-01-01`;
+    fireEvent.change(screen.getByLabelText("Date of birth"), { target: { value: nextBirthDate } });
     fireEvent.change(screen.getByLabelText("Current weight in kilograms"), { target: { value: "81.5" } });
 
+    expect(onHealthProfileChange).toHaveBeenCalledWith({
+      ...healthProfile,
+      birthDate: nextBirthDate,
+      ageYears: 36,
+    });
     expect(onHealthProfileChange).toHaveBeenCalledWith({
       ...healthProfile,
       currentWeightKg: 81.5,

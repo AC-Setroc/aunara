@@ -42,6 +42,42 @@ function roundTo(value: number, precision = 1): number {
   return Math.round(value * factor) / factor;
 }
 
+export function calculateAgeFromBirthDate(birthDate: string, referenceDate = new Date()): number | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthDate);
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    parsed.getFullYear() !== year
+    || parsed.getMonth() !== month - 1
+    || parsed.getDate() !== day
+  ) return null;
+
+  let age = referenceDate.getFullYear() - year;
+  const birthdayHasPassed = referenceDate.getMonth() > month - 1
+    || (referenceDate.getMonth() === month - 1 && referenceDate.getDate() >= day);
+  if (!birthdayHasPassed) age -= 1;
+
+  return age >= 0 ? age : null;
+}
+
+function formatInputDate(value: Date): string {
+  return [
+    value.getFullYear(),
+    String(value.getMonth() + 1).padStart(2, "0"),
+    String(value.getDate()).padStart(2, "0"),
+  ].join("-");
+}
+
+export function adultBirthDateBounds(referenceDate = new Date()): { min: string; max: string } {
+  const max = new Date(referenceDate.getFullYear() - 18, referenceDate.getMonth(), referenceDate.getDate());
+  const min = new Date(referenceDate.getFullYear() - 101, referenceDate.getMonth(), referenceDate.getDate() + 1);
+  return { min: formatInputDate(min), max: formatInputDate(max) };
+}
+
 export function calculateBmi(heightCm: number, weightKg: number): number | null {
   if (!Number.isFinite(heightCm) || !Number.isFinite(weightKg) || heightCm <= 0 || weightKg <= 0) return null;
   return roundTo(weightKg / ((heightCm / 100) ** 2));
@@ -55,7 +91,10 @@ function bmiLabel(value: number, language: LanguageCode): string {
 }
 
 function estimateMaintenanceCalories(profile: HealthProfile): { min: number; max: number } | null {
-  const { ageYears, currentWeightKg, heightCm, metabolicSex, activityLevel } = profile;
+  const { currentWeightKg, heightCm, metabolicSex, activityLevel } = profile;
+  const ageYears = profile.birthDate
+    ? calculateAgeFromBirthDate(profile.birthDate) ?? profile.ageYears
+    : profile.ageYears;
   if (!ageYears || !currentWeightKg || !heightCm || metabolicSex === "unspecified") return null;
 
   const sexAdjustment = metabolicSex === "male" ? 5 : -161;

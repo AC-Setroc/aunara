@@ -41,6 +41,7 @@ const DEFAULT_HEALTH_PROFILE: HealthProfile = {
   equipmentPreference: "mixed",
   trainingDaysPerWeek: 3,
   sessionMinutes: 45,
+  birthDate: "",
   ageYears: null,
   metabolicSex: "unspecified",
   heightCm: null,

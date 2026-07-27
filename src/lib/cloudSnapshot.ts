@@ -79,7 +79,10 @@ function isTrainingTrack(value: unknown): boolean {
 
 function isHealthProfile(value: unknown): boolean {
   if (!isRecord(value)) return false;
-  return isNullableNumber(value.ageYears)
+  const validBirthDate = value.birthDate === undefined
+    || (typeof value.birthDate === "string" && (value.birthDate === "" || /^\d{4}-\d{2}-\d{2}$/.test(value.birthDate)));
+  return validBirthDate
+    && isNullableNumber(value.ageYears)
     && isEnumValue(value.metabolicSex, METABOLIC_SEXES)
     && isNullableNumber(value.heightCm)
     && isNullableNumber(value.currentWeightKg)
