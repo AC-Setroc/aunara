@@ -16,6 +16,7 @@ import {
 } from "./components/AccessPanel";
 import { ExerciseCard } from "./components/ExerciseCard";
 import { ExerciseDetail } from "./components/ExerciseDetail";
+import { InitialRoutineProposal } from "./components/InitialRoutineProposal";
 import { OnboardingPanel } from "./components/OnboardingPanel";
 import { ProfilePanel } from "./components/ProfilePanel";
 import { TrainingTracks, type NewTrackInput } from "./components/TrainingTracks";
@@ -82,6 +83,7 @@ function App() {
   const [workoutOpen, setWorkoutOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(false);
+  const [initialProposal, setInitialProposal] = useState<TrainingTrack | null>(null);
   const [accessMode, setAccessMode] = useState<AccessMode>("create");
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installGuide, setInstallGuide] = useState<InstallGuide>(() => {
@@ -173,7 +175,11 @@ function App() {
   const canUseTraining = hasAppAccess && !onboardingRequired;
 
   useEffect(() => {
-    if (language !== "en" && language !== "es") setLanguage("es");
+    if (language !== "en" && language !== "es") {
+      setLanguage("es");
+      return;
+    }
+    document.documentElement.lang = language;
   }, [language, setLanguage]);
 
   useEffect(() => {
@@ -238,17 +244,19 @@ function App() {
   const filtersActive = Boolean(query || bodyPart || equipment || favoritesOnly);
 
   useEffect(() => {
-    if (!canUseTraining || !exercises.length || tracksInitialized) return;
+    if (!canUseTraining || !exercises.length || healthProfile.initialRoutineDecision || initialProposal) return;
 
-    // Existing users already have tracks but not the initialization marker yet.
+    // A pre-existing routine counts as an accepted first route. This avoids
+    // interrupting established users while repairing the new-account flow.
     if (tracks.length) {
-      setTracksInitialized(true);
+      setHealthProfile((current) => ({ ...current, initialRoutineDecision: "accepted" }));
+      if (!tracksInitialized) setTracksInitialized(true);
       return;
     }
 
     const primaryFocus = healthProfile.primaryGoal ?? "strength";
-    const strengthTrack: TrainingTrack = {
-      id: `goal-${primaryFocus}`,
+    setInitialProposal({
+      id: `initial-${primaryFocus}`,
       name: tr(language, "My first route", "Mi primera ruta"),
       kind: ["beach-volleyball", "running", "cycling", "mountain-biking", "swimming", "tennis-padel", "soccer"].includes(primaryFocus) ? "sport" : "goal",
       focus: primaryFocus,
@@ -263,12 +271,8 @@ function App() {
           daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
         }),
       creationMode: "suggested",
-    };
-
-    setTracks([strengthTrack]);
-    setActiveTrackId(strengthTrack.id);
-    setTracksInitialized(true);
-  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, language, legacyWorkout, setActiveTrackId, setTracks, setTracksInitialized, tracks.length, tracksInitialized]);
+    });
+  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.initialRoutineDecision, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
 
   useEffect(() => {
     if (tracks.length && !tracks.some((track) => track.id === activeTrackId)) {
@@ -392,6 +396,22 @@ function App() {
     setActiveTrackId(id);
     setEquipment(track.equipment === "bodyweight" ? "body weight" : "");
     setWorkoutOpen(true);
+  }
+
+  function acceptInitialProposal(openForEditing: boolean) {
+    if (!initialProposal) return;
+    setTracks([initialProposal]);
+    setActiveTrackId(initialProposal.id);
+    setHealthProfile((current) => ({ ...current, initialRoutineDecision: "accepted" }));
+    setTracksInitialized(true);
+    setInitialProposal(null);
+    if (openForEditing) setWorkoutOpen(true);
+  }
+
+  function rejectInitialProposal() {
+    setHealthProfile((current) => ({ ...current, initialRoutineDecision: "rejected" }));
+    setTracksInitialized(true);
+    setInitialProposal(null);
   }
 
   function editTrack(trackId: string, changes: Partial<TrainingTrack>) {
@@ -622,9 +642,20 @@ function App() {
         />
       )}
 
+      {canUseTraining && initialProposal && (
+        <InitialRoutineProposal
+          language={language}
+          track={initialProposal}
+          exerciseMap={exerciseMap}
+          onAccept={() => acceptInitialProposal(false)}
+          onEdit={() => acceptInitialProposal(true)}
+          onReject={rejectInitialProposal}
+        />
+      )}
+
       {canUseTraining && <footer>
         <div><strong>REPBOOK</strong><span>{tr(language, "One profile. More than one priority.", "Un perfil. Más de una prioridad.")}</span></div>
-        <p>Exercise data © Hasan Emir Yıldırım, MIT. Visual media © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
+        <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
       </footer>}
 
       {canUseTraining && <button className="mobile-workout" type="button" onClick={() => setWorkoutOpen(true)}>

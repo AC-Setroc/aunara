@@ -105,17 +105,41 @@ function estimateMaintenanceCalories(profile: HealthProfile): { min: number; max
   };
 }
 
+function proteinPlanningFactors(profile: HealthProfile): { min: number; max: number } {
+  const trainingFocusedGoals = new Set([
+    "strength",
+    "weight-loss",
+    "muscle-gain",
+    "endurance",
+    "beach-volleyball",
+    "running",
+    "cycling",
+    "mountain-biking",
+    "swimming",
+    "tennis-padel",
+    "soccer",
+  ]);
+  const physicallyActive = profile.activityLevel === "moderate"
+    || profile.activityLevel === "very-active"
+    || (profile.primaryGoal ? trainingFocusedGoals.has(profile.primaryGoal) : false);
+
+  return physicallyActive
+    ? { min: 1.4, max: 2 }
+    : { min: 1.2, max: 1.6 };
+}
+
 export function createWellnessSummary(profile: HealthProfile, language: LanguageCode = "en"): WellnessSummary {
   const bmiValue = profile.heightCm && profile.currentWeightKg
     ? calculateBmi(profile.heightCm, profile.currentWeightKg)
     : null;
   const weight = profile.currentWeightKg;
+  const proteinFactors = proteinPlanningFactors(profile);
 
   return {
     bmi: bmiValue === null ? null : { value: bmiValue, label: bmiLabel(bmiValue, language) },
     proteinGrams: weight ? {
-      min: Math.round(weight * 1.2),
-      max: Math.round(weight * 1.6),
+      min: Math.round(weight * proteinFactors.min),
+      max: Math.round(weight * proteinFactors.max),
     } : null,
     hydrationLiters: weight ? {
       min: roundTo(weight * 0.03),

@@ -47,7 +47,9 @@ export function WorkoutPanel({
   onOpenProfile,
 }: WorkoutPanelProps) {
   const [replacingId, setReplacingId] = useState<string | null>(null);
+  const [manualBuilderOpen, setManualBuilderOpen] = useState(false);
   const [exerciseToAdd, setExerciseToAdd] = useState(exercises[0]?.id ?? "");
+  const isManual = track.creationMode === "manual";
   const totalSets = items.reduce((sum, item) => sum + item.sets, 0);
   const orderedItems = [...items].sort((left, right) => (
     WEEKDAYS.indexOf(left.day ?? "monday") - WEEKDAYS.indexOf(right.day ?? "monday")
@@ -78,23 +80,47 @@ export function WorkoutPanel({
         </button>
       </div>
 
-      <section className={`routine-analysis is-${analysis.tone}`} aria-label={tr(language, "Routine context", "Contexto de la rutina")}>
-        <div className="routine-analysis-heading">
-          <span>{analysis.tone === "watch" ? <Activity size={17} /> : <UserRound size={17} />}</span>
-          <div><p>{tr(language, "Why this routine", "Por qué esta rutina")}</p><h3>{analysis.headline}</h3></div>
-        </div>
-        <ul>{analysis.points.map((point) => <li key={point}>{point}</li>)}</ul>
-        <button type="button" onClick={onOpenProfile} aria-label={tr(language, "Review health profile", "Revisar perfil de salud")}>{tr(language, "Review health profile", "Revisar perfil de salud")}</button>
-      </section>
+      {!isManual && (
+        <section className={`routine-analysis is-${analysis.tone}`} aria-label={tr(language, "Routine context", "Contexto de la rutina")}>
+          <div className="routine-analysis-heading">
+            <span>{analysis.tone === "watch" ? <Activity size={17} /> : <UserRound size={17} />}</span>
+            <div><p>{tr(language, "Why this routine", "Por qué esta rutina")}</p><h3>{analysis.headline}</h3></div>
+          </div>
+          <ul>{analysis.points.map((point) => <li key={point}>{point}</li>)}</ul>
+          <button type="button" onClick={onOpenProfile} aria-label={tr(language, "Review health profile", "Revisar perfil de salud")}>{tr(language, "Review health profile", "Revisar perfil de salud")}</button>
+        </section>
+      )}
 
       {items.length === 0 ? (
         <div className="empty-workout">
           <Dumbbell size={30} strokeWidth={1.5} />
           <h3>{tr(language, "This routine is empty.", "Esta rutina está vacía.")}</h3>
-          <p>{tr(language, "Start with a suggested routine, then adjust it movement by movement.", "Empezá con una rutina sugerida y ajustala movimiento por movimiento.")}</p>
-          <button className="suggest-routine-button" type="button" onClick={onGenerate}>
-            <RefreshCw size={15} /> {tr(language, "Suggest this routine", "Sugerir esta rutina")}
-          </button>
+          {isManual ? (
+            <>
+              <p>{tr(language, "Build it exercise by exercise. Repbook will not add suggested movements to this manual route.", "Armala ejercicio por ejercicio. Repbook no agregará movimientos sugeridos a esta ruta manual.")}</p>
+              {!manualBuilderOpen && (
+                <button className="suggest-routine-button" type="button" onClick={() => setManualBuilderOpen(true)}>
+                  <Plus size={15} /> {tr(language, "Start creating", "Empezar a crear")}
+                </button>
+              )}
+              {manualBuilderOpen && onAddExercise && (
+                <ExerciseAdder
+                  language={language}
+                  exercises={exercises}
+                  exerciseToAdd={exerciseToAdd}
+                  onExerciseChange={setExerciseToAdd}
+                  onAddExercise={onAddExercise}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <p>{tr(language, "Start with a suggested routine, then adjust it movement by movement.", "Empezá con una rutina sugerida y ajustala movimiento por movimiento.")}</p>
+              <button className="suggest-routine-button" type="button" onClick={onGenerate}>
+                <RefreshCw size={15} /> {tr(language, "Suggest this routine", "Sugerir esta rutina")}
+              </button>
+            </>
+          )}
         </div>
       ) : (
         <>
@@ -195,6 +221,7 @@ export function WorkoutPanel({
                     ) : null}
                     <div className="stepper-row">
                       <Stepper
+                        language={language}
                         label={tr(language, "sets", "series")}
                         value={item.sets}
                         onDecrease={() => onUpdate(itemId, "sets", -1)}
@@ -202,6 +229,7 @@ export function WorkoutPanel({
                       />
                       <span className="times">×</span>
                       <Stepper
+                        language={language}
                         label={tr(language, "reps", "repeticiones")}
                         value={item.reps}
                         onDecrease={() => onUpdate(itemId, "reps", -1)}
@@ -263,17 +291,13 @@ export function WorkoutPanel({
           </ol>
 
           {onAddExercise && (
-            <div className="manual-exercise-adder">
-              <label>
-                <span>{tr(language, "Add another exercise", "Agregar otro ejercicio")}</span>
-                <select value={exerciseToAdd} onChange={(event) => setExerciseToAdd(event.target.value)}>
-                  {exercises.map((exercise) => <option key={exercise.id} value={exercise.id}>{titleCase(exercise.name)} · {titleCase(exercise.equipment)}</option>)}
-                </select>
-              </label>
-              <button type="button" onClick={() => exerciseToAdd && onAddExercise(exerciseToAdd)}>
-                <Plus size={15} /> {tr(language, "Add exercise", "Agregar ejercicio")}
-              </button>
-            </div>
+            <ExerciseAdder
+              language={language}
+              exercises={exercises}
+              exerciseToAdd={exerciseToAdd}
+              onExerciseChange={setExerciseToAdd}
+              onAddExercise={onAddExercise}
+            />
           )}
 
           <button className="clear-button" type="button" onClick={onClear}>{tr(language, "Clear workout", "Vaciar entrenamiento")}</button>
@@ -283,20 +307,51 @@ export function WorkoutPanel({
   );
 }
 
+interface ExerciseAdderProps {
+  language: LanguageCode;
+  exercises: Exercise[];
+  exerciseToAdd: string;
+  onExerciseChange: (exerciseId: string) => void;
+  onAddExercise: (exerciseId: string) => void;
+}
+
+function ExerciseAdder({
+  language,
+  exercises,
+  exerciseToAdd,
+  onExerciseChange,
+  onAddExercise,
+}: ExerciseAdderProps) {
+  return (
+    <div className="manual-exercise-adder">
+      <label>
+        <span>{tr(language, "Add another exercise", "Agregar otro ejercicio")}</span>
+        <select value={exerciseToAdd} onChange={(event) => onExerciseChange(event.target.value)}>
+          {exercises.map((exercise) => <option key={exercise.id} value={exercise.id}>{titleCase(exercise.name)} · {titleCase(exercise.equipment)}</option>)}
+        </select>
+      </label>
+      <button type="button" onClick={() => exerciseToAdd && onAddExercise(exerciseToAdd)}>
+        <Plus size={15} /> {tr(language, "Add exercise", "Agregar ejercicio")}
+      </button>
+    </div>
+  );
+}
+
 interface StepperProps {
+  language: LanguageCode;
   label: string;
   value: number;
   onDecrease: () => void;
   onIncrease: () => void;
 }
 
-function Stepper({ label, value, onDecrease, onIncrease }: StepperProps) {
+function Stepper({ language, label, value, onDecrease, onIncrease }: StepperProps) {
   return (
     <div className="stepper" aria-label={`${value} ${label}`}>
-      <button type="button" onClick={onDecrease} aria-label={`Decrease ${label}`}><Minus size={13} /></button>
+      <button type="button" onClick={onDecrease} aria-label={`${tr(language, "Decrease", "Disminuir")} ${label}`}><Minus size={13} /></button>
       <strong>{value}</strong>
       <span>{label}</span>
-      <button type="button" onClick={onIncrease} aria-label={`Increase ${label}`}><Plus size={13} /></button>
+      <button type="button" onClick={onIncrease} aria-label={`${tr(language, "Increase", "Aumentar")} ${label}`}><Plus size={13} /></button>
     </div>
   );
 }

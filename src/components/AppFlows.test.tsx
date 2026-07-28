@@ -263,6 +263,35 @@ describe("routine exercise controls", () => {
     expect(onGenerate).toHaveBeenCalledOnce();
   });
 
+  it("starts an empty manual routine without analysis or generated exercises", () => {
+    const onGenerate = vi.fn();
+    const onAddExercise = vi.fn();
+    render(<WorkoutPanel
+      items={[]}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{ ...track, workout: [], creationMode: "manual" }}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onAddExercise={onAddExercise}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={onGenerate}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "Context supports this plan", points: ["Strength is the primary focus."] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    expect(screen.queryByText("Why this routine")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Suggest this routine" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Start creating" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add exercise" }));
+
+    expect(onGenerate).not.toHaveBeenCalled();
+    expect(onAddExercise).toHaveBeenCalledWith(exercise.id);
+  });
+
   it("shows why a routine fits the health context", () => {
     const onOpenProfile = vi.fn();
     render(<WorkoutPanel
@@ -409,6 +438,8 @@ describe("profile access", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
 
+    expect(screen.getByText(/BMI means Body Mass Index/)).toBeTruthy();
+    expect(screen.getByText(/weight in kilograms divided by height in metres squared/)).toBeTruthy();
     expect(screen.getByText(/BMI does not distinguish bone, muscle, fat distribution/)).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Body fat percentage"), { target: { value: "24.5" } });
     fireEvent.change(screen.getByLabelText("Muscle percentage"), { target: { value: "38" } });
@@ -439,6 +470,12 @@ describe("profile access", () => {
 
     expect(screen.getByRole("heading", { name: "Breakfast" })).toBeTruthy();
     expect(screen.getByText(/Protein target/)).toBeTruthy();
+    expect(screen.getAllByText(/grams of the protein nutrient—not grams of food/)).toHaveLength(2);
+    expect(screen.getByRole("group", { name: "Protein foods" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Vegetables" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Carbohydrate foods" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Fats" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Fruits" })).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Create recipe ideas" }));
     expect(screen.getByText(/Egg and vegetable rice bowl/)).toBeTruthy();
@@ -521,10 +558,30 @@ describe("profile access", () => {
 
     expect(screen.queryByRole("button", { name: "Nutrition" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
-    expect(screen.getByText("98–131 g")).toBeTruthy();
+    expect(screen.getByText("115–164 g")).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Search USDA foods"), { target: { value: "banana" } });
     fireEvent.click(screen.getByRole("button", { name: "Search foods" }));
 
     expect(await screen.findByText("Bananas, raw")).toBeTruthy();
+  });
+
+  it("keeps visible profile copy in Spanish when Spanish is selected", async () => {
+    render(<ProfilePanel
+      language="es"
+      name="Mi perfil"
+      tracks={[track]}
+      activeTrackId={track.id}
+      favoriteCount={0}
+      healthProfile={healthProfile}
+      checkIns={[]}
+      onNameChange={vi.fn()}
+      onHealthProfileChange={vi.fn()}
+      onAddCheckIn={vi.fn()}
+      onOpenTrack={vi.fn()}
+      onClose={vi.fn()}
+    />);
+
+    expect(screen.getByRole("button", { name: "Listo" })).toBeTruthy();
+    expect(screen.queryByText("Done")).toBeNull();
   });
 });

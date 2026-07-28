@@ -98,6 +98,7 @@ export type DietaryPattern = "omnivore" | "vegetarian" | "vegan" | "pescatarian"
 
 export interface HealthProfile {
   onboardingCompleted?: boolean;
+  initialRoutineDecision?: "accepted" | "rejected";
   primaryGoal?: TrackFocus;
   equipmentPreference?: EquipmentPreference;
   trainingDaysPerWeek?: number;

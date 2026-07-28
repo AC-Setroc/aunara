@@ -15,6 +15,68 @@ export interface RecipeIdea {
   description: string;
 }
 
+export const FOOD_GROUPS = [
+  {
+    key: "protein",
+    label: ["Protein foods", "Alimentos proteicos"],
+    options: [
+      ["eggs", "Eggs", "Huevos"],
+      ["chicken", "Chicken", "Pollo"],
+      ["fish", "Fish", "Pescado"],
+      ["beef", "Beef", "Carne de res"],
+      ["pork", "Pork", "Cerdo"],
+      ["legumes", "Legumes", "Legumbres"],
+      ["tofu", "Tofu", "Tofu"],
+      ["yogurt", "Yogurt", "Yogur"],
+    ],
+  },
+  {
+    key: "vegetables",
+    label: ["Vegetables", "Vegetales"],
+    options: [
+      ["leafy-greens", "Leafy greens", "Hojas verdes"],
+      ["broccoli", "Broccoli / cauliflower", "Brócoli / coliflor"],
+      ["tomato", "Tomato", "Tomate"],
+      ["carrot", "Carrot", "Zanahoria"],
+      ["pepper", "Peppers", "Pimentón"],
+      ["vegetables", "Mixed vegetables", "Vegetales variados"],
+    ],
+  },
+  {
+    key: "carbohydrates",
+    label: ["Carbohydrate foods", "Alimentos con carbohidratos"],
+    options: [
+      ["rice", "Rice", "Arroz"],
+      ["potato", "Potato", "Papa"],
+      ["oats", "Oats", "Avena"],
+      ["pasta", "Pasta", "Pasta"],
+      ["arepa", "Arepa", "Arepa"],
+      ["plantain", "Plantain", "Plátano"],
+    ],
+  },
+  {
+    key: "fats",
+    label: ["Fats", "Grasas"],
+    options: [
+      ["avocado", "Avocado", "Aguacate"],
+      ["olive-oil", "Olive oil", "Aceite de oliva"],
+      ["nuts", "Nuts", "Frutos secos"],
+      ["seeds", "Seeds", "Semillas"],
+    ],
+  },
+  {
+    key: "fruits",
+    label: ["Fruits", "Frutas"],
+    options: [
+      ["banana", "Banana", "Banano"],
+      ["berries", "Berries", "Frutos rojos"],
+      ["citrus", "Citrus", "Cítricos"],
+      ["mango", "Mango", "Mango"],
+      ["apple", "Apple / pear", "Manzana / pera"],
+    ],
+  },
+] as const;
+
 export function createDailyFoodOptions(
   profile: HealthProfile,
   language: LanguageCode,

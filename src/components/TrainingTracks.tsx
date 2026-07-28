@@ -124,7 +124,7 @@ export function TrainingTracks({
                 <strong>{track.name}</strong>
                 <span className="track-focus">{trackFocusLabel(track.focus, language)}</span>
                 <span className="track-meta">
-                  {track.daysPerWeek}× weekly · {track.sessionMinutes} min · {
+                  {track.daysPerWeek}× {tr(language, "weekly", "por semana")} · {track.sessionMinutes} min · {
                     track.equipment === "bodyweight"
                       ? tr(language, "Bodyweight", "Autocarga")
                       : track.equipment === "mixed" ? tr(language, "Mixed", "Mixto") : tr(language, "All equipment", "Todo el equipo")

@@ -101,6 +101,7 @@ function isHealthProfile(value: unknown): boolean {
   const validBirthDate = value.birthDate === undefined
     || (typeof value.birthDate === "string" && (value.birthDate === "" || /^\d{4}-\d{2}-\d{2}$/.test(value.birthDate)));
   return validBirthDate
+    && (value.initialRoutineDecision === undefined || ["accepted", "rejected"].includes(value.initialRoutineDecision as string))
     && isNullableNumber(value.ageYears)
     && isEnumValue(value.metabolicSex, METABOLIC_SEXES)
     && isNullableNumber(value.heightCm)

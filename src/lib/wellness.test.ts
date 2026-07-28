@@ -44,7 +44,7 @@ describe("wellness calculations", () => {
     const summary = createWellnessSummary(healthProfile);
 
     expect(summary.bmi?.value).toBe(25.3);
-    expect(summary.proteinGrams).toEqual({ min: 98, max: 131 });
+    expect(summary.proteinGrams).toEqual({ min: 115, max: 164 });
     expect(summary.hydrationLiters).toEqual({ min: 2.5, max: 2.9 });
     expect(summary.maintenanceCalories?.min).toBeLessThan(summary.maintenanceCalories?.max ?? 0);
     expect(summary.targetDeltaKg).toBe(-4);

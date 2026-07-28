@@ -19,11 +19,29 @@ vi.mock("../hooks/useCloudSync", () => ({
 
 import App from "../App";
 
+const exercise = {
+  id: "0514",
+  name: "jump squat",
+  category: "upper legs",
+  body_part: "upper legs",
+  equipment: "body weight",
+  target: "glutes",
+  muscle_group: "lower body",
+  secondary_muscles: ["quadriceps"],
+  instructions: { en: "Jump with control.", es: "", it: "", tr: "", ru: "", zh: "", hi: "", pl: "", ko: "", fr: "" },
+  instruction_steps: { en: ["Lower into a squat.", "Jump and land softly."], es: [], it: [], tr: [], ru: [], zh: [], hi: [], pl: [], ko: [], fr: [] },
+  media_id: "media",
+  image: "images/a.jpg",
+  gif_url: "videos/a.gif",
+  attribution: "© Gym visual — https://gymvisual.com/",
+  created_at: "2026-01-01T00:00:00Z",
+};
+
 beforeEach(() => {
   localStorage.clear();
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
     ok: true,
-    json: vi.fn().mockResolvedValue([]),
+    json: vi.fn().mockResolvedValue([exercise]),
   }));
 });
 
@@ -59,6 +77,21 @@ describe("mandatory starting profile", () => {
       onboardingCompleted: true,
       birthDate,
       ageYears: 36,
+    });
+
+    expect(await screen.findByRole("dialog", { name: "Revisá tu primera rutina" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Aceptar rutina" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Aceptar y editar" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Rechazar propuesta" })).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Aceptar rutina" }));
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Revisá tu primera rutina" })).toBeNull();
+      expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toHaveLength(1);
+    });
+    expect(JSON.parse(localStorage.getItem("repbook-health-profile") ?? "{}")).toMatchObject({
+      initialRoutineDecision: "accepted",
     });
   });
 });

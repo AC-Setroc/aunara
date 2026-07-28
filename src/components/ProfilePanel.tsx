@@ -15,7 +15,7 @@ import {
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { searchFoodData, type FoodSearchResult } from "../lib/foodData";
 import { tr } from "../lib/i18n";
-import { createDailyFoodOptions, createRecipeIdeas } from "../lib/nutritionPlanning";
+import { createDailyFoodOptions, createRecipeIdeas, FOOD_GROUPS } from "../lib/nutritionPlanning";
 import { adultBirthDateBounds, calculateAgeFromBirthDate, createWellnessSummary } from "../lib/wellness";
 import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
@@ -169,7 +169,7 @@ export function ProfilePanel({
               <div>
                 <p className="section-kicker">{tr(language, "Body context", "Contexto corporal")}</p>
                 <strong>{healthProfile.currentWeightKg ? `${healthProfile.currentWeightKg} kg` : tr(language, "Not set", "Sin registrar")}</strong>
-                <span>{wellness.bmi ? `${tr(language, "BMI reference", "Referencia IMC")} ${wellness.bmi.value}` : tr(language, "Add height and weight", "Agregá estatura y peso")}</span>
+                <span>{wellness.bmi ? `${tr(language, "BMI", "IMC")} ${wellness.bmi.value} kg/m²` : tr(language, "Add height and weight", "Agregá estatura y peso")}</span>
               </div>
               <div>
                 <p className="section-kicker">{tr(language, "Latest recovery", "Recuperación reciente")}</p>
@@ -263,7 +263,8 @@ export function ProfilePanel({
 
             <div className="reference-card">
               <div>
-                <strong>{wellness.bmi ? `${wellness.bmi.value} · ${wellness.bmi.label}` : tr(language, "Reference appears when height and weight are complete", "La referencia aparece al completar estatura y peso")}</strong>
+                <strong>{wellness.bmi ? `${tr(language, "BMI", "IMC")} ${wellness.bmi.value} kg/m² · ${wellness.bmi.label}` : tr(language, "Reference appears when height and weight are complete", "La referencia aparece al completar estatura y peso")}</strong>
+                <p>{tr(language, "BMI means Body Mass Index: weight in kilograms divided by height in metres squared (kg/m²). It describes a weight-to-height ratio; it does not measure body fat or health.", "IMC significa Índice de Masa Corporal: peso en kilogramos dividido por la estatura en metros al cuadrado (kg/m²). Describe una relación entre peso y estatura; no mide la grasa corporal ni la salud.")}</p>
                 <p>{tr(language, "BMI does not distinguish bone, muscle, fat distribution, body frame, or training history. It is only a rough numerical ratio—not a diagnosis. Interpret it with body composition, waist trend, performance, recovery, how you feel, and professional assessment when needed.", "El IMC no distingue masa ósea, músculo, distribución de grasa, contextura ni historial de entrenamiento. Es solo una relación numérica aproximada, no un diagnóstico. Interpretalo junto con composición corporal, tendencia de cintura, rendimiento, recuperación, cómo te sentís y valoración profesional cuando sea necesario.")}</p>
               </div>
             </div>
@@ -339,6 +340,16 @@ export function ProfilePanel({
               <div><Droplets size={18} /><span>{tr(language, "Fluids", "Líquidos")}</span><strong>{wellness.hydrationLiters ? `${wellness.hydrationLiters.min}–${wellness.hydrationLiters.max} L` : tr(language, "Add weight", "Agregá tu peso")}</strong><small>{tr(language, "starting range; heat and sport add needs", "rango inicial; calor y deporte aumentan las necesidades")}</small></div>
               <div><Utensils size={18} /><span>{tr(language, "Maintenance", "Mantenimiento")}</span><strong>{wellness.maintenanceCalories ? `${wellness.maintenanceCalories.min.toLocaleString()}–${wellness.maintenanceCalories.max.toLocaleString()}` : tr(language, "Add complete body data", "Completá tus datos corporales")}</strong><small>{tr(language, "estimated kcal/day, not a prescription", "kcal/día estimadas, no una prescripción")}</small></div>
             </div>
+            <p className="nutrition-method-note">
+              {tr(
+                language,
+                "For physically active adults, the protein range uses 1.4–2.0 g/kg/day. These are grams of the protein nutrient—not grams of food. Needs can differ with clinical context, energy intake and professional guidance.",
+                "Para adultos físicamente activos, el rango de proteína usa 1,4–2,0 g/kg/día. Son gramos del nutriente proteína, no gramos de alimento. Las necesidades pueden cambiar según el contexto clínico, la energía consumida y la orientación profesional.",
+              )}{" "}
+              <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noreferrer">ISSN</a>
+              {" · "}
+              <a href="https://www.acsm.org/docs/default-source/files-for-resource-library/protein-intake-for-optimal-muscle-maintenance.pdf" target="_blank" rel="noreferrer">ACSM</a>
+            </p>
 
             <div className="nutrition-preferences">
               <label className="health-field">
@@ -370,6 +381,13 @@ export function ProfilePanel({
               {showMealOptions && (
                 <>
                   <p className="meal-protein-heading">{tr(language, "Protein target per meal", "Meta de proteína por comida")}</p>
+                  <p className="meal-protein-explainer">
+                    {tr(
+                      language,
+                      "The number shown is grams of the protein nutrient—not grams of food. It simply divides the daily planning range across four eating moments; adjust the distribution to your appetite and training schedule.",
+                      "El número mostrado son gramos del nutriente proteína, no gramos de alimento. Solo distribuye el rango diario entre cuatro momentos de comida; ajustá la distribución según tu apetito y horario de entrenamiento.",
+                    )}
+                  </p>
                   <div className="meal-options-grid">
                     {createDailyFoodOptions(healthProfile, language).map((meal) => (
                       <article key={meal.key}>
@@ -380,34 +398,29 @@ export function ProfilePanel({
                       </article>
                     ))}
                   </div>
-                  <fieldset className="ingredient-picker">
-                    <legend>{tr(language, "Ingredients you enjoy", "Ingredientes que te gustan")}</legend>
-                    {([
-                      ["eggs", "Eggs", "Huevos"],
-                      ["chicken", "Chicken", "Pollo"],
-                      ["fish", "Fish", "Pescado"],
-                      ["legumes", "Legumes", "Legumbres"],
-                      ["tofu", "Tofu", "Tofu"],
-                      ["rice", "Rice", "Arroz"],
-                      ["potato", "Potato", "Papa"],
-                      ["oats", "Oats", "Avena"],
-                      ["vegetables", "Vegetables", "Vegetales"],
-                    ] as const).map(([value, english, spanish]) => (
-                      <label key={value}>
-                        <input
-                          type="checkbox"
-                          checked={(healthProfile.preferredIngredients ?? []).includes(value)}
-                          onChange={(event) => {
-                            const current = healthProfile.preferredIngredients ?? [];
-                            updateHealth("preferredIngredients", event.target.checked
-                              ? [...new Set([...current, value])]
-                              : current.filter((item) => item !== value));
-                          }}
-                        />
-                        {tr(language, english, spanish)}
-                      </label>
+                  <div className="ingredient-groups">
+                    <p>{tr(language, "Choose as many as you like in each group", "Elegí tantas opciones como querás en cada grupo")}</p>
+                    {FOOD_GROUPS.map((group) => (
+                      <fieldset className="ingredient-picker" key={group.key}>
+                        <legend>{tr(language, group.label[0], group.label[1])}</legend>
+                        {group.options.map(([value, english, spanish]) => (
+                          <label key={value}>
+                            <input
+                              type="checkbox"
+                              checked={(healthProfile.preferredIngredients ?? []).includes(value)}
+                              onChange={(event) => {
+                                const current = healthProfile.preferredIngredients ?? [];
+                                updateHealth("preferredIngredients", event.target.checked
+                                  ? [...new Set([...current, value])]
+                                  : current.filter((item) => item !== value));
+                              }}
+                            />
+                            {tr(language, english, spanish)}
+                          </label>
+                        ))}
+                      </fieldset>
                     ))}
-                  </fieldset>
+                  </div>
                   <button type="button" onClick={() => setShowRecipeIdeas(true)}>
                     {tr(language, "Create recipe ideas", "Crear ideas de recetas")}
                   </button>
@@ -439,12 +452,12 @@ export function ProfilePanel({
               <div className="food-results" aria-live="polite">
                 {foodResults.map((food) => (
                   <article key={food.id}>
-                    <div><strong>{food.name}</strong><small>{food.dataType} · values per {food.serving}</small></div>
+                    <div><strong>{food.name}</strong><small>{food.dataType} · {tr(language, "values per", "valores por")} {food.serving}</small></div>
                     <dl>
                       <div><dt>kcal</dt><dd>{food.calories ?? "—"}</dd></div>
-                      <div><dt>protein</dt><dd>{food.proteinGrams === null ? "—" : `${food.proteinGrams} g`}</dd></div>
-                      <div><dt>carbs</dt><dd>{food.carbohydrateGrams === null ? "—" : `${food.carbohydrateGrams} g`}</dd></div>
-                      <div><dt>fat</dt><dd>{food.fatGrams === null ? "—" : `${food.fatGrams} g`}</dd></div>
+                      <div><dt>{tr(language, "protein", "proteína")}</dt><dd>{food.proteinGrams === null ? "—" : `${food.proteinGrams} g`}</dd></div>
+                      <div><dt>{tr(language, "carbs", "carbohidratos")}</dt><dd>{food.carbohydrateGrams === null ? "—" : `${food.carbohydrateGrams} g`}</dd></div>
+                      <div><dt>{tr(language, "fat", "grasa")}</dt><dd>{food.fatGrams === null ? "—" : `${food.fatGrams} g`}</dd></div>
                     </dl>
                   </article>
                 ))}
@@ -455,7 +468,7 @@ export function ProfilePanel({
           </div>
         )}
 
-        <button className="profile-done" type="button" onClick={onClose}>Done</button>
+        <button className="profile-done" type="button" onClick={onClose}>{tr(language, "Done", "Listo")}</button>
       </aside>
     </div>
   );
