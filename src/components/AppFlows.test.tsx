@@ -456,7 +456,10 @@ describe("profile access", () => {
       tracks={[track]}
       activeTrackId={track.id}
       favoriteCount={0}
-      healthProfile={{ ...healthProfile, preferredIngredients: ["eggs", "rice", "vegetables"] }}
+      healthProfile={{
+        ...healthProfile,
+        preferredIngredients: ["egg", "white-rice-cooked", "spinach-raw", "olive-oil"],
+      }}
       checkIns={[]}
       onNameChange={vi.fn()}
       onHealthProfileChange={vi.fn()}
@@ -474,14 +477,12 @@ describe("profile access", () => {
     expect(screen.getByText(/180 g of cooked lean beef.*about 55 g of protein/i)).toBeTruthy();
     expect(screen.getByRole("link", { name: "USDA FoodData Central source" }).getAttribute("href"))
       .toBe("https://fdc.nal.usda.gov/food-details/170641/nutrients");
-    expect(screen.getByRole("group", { name: "Protein foods" })).toBeTruthy();
-    expect(screen.getByRole("group", { name: "Vegetables" })).toBeTruthy();
-    expect(screen.getByRole("group", { name: "Carbohydrate foods" })).toBeTruthy();
-    expect(screen.getByRole("group", { name: "Fats" })).toBeTruthy();
-    expect(screen.getByRole("group", { name: "Fruits" })).toBeTruthy();
+    expect(screen.getByText("11 food groups · 95 ingredients")).toBeTruthy();
+    expect(screen.getByText(/Grains.*18/)).toBeTruthy();
+    expect(screen.getByText(/Vegetables.*9/)).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Create recipe ideas" }));
-    expect(screen.getByText(/Egg and vegetable rice bowl/)).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /Egg.*cooked white rice.*raw spinach/i })).toBeTruthy();
   });
 
   it("shows only equipment matching the selected body part", async () => {

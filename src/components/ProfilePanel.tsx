@@ -15,7 +15,15 @@ import {
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { searchFoodData, type FoodSearchResult } from "../lib/foodData";
 import { tr } from "../lib/i18n";
-import { createDailyFoodOptions, createRecipeIdeas, FOOD_GROUPS } from "../lib/nutritionPlanning";
+import {
+  createDailyFoodOptions,
+  createRecipeIdeas,
+  FOOD_GROUPS,
+  FOOD_ITEMS,
+  foodName,
+  formatFoodServing,
+  normalizePreferredIngredients,
+} from "../lib/nutritionPlanning";
 import { adultBirthDateBounds, calculateAgeFromBirthDate, createWellnessSummary } from "../lib/wellness";
 import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
@@ -82,6 +90,8 @@ export function ProfilePanel({
   const wellness = useMemo(() => createWellnessSummary(healthProfile, language), [healthProfile, language]);
   const calculatedAge = calculateAgeFromBirthDate(healthProfile.birthDate ?? "");
   const birthDateBounds = adultBirthDateBounds();
+  const selectedIngredients = normalizePreferredIngredients(healthProfile.preferredIngredients ?? []);
+  const recipeIdeas = createRecipeIdeas(selectedIngredients, language);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -97,6 +107,15 @@ export function ProfilePanel({
 
   function updateHealth<Key extends keyof HealthProfile>(key: Key, value: HealthProfile[Key]) {
     onHealthProfileChange({ ...healthProfile, [key]: value });
+  }
+
+  function togglePreferredIngredient(ingredientId: string, checked: boolean) {
+    updateHealth(
+      "preferredIngredients",
+      checked
+        ? [...new Set([...selectedIngredients, ingredientId])]
+        : selectedIngredients.filter((item) => item !== ingredientId),
+    );
   }
 
   function updateBirthDate(value: string) {
@@ -423,37 +442,72 @@ export function ProfilePanel({
                     ))}
                   </div>
                   <div className="ingredient-groups">
-                    <p>{tr(language, "Choose as many as you like in each group", "Elegí tantas opciones como querás en cada grupo")}</p>
-                    {FOOD_GROUPS.map((group) => (
-                      <fieldset className="ingredient-picker" key={group.key}>
-                        <legend>{tr(language, group.label[0], group.label[1])}</legend>
-                        {group.options.map(([value, english, spanish]) => (
-                          <label key={value}>
-                            <input
-                              type="checkbox"
-                              checked={(healthProfile.preferredIngredients ?? []).includes(value)}
-                              onChange={(event) => {
-                                const current = healthProfile.preferredIngredients ?? [];
-                                updateHealth("preferredIngredients", event.target.checked
-                                  ? [...new Set([...current, value])]
-                                  : current.filter((item) => item !== value));
-                              }}
-                            />
-                            {tr(language, english, spanish)}
-                          </label>
-                        ))}
-                      </fieldset>
-                    ))}
+                    <div className="ingredient-library-heading">
+                      <p>{tr(language, "Complete food list", "Lista completa de alimentos")}</p>
+                      <span>{tr(language, "11 food groups · 95 ingredients", "11 grupos alimentarios · 95 ingredientes")}</span>
+                    </div>
+                    <p>{tr(
+                      language,
+                      "Open only the groups you want. The serving shown is the reference from your file, not a rigid prescription.",
+                      "Desplegá solo los grupos que querás. La porción mostrada es la referencia de tu archivo, no una prescripción rígida.",
+                    )}</p>
+                    {FOOD_GROUPS.map((group) => {
+                      const groupFoods = FOOD_ITEMS.filter((food) => food.group === group.key);
+                      const selectedCount = groupFoods.filter((food) => selectedIngredients.includes(food.id)).length;
+                      return (
+                        <details className="ingredient-group" key={group.key}>
+                          <summary>
+                            <span>
+                              {language === "es" ? group.label.es : group.label.en} · {groupFoods.length}
+                            </span>
+                            <small>{tr(
+                              language,
+                              `${selectedCount} selected`,
+                              `${selectedCount} ${selectedCount === 1 ? "seleccionado" : "seleccionados"}`,
+                            )}</small>
+                          </summary>
+                          <fieldset className="ingredient-picker">
+                            <legend className="sr-only">{language === "es" ? group.label.es : group.label.en}</legend>
+                            {groupFoods.map((food) => (
+                              <label key={food.id}>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedIngredients.includes(food.id)}
+                                  onChange={(event) => togglePreferredIngredient(food.id, event.target.checked)}
+                                />
+                                <span>
+                                  <strong>{foodName(food, language)}</strong>
+                                  <small>{formatFoodServing(food, language)}</small>
+                                </span>
+                              </label>
+                            ))}
+                          </fieldset>
+                        </details>
+                      );
+                    })}
                   </div>
-                  <button type="button" onClick={() => setShowRecipeIdeas(true)}>
+                  <button
+                    type="button"
+                    disabled={selectedIngredients.length < 2}
+                    onClick={() => setShowRecipeIdeas(true)}
+                  >
                     {tr(language, "Create recipe ideas", "Crear ideas de recetas")}
                   </button>
+                  {selectedIngredients.length < 2 && (
+                    <p className="ingredient-selection-note">
+                      {tr(
+                        language,
+                        "Choose at least two ingredients to create a meal idea.",
+                        "Elegí al menos dos ingredientes para crear una idea de comida.",
+                      )}
+                    </p>
+                  )}
                 </>
               )}
 
               {showRecipeIdeas && (
                 <div className="recipe-ideas">
-                  {createRecipeIdeas(healthProfile.preferredIngredients ?? [], language).map((recipe) => (
+                  {recipeIdeas.map((recipe) => (
                     <article key={recipe.name}><h4>{recipe.name}</h4><p>{recipe.description}</p></article>
                   ))}
                 </div>
