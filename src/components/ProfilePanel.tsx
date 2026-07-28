@@ -388,6 +388,30 @@ export function ProfilePanel({
                       "El número mostrado son gramos del nutriente proteína, no gramos de alimento. Solo distribuye el rango diario entre cuatro momentos de comida; ajustá la distribución según tu apetito y horario de entrenamiento.",
                     )}
                   </p>
+                  <div className="protein-food-reference">
+                    <strong>{tr(language, "Food-to-nutrient example", "Ejemplo de alimento a nutriente")}</strong>
+                    <p>
+                      {tr(
+                        language,
+                        "180 g of cooked lean beef (tenderloin) provide about 55 g of protein.",
+                        "180 g de carne magra de res cocida (lomo) aportan aproximadamente 55 g de proteína.",
+                      )}
+                    </p>
+                    <small>
+                      {tr(
+                        language,
+                        "USDA reference: 30.7 g protein per 100 g cooked. The result varies by cut, fat trimming and cooking; raw and cooked weights are not interchangeable.",
+                        "Referencia USDA: 30,7 g de proteína por cada 100 g cocidos. El resultado cambia según el corte, la grasa retirada y la cocción; el peso crudo y el cocido no son intercambiables.",
+                      )}{" "}
+                      <a
+                        href="https://fdc.nal.usda.gov/food-details/170641/nutrients"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {tr(language, "USDA FoodData Central source", "Fuente USDA FoodData Central")}
+                      </a>
+                    </small>
+                  </div>
                   <div className="meal-options-grid">
                     {createDailyFoodOptions(healthProfile, language).map((meal) => (
                       <article key={meal.key}>

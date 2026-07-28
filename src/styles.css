@@ -587,6 +587,11 @@ footer a { text-underline-offset: 3px; }
 .meal-planner > button:hover { background: var(--ink); color: var(--white); }
 .meal-protein-heading { margin: 18px 0 8px; font-size: .72rem; font-weight: 800; }
 .meal-protein-explainer { margin: 0 0 10px; }
+.protein-food-reference { margin: 0 0 12px; padding: 12px; border-left: 4px solid var(--acid); background: var(--paper); }
+.protein-food-reference strong { font-size: .72rem; }
+.protein-food-reference p { margin: 6px 0 4px; font-size: .72rem; line-height: 1.45; }
+.protein-food-reference small { color: var(--muted); font-size: .62rem; line-height: 1.45; }
+.protein-food-reference a { font-weight: 800; text-underline-offset: 3px; }
 .meal-options-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .meal-options-grid article, .recipe-ideas article { padding: 12px; border: 1px solid var(--line); background: var(--paper); }
 .meal-options-grid h4, .recipe-ideas h4 { margin: 0 0 8px; font: 800 .9rem/1 "Arial Narrow", sans-serif; text-transform: uppercase; }

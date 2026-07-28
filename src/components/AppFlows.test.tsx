@@ -471,6 +471,9 @@ describe("profile access", () => {
     expect(screen.getByRole("heading", { name: "Breakfast" })).toBeTruthy();
     expect(screen.getByText(/Protein target/)).toBeTruthy();
     expect(screen.getAllByText(/grams of the protein nutrient—not grams of food/)).toHaveLength(2);
+    expect(screen.getByText(/180 g of cooked lean beef.*about 55 g of protein/i)).toBeTruthy();
+    expect(screen.getByRole("link", { name: "USDA FoodData Central source" }).getAttribute("href"))
+      .toBe("https://fdc.nal.usda.gov/food-details/170641/nutrients");
     expect(screen.getByRole("group", { name: "Protein foods" })).toBeTruthy();
     expect(screen.getByRole("group", { name: "Vegetables" })).toBeTruthy();
     expect(screen.getByRole("group", { name: "Carbohydrate foods" })).toBeTruthy();
