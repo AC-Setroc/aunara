@@ -1,8 +1,10 @@
 import {
   ArrowDown,
+  BookOpen,
   Cloud,
   Dumbbell,
   Heart,
+  House,
   Languages,
   Search,
   SlidersHorizontal,
@@ -15,6 +17,7 @@ import {
   type AccessMode,
 } from "./components/AccessPanel";
 import { ExerciseCard } from "./components/ExerciseCard";
+import { ExerciseAssignmentDialog } from "./components/ExerciseAssignmentDialog";
 import { ExerciseDetail } from "./components/ExerciseDetail";
 import { InitialRoutineProposal } from "./components/InitialRoutineProposal";
 import { OnboardingPanel } from "./components/OnboardingPanel";
@@ -28,6 +31,7 @@ import {
   equipmentOptionsForBodyPart,
   filterExercises,
   generateTrackWorkout,
+  isEquipmentFreeExercise,
   logWorkoutLoad,
   removeTrainingTrack,
   replaceTrackWorkout,
@@ -39,10 +43,12 @@ import {
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
 import { addWeeklyCheckIn, buildRoutineAnalysis } from "./lib/wellness";
-import type { Exercise, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
+import type { EquipmentPreference, Exercise, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
 
 const PAGE_SIZE = 48;
 type WorkoutPanelMode = "view" | "edit" | "training";
+type AppSection = "home" | "library";
+type ExerciseOrigin = "library" | "proposal" | "workout";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -80,8 +86,12 @@ function App() {
   const [bodyPart, setBodyPart] = useState("");
   const [equipment, setEquipment] = useState("");
   const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [libraryEquipmentPreference, setLibraryEquipmentPreference] = useState<EquipmentPreference>("mixed");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const [selectedExerciseOrigin, setSelectedExerciseOrigin] = useState<ExerciseOrigin>("library");
+  const [assignmentExercise, setAssignmentExercise] = useState<Exercise | null>(null);
+  const [appSection, setAppSection] = useState<AppSection>("home");
   const [workoutOpen, setWorkoutOpen] = useState(false);
   const [workoutPanelMode, setWorkoutPanelMode] = useState<WorkoutPanelMode>("view");
   const [profileOpen, setProfileOpen] = useState(false);
@@ -222,12 +232,16 @@ function App() {
   const activeTrack = tracks.find((track) => track.id === activeTrackId) ?? tracks[0];
   const latestCheckIn = checkIns[0];
   const workout = activeTrack?.workout ?? [];
-  const workoutIds = useMemo(() => new Set(workout.map((item) => item.exerciseId)), [workout]);
+  const workoutIds = useMemo(() => new Set(tracks.flatMap((track) => track.workout.map((item) => item.exerciseId))), [tracks]);
   const exerciseMap = useMemo(() => new Map(exercises.map((exercise) => [exercise.id, exercise])), [exercises]);
-  const bodyParts = useMemo(() => uniqueSorted(exercises, "body_part"), [exercises]);
+  const preferenceFilteredExercises = useMemo(
+    () => libraryEquipmentPreference === "bodyweight" ? exercises.filter(isEquipmentFreeExercise) : exercises,
+    [exercises, libraryEquipmentPreference],
+  );
+  const bodyParts = useMemo(() => uniqueSorted(preferenceFilteredExercises, "body_part"), [preferenceFilteredExercises]);
   const equipmentOptions = useMemo(
-    () => equipmentOptionsForBodyPart(exercises, bodyPart),
-    [bodyPart, exercises],
+    () => equipmentOptionsForBodyPart(preferenceFilteredExercises, bodyPart),
+    [bodyPart, preferenceFilteredExercises],
   );
   const routineAnalysis = useMemo(
     () => activeTrack ? buildRoutineAnalysis(activeTrack, healthProfile, latestCheckIn, language) : null,
@@ -239,13 +253,14 @@ function App() {
       query: deferredQuery,
       bodyPart,
       equipment,
+      equipmentPreference: libraryEquipmentPreference,
       favoritesOnly,
       favoriteIds: favorites,
     }),
-    [bodyPart, deferredQuery, equipment, exercises, favorites, favoritesOnly],
+    [bodyPart, deferredQuery, equipment, exercises, favorites, favoritesOnly, libraryEquipmentPreference],
   );
   const visibleExercises = filtered.slice(0, visibleCount);
-  const filtersActive = Boolean(query || bodyPart || equipment || favoritesOnly);
+  const filtersActive = Boolean(query || bodyPart || equipment || favoritesOnly || libraryEquipmentPreference !== "mixed");
 
   useEffect(() => {
     if (!canUseTraining || !exercises.length || healthProfile.initialRoutineDecision || initialProposal) return;
@@ -287,11 +302,10 @@ function App() {
   }, [activeTrackId, setActiveTrackId, tracks]);
 
   useEffect(() => {
-    if (!activeTrack) return;
-    setEquipment(activeTrack.equipment === "bodyweight" ? "body weight" : "");
-  }, [activeTrack?.equipment, activeTrack?.id]);
+    setLibraryEquipmentPreference(healthProfile.equipmentPreference ?? "mixed");
+  }, [healthProfile.equipmentPreference]);
 
-  useEffect(() => setVisibleCount(PAGE_SIZE), [deferredQuery, bodyPart, equipment, favoritesOnly]);
+  useEffect(() => setVisibleCount(PAGE_SIZE), [deferredQuery, bodyPart, equipment, favoritesOnly, libraryEquipmentPreference]);
 
   useEffect(() => {
     if (equipment && !equipmentOptions.includes(equipment)) setEquipment("");
@@ -313,23 +327,45 @@ function App() {
     });
   }
 
+  function buildWorkoutItem(exerciseId: string, day: Weekday): WorkoutItem {
+    return {
+      id: typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `movement-${Date.now()}`,
+      exerciseId,
+      sets: 3,
+      reps: 10,
+      day,
+      setPlan: "3 × 10",
+      loadKg: null,
+      loadHistory: [],
+    };
+  }
+
+  function appendExerciseToTrack(trackId: string, exerciseId: string, day: Weekday, allowDuplicate = true) {
+    setTracks((current) => current.map((track) => {
+      if (track.id !== trackId || (!allowDuplicate && track.workout.some((item) => item.exerciseId === exerciseId))) return track;
+      return { ...track, workout: [...track.workout, buildWorkoutItem(exerciseId, day)] };
+    }));
+  }
+
   function appendWorkoutExercise(exerciseId: string, allowDuplicate = false, day?: Weekday) {
-    updateActiveWorkout((current) => !allowDuplicate && current.some((item) => item.exerciseId === exerciseId)
-      ? current
-      : [...current, {
-        id: typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `movement-${Date.now()}`,
-        exerciseId,
-        sets: 3,
-        reps: 10,
-        day: day ?? activeTrack?.trainingDays?.[0] ?? "monday",
-        setPlan: "3 × 10",
-        loadKg: null,
-        loadHistory: [],
-      }]);
+    if (!activeTrack) return;
+    appendExerciseToTrack(
+      activeTrack.id,
+      exerciseId,
+      day ?? activeTrack.trainingDays?.[0] ?? "monday",
+      allowDuplicate,
+    );
   }
 
   function addToWorkout(exerciseId: string) {
-    appendWorkoutExercise(exerciseId);
+    const exercise = exerciseMap.get(exerciseId);
+    if (exercise) setAssignmentExercise(exercise);
+  }
+
+  function removeExerciseFromTrack(trackId: string, itemId: string) {
+    setTracks((current) => current.map((track) => track.id === trackId
+      ? { ...track, workout: track.workout.filter((item) => (item.id ?? item.exerciseId) !== itemId) }
+      : track));
   }
 
   function updateWorkout(itemId: string, field: "sets" | "reps", delta: number) {
@@ -372,7 +408,6 @@ function App() {
     const track = tracks.find((candidate) => candidate.id === trackId);
     if (!track) return;
     setActiveTrackId(trackId);
-    setEquipment(track.equipment === "bodyweight" ? "body weight" : "");
   }
 
   function openTrack(trackId: string) {
@@ -406,7 +441,6 @@ function App() {
     }
     setTracks((current) => [...current, track]);
     setActiveTrackId(id);
-    setEquipment(track.equipment === "bodyweight" ? "body weight" : "");
     setWorkoutPanelMode("edit");
     setWorkoutOpen(true);
   }
@@ -415,7 +449,6 @@ function App() {
     if (!trackProposal) return;
     setTracks((current) => [...current, trackProposal]);
     setActiveTrackId(trackProposal.id);
-    setEquipment(trackProposal.equipment === "bodyweight" ? "body weight" : "");
     setTrackProposal(null);
     if (openForEditing) {
       setWorkoutPanelMode("edit");
@@ -456,7 +489,12 @@ function App() {
   }
 
   function openExerciseFromWorkout(exercise: Exercise) {
-    setWorkoutOpen(false);
+    setSelectedExerciseOrigin("workout");
+    setSelectedExercise(exercise);
+  }
+
+  function openExercise(exercise: Exercise, origin: ExerciseOrigin) {
+    setSelectedExerciseOrigin(origin);
     setSelectedExercise(exercise);
   }
 
@@ -471,6 +509,7 @@ function App() {
     setQuery("");
     setBodyPart("");
     setEquipment("");
+    setLibraryEquipmentPreference(healthProfile.equipmentPreference ?? "mixed");
     setFavoritesOnly(false);
   }
 
@@ -482,7 +521,7 @@ function App() {
   return (
     <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label={tr(language, "Repbook home", "Inicio de Repbook")}>
+        <a className="brand" href="#top" onClick={() => setAppSection("home")} aria-label={tr(language, "Repbook home", "Inicio de Repbook")}>
           <span className="brand-mark">R/B</span>
           <span><strong>REPBOOK</strong><small>{tr(language, "Personal field notes", "Bitácora personal")}</small></span>
         </a>
@@ -497,6 +536,14 @@ function App() {
               <UserRound size={17} />
               <span>{profileName.trim() || tr(language, "My profile", "Mi perfil")}</span>
             </button>}
+            {!onboardingRequired && <div className="section-navigation" aria-label={tr(language, "Main sections", "Secciones principales")}>
+              <button className={appSection === "home" ? "is-active" : ""} type="button" onClick={() => setAppSection("home")}>
+                <House size={16} /> {tr(language, "Home", "Inicio")}
+              </button>
+              <button className={appSection === "library" ? "is-active" : ""} type="button" onClick={() => setAppSection("library")}>
+                <BookOpen size={16} /> {tr(language, "Exercises", "Ejercicios")}
+              </button>
+            </div>}
             <label className="language-select">
               <Languages size={16} />
               <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
@@ -533,7 +580,7 @@ function App() {
       </header>
 
       <main id="top">
-        <section className="hero" aria-labelledby="hero-title">
+        {appSection === "home" && <section className="hero" aria-labelledby="hero-title">
           <div className="hero-index" aria-hidden="true">001—1324</div>
           <div className="hero-copy">
             <p className="eyebrow">{tr(language, "The movement archive", "El archivo de movimiento")}</p>
@@ -545,11 +592,11 @@ function App() {
           <div className="hero-note">
             <span>{tr(language, "FIELD NOTE / 01", "NOTA DE CAMPO / 01")}</span>
             <p>{tr(language, "Good training is repeatable. Choose fewer movements. Record the work. Return stronger.", "Un buen entrenamiento se puede repetir. Elegí menos movimientos, registrá el trabajo y volvé más fuerte.")}</p>
-            <ArrowDown size={20} />
+            {hasAppAccess && <ArrowDown size={20} />}
           </div>
-        </section>
+        </section>}
 
-        {canUseTraining && exercises.length > 0 && (
+        {appSection === "home" && canUseTraining && exercises.length > 0 && (
           <TrainingTracks
             language={language}
             tracks={tracks}
@@ -562,7 +609,7 @@ function App() {
           />
         )}
 
-        {canUseTraining && <section className="library" aria-labelledby="library-title">
+        {appSection === "library" && canUseTraining && <section className="library" aria-labelledby="library-title">
           <div className="section-heading">
             <div>
               <p className="eyebrow">{tr(language, "Browse / filter / build", "Explorá / filtrá / armá")}</p>
@@ -590,6 +637,23 @@ function App() {
             </label>
 
             <div className="select-row">
+              <label>
+                <Dumbbell size={16} />
+                <span className="sr-only">{tr(language, "Equipment availability", "Disponibilidad de equipo")}</span>
+                <select
+                  aria-label={tr(language, "Equipment availability", "Disponibilidad de equipo")}
+                  value={libraryEquipmentPreference}
+                  onChange={(event) => {
+                    setLibraryEquipmentPreference(event.target.value as EquipmentPreference);
+                    setEquipment("");
+                    setBodyPart("");
+                  }}
+                >
+                  <option value="mixed">{tr(language, "Mixed", "Mixto")}</option>
+                  <option value="bodyweight">{tr(language, "No equipment", "Sin equipo")}</option>
+                  <option value="any">{tr(language, "All equipment", "Todo el equipo")}</option>
+                </select>
+              </label>
               <label>
                 <SlidersHorizontal size={16} />
                 <span className="sr-only">{tr(language, "Body part", "Parte del cuerpo")}</span>
@@ -642,7 +706,7 @@ function App() {
                     exercise={exercise}
                     isFavorite={favorites.has(exercise.id)}
                     inWorkout={workoutIds.has(exercise.id)}
-                    onOpen={() => setSelectedExercise(exercise)}
+                    onOpen={() => openExercise(exercise, "library")}
                     onToggleFavorite={() => toggleFavorite(exercise.id)}
                     onAdd={() => addToWorkout(exercise.id)}
                   />
@@ -678,6 +742,8 @@ function App() {
           language={language}
           track={initialProposal}
           exerciseMap={exerciseMap}
+          healthNotes={healthProfile.healthNotes}
+          onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
           onAccept={() => acceptInitialProposal(false)}
           onEdit={() => acceptInitialProposal(true)}
           onReject={rejectInitialProposal}
@@ -690,6 +756,8 @@ function App() {
           variant="track"
           track={trackProposal}
           exerciseMap={exerciseMap}
+          healthNotes={healthProfile.healthNotes}
+          onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
           onAccept={() => acceptTrackProposal(false)}
           onEdit={() => acceptTrackProposal(true)}
           onReject={() => setTrackProposal(null)}
@@ -712,11 +780,23 @@ function App() {
         <ExerciseDetail
           exercise={selectedExercise}
           language={language}
+          origin={selectedExerciseOrigin}
           isFavorite={favorites.has(selectedExercise.id)}
           inWorkout={workoutIds.has(selectedExercise.id)}
           onClose={() => setSelectedExercise(null)}
           onToggleFavorite={() => toggleFavorite(selectedExercise.id)}
           onAdd={() => addToWorkout(selectedExercise.id)}
+        />
+      )}
+
+      {canUseTraining && assignmentExercise && (
+        <ExerciseAssignmentDialog
+          language={language}
+          exercise={assignmentExercise}
+          tracks={tracks}
+          onClose={() => setAssignmentExercise(null)}
+          onAdd={(trackId, day) => appendExerciseToTrack(trackId, assignmentExercise.id, day)}
+          onRemove={removeExerciseFromTrack}
         />
       )}
 

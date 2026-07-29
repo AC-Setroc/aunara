@@ -1,5 +1,5 @@
 import { Check, Heart, Plus } from "lucide-react";
-import { mediaUrl, titleCase } from "../lib/exercises";
+import { exerciseDisplayName, mediaUrl, titleCase } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { Exercise, LanguageCode } from "../types";
 
@@ -22,9 +22,10 @@ export function ExerciseCard({
   onToggleFavorite,
   onAdd,
 }: ExerciseCardProps) {
+  const displayName = exerciseDisplayName(exercise, language);
   return (
     <article className="exercise-card">
-      <button className="card-visual" type="button" onClick={onOpen} aria-label={`${tr(language, "Open", "Abrir")} ${exercise.name}`}>
+      <button className="card-visual" type="button" onClick={onOpen} aria-label={`${tr(language, "Open", "Abrir")} ${displayName}`}>
         <img src={mediaUrl(exercise.image)} alt="" loading="lazy" />
         <span className="body-tag">{titleCase(exercise.body_part)}</span>
         <span className="card-number" aria-hidden="true">#{exercise.id}</span>
@@ -32,7 +33,7 @@ export function ExerciseCard({
 
       <div className="card-copy">
         <button className="card-title" type="button" onClick={onOpen}>
-          {titleCase(exercise.name)}
+          {displayName}
         </button>
         <p>{titleCase(exercise.target)} · {titleCase(exercise.equipment)}</p>
       </div>
@@ -42,7 +43,7 @@ export function ExerciseCard({
           className={`icon-button ${isFavorite ? "is-active" : ""}`}
           type="button"
           onClick={onToggleFavorite}
-          aria-label={isFavorite ? `${tr(language, "Remove", "Quitar")} ${exercise.name} ${tr(language, "from favorites", "de favoritos")}` : `${tr(language, "Favorite", "Guardar")} ${exercise.name}`}
+          aria-label={isFavorite ? `${tr(language, "Remove", "Quitar")} ${displayName} ${tr(language, "from favorites", "de favoritos")}` : `${tr(language, "Favorite", "Guardar")} ${displayName}`}
           aria-pressed={isFavorite}
         >
           <Heart size={17} fill={isFavorite ? "currentColor" : "none"} />
@@ -51,10 +52,9 @@ export function ExerciseCard({
           className={`add-button ${inWorkout ? "is-added" : ""}`}
           type="button"
           onClick={onAdd}
-          disabled={inWorkout}
         >
           {inWorkout ? <Check size={17} /> : <Plus size={17} />}
-          {inWorkout ? tr(language, "Added", "Agregado") : tr(language, "Add", "Agregar")}
+          {inWorkout ? tr(language, "Manage", "Gestionar") : tr(language, "Add", "Agregar")}
         </button>
       </div>
     </article>

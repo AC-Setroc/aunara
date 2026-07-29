@@ -4,6 +4,8 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Exercise, HealthProfile, TrainingTrack } from "../types";
 import { ProfilePanel } from "./ProfilePanel";
+import { ExerciseAssignmentDialog } from "./ExerciseAssignmentDialog";
+import { ExerciseDetail } from "./ExerciseDetail";
 import { InitialRoutineProposal } from "./InitialRoutineProposal";
 import { TrainingTracks } from "./TrainingTracks";
 import { WorkoutPanel } from "./WorkoutPanel";
@@ -244,6 +246,32 @@ describe("training track controls", () => {
 });
 
 describe("routine exercise controls", () => {
+  it("asks for a route and day before adding an exercise, and can remove an existing placement", () => {
+    const onAdd = vi.fn();
+    const onRemove = vi.fn();
+    const assignedTrack: TrainingTrack = {
+      ...track,
+      trainingDays: ["monday", "wednesday"],
+      workout: [{ id: "existing-jump", exerciseId: exercise.id, sets: 3, reps: 10, day: "monday" }],
+    };
+    render(<ExerciseAssignmentDialog
+      language="es"
+      exercise={exercise}
+      tracks={[assignedTrack]}
+      onClose={vi.fn()}
+      onAdd={onAdd}
+      onRemove={onRemove}
+    />);
+
+    expect(screen.getByRole("dialog", { name: "Gestionar Sentadilla con salto" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Miércoles" }));
+    fireEvent.click(screen.getByRole("button", { name: "Agregar a Strength base" }));
+    expect(onAdd).toHaveBeenCalledWith(track.id, "wednesday");
+
+    fireEvent.click(screen.getByRole("button", { name: "Quitar de Strength base, Lunes" }));
+    expect(onRemove).toHaveBeenCalledWith(track.id, "existing-jump");
+  });
+
   it("opens the animated demo and instructions from a routine exercise", () => {
     const onOpenExercise = vi.fn();
     render(<WorkoutPanel
@@ -421,6 +449,7 @@ describe("routine exercise controls", () => {
       variant="track"
       track={track}
       exerciseMap={new Map([[exercise.id, exercise]])}
+      onOpenExercise={vi.fn()}
       onAccept={onAccept}
       onEdit={onEdit}
       onReject={onReject}
@@ -434,6 +463,57 @@ describe("routine exercise controls", () => {
     expect(onAccept).toHaveBeenCalledOnce();
     expect(onEdit).toHaveBeenCalledOnce();
     expect(onReject).toHaveBeenCalledOnce();
+  });
+
+  it("opens movement details from the suggested-routine review", () => {
+    const onOpenExercise = vi.fn();
+    render(<InitialRoutineProposal
+      language="es"
+      track={track}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      onOpenExercise={onOpenExercise}
+      onAccept={vi.fn()}
+      onEdit={vi.fn()}
+      onReject={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Ver Sentadilla con salto" }));
+
+    expect(onOpenExercise).toHaveBeenCalledWith(exercise);
+  });
+
+  it("makes the return path explicit when a movement was opened from routine editing", () => {
+    const onClose = vi.fn();
+    render(<ExerciseDetail
+      language="es"
+      origin="workout"
+      exercise={exercise}
+      isFavorite={false}
+      inWorkout
+      onClose={onClose}
+      onToggleFavorite={vi.fn()}
+      onAdd={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Conservar y volver a la rutina" }));
+
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("explains how free-text health notes are handled before accepting a suggestion", () => {
+    render(<InitialRoutineProposal
+      language="es"
+      track={track}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      healthNotes="Dolor de rodilla; seguir indicaciones del fisioterapeuta."
+      onOpenExercise={vi.fn()}
+      onAccept={vi.fn()}
+      onEdit={vi.fn()}
+      onReject={vi.fn()}
+    />);
+
+    expect(screen.getByText("Tu nota de salud guardada necesita tu revisión.")).toBeTruthy();
+    expect(screen.getByText(/no interpreta médicamente el texto libre/i)).toBeTruthy();
   });
 });
 
@@ -566,6 +646,7 @@ describe("profile access", () => {
     }));
     render(<App />);
 
+    fireEvent.click(screen.getByRole("button", { name: "Exercises" }));
     await screen.findByRole("heading", { name: "Exercise library" });
     fireEvent.change(screen.getByLabelText("Body part"), { target: { value: "upper legs" } });
 

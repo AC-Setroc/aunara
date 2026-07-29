@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { filterExercises, findExerciseAlternatives, titleCase, WEEKDAYS } from "../lib/exercises";
+import { exerciseDisplayName, filterExercises, findExerciseAlternatives, titleCase, WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { RoutineAnalysis } from "../lib/wellness";
 import type { Exercise, LanguageCode, TrainingTrack, Weekday, WorkoutItem } from "../types";
@@ -171,6 +171,7 @@ export function WorkoutPanel({
                 <ExerciseAdder
                   language={language}
                   exercises={exercises}
+                  equipmentPreference={track.equipment}
                   routeDays={routeDays}
                   onAddExercise={onAddExercise}
                 />
@@ -247,7 +248,7 @@ export function WorkoutPanel({
                 const exercise = exerciseMap.get(item.exerciseId);
                 if (!exercise) return null;
                 const itemId = item.id ?? item.exerciseId;
-                const exerciseName = titleCase(exercise.name);
+                const exerciseName = exerciseDisplayName(exercise, language);
                 const alternatives = replacingId === itemId
                   ? findExerciseAlternatives(exercises, exercise, track.equipment, 3)
                   : [];
@@ -450,6 +451,7 @@ export function WorkoutPanel({
             <ExerciseAdder
               language={language}
               exercises={exercises}
+              equipmentPreference={track.equipment}
               routeDays={routeDays}
               onAddExercise={onAddExercise}
             />
@@ -467,6 +469,7 @@ export function WorkoutPanel({
 interface ExerciseAdderProps {
   language: LanguageCode;
   exercises: Exercise[];
+  equipmentPreference: TrainingTrack["equipment"];
   routeDays: Weekday[];
   onAddExercise: (exerciseId: string, day: Weekday) => void;
 }
@@ -474,6 +477,7 @@ interface ExerciseAdderProps {
 function ExerciseAdder({
   language,
   exercises,
+  equipmentPreference,
   routeDays,
   onAddExercise,
 }: ExerciseAdderProps) {
@@ -483,6 +487,7 @@ function ExerciseAdder({
     query,
     bodyPart: "",
     equipment: "",
+    equipmentPreference,
     favoritesOnly: false,
     favoriteIds: new Set(),
   }).slice(0, 12);
@@ -528,7 +533,7 @@ function ExerciseAdder({
 
       <div className="manual-exercise-results">
         {matches.length ? matches.map((exercise) => {
-          const exerciseName = titleCase(exercise.name);
+          const exerciseName = exerciseDisplayName(exercise, language);
           return (
             <article key={exercise.id}>
               <div>

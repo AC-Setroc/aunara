@@ -1,4 +1,4 @@
-import type { Exercise, Weekday, WorkoutItem } from "../types";
+import type { EquipmentPreference, Exercise, LanguageCode, Weekday, WorkoutItem } from "../types";
 
 export const DATASET_COMMIT = "7455efae41b330c265e7cd4b78dfa848e7ce5ebd";
 const MEDIA_ROOT = `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/${DATASET_COMMIT}`;
@@ -15,8 +15,59 @@ export interface ExerciseFilters {
   query: string;
   bodyPart: string;
   equipment: string;
+  equipmentPreference?: EquipmentPreference;
   favoritesOnly: boolean;
   favoriteIds: Set<string>;
+}
+
+const SUPPORT_EQUIPMENT_PATTERN = /\b(?:pull[\s-]?ups?|chin(?:-ups?)?|inverted rows?|hanging|bench|box|chair|lever|rings?|parallel bars?|cage|vertical bar|dip(?:s|ping)?|human flag|skin the cat|balance board|step[\s-]?ups?|stairs|tire|wheel run|hyperextension)\b/i;
+
+export function isEquipmentFreeExercise(exercise: Exercise): boolean {
+  return exercise.equipment === "body weight" && !SUPPORT_EQUIPMENT_PATTERN.test(exercise.name);
+}
+
+const SPANISH_EXERCISE_NAMES: Record<string, string> = {
+  "astride jumps (male)": "Saltos laterales",
+  "barbell bench press": "Press de banca con barra",
+  "barbell deadlift": "Peso muerto con barra",
+  "barbell full squat": "Sentadilla profunda con barra",
+  "bodyweight standing calf raise": "Elevación de pantorrilla de pie",
+  "cable lat pulldown full range of motion": "Jalón al pecho en polea con rango completo",
+  "cable standing calf raise": "Elevación de pantorrilla en polea",
+  "cable standing shoulder external rotation": "Rotación externa de hombro en polea",
+  "calf stretch with hands against wall": "Estiramiento de pantorrilla contra la pared",
+  "chest and front of shoulder stretch": "Estiramiento de pecho y hombro anterior",
+  "dead bug": "Dead bug",
+  "dumbbell bench press": "Press de banca con mancuernas",
+  "dumbbell biceps curl": "Curl de bíceps con mancuernas",
+  "dumbbell goblet squat": "Sentadilla goblet con mancuerna",
+  "dumbbell rear lateral raise": "Elevación lateral posterior con mancuernas",
+  "dumbbell rear lunge": "Zancada hacia atrás con mancuernas",
+  "dumbbell seated shoulder press": "Press de hombros sentado con mancuernas",
+  "dumbbell single leg deadlift": "Peso muerto a una pierna con mancuerna",
+  "dumbbell step-up": "Subida al banco con mancuernas",
+  "forward lunge (male)": "Zancada hacia adelante",
+  "hamstring stretch": "Estiramiento de isquiotibiales",
+  "jack jump (male)": "Saltos de tijera",
+  "jump rope": "Salto de cuerda",
+  "jump squat": "Sentadilla con salto",
+  "low glute bridge on floor": "Puente de glúteos en el suelo",
+  "mountain climber": "Escalador",
+  "pull-up": "Dominada",
+  "push-up": "Flexión de pecho",
+  "rear deltoid stretch": "Estiramiento de deltoides posterior",
+  "runners stretch": "Estiramiento del corredor",
+  "single leg bridge with outstretched leg": "Puente de glúteo a una pierna",
+  "spine stretch": "Estiramiento de columna",
+  "swimmer kicks v. 2 (male)": "Patada de nadador",
+  "world greatest stretch": "Estiramiento global",
+};
+
+export function exerciseDisplayName(exercise: Exercise, language: LanguageCode): string {
+  if (language === "es" && SPANISH_EXERCISE_NAMES[exercise.name]) {
+    return SPANISH_EXERCISE_NAMES[exercise.name];
+  }
+  return titleCase(exercise.name);
 }
 
 export function filterExercises(
@@ -26,6 +77,7 @@ export function filterExercises(
   const query = normalize(filters.query);
 
   return exercises.filter((exercise) => {
+    if (filters.equipmentPreference === "bodyweight" && !isEquipmentFreeExercise(exercise)) return false;
     if (filters.bodyPart && exercise.body_part !== filters.bodyPart) return false;
     if (filters.equipment && exercise.equipment !== filters.equipment) return false;
     if (filters.favoritesOnly && !filters.favoriteIds.has(exercise.id)) return false;
@@ -75,10 +127,10 @@ interface TrackMovementPreset {
 const BODYWEIGHT_STRENGTH = [
   "jump squat",
   "push-up",
-  "pull-up",
-  "inverted row",
   "forward lunge (male)",
   "dead bug",
+  "mountain climber",
+  "low glute bridge on floor",
 ];
 
 const TRACK_MOVEMENTS: Record<string, TrackMovementPreset> = {
@@ -110,7 +162,7 @@ const TRACK_MOVEMENTS: Record<string, TrackMovementPreset> = {
   },
   "general-fitness": {
     any: ["jump squat", "push-up", "pull-up", "forward lunge (male)", "dead bug", "jump rope"],
-    bodyweight: ["jump squat", "push-up", "pull-up", "forward lunge (male)", "dead bug", "jack jump (male)"],
+    bodyweight: ["jump squat", "push-up", "low glute bridge on floor", "forward lunge (male)", "dead bug", "jack jump (male)"],
   },
   endurance: {
     any: ["jump rope", "jack jump (male)", "astride jumps (male)", "push-up", "jump squat", "dead bug"],
@@ -181,7 +233,7 @@ export function generateTrackWorkout(
   track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[] },
 ): WorkoutItem[] {
   const eligible = track.equipment === "bodyweight"
-    ? exercises.filter((exercise) => exercise.equipment === "body weight")
+    ? exercises.filter(isEquipmentFreeExercise)
     : exercises;
   const preset = TRACK_MOVEMENTS[track.focus];
   let preferredNames = preset
@@ -192,7 +244,7 @@ export function generateTrackWorkout(
       .map((name) => exercises.find((exercise) => exercise.name === name))
       .filter((exercise): exercise is Exercise => Boolean(exercise));
     const equipped = candidates.filter((exercise) => exercise.equipment !== "body weight").slice(0, 3);
-    const bodyweight = candidates.filter((exercise) => exercise.equipment === "body weight").slice(0, 3);
+    const bodyweight = candidates.filter(isEquipmentFreeExercise).slice(0, 3);
     const selected = [...equipped, ...bodyweight];
     const selectedIds = new Set(selected.map((exercise) => exercise.id));
     preferredNames = [
@@ -286,7 +338,7 @@ export function findExerciseAlternatives(
   limit = 3,
 ): Exercise[] {
   const eligible = equipment === "bodyweight"
-    ? exercises.filter((exercise) => exercise.equipment === "body weight")
+    ? exercises.filter(isEquipmentFreeExercise)
     : exercises;
 
   return eligible

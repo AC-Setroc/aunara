@@ -1,12 +1,13 @@
-import { Check, Heart, Plus, X } from "lucide-react";
+import { ArrowLeft, Check, Heart, Plus, X } from "lucide-react";
 import { useEffect } from "react";
-import { mediaUrl, titleCase } from "../lib/exercises";
+import { exerciseDisplayName, mediaUrl, titleCase } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { Exercise, LanguageCode } from "../types";
 
 interface ExerciseDetailProps {
   exercise: Exercise;
   language: LanguageCode;
+  origin?: "library" | "proposal" | "workout";
   isFavorite: boolean;
   inWorkout: boolean;
   onClose: () => void;
@@ -17,6 +18,7 @@ interface ExerciseDetailProps {
 export function ExerciseDetail({
   exercise,
   language,
+  origin = "library",
   isFavorite,
   inWorkout,
   onClose,
@@ -39,6 +41,12 @@ export function ExerciseDetail({
     ? exercise.instruction_steps[language]
     : exercise.instruction_steps.en;
   const instructions = exercise.instructions[language] || exercise.instructions.en;
+  const displayName = exerciseDisplayName(exercise, language);
+  const backLabel = origin === "workout"
+    ? tr(language, "Keep and return to routine", "Conservar y volver a la rutina")
+    : origin === "proposal"
+      ? tr(language, "Back to proposal", "Volver a la propuesta")
+      : tr(language, "Back", "Volver");
 
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
@@ -54,15 +62,18 @@ export function ExerciseDetail({
         </button>
 
         <div className="detail-media">
-          <img src={mediaUrl(exercise.gif_url)} alt={`${tr(language, "Animated demonstration of", "Demostración animada de")} ${exercise.name}`} />
+          <img src={mediaUrl(exercise.gif_url)} alt={`${tr(language, "Animated demonstration of", "Demostración animada de")} ${displayName}`} />
           <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">
             © Gym visual
           </a>
         </div>
 
         <div className="detail-copy">
+          <button className="detail-back-button" type="button" onClick={onClose}>
+            <ArrowLeft size={16} /> {backLabel}
+          </button>
           <p className="eyebrow">{tr(language, "Movement", "Movimiento")} #{exercise.id} · {titleCase(exercise.body_part)}</p>
-          <h2 id="exercise-title">{titleCase(exercise.name)}</h2>
+          <h2 id="exercise-title">{displayName}</h2>
 
           <dl className="detail-facts">
             <div><dt>{tr(language, "Target", "Objetivo")}</dt><dd>{titleCase(exercise.target)}</dd></div>
@@ -95,9 +106,9 @@ export function ExerciseDetail({
               <Heart size={18} fill={isFavorite ? "currentColor" : "none"} />
               {isFavorite ? tr(language, "Saved", "Guardado") : tr(language, "Save movement", "Guardar movimiento")}
             </button>
-            <button className="primary-button" type="button" onClick={onAdd} disabled={inWorkout}>
+            <button className="primary-button" type="button" onClick={onAdd}>
               {inWorkout ? <Check size={18} /> : <Plus size={18} />}
-              {inWorkout ? tr(language, "In today’s workout", "En el entrenamiento de hoy") : tr(language, "Add to workout", "Agregar al entrenamiento")}
+              {inWorkout ? tr(language, "Manage in routines", "Gestionar en rutinas") : tr(language, "Add to routine", "Agregar a una ruta")}
             </button>
           </div>
         </div>

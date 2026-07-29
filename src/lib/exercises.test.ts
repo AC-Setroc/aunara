@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import * as exerciseLibrary from "./exercises";
-import { filterExercises, mediaUrl, titleCase, uniqueSorted } from "./exercises";
+import {
+  exerciseDisplayName,
+  filterExercises,
+  isEquipmentFreeExercise,
+  mediaUrl,
+  titleCase,
+  uniqueSorted,
+} from "./exercises";
 import type { Exercise } from "../types";
 
 const baseExercise: Exercise = {
@@ -131,6 +138,34 @@ describe("exercise helpers", () => {
     expect(mediaUrl("images/a.jpg")).toContain("/7455efae41b330c265e7cd4b78dfa848e7ce5ebd/images/a.jpg");
     expect(titleCase("upper arms")).toBe("Upper Arms");
   });
+
+  it("uses Spanish display names for movements curated by Repbook", () => {
+    expect(exerciseDisplayName({ ...squat, name: "jump squat" }, "es")).toBe("Sentadilla con salto");
+    expect(exerciseDisplayName({ ...squat, name: "jump squat" }, "en")).toBe("Jump Squat");
+  });
+
+  it("distinguishes floor bodyweight movements from movements that need support equipment", () => {
+    expect(isEquipmentFreeExercise({ ...squat, name: "push-up" })).toBe(true);
+    expect(isEquipmentFreeExercise({ ...squat, name: "pull-up" })).toBe(false);
+    expect(isEquipmentFreeExercise({ ...squat, name: "inverted row" })).toBe(false);
+  });
+
+  it("applies the saved no-equipment preference to library results", () => {
+    const results = filterExercises([
+      { ...squat, id: "push", name: "push-up" },
+      { ...squat, id: "pull", name: "pull-up" },
+      baseExercise,
+    ], {
+      query: "",
+      bodyPart: "",
+      equipment: "",
+      equipmentPreference: "bodyweight",
+      favoritesOnly: false,
+      favoriteIds: new Set(),
+    });
+
+    expect(results.map((exercise) => exercise.id)).toEqual(["push"]);
+  });
 });
 
 describe("training tracks", () => {
@@ -214,8 +249,9 @@ describe("training tracks", () => {
       ...strengthExercises,
       { ...squat, id: "0514", name: "jump squat" },
       { ...squat, id: "0662", name: "push-up", body_part: "chest", target: "pectorals" },
-      { ...squat, id: "0499", name: "inverted row", body_part: "back", target: "upper back" },
       { ...squat, id: "3470", name: "forward lunge (male)" },
+      { ...squat, id: "0630", name: "mountain climber", body_part: "cardio", target: "cardiovascular system" },
+      { ...squat, id: "3013", name: "low glute bridge on floor" },
     ];
     const workout = exerciseLibrary.generateTrackWorkout(bodyweightStrengthExercises, {
       focus: "strength",
@@ -223,7 +259,11 @@ describe("training tracks", () => {
     });
 
     expect(workout).toHaveLength(6);
-    expect(workout.every((item) => bodyweightStrengthExercises.find((exercise) => exercise.id === item.exerciseId)?.equipment === "body weight")).toBe(true);
+    expect(workout.every((item) => {
+      const selected = bodyweightStrengthExercises.find((exercise) => exercise.id === item.exerciseId);
+      return selected ? isEquipmentFreeExercise(selected) : false;
+    })).toBe(true);
+    expect(workout.map((item) => item.exerciseId)).not.toContain("0652");
   });
 
   it("balances a mixed strength routine across equipment and bodyweight movements", () => {

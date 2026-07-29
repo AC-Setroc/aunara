@@ -1,5 +1,5 @@
 import { Dumbbell, Pencil, ShieldCheck, X } from "lucide-react";
-import { titleCase } from "../lib/exercises";
+import { exerciseDisplayName } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { Exercise, LanguageCode, TrainingTrack } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
@@ -9,6 +9,8 @@ interface InitialRoutineProposalProps {
   variant?: "initial" | "track";
   track: TrainingTrack;
   exerciseMap: Map<string, Exercise>;
+  healthNotes?: string;
+  onOpenExercise: (exercise: Exercise) => void;
   onAccept: () => void;
   onEdit: () => void;
   onReject: () => void;
@@ -19,6 +21,8 @@ export function InitialRoutineProposal({
   variant = "initial",
   track,
   exerciseMap,
+  healthNotes = "",
+  onOpenExercise,
   onAccept,
   onEdit,
   onReject,
@@ -69,13 +73,30 @@ export function InitialRoutineProposal({
               const exercise = exerciseMap.get(item.exerciseId);
               return exercise ? (
                 <li key={item.id ?? item.exerciseId}>
-                  <Dumbbell size={15} />
-                  <span><strong>{titleCase(exercise.name)}</strong><small>{item.setPlan ?? `${item.sets} × ${item.reps}`}</small></span>
+                  <button
+                    type="button"
+                    onClick={() => onOpenExercise(exercise)}
+                    aria-label={`${tr(language, "View", "Ver")} ${exerciseDisplayName(exercise, language)}`}
+                  >
+                    <Dumbbell size={15} />
+                    <span><strong>{exerciseDisplayName(exercise, language)}</strong><small>{item.setPlan ?? `${item.sets} × ${item.reps}`}</small></span>
+                  </button>
                 </li>
               ) : null;
             })}
           </ol>
         </div>
+
+        {healthNotes.trim() && (
+          <p className="initial-proposal-health-note">
+            <strong>{tr(language, "Your saved health note needs your review.", "Tu nota de salud guardada necesita tu revisión.")}</strong>{" "}
+            {tr(
+              language,
+              "Repbook does not medically interpret free text or replace professional guidance; open each movement and reject or edit anything that conflicts with your instructions.",
+              "Repbook no interpreta médicamente el texto libre ni reemplaza indicaciones profesionales; abrí cada movimiento y rechazá o editá lo que contradiga tus indicaciones.",
+            )}
+          </p>
+        )}
 
         <p className="initial-proposal-note">
           {tr(
