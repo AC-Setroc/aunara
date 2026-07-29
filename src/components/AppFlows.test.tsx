@@ -434,6 +434,7 @@ describe("routine exercise controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Back to routine" }));
     fireEvent.click(screen.getByRole("button", { name: "Start today’s workout" }));
     fireEvent.click(screen.getByRole("button", { name: "Review my answer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
     fireEvent.change(screen.getByLabelText("Load in kilograms for Jump Squat"), { target: { value: "95" } });
     fireEvent.click(screen.getByRole("button", { name: "Log today’s load for Jump Squat" }));
 
