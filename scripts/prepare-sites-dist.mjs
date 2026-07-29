@@ -1,4 +1,4 @@
-import { mkdir, readdir, rename, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readdir, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -22,10 +22,16 @@ export async function prepareSitesDist(projectRoot) {
   const distDirectory = join(projectRoot, "dist");
   const clientDirectory = join(distDirectory, "client");
   const serverDirectory = join(distDirectory, "server");
+  const hostingDirectory = join(distDirectory, ".openai");
 
   await rm(clientDirectory, { recursive: true, force: true });
   await mkdir(clientDirectory, { recursive: true });
   await mkdir(serverDirectory, { recursive: true });
+  await mkdir(hostingDirectory, { recursive: true });
+  await copyFile(
+    join(projectRoot, ".openai", "hosting.json"),
+    join(hostingDirectory, "hosting.json"),
+  );
 
   const entries = await readdir(distDirectory, { withFileTypes: true });
   for (const entry of entries) {
