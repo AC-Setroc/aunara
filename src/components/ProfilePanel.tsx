@@ -26,6 +26,7 @@ import {
 } from "../lib/nutritionPlanning";
 import { adultBirthDateBounds, calculateAgeFromBirthDate, createWellnessSummary } from "../lib/wellness";
 import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
+import { ReadinessAndLimitations } from "./ReadinessAndLimitations";
 import { trackFocusLabel } from "./TrainingTracks";
 
 interface ProfilePanelProps {
@@ -270,14 +271,20 @@ export function ProfilePanel({
               </label>
             </div>
 
+            <ReadinessAndLimitations
+              language={language}
+              profile={healthProfile}
+              onChange={onHealthProfileChange}
+            />
+
             <label className="health-field health-notes">
-              <span>{tr(language, "Limitations or professional guidance", "Limitaciones o indicaciones profesionales")}</span>
+              <span>{tr(language, "Other health context", "Otro contexto de salud")}</span>
               <textarea
                 value={healthProfile.healthNotes}
                 onChange={(event) => updateHealth("healthNotes", event.target.value)}
-                placeholder={tr(language, "Example: avoid deep knee flexion; physiotherapist approved low-impact strength.", "Ejemplo: evitar flexión profunda de rodilla; fisioterapia autorizó fuerza de bajo impacto.")}
+                placeholder={tr(language, "Example: a professional asked me to monitor a specific symptom.", "Ejemplo: un profesional me pidió vigilar un síntoma específico.")}
               />
-              <small>{tr(language, "Repbook will remind you to review this note; it will not interpret medical conditions.", "Repbook te recordará revisar esta nota; no interpretará condiciones médicas.")}</small>
+              <small>{tr(language, "Repbook stores this note but does not medically interpret free text.", "Repbook guarda esta nota, pero no interpreta médicamente el texto libre.")}</small>
             </label>
 
             <div className="reference-card">

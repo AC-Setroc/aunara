@@ -433,11 +433,41 @@ describe("routine exercise controls", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Back to routine" }));
     fireEvent.click(screen.getByRole("button", { name: "Start today’s workout" }));
+    fireEvent.click(screen.getByRole("button", { name: "Review my answer" }));
     fireEvent.change(screen.getByLabelText("Load in kilograms for Jump Squat"), { target: { value: "95" } });
     fireEvent.click(screen.getByRole("button", { name: "Log today’s load for Jump Squat" }));
 
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ loadKg: 95 }));
     expect(onLogLoad).toHaveBeenCalledWith("monday-jump-squat");
+  });
+
+  it("checks for new warning symptoms before starting today’s workout", () => {
+    render(<WorkoutPanel
+      items={track.workout}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={track}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onUpdateItem={vi.fn()}
+      onLogLoad={vi.fn()}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "Context supports this plan", points: ["Strength is the primary focus."] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Start today’s workout" }));
+
+    expect(screen.getByRole("dialog", { name: "Check how you feel before starting" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("checkbox", { name: /new chest pain, pressure, dizziness or fainting/i }));
+    fireEvent.click(screen.getByRole("button", { name: "Review my answer" }));
+
+    expect(screen.getByText(/do not start this workout/i)).toBeTruthy();
+    expect(screen.queryByLabelText("Load in kilograms for Jump Squat")).toBeNull();
   });
 
   it("shows accept, edit, and reject actions for a regular suggested route", () => {
@@ -463,6 +493,34 @@ describe("routine exercise controls", () => {
     expect(onAccept).toHaveBeenCalledOnce();
     expect(onEdit).toHaveBeenCalledOnce();
     expect(onReject).toHaveBeenCalledOnce();
+  });
+
+  it("keeps a suggested routine as a review-only draft when warning symptoms are reported", () => {
+    const onAccept = vi.fn();
+    const onEdit = vi.fn();
+    const onReviewHealth = vi.fn();
+    render(<InitialRoutineProposal
+      language="en"
+      track={track}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      readiness={{
+        level: "professional-review",
+        reasons: ["You reported chest pain or pressure."],
+      }}
+      onOpenExercise={vi.fn()}
+      onAccept={onAccept}
+      onEdit={onEdit}
+      onReject={vi.fn()}
+      onReviewHealth={onReviewHealth}
+    />);
+
+    expect(screen.getByRole("button", { name: "Accept routine" }).hasAttribute("disabled")).toBe(true);
+    expect(screen.getByRole("button", { name: "Accept and edit" }).hasAttribute("disabled")).toBe(true);
+    fireEvent.click(screen.getByRole("button", { name: "Review health information" }));
+
+    expect(onAccept).not.toHaveBeenCalled();
+    expect(onEdit).not.toHaveBeenCalled();
+    expect(onReviewHealth).toHaveBeenCalledOnce();
   });
 
   it("opens movement details from the suggested-routine review", () => {
@@ -600,6 +658,31 @@ describe("profile access", () => {
     expect(onHealthProfileChange).toHaveBeenCalledWith({ ...healthProfile, bodyFatPercent: 24.5 });
     expect(onHealthProfileChange).toHaveBeenCalledWith({ ...healthProfile, musclePercent: 38 });
     expect(onHealthProfileChange).toHaveBeenCalledWith({ ...healthProfile, visceralFatLevel: 10 });
+  });
+
+  it("captures exercise-readiness warnings separately from free-form health notes", () => {
+    const onHealthProfileChange = vi.fn();
+    render(<ProfilePanel
+      name="My profile"
+      tracks={[track]}
+      activeTrackId={track.id}
+      favoriteCount={0}
+      healthProfile={healthProfile}
+      checkIns={[]}
+      onNameChange={vi.fn()}
+      onHealthProfileChange={onHealthProfileChange}
+      onAddCheckIn={vi.fn()}
+      onOpenTrack={vi.fn()}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
+
+    expect(screen.getByRole("heading", { name: "Exercise readiness" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("checkbox", { name: /chest pain or pressure/i }));
+    expect(onHealthProfileChange).toHaveBeenCalledWith(expect.objectContaining({
+      readinessScreen: expect.objectContaining({ chestPain: true }),
+    }));
   });
 
   it("creates daily food options and recipe ideas from preferred ingredients", () => {

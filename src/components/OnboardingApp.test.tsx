@@ -67,6 +67,7 @@ describe("mandatory starting profile", () => {
     fireEvent.change(screen.getByLabelText("Objetivo principal"), { target: { value: "strength" } });
     fireEvent.change(screen.getByLabelText("Días de entrenamiento por semana"), { target: { value: "3" } });
     fireEvent.change(screen.getByLabelText("Minutos por sesión"), { target: { value: "45" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Revisé estas respuestas/ }));
     fireEvent.click(screen.getByRole("button", { name: "Guardar y continuar" }));
 
     await waitFor(() => {
@@ -77,6 +78,7 @@ describe("mandatory starting profile", () => {
       onboardingCompleted: true,
       birthDate,
       ageYears: 36,
+      readinessScreen: { confirmed: true },
     });
 
     expect(await screen.findByRole("dialog", { name: "Revisá tu primera rutina" })).toBeTruthy();

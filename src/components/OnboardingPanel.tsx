@@ -3,6 +3,7 @@ import { type FormEvent, useMemo, useState } from "react";
 import { tr } from "../lib/i18n";
 import { adultBirthDateBounds, calculateAgeFromBirthDate } from "../lib/wellness";
 import type { EquipmentPreference, HealthProfile, LanguageCode, TrackFocus } from "../types";
+import { ReadinessAndLimitations } from "./ReadinessAndLimitations";
 
 interface OnboardingPanelProps {
   language: LanguageCode;
@@ -40,7 +41,8 @@ export function OnboardingPanel({
     && draft.currentWeightKg !== null
     && Boolean(draft.primaryGoal)
     && Boolean(draft.trainingDaysPerWeek)
-    && Boolean(draft.sessionMinutes);
+    && Boolean(draft.sessionMinutes)
+    && draft.readinessScreen?.confirmed === true;
   const orientation = useMemo(() => {
     const experience = draft.experience === "beginner"
       ? tr(language, "a gradual start with technique-first sessions", "un inicio gradual, priorizando la técnica")
@@ -169,9 +171,16 @@ export function OnboardingPanel({
             </label>
           </div>
 
+          <ReadinessAndLimitations
+            language={language}
+            profile={draft}
+            onChange={setDraft}
+            required
+          />
+
           <label className="health-field health-notes">
-            <span>{tr(language, "Limitations or professional guidance (optional)", "Limitaciones o indicaciones profesionales (opcional)")}</span>
-            <textarea value={draft.healthNotes} onChange={(event) => update("healthNotes", event.target.value)} placeholder={tr(language, "Example: avoid deep knee flexion.", "Ejemplo: evitar flexión profunda de rodilla.")} />
+            <span>{tr(language, "Other health context (optional)", "Otro contexto de salud (opcional)")}</span>
+            <textarea value={draft.healthNotes} onChange={(event) => update("healthNotes", event.target.value)} placeholder={tr(language, "Example: a professional asked me to monitor a specific symptom.", "Ejemplo: un profesional me pidió vigilar un síntoma específico.")} />
           </label>
 
           <div className="onboarding-orientation">

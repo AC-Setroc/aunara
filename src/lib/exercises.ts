@@ -1,4 +1,13 @@
-import type { EquipmentPreference, Exercise, LanguageCode, Weekday, WorkoutItem } from "../types";
+import type {
+  EquipmentPreference,
+  Exercise,
+  LanguageCode,
+  MovementRestriction,
+  RoutineAdaptation,
+  TrainingLimitation,
+  Weekday,
+  WorkoutItem,
+} from "../types";
 
 export const DATASET_COMMIT = "7455efae41b330c265e7cd4b78dfa848e7ce5ebd";
 const MEDIA_ROOT = `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/${DATASET_COMMIT}`;
@@ -278,6 +287,96 @@ export function generateTrackWorkout(
     });
 }
 
+const MOVEMENT_PATTERNS: Array<[MovementRestriction, RegExp]> = [
+  ["impact", /\b(?:jump|rope|sprint|plyo|mountain climber|burpee|hop)\b/i],
+  ["deep-knee-flexion", /\b(?:squat|lunge|leg press|step[\s-]?up|split squat)\b/i],
+  ["hip-hinge", /\b(?:deadlift|hip hinge|good morning|back extension|hyperextension)\b/i],
+  ["overhead", /\b(?:overhead|shoulder press|military press|handstand)\b/i],
+  ["push", /\b(?:push[\s-]?up|press|dip)\b/i],
+  ["pull", /\b(?:pull[\s-]?up|chin[\s-]?up|row|pulldown)\b/i],
+  ["rotation", /\b(?:rotation|twist|wood chop|russian twist)\b/i],
+  ["single-leg-balance", /\b(?:single leg|one leg|lunge|step[\s-]?up)\b/i],
+];
+
+export function exerciseMovementRestrictions(exercise: Exercise): MovementRestriction[] {
+  const searchable = [
+    exercise.name,
+    exercise.category,
+    exercise.body_part,
+    exercise.target,
+    exercise.muscle_group,
+    ...exercise.secondary_muscles,
+  ].join(" ");
+  return MOVEMENT_PATTERNS
+    .filter(([, pattern]) => pattern.test(searchable))
+    .map(([restriction]) => restriction);
+}
+
+function eligibleForPreference(exercise: Exercise, equipment: string): boolean {
+  return equipment !== "bodyweight" || isEquipmentFreeExercise(exercise);
+}
+
+function replacementScore(candidate: Exercise, excluded: Exercise): number {
+  let score = 0;
+  if (candidate.target === excluded.target) score += 6;
+  if (candidate.body_part === excluded.body_part) score += 3;
+  if (candidate.muscle_group === excluded.muscle_group) score += 2;
+  if (candidate.category === excluded.category) score += 1;
+  return score;
+}
+
+export function generateAdaptiveTrackWorkout(
+  exercises: Exercise[],
+  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[] },
+  limitations: TrainingLimitation[],
+): { workout: WorkoutItem[]; adaptations: RoutineAdaptation[] } {
+  const workout = generateTrackWorkout(exercises, track);
+  const restricted = new Set(limitations.flatMap((limitation) => limitation.restrictedMovements));
+  if (!restricted.size) return { workout, adaptations: [] };
+
+  const exerciseById = new Map(exercises.map((exercise) => [exercise.id, exercise]));
+  const usedIds = new Set(workout.map((item) => item.exerciseId));
+  const adaptations: RoutineAdaptation[] = [];
+  const adaptedWorkout = workout.flatMap((item) => {
+    const exercise = exerciseById.get(item.exerciseId);
+    if (!exercise) return [item];
+    const conflicts = exerciseMovementRestrictions(exercise).filter((restriction) => restricted.has(restriction));
+    if (!conflicts.length) return [item];
+
+    usedIds.delete(exercise.id);
+    const replacement = exercises
+      .filter((candidate) => candidate.id !== exercise.id)
+      .filter((candidate) => !usedIds.has(candidate.id))
+      .filter((candidate) => eligibleForPreference(candidate, track.equipment))
+      .filter((candidate) => (
+        exerciseMovementRestrictions(candidate).every((restriction) => !restricted.has(restriction))
+      ))
+      .map((candidate, index) => ({
+        candidate,
+        index,
+        score: replacementScore(candidate, exercise),
+      }))
+      .filter(({ score }) => score > 0)
+      .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.candidate;
+
+    adaptations.push({
+      excludedExerciseId: exercise.id,
+      replacementExerciseId: replacement?.id ?? null,
+      restrictions: conflicts,
+    });
+    if (!replacement) return [];
+
+    usedIds.add(replacement.id);
+    return [{
+      ...item,
+      id: `${item.id ?? exercise.id}-adapted-${replacement.id}`,
+      exerciseId: replacement.id,
+    }];
+  });
+
+  return { workout: adaptedWorkout, adaptations };
+}
+
 function matchesWorkoutItem(item: WorkoutItem, itemId: string): boolean {
   return (item.id ?? item.exerciseId) === itemId;
 }
@@ -336,13 +435,18 @@ export function findExerciseAlternatives(
   currentExercise: Exercise,
   equipment: string,
   limit = 3,
+  restrictedMovements: MovementRestriction[] = [],
 ): Exercise[] {
   const eligible = equipment === "bodyweight"
     ? exercises.filter(isEquipmentFreeExercise)
     : exercises;
+  const restricted = new Set(restrictedMovements);
 
   return eligible
     .filter((exercise) => exercise.id !== currentExercise.id)
+    .filter((exercise) => (
+      exerciseMovementRestrictions(exercise).every((restriction) => !restricted.has(restriction))
+    ))
     .map((exercise) => ({
       exercise,
       score:

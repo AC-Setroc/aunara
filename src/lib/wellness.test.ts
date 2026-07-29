@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { HealthProfile, TrainingTrack, WeeklyCheckIn } from "../types";
+import * as wellnessLibrary from "./wellness";
 import {
   addWeeklyCheckIn,
   buildRoutineAnalysis,
@@ -101,6 +102,63 @@ describe("wellness calculations", () => {
 });
 
 describe("health-aware routine analysis", () => {
+  it("classifies warning symptoms for professional review before a suggested routine is accepted", () => {
+    const library = wellnessLibrary as Record<string, unknown>;
+    expect(library.assessExerciseReadiness).toBeTypeOf("function");
+    if (typeof library.assessExerciseReadiness !== "function") return;
+
+    const assess = library.assessExerciseReadiness as (profile: HealthProfile) => {
+      level: string;
+      reasons: string[];
+    };
+    const result = assess({
+      ...healthProfile,
+      readinessScreen: {
+        confirmed: true,
+        chestPain: true,
+        dizzinessOrFainting: false,
+        medicallySupervisedOnly: false,
+        musculoskeletalConcern: false,
+      },
+    } as HealthProfile);
+
+    expect(result.level).toBe("professional-review");
+    expect(result.reasons.join(" ")).toMatch(/chest pain/i);
+  });
+
+  it("uses documented movement restrictions to adapt instead of diagnosing", () => {
+    const library = wellnessLibrary as Record<string, unknown>;
+    expect(library.assessExerciseReadiness).toBeTypeOf("function");
+    if (typeof library.assessExerciseReadiness !== "function") return;
+
+    const assess = library.assessExerciseReadiness as (profile: HealthProfile) => {
+      level: string;
+      reasons: string[];
+    };
+    const result = assess({
+      ...healthProfile,
+      readinessScreen: {
+        confirmed: true,
+        chestPain: false,
+        dizzinessOrFainting: false,
+        medicallySupervisedOnly: false,
+        musculoskeletalConcern: true,
+      },
+      limitations: [{
+        id: "knee-1",
+        area: "knee",
+        side: "right",
+        status: "stable",
+        restrictedMovements: ["impact", "deep-knee-flexion"],
+        professionalGuidance: "Low impact only.",
+        professionalReview: "cleared-with-restrictions",
+      }],
+    } as HealthProfile);
+
+    expect(result.level).toBe("adapt");
+    expect(result.reasons.join(" ")).toMatch(/restriction/i);
+  });
+
   it("flags low recovery without changing the saved routine", () => {
     const checkIn: WeeklyCheckIn = {
       id: "2026-07-26",

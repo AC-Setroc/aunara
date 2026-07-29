@@ -30,7 +30,7 @@ import { createRepbookSnapshot, type RepbookCloudSnapshot } from "./lib/cloudSna
 import {
   equipmentOptionsForBodyPart,
   filterExercises,
-  generateTrackWorkout,
+  generateAdaptiveTrackWorkout,
   isEquipmentFreeExercise,
   logWorkoutLoad,
   removeTrainingTrack,
@@ -42,7 +42,7 @@ import {
 } from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
-import { addWeeklyCheckIn, buildRoutineAnalysis } from "./lib/wellness";
+import { addWeeklyCheckIn, assessExerciseReadiness, buildRoutineAnalysis } from "./lib/wellness";
 import type { EquipmentPreference, Exercise, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
 
 const PAGE_SIZE = 48;
@@ -72,6 +72,14 @@ const DEFAULT_HEALTH_PROFILE: HealthProfile = {
   dietaryPattern: "omnivore",
   allergies: "",
   healthNotes: "",
+  readinessScreen: {
+    confirmed: false,
+    chestPain: false,
+    dizzinessOrFainting: false,
+    medicallySupervisedOnly: false,
+    musculoskeletalConcern: false,
+  },
+  limitations: [],
 };
 const LANGUAGE_OPTIONS: { code: LanguageCode; label: string }[] = [
   { code: "es", label: "Español" },
@@ -247,6 +255,16 @@ function App() {
     () => activeTrack ? buildRoutineAnalysis(activeTrack, healthProfile, latestCheckIn, language) : null,
     [activeTrack, healthProfile, language, latestCheckIn],
   );
+  const readinessAssessment = useMemo(
+    () => assessExerciseReadiness(healthProfile, language),
+    [healthProfile, language],
+  );
+  const restrictedMovements = useMemo(
+    () => Array.from(new Set(
+      (healthProfile.limitations ?? []).flatMap((limitation) => limitation.restrictedMovements),
+    )),
+    [healthProfile.limitations],
+  );
 
   const filtered = useMemo(
     () => filterExercises(exercises, {
@@ -274,7 +292,7 @@ function App() {
     }
 
     const primaryFocus = healthProfile.primaryGoal ?? "strength";
-    setInitialProposal({
+    const initialTrack = {
       id: `initial-${primaryFocus}`,
       name: tr(language, "My first route", "Mi primera ruta"),
       kind: ["beach-volleyball", "running", "cycling", "mountain-biking", "swimming", "tennis-padel", "soccer"].includes(primaryFocus) ? "sport" : "goal",
@@ -283,17 +301,24 @@ function App() {
       sessionMinutes: healthProfile.sessionMinutes ?? 45,
       daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
       trainingDays: WEEKDAYS.slice(0, healthProfile.trainingDaysPerWeek ?? 3),
-      workout: legacyWorkout.length
-        ? legacyWorkout
-        : generateTrackWorkout(exercises, {
-          focus: primaryFocus,
-          equipment: healthProfile.equipmentPreference ?? "mixed",
-          daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
-          trainingDays: WEEKDAYS.slice(0, healthProfile.trainingDaysPerWeek ?? 3),
-        }),
+      workout: legacyWorkout,
       creationMode: "suggested",
+    } satisfies TrainingTrack;
+    if (legacyWorkout.length) {
+      setInitialProposal(initialTrack);
+      return;
+    }
+    const generated = generateAdaptiveTrackWorkout(
+      exercises,
+      initialTrack,
+      healthProfile.limitations ?? [],
+    );
+    setInitialProposal({
+      ...initialTrack,
+      workout: generated.workout,
+      adaptations: generated.adaptations,
     });
-  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.initialRoutineDecision, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
+  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.initialRoutineDecision, healthProfile.limitations, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
 
   useEffect(() => {
     if (tracks.length && !tracks.some((track) => track.id === activeTrackId)) {
@@ -419,8 +444,10 @@ function App() {
   function generateRoutine(trackId: string) {
     const track = tracks.find((candidate) => candidate.id === trackId);
     if (!track) return;
-    const suggestions = generateTrackWorkout(exercises, track);
-    setTracks((current) => replaceTrackWorkout(current, trackId, suggestions));
+    const generated = generateAdaptiveTrackWorkout(exercises, track, healthProfile.limitations ?? []);
+    setTracks((current) => current.map((candidate) => candidate.id === trackId
+      ? { ...candidate, workout: generated.workout, adaptations: generated.adaptations }
+      : candidate));
     selectTrack(trackId);
     setWorkoutPanelMode("view");
     setWorkoutOpen(true);
@@ -430,11 +457,17 @@ function App() {
     const id = typeof crypto.randomUUID === "function"
       ? crypto.randomUUID()
       : `track-${Date.now()}`;
-    const track: TrainingTrack = {
+    const baseTrack: TrainingTrack = {
       id,
       ...input,
-      workout: input.creationMode === "manual" ? [] : generateTrackWorkout(exercises, input),
+      workout: [],
     };
+    const generated = input.creationMode === "manual"
+      ? null
+      : generateAdaptiveTrackWorkout(exercises, input, healthProfile.limitations ?? []);
+    const track: TrainingTrack = generated
+      ? { ...baseTrack, workout: generated.workout, adaptations: generated.adaptations }
+      : baseTrack;
     if (input.creationMode === "suggested") {
       setTrackProposal(track);
       return;
@@ -447,6 +480,7 @@ function App() {
 
   function acceptTrackProposal(openForEditing: boolean) {
     if (!trackProposal) return;
+    if (readinessAssessment.level === "professional-review" || readinessAssessment.level === "setup") return;
     setTracks((current) => [...current, trackProposal]);
     setActiveTrackId(trackProposal.id);
     setTrackProposal(null);
@@ -458,6 +492,7 @@ function App() {
 
   function acceptInitialProposal(openForEditing: boolean) {
     if (!initialProposal) return;
+    if (readinessAssessment.level === "professional-review" || readinessAssessment.level === "setup") return;
     setTracks([initialProposal]);
     setActiveTrackId(initialProposal.id);
     setHealthProfile((current) => ({ ...current, initialRoutineDecision: "accepted" }));
@@ -516,6 +551,21 @@ function App() {
   function openAccess(mode: AccessMode) {
     setAccessMode(mode);
     setAccessOpen(true);
+  }
+
+  function updateHealthProfile(profile: HealthProfile) {
+    setHealthProfile(profile);
+    const refreshProposal = (proposal: TrainingTrack | null): TrainingTrack | null => {
+      if (!proposal || proposal.creationMode === "manual") return proposal;
+      const generated = generateAdaptiveTrackWorkout(exercises, proposal, profile.limitations ?? []);
+      return {
+        ...proposal,
+        workout: generated.workout,
+        adaptations: generated.adaptations,
+      };
+    };
+    setInitialProposal((current) => refreshProposal(current));
+    setTrackProposal((current) => refreshProposal(current));
   }
 
   return (
@@ -733,34 +783,38 @@ function App() {
           language={language}
           name={profileName}
           profile={healthProfile}
-          onComplete={setHealthProfile}
+          onComplete={updateHealthProfile}
         />
       )}
 
-      {canUseTraining && initialProposal && (
+      {canUseTraining && initialProposal && !profileOpen && (
         <InitialRoutineProposal
           language={language}
           track={initialProposal}
           exerciseMap={exerciseMap}
           healthNotes={healthProfile.healthNotes}
+          readiness={readinessAssessment}
           onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
           onAccept={() => acceptInitialProposal(false)}
           onEdit={() => acceptInitialProposal(true)}
           onReject={rejectInitialProposal}
+          onReviewHealth={() => setProfileOpen(true)}
         />
       )}
 
-      {canUseTraining && trackProposal && (
+      {canUseTraining && trackProposal && !profileOpen && (
         <InitialRoutineProposal
           language={language}
           variant="track"
           track={trackProposal}
           exerciseMap={exerciseMap}
           healthNotes={healthProfile.healthNotes}
+          readiness={readinessAssessment}
           onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
           onAccept={() => acceptTrackProposal(false)}
           onEdit={() => acceptTrackProposal(true)}
           onReject={() => setTrackProposal(null)}
+          onReviewHealth={() => setProfileOpen(true)}
         />
       )}
 
@@ -826,6 +880,7 @@ function App() {
               setWorkoutOpen(false);
               setProfileOpen(true);
             }}
+            restrictedMovements={restrictedMovements}
           />
         </>
       )}
@@ -840,7 +895,7 @@ function App() {
           healthProfile={healthProfile}
           checkIns={checkIns}
           onNameChange={setProfileName}
-          onHealthProfileChange={setHealthProfile}
+          onHealthProfileChange={updateHealthProfile}
           onAddCheckIn={saveWeeklyCheckIn}
           onOpenTrack={(trackId) => {
             setProfileOpen(false);

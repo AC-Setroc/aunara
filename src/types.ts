@@ -77,6 +77,51 @@ export type TrackFocus =
 
 export type EquipmentPreference = "any" | "mixed" | "bodyweight";
 export type TrackCreationMode = "suggested" | "manual";
+export type MovementRestriction =
+  | "impact"
+  | "deep-knee-flexion"
+  | "hip-hinge"
+  | "overhead"
+  | "push"
+  | "pull"
+  | "rotation"
+  | "single-leg-balance";
+
+export type LimitationArea =
+  | "knee"
+  | "hip"
+  | "lower-back"
+  | "shoulder"
+  | "elbow-wrist"
+  | "ankle-foot"
+  | "neck"
+  | "other";
+
+export interface ExerciseReadinessScreen {
+  confirmed: boolean;
+  chestPain: boolean;
+  dizzinessOrFainting: boolean;
+  medicallySupervisedOnly: boolean;
+  musculoskeletalConcern: boolean;
+  reviewedAt?: string;
+}
+
+export interface TrainingLimitation {
+  id: string;
+  area: LimitationArea;
+  side: "left" | "right" | "both" | "not-applicable";
+  status: "recent" | "recovering" | "stable";
+  restrictedMovements: MovementRestriction[];
+  professionalGuidance: string;
+  professionalReview: "not-reviewed" | "cleared-with-restrictions" | "cleared";
+  reviewDate?: string;
+}
+
+export interface RoutineAdaptation {
+  excludedExerciseId: string;
+  replacementExerciseId: string | null;
+  restrictions: MovementRestriction[];
+}
 
 export interface TrainingTrack {
   id: string;
@@ -90,6 +135,7 @@ export interface TrainingTrack {
   creationMode?: TrackCreationMode;
   trainingDays?: Weekday[];
   dayLabels?: Partial<Record<Weekday, string>>;
+  adaptations?: RoutineAdaptation[];
 }
 
 export type MetabolicSex = "unspecified" | "female" | "male";
@@ -120,6 +166,8 @@ export interface HealthProfile {
   allergies: string;
   healthNotes: string;
   preferredIngredients?: string[];
+  readinessScreen?: ExerciseReadinessScreen;
+  limitations?: TrainingLimitation[];
 }
 
 export interface WeeklyCheckIn {

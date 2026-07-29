@@ -1,7 +1,8 @@
-import { Dumbbell, Pencil, ShieldCheck, X } from "lucide-react";
+import { AlertTriangle, Dumbbell, Pencil, ShieldCheck, UserRound, X } from "lucide-react";
 import { exerciseDisplayName } from "../lib/exercises";
 import { tr } from "../lib/i18n";
-import type { Exercise, LanguageCode, TrainingTrack } from "../types";
+import type { ExerciseReadinessAssessment } from "../lib/wellness";
+import type { Exercise, LanguageCode, MovementRestriction, TrainingTrack } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
 
 interface InitialRoutineProposalProps {
@@ -10,11 +11,24 @@ interface InitialRoutineProposalProps {
   track: TrainingTrack;
   exerciseMap: Map<string, Exercise>;
   healthNotes?: string;
+  readiness?: ExerciseReadinessAssessment;
   onOpenExercise: (exercise: Exercise) => void;
   onAccept: () => void;
   onEdit: () => void;
   onReject: () => void;
+  onReviewHealth?: () => void;
 }
+
+const RESTRICTION_LABELS: Record<MovementRestriction, [string, string]> = {
+  impact: ["impact or jumping", "impacto o saltos"],
+  "deep-knee-flexion": ["deep knee flexion", "flexión profunda de rodilla"],
+  "hip-hinge": ["hip hinge", "bisagra de cadera"],
+  overhead: ["overhead movement", "movimiento sobre la cabeza"],
+  push: ["pushing", "empuje"],
+  pull: ["pulling", "jalón"],
+  rotation: ["trunk rotation", "rotación de tronco"],
+  "single-leg-balance": ["single-leg balance", "equilibrio a una pierna"],
+};
 
 export function InitialRoutineProposal({
   language,
@@ -22,15 +36,18 @@ export function InitialRoutineProposal({
   track,
   exerciseMap,
   healthNotes = "",
+  readiness = { level: "ready", reasons: [] },
   onOpenExercise,
   onAccept,
   onEdit,
   onReject,
+  onReviewHealth,
 }: InitialRoutineProposalProps) {
   const isInitial = variant === "initial";
   const heading = isInitial
     ? tr(language, "Review your first routine", "Revisá tu primera rutina")
     : tr(language, "Review suggested routine", "Revisá la rutina sugerida");
+  const blocked = readiness.level === "professional-review" || readiness.level === "setup";
   return (
     <div className="initial-proposal-backdrop">
       <section
@@ -87,6 +104,61 @@ export function InitialRoutineProposal({
           </ol>
         </div>
 
+        {track.adaptations?.length ? (
+          <section className="proposal-adaptations" aria-label={tr(language, "Applied adaptations", "Adaptaciones aplicadas")}>
+            <h3>{tr(language, "What Repbook changed", "Qué cambió Repbook")}</h3>
+            <p>{tr(
+              language,
+              "This automatic filter matches exercise movement tags against the restrictions you saved. It is not a clinical assessment, so review every movement and follow professional guidance.",
+              "Este filtro automático compara etiquetas de movimiento con las restricciones que guardaste. No es una valoración clínica: revisá cada ejercicio y seguí las indicaciones profesionales.",
+            )}</p>
+            <ul>
+              {track.adaptations.map((adaptation) => {
+                const excluded = exerciseMap.get(adaptation.excludedExerciseId);
+                const replacement = adaptation.replacementExerciseId
+                  ? exerciseMap.get(adaptation.replacementExerciseId)
+                  : null;
+                const restrictionText = adaptation.restrictions
+                  .map((restriction) => tr(language, ...RESTRICTION_LABELS[restriction]))
+                  .join(", ");
+                return (
+                  <li key={`${adaptation.excludedExerciseId}-${adaptation.replacementExerciseId ?? "removed"}`}>
+                    <strong>{excluded ? exerciseDisplayName(excluded, language) : adaptation.excludedExerciseId}</strong>
+                    <span>{replacement
+                      ? tr(
+                        language,
+                        `was replaced with ${exerciseDisplayName(replacement, language)} because it matched: ${restrictionText}.`,
+                        `se reemplazó por ${exerciseDisplayName(replacement, language)} porque coincidía con: ${restrictionText}.`,
+                      )
+                      : tr(
+                        language,
+                        `was removed because it matched ${restrictionText} and no compatible replacement was found.`,
+                        `se quitó porque coincidía con ${restrictionText} y no se encontró un reemplazo compatible.`,
+                      )}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : null}
+
+        {blocked && (
+          <div className="proposal-safety-stop" role="alert">
+            <AlertTriangle size={21} />
+            <div>
+              <strong>{readiness.level === "setup"
+                ? tr(language, "Complete your exercise-readiness review first", "Completá primero tu revisión de preparación para el ejercicio")
+                : tr(language, "Professional review is recommended before accepting this routine", "Se recomienda valoración profesional antes de aceptar esta rutina")}</strong>
+              {readiness.reasons.map((reason) => <span key={reason}>{reason}</span>)}
+              {onReviewHealth && (
+                <button type="button" onClick={onReviewHealth}>
+                  <UserRound size={15} /> {tr(language, "Review health information", "Revisar información de salud")}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {healthNotes.trim() && (
           <p className="initial-proposal-health-note">
             <strong>{tr(language, "Your saved health note needs your review.", "Tu nota de salud guardada necesita tu revisión.")}</strong>{" "}
@@ -108,8 +180,8 @@ export function InitialRoutineProposal({
 
         <div className="initial-proposal-actions">
           <button type="button" className="is-secondary" onClick={onReject}><X size={16} /> {tr(language, "Reject proposal", "Rechazar propuesta")}</button>
-          <button type="button" className="is-secondary" onClick={onEdit}><Pencil size={16} /> {tr(language, "Accept and edit", "Aceptar y editar")}</button>
-          <button type="button" className="is-primary" onClick={onAccept}><ShieldCheck size={16} /> {tr(language, "Accept routine", "Aceptar rutina")}</button>
+          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Accept and edit", "Aceptar y editar")}</button>
+          <button type="button" className="is-primary" onClick={onAccept} disabled={blocked}><ShieldCheck size={16} /> {tr(language, "Accept routine", "Aceptar rutina")}</button>
         </div>
       </section>
     </div>

@@ -15,6 +15,11 @@ export interface RoutineAnalysis {
   points: string[];
 }
 
+export interface ExerciseReadinessAssessment {
+  level: "ready" | "adapt" | "professional-review" | "setup";
+  reasons: string[];
+}
+
 const ACTIVITY_FACTORS = {
   sedentary: 1.2,
   light: 1.375,
@@ -41,6 +46,79 @@ const FOCUS_LABELS: Record<string, string> = {
 function roundTo(value: number, precision = 1): number {
   const factor = 10 ** precision;
   return Math.round(value * factor) / factor;
+}
+
+export function assessExerciseReadiness(
+  profile: HealthProfile,
+  language: LanguageCode = "en",
+): ExerciseReadinessAssessment {
+  const screen = profile.readinessScreen;
+  if (!screen?.confirmed) {
+    return {
+      level: "setup",
+      reasons: [tr(
+        language,
+        "Complete the exercise-readiness questions before using a suggested routine.",
+        "Completá las preguntas de preparación para el ejercicio antes de usar una rutina sugerida.",
+      )],
+    };
+  }
+
+  const urgentReasons = [
+    screen.chestPain && tr(language, "You reported chest pain or pressure.", "Reportaste dolor o presión en el pecho."),
+    screen.dizzinessOrFainting && tr(language, "You reported unexplained dizziness or fainting.", "Reportaste mareo inexplicable o desmayo."),
+    screen.medicallySupervisedOnly && tr(language, "You were advised to exercise only with medical supervision.", "Te indicaron hacer ejercicio únicamente con supervisión médica."),
+  ].filter((reason): reason is string => Boolean(reason));
+  if (urgentReasons.length) {
+    return { level: "professional-review", reasons: urgentReasons };
+  }
+
+  const limitations = profile.limitations ?? [];
+  if (screen.musculoskeletalConcern && !limitations.length) {
+    return {
+      level: "professional-review",
+      reasons: [tr(
+        language,
+        "You reported a current bone, joint, or muscle concern without documented movement restrictions.",
+        "Reportaste una molestia actual de hueso, articulación o músculo sin restricciones de movimiento documentadas.",
+      )],
+    };
+  }
+
+  const needsReview = limitations.some((limitation) => (
+    limitation.status === "recent" || limitation.professionalReview === "not-reviewed"
+  ));
+  if (needsReview) {
+    return {
+      level: "professional-review",
+      reasons: [tr(
+        language,
+        "A recent or not-yet-reviewed limitation needs professional guidance before accepting a suggested routine.",
+        "Una limitación reciente o aún no revisada necesita orientación profesional antes de aceptar una rutina sugerida.",
+      )],
+    };
+  }
+
+  const hasRestrictions = limitations.some((limitation) => limitation.restrictedMovements.length > 0);
+  if (hasRestrictions) {
+    return {
+      level: "adapt",
+      reasons: [tr(
+        language,
+        "The suggestion will exclude movements that match your documented restrictions.",
+        "La sugerencia excluirá movimientos que coincidan con tus restricciones registradas.",
+      )],
+    };
+  }
+
+  return {
+    level: "ready",
+    reasons: [tr(
+      language,
+      "No warning symptom or movement restriction was reported in this review.",
+      "No reportaste síntomas de alerta ni restricciones de movimiento en esta revisión.",
+    )],
+  };
 }
 
 export function calculateAgeFromBirthDate(birthDate: string, referenceDate = new Date()): number | null {
@@ -182,6 +260,18 @@ export function buildRoutineAnalysis(
       `${focus} es el foco principal en ${track.daysPerWeek} sesiones semanales de ${track.sessionMinutes} minutos.`,
     ),
   ];
+  const readiness = assessExerciseReadiness(profile, language);
+  if (readiness.level === "professional-review") {
+    points.push(...readiness.reasons);
+    return {
+      tone: "watch",
+      headline: tr(language, "Professional review recommended", "Se recomienda valoración profesional"),
+      points,
+    };
+  }
+  if (readiness.level === "adapt") {
+    points.push(...readiness.reasons);
+  }
 
   if (!profile.heightCm || !profile.currentWeightKg) {
     points.push(tr(language, "Complete your body profile to add weight, recovery, and nutrition context.", "Completá tu perfil corporal para agregar contexto de peso, recuperación y nutrición."));

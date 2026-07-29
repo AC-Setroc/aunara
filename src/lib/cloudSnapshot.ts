@@ -43,6 +43,11 @@ const ACTIVITY_LEVELS = ["sedentary", "light", "moderate", "very-active"];
 const TRAINING_EXPERIENCE = ["beginner", "intermediate", "advanced"];
 const DIETARY_PATTERNS = ["omnivore", "vegetarian", "vegan", "pescatarian", "other"];
 const WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+const MOVEMENT_RESTRICTIONS = ["impact", "deep-knee-flexion", "hip-hinge", "overhead", "push", "pull", "rotation", "single-leg-balance"];
+const LIMITATION_AREAS = ["knee", "hip", "lower-back", "shoulder", "elbow-wrist", "ankle-foot", "neck", "other"];
+const LIMITATION_SIDES = ["left", "right", "both", "not-applicable"];
+const LIMITATION_STATUSES = ["recent", "recovering", "stable"];
+const PROFESSIONAL_REVIEWS = ["not-reviewed", "cleared-with-restrictions", "cleared"];
 
 function isRecord(value: unknown): value is UnknownRecord {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -82,6 +87,14 @@ function isWorkoutItem(value: unknown): boolean {
     ));
 }
 
+function isRoutineAdaptation(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  return typeof value.excludedExerciseId === "string"
+    && (value.replacementExerciseId === null || typeof value.replacementExerciseId === "string")
+    && Array.isArray(value.restrictions)
+    && value.restrictions.every((item) => MOVEMENT_RESTRICTIONS.includes(item as string));
+}
+
 function isTrainingTrack(value: unknown): boolean {
   if (!isRecord(value)) return false;
   return typeof value.id === "string"
@@ -98,8 +111,35 @@ function isTrainingTrack(value: unknown): boolean {
       && value.trainingDays.length > 0
       && value.trainingDays.every((day) => WEEKDAYS.includes(day as string))
     ))
+    && (value.adaptations === undefined || (
+      Array.isArray(value.adaptations)
+      && value.adaptations.every(isRoutineAdaptation)
+    ))
     && Array.isArray(value.workout)
     && value.workout.every(isWorkoutItem);
+}
+
+function isReadinessScreen(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  return typeof value.confirmed === "boolean"
+    && typeof value.chestPain === "boolean"
+    && typeof value.dizzinessOrFainting === "boolean"
+    && typeof value.medicallySupervisedOnly === "boolean"
+    && typeof value.musculoskeletalConcern === "boolean"
+    && (value.reviewedAt === undefined || typeof value.reviewedAt === "string");
+}
+
+function isTrainingLimitation(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  return typeof value.id === "string"
+    && isEnumValue(value.area, LIMITATION_AREAS)
+    && isEnumValue(value.side, LIMITATION_SIDES)
+    && isEnumValue(value.status, LIMITATION_STATUSES)
+    && Array.isArray(value.restrictedMovements)
+    && value.restrictedMovements.every((item) => MOVEMENT_RESTRICTIONS.includes(item as string))
+    && typeof value.professionalGuidance === "string"
+    && isEnumValue(value.professionalReview, PROFESSIONAL_REVIEWS)
+    && (value.reviewDate === undefined || typeof value.reviewDate === "string");
 }
 
 function isHealthProfile(value: unknown): boolean {
@@ -122,6 +162,11 @@ function isHealthProfile(value: unknown): boolean {
     && isEnumValue(value.dietaryPattern, DIETARY_PATTERNS)
     && typeof value.allergies === "string"
     && typeof value.healthNotes === "string"
+    && (value.readinessScreen === undefined || isReadinessScreen(value.readinessScreen))
+    && (value.limitations === undefined || (
+      Array.isArray(value.limitations)
+      && value.limitations.every(isTrainingLimitation)
+    ))
     && (value.preferredIngredients === undefined || (
       Array.isArray(value.preferredIngredients)
       && value.preferredIngredients.every((item) => typeof item === "string")

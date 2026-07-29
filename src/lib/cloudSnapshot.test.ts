@@ -81,6 +81,52 @@ describe("cloud snapshots", () => {
     expect(snapshot.tracksInitialized).toBe(true);
   });
 
+  it("preserves structured readiness, limitations, and explained routine adaptations", () => {
+    const profileWithLimitations: HealthProfile = {
+      ...healthProfile,
+      readinessScreen: {
+        confirmed: true,
+        chestPain: false,
+        dizzinessOrFainting: false,
+        medicallySupervisedOnly: false,
+        musculoskeletalConcern: true,
+        reviewedAt: "2026-07-28",
+      },
+      limitations: [{
+        id: "right-knee",
+        area: "knee",
+        side: "right",
+        status: "stable",
+        restrictedMovements: ["impact"],
+        professionalGuidance: "Low impact only.",
+        professionalReview: "cleared-with-restrictions",
+      }],
+    };
+    const adaptedTrack: TrainingTrack = {
+      ...track,
+      adaptations: [{
+        excludedExerciseId: "0514",
+        replacementExerciseId: "0276",
+        restrictions: ["impact"],
+      }],
+    };
+    const snapshot = createRepbookSnapshot({
+      profileName: "Alejandro",
+      language: "es",
+      favoriteIds: [],
+      tracks: [adaptedTrack],
+      activeTrackId: adaptedTrack.id,
+      healthProfile: profileWithLimitations,
+      checkIns: [],
+    });
+
+    expect(normalizeRepbookSnapshot(snapshot, createRepbookSnapshot({
+      ...snapshot,
+      healthProfile,
+      tracks: [track],
+    }))).toEqual(snapshot);
+  });
+
   it("rejects malformed remote data instead of overwriting valid local data", () => {
     const local = createRepbookSnapshot({
       profileName: "Alejandro",

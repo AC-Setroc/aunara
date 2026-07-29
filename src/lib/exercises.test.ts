@@ -198,6 +198,48 @@ describe("training tracks", () => {
     expect(workout.every((item) => item.sets >= 2 && item.reps >= 8)).toBe(true);
   });
 
+  it("replaces suggested movements that conflict with an explicit restriction and explains the change", () => {
+    const library = exerciseLibrary as Record<string, unknown>;
+    expect(library.generateAdaptiveTrackWorkout).toBeTypeOf("function");
+    if (typeof library.generateAdaptiveTrackWorkout !== "function") return;
+
+    const generate = library.generateAdaptiveTrackWorkout as (
+      exercises: Exercise[],
+      track: { focus: string; equipment: string; daysPerWeek?: number },
+      limitations: Array<{
+        restrictedMovements: string[];
+      }>,
+    ) => {
+      workout: Array<{ exerciseId: string }>;
+      adaptations: Array<{
+        excludedExerciseId: string;
+        replacementExerciseId: string | null;
+        restrictions: string[];
+      }>;
+    };
+    const safeBridge = {
+      ...squat,
+      id: "safe-bridge",
+      name: "low glute bridge on floor",
+      target: "glutes",
+    };
+    const result = generate([...strengthExercises, safeBridge], {
+      focus: "strength",
+      equipment: "any",
+      daysPerWeek: 3,
+    }, [{
+      restrictedMovements: ["deep-knee-flexion"],
+    }]);
+
+    expect(result.workout.map((item) => item.exerciseId)).not.toContain("0043");
+    expect(result.workout.map((item) => item.exerciseId)).toContain("safe-bridge");
+    expect(result.adaptations).toContainEqual(expect.objectContaining({
+      excludedExerciseId: "0043",
+      replacementExerciseId: "safe-bridge",
+      restrictions: ["deep-knee-flexion"],
+    }));
+  });
+
   it("uses strength-oriented working sets for a strength goal track", () => {
     const workout = exerciseLibrary.generateTrackWorkout(strengthExercises, {
       focus: "strength",
@@ -407,5 +449,19 @@ describe("training tracks", () => {
     expect(alternatives.map((exercise) => exercise.id)).toContain("0662");
     expect(alternatives.every((exercise) => exercise.id !== baseExercise.id)).toBe(true);
     expect(alternatives.every((exercise) => exercise.equipment === "body weight")).toBe(true);
+  });
+
+  it("does not reintroduce a documented restriction through exercise replacement", () => {
+    const jumpSquat = { ...squat, id: "jump", name: "jump squat" };
+    const bridge = { ...squat, id: "bridge", name: "low glute bridge on floor" };
+    const alternatives = exerciseLibrary.findExerciseAlternatives(
+      [jumpSquat, bridge],
+      { ...squat, id: "current", name: "bodyweight squat" },
+      "bodyweight",
+      3,
+      ["impact"],
+    );
+
+    expect(alternatives.map((exercise) => exercise.id)).toEqual(["bridge"]);
   });
 });

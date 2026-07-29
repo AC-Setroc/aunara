@@ -1,5 +1,6 @@
 import {
   Activity,
+  AlertTriangle,
   ArrowLeft,
   Dumbbell,
   Minus,
@@ -13,10 +14,10 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { exerciseDisplayName, filterExercises, findExerciseAlternatives, titleCase, WEEKDAYS } from "../lib/exercises";
+import { exerciseDisplayName, exerciseMovementRestrictions, filterExercises, findExerciseAlternatives, titleCase, WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { RoutineAnalysis } from "../lib/wellness";
-import type { Exercise, LanguageCode, TrainingTrack, Weekday, WorkoutItem } from "../types";
+import type { Exercise, LanguageCode, MovementRestriction, TrainingTrack, Weekday, WorkoutItem } from "../types";
 
 export type WorkoutPanelMode = "view" | "edit" | "training";
 
@@ -40,6 +41,7 @@ interface WorkoutPanelProps {
   onOpenExercise: (exercise: Exercise) => void;
   analysis: RoutineAnalysis;
   onOpenProfile: () => void;
+  restrictedMovements?: MovementRestriction[];
 }
 
 const DAY_LABELS: Record<Weekday, [string, string]> = {
@@ -82,10 +84,17 @@ export function WorkoutPanel({
   onOpenExercise,
   analysis,
   onOpenProfile,
+  restrictedMovements = [],
 }: WorkoutPanelProps) {
   const [mode, setMode] = useState<WorkoutPanelMode>(initialMode);
   const [replacingId, setReplacingId] = useState<string | null>(null);
   const [manualBuilderOpen, setManualBuilderOpen] = useState(initialMode === "edit");
+  const [sessionCheckOpen, setSessionCheckOpen] = useState(false);
+  const [sessionStop, setSessionStop] = useState(false);
+  const [sessionSymptoms, setSessionSymptoms] = useState({
+    warningSymptom: false,
+    movementConcern: false,
+  });
   const isManual = track.creationMode === "manual";
   const totalSets = items.reduce((sum, item) => sum + item.sets, 0);
   const orderedItems = [...items].sort((left, right) => (
@@ -107,6 +116,22 @@ export function WorkoutPanel({
     ? orderedItems.filter((item) => (item.day ?? "monday") === trainingDay)
     : orderedItems;
 
+  function openSessionCheck() {
+    setSessionSymptoms({ warningSymptom: false, movementConcern: false });
+    setSessionStop(false);
+    setSessionCheckOpen(true);
+  }
+
+  function reviewSessionCheck() {
+    if (sessionSymptoms.warningSymptom || sessionSymptoms.movementConcern) {
+      setSessionStop(true);
+      setMode("view");
+      return;
+    }
+    setSessionCheckOpen(false);
+    setMode("training");
+  }
+
   return (
     <aside className="workout-panel" aria-label={`${track.name} ${tr(language, "workout", "entrenamiento")}`}>
       <div className="workout-heading">
@@ -123,7 +148,7 @@ export function WorkoutPanel({
         <div className="workout-mode-actions">
           {mode === "view" ? (
             <>
-              <button className="is-primary" type="button" onClick={() => setMode("training")}>
+              <button className="is-primary" type="button" onClick={openSessionCheck}>
                 <Play size={16} /> {tr(language, "Start today’s workout", "Iniciar entrenamiento de hoy")}
               </button>
               <button type="button" onClick={() => setMode("edit")}>
@@ -138,6 +163,76 @@ export function WorkoutPanel({
               <ArrowLeft size={16} /> {tr(language, "Back to routine", "Volver a la rutina")}
             </button>
           )}
+        </div>
+      )}
+
+      {sessionCheckOpen && (
+        <div className="session-check-backdrop">
+          <section
+            className="session-check"
+            role="dialog"
+            aria-modal="true"
+            aria-label={tr(language, "Check how you feel before starting", "Revisá cómo te sentís antes de empezar")}
+          >
+            <div className="session-check-heading">
+              <span><AlertTriangle size={20} /></span>
+              <div>
+                <p className="eyebrow">{tr(language, "Session safety check", "Control de seguridad de la sesión")}</p>
+                <h3>{tr(language, "Has anything changed today?", "¿Cambió algo hoy?")}</h3>
+              </div>
+            </div>
+            {sessionStop ? (
+              <div className="session-stop-message" role="alert">
+                <strong>{tr(language, "Do not start this workout.", "No iniciés este entrenamiento.")}</strong>
+                <p>{tr(
+                  language,
+                  "A new or worsening warning symptom should not be solved by an automatic exercise swap. Seek appropriate medical or physiotherapy guidance before resuming.",
+                  "Un síntoma de alerta nuevo o que empeora no se debe resolver con un reemplazo automático de ejercicio. Buscá orientación médica o de fisioterapia antes de retomar.",
+                )}</p>
+                <button type="button" onClick={() => setSessionCheckOpen(false)}>
+                  {tr(language, "Close and review my plan", "Cerrar y revisar mi plan")}
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="session-check-options">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={sessionSymptoms.warningSymptom}
+                      onChange={(event) => setSessionSymptoms((current) => ({ ...current, warningSymptom: event.target.checked }))}
+                    />
+                    <span>{tr(
+                      language,
+                      "I have new chest pain, pressure, dizziness or fainting.",
+                      "Tengo dolor o presión nueva en el pecho, mareo o desmayo.",
+                    )}</span>
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={sessionSymptoms.movementConcern}
+                      onChange={(event) => setSessionSymptoms((current) => ({ ...current, movementConcern: event.target.checked }))}
+                    />
+                    <span>{tr(
+                      language,
+                      "I have new or worsening pain, swelling, weakness, or loss of movement.",
+                      "Tengo dolor, inflamación, debilidad o pérdida de movimiento nueva o que empeoró.",
+                    )}</span>
+                  </label>
+                </div>
+                <p>{tr(
+                  language,
+                  "If neither applies, continue. During the session, stop and reassess if a warning symptom appears.",
+                  "Si ninguna aplica, continuá. Durante la sesión, pará y reevaluá si aparece un síntoma de alerta.",
+                )}</p>
+                <div className="session-check-actions">
+                  <button type="button" onClick={() => setSessionCheckOpen(false)}>{tr(language, "Cancel", "Cancelar")}</button>
+                  <button className="is-primary" type="button" onClick={reviewSessionCheck}>{tr(language, "Review my answer", "Revisar mi respuesta")}</button>
+                </div>
+              </>
+            )}
+          </section>
         </div>
       )}
 
@@ -173,6 +268,7 @@ export function WorkoutPanel({
                   exercises={exercises}
                   equipmentPreference={track.equipment}
                   routeDays={routeDays}
+                  restrictedMovements={restrictedMovements}
                   onAddExercise={onAddExercise}
                 />
               )}
@@ -199,25 +295,30 @@ export function WorkoutPanel({
           </div>
 
           {mode === "training" && (
-            <section className="training-session-day" aria-label={tr(language, "Workout day", "Día del entrenamiento")}>
-              <div>
-                <p>{tr(language, "Today’s session", "Sesión de hoy")}</p>
-                <strong>{dayLabel(trainingDay)}{track.dayLabels?.[trainingDay] ? ` · ${track.dayLabels[trainingDay]}` : ""}</strong>
-              </div>
-              <div className="compact-day-picker">
-                {routeDays.map((day) => (
-                  <button
-                    key={day}
-                    className={day === trainingDay ? "is-active" : ""}
-                    type="button"
-                    aria-pressed={day === trainingDay}
-                    onClick={() => setTrainingDay(day)}
-                  >
-                    {dayLabel(day)}
-                  </button>
-                ))}
-              </div>
-            </section>
+            <>
+              <section className="training-session-day" aria-label={tr(language, "Workout day", "Día del entrenamiento")}>
+                <div>
+                  <p>{tr(language, "Today’s session", "Sesión de hoy")}</p>
+                  <strong>{dayLabel(trainingDay)}{track.dayLabels?.[trainingDay] ? ` · ${track.dayLabels[trainingDay]}` : ""}</strong>
+                </div>
+                <div className="compact-day-picker">
+                  {routeDays.map((day) => (
+                    <button
+                      key={day}
+                      className={day === trainingDay ? "is-active" : ""}
+                      type="button"
+                      aria-pressed={day === trainingDay}
+                      onClick={() => setTrainingDay(day)}
+                    >
+                      {dayLabel(day)}
+                    </button>
+                  ))}
+                </div>
+              </section>
+              <button className="session-symptom-trigger" type="button" onClick={openSessionCheck}>
+                <AlertTriangle size={15} /> {tr(language, "I have a new or worsening symptom", "Tengo un síntoma nuevo o que empeoró")}
+              </button>
+            </>
           )}
 
           {mode === "edit" && (
@@ -250,7 +351,7 @@ export function WorkoutPanel({
                 const itemId = item.id ?? item.exerciseId;
                 const exerciseName = exerciseDisplayName(exercise, language);
                 const alternatives = replacingId === itemId
-                  ? findExerciseAlternatives(exercises, exercise, track.equipment, 3)
+                  ? findExerciseAlternatives(exercises, exercise, track.equipment, 3, restrictedMovements)
                   : [];
 
                 return (
@@ -453,6 +554,7 @@ export function WorkoutPanel({
               exercises={exercises}
               equipmentPreference={track.equipment}
               routeDays={routeDays}
+              restrictedMovements={restrictedMovements}
               onAddExercise={onAddExercise}
             />
           )}
@@ -471,6 +573,7 @@ interface ExerciseAdderProps {
   exercises: Exercise[];
   equipmentPreference: TrainingTrack["equipment"];
   routeDays: Weekday[];
+  restrictedMovements?: MovementRestriction[];
   onAddExercise: (exerciseId: string, day: Weekday) => void;
 }
 
@@ -479,6 +582,7 @@ function ExerciseAdder({
   exercises,
   equipmentPreference,
   routeDays,
+  restrictedMovements = [],
   onAddExercise,
 }: ExerciseAdderProps) {
   const [query, setQuery] = useState("");
@@ -490,7 +594,11 @@ function ExerciseAdder({
     equipmentPreference,
     favoritesOnly: false,
     favoriteIds: new Set(),
-  }).slice(0, 12);
+  })
+    .filter((exercise) => (
+      exerciseMovementRestrictions(exercise).every((restriction) => !restrictedMovements.includes(restriction))
+    ))
+    .slice(0, 12);
   const dayLabel = (day: Weekday) => tr(language, ...DAY_LABELS[day]);
 
   return (
@@ -530,6 +638,13 @@ function ExerciseAdder({
           )}
         />
       </label>
+      {restrictedMovements.length > 0 && (
+        <p className="restriction-filter-note">{tr(
+          language,
+          "Exercises matching your saved movement restrictions are hidden here. Review your health profile to change this filter.",
+          "Acá se ocultan los ejercicios que coinciden con tus restricciones guardadas. Revisá tu perfil de salud para cambiar este filtro.",
+        )}</p>
+      )}
 
       <div className="manual-exercise-results">
         {matches.length ? matches.map((exercise) => {
