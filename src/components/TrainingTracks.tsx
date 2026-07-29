@@ -1,7 +1,8 @@
 import { Activity, ArrowRight, CalendarDays, Dumbbell, Pencil, Plus, RefreshCw, Trash2, Trophy, X } from "lucide-react";
 import { useState } from "react";
+import { WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
-import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack } from "../types";
+import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack, Weekday } from "../types";
 
 export interface NewTrackInput {
   name: string;
@@ -10,6 +11,7 @@ export interface NewTrackInput {
   equipment: EquipmentPreference;
   sessionMinutes: number;
   daysPerWeek: number;
+  trainingDays: Weekday[];
   creationMode: TrackCreationMode;
 }
 
@@ -57,6 +59,16 @@ const SPANISH_FOCUS_LABELS: Record<TrackFocus, string> = {
   swimming: "Natación",
   "tennis-padel": "Tenis / pádel",
   soccer: "Fútbol",
+};
+
+const WEEKDAY_LABELS: Record<Weekday, [string, string]> = {
+  monday: ["Monday", "Lunes"],
+  tuesday: ["Tuesday", "Martes"],
+  wednesday: ["Wednesday", "Miércoles"],
+  thursday: ["Thursday", "Jueves"],
+  friday: ["Friday", "Viernes"],
+  saturday: ["Saturday", "Sábado"],
+  sunday: ["Sunday", "Domingo"],
 };
 
 export function trackFocusLabel(focus: TrackFocus, language: LanguageCode = "en"): string {
@@ -237,7 +249,11 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
   const [name, setName] = useState(initialTrack?.name ?? "");
   const [equipment, setEquipment] = useState<EquipmentPreference>(initialTrack?.equipment ?? "any");
   const [sessionMinutes, setSessionMinutes] = useState(initialTrack?.sessionMinutes ?? 45);
-  const [daysPerWeek, setDaysPerWeek] = useState(initialTrack?.daysPerWeek ?? 2);
+  const [trainingDays, setTrainingDays] = useState<Weekday[]>(
+    initialTrack?.trainingDays?.length
+      ? initialTrack.trainingDays
+      : WEEKDAYS.slice(0, initialTrack?.daysPerWeek ?? 2),
+  );
   const [creationMode, setCreationMode] = useState<TrackCreationMode>(initialTrack?.creationMode ?? "suggested");
   const focusOptions = kind === "goal" ? GOAL_OPTIONS : SPORT_OPTIONS;
   const editing = Boolean(initialTrack);
@@ -245,6 +261,15 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
   function chooseKind(nextKind: TrackKind) {
     setKind(nextKind);
     setFocus(nextKind === "goal" ? "strength" : "beach-volleyball");
+  }
+
+  function toggleTrainingDay(day: Weekday) {
+    setTrainingDays((current) => {
+      if (current.includes(day)) {
+        return current.length === 1 ? current : current.filter((item) => item !== day);
+      }
+      return WEEKDAYS.filter((item) => item === day || current.includes(item));
+    });
   }
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -255,7 +280,8 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
       focus,
       equipment,
       sessionMinutes,
-      daysPerWeek,
+      daysPerWeek: trainingDays.length,
+      trainingDays,
       creationMode,
     };
     if (editing) {
@@ -325,13 +351,25 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
               onChange={(event) => setSessionMinutes(Number(event.target.value))}
             />
           </label>
-          <label className="creator-field">
-            <span>{tr(language, "Weekly", "Semanal")}</span>
-            <select value={daysPerWeek} onChange={(event) => setDaysPerWeek(Number(event.target.value))}>
-              {[1, 2, 3, 4, 5].map((days) => <option key={days} value={days}>{days} {days === 1 ? tr(language, "day", "día") : tr(language, "days", "días")}</option>)}
-            </select>
-          </label>
         </div>
+
+        <fieldset className="training-day-picker">
+          <legend>{tr(language, "Training days", "Días de entrenamiento")}</legend>
+          <p>{tr(language, "Choose the days this route will use.", "Elegí los días que va a usar esta ruta.")}</p>
+          <div>
+            {WEEKDAYS.map((day) => (
+              <button
+                key={day}
+                className={trainingDays.includes(day) ? "is-active" : ""}
+                type="button"
+                aria-pressed={trainingDays.includes(day)}
+                onClick={() => toggleTrainingDay(day)}
+              >
+                {tr(language, ...WEEKDAY_LABELS[day])}
+              </button>
+            ))}
+          </div>
+        </fieldset>
 
         <button className="create-track-button" type="submit">
           <Dumbbell size={18} /> {

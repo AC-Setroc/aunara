@@ -88,6 +88,7 @@ export interface TrainingTrack {
   daysPerWeek: number;
   workout: WorkoutItem[];
   creationMode?: TrackCreationMode;
+  trainingDays?: Weekday[];
   dayLabels?: Partial<Record<Weekday, string>>;
 }
 

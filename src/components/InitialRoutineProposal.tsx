@@ -6,6 +6,7 @@ import { trackFocusLabel } from "./TrainingTracks";
 
 interface InitialRoutineProposalProps {
   language: LanguageCode;
+  variant?: "initial" | "track";
   track: TrainingTrack;
   exerciseMap: Map<string, Exercise>;
   onAccept: () => void;
@@ -15,25 +16,32 @@ interface InitialRoutineProposalProps {
 
 export function InitialRoutineProposal({
   language,
+  variant = "initial",
   track,
   exerciseMap,
   onAccept,
   onEdit,
   onReject,
 }: InitialRoutineProposalProps) {
+  const isInitial = variant === "initial";
+  const heading = isInitial
+    ? tr(language, "Review your first routine", "Revisá tu primera rutina")
+    : tr(language, "Review suggested routine", "Revisá la rutina sugerida");
   return (
     <div className="initial-proposal-backdrop">
       <section
         className="initial-proposal"
         role="dialog"
         aria-modal="true"
-        aria-label={tr(language, "Review your first routine", "Revisá tu primera rutina")}
+        aria-label={heading}
       >
         <div className="initial-proposal-heading">
           <span><ShieldCheck size={27} /></span>
           <div>
-            <p className="eyebrow">{tr(language, "Your profile is ready / next step", "Tu perfil está listo / siguiente paso")}</p>
-            <h2>{tr(language, "Review your first routine", "Revisá tu primera rutina")}</h2>
+            <p className="eyebrow">{isInitial
+              ? tr(language, "Your profile is ready / next step", "Tu perfil está listo / siguiente paso")
+              : tr(language, "Suggested route / review before saving", "Ruta sugerida / revisá antes de guardar")}</p>
+            <h2>{heading}</h2>
           </div>
         </div>
 

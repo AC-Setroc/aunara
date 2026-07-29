@@ -42,6 +42,7 @@ const METABOLIC_SEXES = ["unspecified", "female", "male"];
 const ACTIVITY_LEVELS = ["sedentary", "light", "moderate", "very-active"];
 const TRAINING_EXPERIENCE = ["beginner", "intermediate", "advanced"];
 const DIETARY_PATTERNS = ["omnivore", "vegetarian", "vegan", "pescatarian", "other"];
+const WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
 function isRecord(value: unknown): value is UnknownRecord {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -92,6 +93,11 @@ function isTrainingTrack(value: unknown): boolean {
     && Number.isFinite(value.sessionMinutes)
     && typeof value.daysPerWeek === "number"
     && Number.isFinite(value.daysPerWeek)
+    && (value.trainingDays === undefined || (
+      Array.isArray(value.trainingDays)
+      && value.trainingDays.length > 0
+      && value.trainingDays.every((day) => WEEKDAYS.includes(day as string))
+    ))
     && Array.isArray(value.workout)
     && value.workout.every(isWorkoutItem);
 }

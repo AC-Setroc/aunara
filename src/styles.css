@@ -274,7 +274,13 @@ main { overflow: hidden; }
 .creator-field { display: grid; gap: 7px; margin-bottom: 14px; }
 .creator-field > span { font: 700 9px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .1em; }
 .creator-field input, .creator-field select { width: 100%; height: 48px; padding: 0 12px; border: 1px solid var(--line); border-radius: 0; background: var(--white); color: var(--ink); }
-.creator-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 10px; }
+.creator-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; }
+.training-day-picker { margin: 2px 0 14px; padding: 12px; border: 1px solid var(--line); }
+.training-day-picker legend { padding: 0 5px; font: 700 9px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .1em; }
+.training-day-picker p { margin: 0 0 10px; color: var(--muted); font-size: .7rem; }
+.training-day-picker > div, .compact-day-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+.training-day-picker button, .compact-day-picker button { min-height: 34px; padding: 0 10px; border: 1px solid var(--line); background: var(--white); cursor: pointer; font-size: .67rem; font-weight: 800; }
+.training-day-picker button.is-active, .compact-day-picker button.is-active { border-color: var(--ink); background: var(--acid); }
 .create-track-button { width: 100%; min-height: 52px; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--ink); background: var(--ink); color: var(--white); cursor: pointer; font-weight: 800; }
 .create-track-button:hover { color: var(--ink); background: var(--acid); }
 .track-delete-dialog { width: min(520px, 100%); padding: clamp(28px, 5vw, 48px); color: var(--ink); background: var(--paper); border: 1px solid var(--white); box-shadow: 12px 12px 0 rgba(239,88,61,.75); }
@@ -438,6 +444,10 @@ footer a { text-underline-offset: 3px; }
 @keyframes panel-in { from { transform: translateX(100%); } }
 .workout-heading { display: flex; justify-content: space-between; align-items: start; padding-bottom: 22px; border-bottom: 1px solid var(--ink); }
 .workout-heading h2 { margin: 0; font: 900 2.8rem/.9 "Arial Narrow", sans-serif; text-transform: uppercase; letter-spacing: -.04em; }
+.workout-mode-actions { padding: 12px 0; display: flex; flex-wrap: wrap; gap: 7px; border-bottom: 1px solid var(--line); }
+.workout-mode-actions button { min-height: 40px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--ink); background: var(--white); cursor: pointer; font-size: .7rem; font-weight: 800; }
+.workout-mode-actions button.is-primary { background: var(--acid); }
+.workout-mode-actions button:hover { background: var(--ink); color: var(--white); }
 .empty-workout { min-height: 55vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .empty-workout h3 { margin: 20px 0 5px; font: 800 1.3rem/1 "Arial Narrow", sans-serif; text-transform: uppercase; }
 .empty-workout p { max-width: 260px; color: var(--muted); font-size: .85rem; line-height: 1.5; }
@@ -447,6 +457,13 @@ footer a { text-underline-offset: 3px; }
 .workout-summary strong { font: 400 1.45rem/1 Baskerville, serif; }
 .workout-summary span { color: var(--muted); font-size: .7rem; }
 .workout-summary i { width: 1px; height: 20px; margin: 0 6px; background: var(--line); }
+.training-session-day { margin: 12px 0 4px; padding: 12px; display: grid; gap: 11px; border: 1px solid var(--ink); background: var(--white); }
+.training-session-day > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.training-session-day p { margin: 0; color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
+.training-session-day strong { font: 800 1rem/1 "Arial Narrow", sans-serif; text-transform: uppercase; }
+.empty-training-day { min-height: 240px; display: grid; place-items: center; align-content: center; gap: 8px; color: var(--muted); text-align: center; }
+.empty-training-day strong { color: var(--ink); text-transform: uppercase; }
+.empty-training-day span { font-size: .75rem; }
 .workout-day-labels { margin: 12px 0 4px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .workout-day-labels label { padding: 9px; display: grid; gap: 5px; border: 1px solid var(--line); background: var(--white); }
 .workout-day-labels span, .workout-prescription-grid label > span, .manual-exercise-adder label > span { font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .06em; }
@@ -463,6 +480,7 @@ footer a { text-underline-offset: 3px; }
 .routine-analysis button:hover { color: var(--red); }
 .workout-list { margin: 0; padding: 0; list-style: none; }
 .workout-list > li { min-height: 145px; padding: 20px 0; display: grid; grid-template-columns: 34px minmax(0, 1fr) 28px; gap: 10px; border-bottom: 1px solid var(--line); }
+.workout-list.is-view > li, .workout-list.is-training > li { grid-template-columns: 34px minmax(0, 1fr); }
 .set-order { padding-top: 3px; color: var(--red); font: 700 10px/1 "Courier New", monospace; }
 .workout-item-copy { min-width: 0; }
 .workout-item-copy h3 { margin: 0 0 4px; font: 800 1rem/1.15 "Arial Narrow", sans-serif; text-transform: uppercase; }
@@ -471,6 +489,11 @@ footer a { text-underline-offset: 3px; }
 .workout-prescription-grid { margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .workout-prescription-grid label { min-width: 0; display: grid; gap: 5px; }
 .workout-prescription-grid input, .workout-prescription-grid select { min-width: 0; width: 100%; height: 38px; padding: 0 8px; border: 1px solid var(--line); border-radius: 0; background: var(--white); font-size: .72rem; }
+.training-entry-grid .is-wide { grid-column: 1 / -1; }
+.workout-plan-summary { margin-top: 13px; padding: 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px 12px; border-left: 3px solid var(--acid); background: var(--white); }
+.workout-plan-summary > span { color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
+.workout-plan-summary strong { font-size: .78rem; }
+.workout-plan-summary small { color: var(--muted); font-size: .65rem; }
 .log-load-button { min-height: 34px; margin-top: 8px; padding: 0 10px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; font-size: .68rem; font-weight: 800; }
 .log-load-button:hover { background: var(--ink); color: var(--white); }
 .load-history-summary { margin-top: 7px; display: block; color: var(--muted); font-size: .62rem; }
@@ -495,10 +518,20 @@ footer a { text-underline-offset: 3px; }
 .remove-button:hover { color: var(--red); }
 .clear-button { width: 100%; margin-top: 24px; padding: 12px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
 .clear-button:hover { border-color: var(--red); color: var(--red); }
-.manual-exercise-adder { margin-top: 18px; padding: 12px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8px; border: 1px solid var(--ink); background: var(--white); }
-.manual-exercise-adder label { min-width: 0; display: grid; gap: 6px; }
-.manual-exercise-adder select { min-width: 0; width: 100%; height: 40px; padding: 0 8px; border: 1px solid var(--line); background: var(--paper); }
-.manual-exercise-adder button { min-height: 40px; padding: 0 12px; display: flex; align-items: center; gap: 6px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; font-weight: 800; }
+.manual-exercise-adder { width: 100%; margin-top: 18px; padding: 12px; display: grid; gap: 11px; border: 1px solid var(--ink); background: var(--white); text-align: left; }
+.manual-adder-heading { display: grid; gap: 9px; }
+.manual-adder-heading > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.manual-adder-heading span { color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
+.manual-adder-heading strong { font: 800 1rem/1 "Arial Narrow", sans-serif; text-transform: uppercase; }
+.manual-exercise-search { min-width: 0; height: 44px; padding: 0 11px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--ink); background: var(--paper); }
+.manual-exercise-search input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; font-size: .78rem; }
+.manual-exercise-results { max-height: 360px; overflow-y: auto; display: grid; gap: 6px; }
+.manual-exercise-results article { padding: 9px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--paper); }
+.manual-exercise-results article > div { min-width: 0; display: grid; gap: 4px; }
+.manual-exercise-results article strong { overflow: hidden; font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
+.manual-exercise-results article small { overflow: hidden; color: var(--muted); font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
+.manual-exercise-results button { min-height: 34px; padding: 0 9px; display: flex; align-items: center; gap: 5px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; font-size: .67rem; font-weight: 800; }
+.manual-exercise-results > p { margin: 12px; color: var(--muted); font-size: .72rem; text-align: center; }
 .mobile-workout { display: none; }
 
 .profile-backdrop { position: fixed; inset: 0; z-index: 79; background: rgba(18,19,15,.65); backdrop-filter: blur(4px); }
@@ -824,7 +857,8 @@ footer a { text-underline-offset: 3px; }
   }
   .workout-panel { padding: 24px 20px 90px; }
   .workout-day-labels, .workout-prescription-grid, .meal-options-grid { grid-template-columns: 1fr; }
-  .manual-exercise-adder { grid-template-columns: 1fr; }
+  .manual-exercise-results article { grid-template-columns: 1fr; }
+  .manual-exercise-results button { justify-content: center; }
   .profile-panel { padding: 22px 18px 90px; }
   .access-panel { padding: 22px 18px 60px; }
   .access-heading { grid-template-columns: 48px 1fr auto; }

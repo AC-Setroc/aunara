@@ -34,6 +34,7 @@ import {
   titleCase,
   uniqueSorted,
   updateWorkoutItem,
+  WEEKDAYS,
 } from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
@@ -41,6 +42,7 @@ import { addWeeklyCheckIn, buildRoutineAnalysis } from "./lib/wellness";
 import type { Exercise, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
 
 const PAGE_SIZE = 48;
+type WorkoutPanelMode = "view" | "edit" | "training";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -81,9 +83,11 @@ function App() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
   const [workoutOpen, setWorkoutOpen] = useState(false);
+  const [workoutPanelMode, setWorkoutPanelMode] = useState<WorkoutPanelMode>("view");
   const [profileOpen, setProfileOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(false);
   const [initialProposal, setInitialProposal] = useState<TrainingTrack | null>(null);
+  const [trackProposal, setTrackProposal] = useState<TrainingTrack | null>(null);
   const [accessMode, setAccessMode] = useState<AccessMode>("create");
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installGuide, setInstallGuide] = useState<InstallGuide>(() => {
@@ -263,12 +267,14 @@ function App() {
       equipment: healthProfile.equipmentPreference ?? "mixed",
       sessionMinutes: healthProfile.sessionMinutes ?? 45,
       daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
+      trainingDays: WEEKDAYS.slice(0, healthProfile.trainingDaysPerWeek ?? 3),
       workout: legacyWorkout.length
         ? legacyWorkout
         : generateTrackWorkout(exercises, {
           focus: primaryFocus,
           equipment: healthProfile.equipmentPreference ?? "mixed",
           daysPerWeek: healthProfile.trainingDaysPerWeek ?? 3,
+          trainingDays: WEEKDAYS.slice(0, healthProfile.trainingDaysPerWeek ?? 3),
         }),
       creationMode: "suggested",
     });
@@ -307,7 +313,7 @@ function App() {
     });
   }
 
-  function appendWorkoutExercise(exerciseId: string, allowDuplicate = false) {
+  function appendWorkoutExercise(exerciseId: string, allowDuplicate = false, day?: Weekday) {
     updateActiveWorkout((current) => !allowDuplicate && current.some((item) => item.exerciseId === exerciseId)
       ? current
       : [...current, {
@@ -315,7 +321,7 @@ function App() {
         exerciseId,
         sets: 3,
         reps: 10,
-        day: "monday",
+        day: day ?? activeTrack?.trainingDays?.[0] ?? "monday",
         setPlan: "3 × 10",
         loadKg: null,
         loadHistory: [],
@@ -371,6 +377,7 @@ function App() {
 
   function openTrack(trackId: string) {
     selectTrack(trackId);
+    setWorkoutPanelMode("view");
     setWorkoutOpen(true);
   }
 
@@ -380,6 +387,7 @@ function App() {
     const suggestions = generateTrackWorkout(exercises, track);
     setTracks((current) => replaceTrackWorkout(current, trackId, suggestions));
     selectTrack(trackId);
+    setWorkoutPanelMode("view");
     setWorkoutOpen(true);
   }
 
@@ -392,10 +400,27 @@ function App() {
       ...input,
       workout: input.creationMode === "manual" ? [] : generateTrackWorkout(exercises, input),
     };
+    if (input.creationMode === "suggested") {
+      setTrackProposal(track);
+      return;
+    }
     setTracks((current) => [...current, track]);
     setActiveTrackId(id);
     setEquipment(track.equipment === "bodyweight" ? "body weight" : "");
+    setWorkoutPanelMode("edit");
     setWorkoutOpen(true);
+  }
+
+  function acceptTrackProposal(openForEditing: boolean) {
+    if (!trackProposal) return;
+    setTracks((current) => [...current, trackProposal]);
+    setActiveTrackId(trackProposal.id);
+    setEquipment(trackProposal.equipment === "bodyweight" ? "body weight" : "");
+    setTrackProposal(null);
+    if (openForEditing) {
+      setWorkoutPanelMode("edit");
+      setWorkoutOpen(true);
+    }
   }
 
   function acceptInitialProposal(openForEditing: boolean) {
@@ -405,7 +430,10 @@ function App() {
     setHealthProfile((current) => ({ ...current, initialRoutineDecision: "accepted" }));
     setTracksInitialized(true);
     setInitialProposal(null);
-    if (openForEditing) setWorkoutOpen(true);
+    if (openForEditing) {
+      setWorkoutPanelMode("edit");
+      setWorkoutOpen(true);
+    }
   }
 
   function rejectInitialProposal() {
@@ -478,7 +506,10 @@ function App() {
                 ))}
               </select>
             </label>
-            {!onboardingRequired && <button className="workout-trigger" type="button" onClick={() => setWorkoutOpen(true)}>
+            {!onboardingRequired && <button className="workout-trigger" type="button" onClick={() => {
+              setWorkoutPanelMode("view");
+              setWorkoutOpen(true);
+            }}>
               <Dumbbell size={18} />
               <span>{activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")}</span>
               <strong>{workout.length}</strong>
@@ -653,12 +684,27 @@ function App() {
         />
       )}
 
+      {canUseTraining && trackProposal && (
+        <InitialRoutineProposal
+          language={language}
+          variant="track"
+          track={trackProposal}
+          exerciseMap={exerciseMap}
+          onAccept={() => acceptTrackProposal(false)}
+          onEdit={() => acceptTrackProposal(true)}
+          onReject={() => setTrackProposal(null)}
+        />
+      )}
+
       {canUseTraining && <footer>
         <div><strong>REPBOOK</strong><span>{tr(language, "One profile. More than one priority.", "Un perfil. Más de una prioridad.")}</span></div>
         <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
       </footer>}
 
-      {canUseTraining && <button className="mobile-workout" type="button" onClick={() => setWorkoutOpen(true)}>
+      {canUseTraining && <button className="mobile-workout" type="button" onClick={() => {
+        setWorkoutPanelMode("view");
+        setWorkoutOpen(true);
+      }}>
         <Dumbbell size={19} /> {activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")} <strong>{workout.length}</strong>
       </button>}
 
@@ -683,11 +729,12 @@ function App() {
             exerciseMap={exerciseMap}
             exercises={exercises}
             track={activeTrack}
+            initialMode={workoutPanelMode}
             onClose={() => setWorkoutOpen(false)}
             onUpdate={updateWorkout}
             onUpdateItem={updateWorkoutItemFields}
             onSetDayLabel={setTrainingDayLabel}
-            onAddExercise={(exerciseId) => appendWorkoutExercise(exerciseId, true)}
+            onAddExercise={(exerciseId, day) => appendWorkoutExercise(exerciseId, true, day)}
             onLogLoad={logCurrentWorkoutLoad}
             onRemove={(itemId) => updateActiveWorkout((current) => current.filter((item) => (item.id ?? item.exerciseId) !== itemId))}
             onSwap={swapWorkoutExercise}

@@ -81,6 +81,21 @@ describe("exercise helpers", () => {
     expect(results.map((exercise) => exercise.id)).toEqual(["0002"]);
   });
 
+  it("searches exercise categories as well as names, muscles, and equipment", () => {
+    const results = filterExercises([
+      baseExercise,
+      { ...squat, category: "plyometrics" },
+    ], {
+      query: "plyometric",
+      bodyPart: "",
+      equipment: "",
+      favoritesOnly: false,
+      favoriteIds: new Set(),
+    });
+
+    expect(results.map((exercise) => exercise.id)).toEqual(["0002"]);
+  });
+
   it("combines body-part, equipment, and favorites filters", () => {
     const results = filterExercises([baseExercise, squat], {
       query: "",
@@ -174,6 +189,24 @@ describe("training tracks", () => {
 
     expect(workout).toHaveLength(6);
     expect(workout.every((item) => item.id && item.day && item.setPlan)).toBe(true);
+  });
+
+  it("schedules suggested exercises only on the days selected for the route", () => {
+    const workout = exerciseLibrary.generateTrackWorkout(strengthExercises, {
+      focus: "strength",
+      equipment: "any",
+      daysPerWeek: 3,
+      trainingDays: ["monday", "wednesday", "friday"],
+    });
+
+    expect(workout.map((item) => item.day)).toEqual([
+      "monday",
+      "wednesday",
+      "friday",
+      "monday",
+      "wednesday",
+      "friday",
+    ]);
   });
 
   it("uses six bodyweight alternatives for an equipment-free strength track", () => {

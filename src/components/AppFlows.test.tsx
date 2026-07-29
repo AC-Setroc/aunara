@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Exercise, HealthProfile, TrainingTrack } from "../types";
 import { ProfilePanel } from "./ProfilePanel";
+import { InitialRoutineProposal } from "./InitialRoutineProposal";
 import { TrainingTracks } from "./TrainingTracks";
 import { WorkoutPanel } from "./WorkoutPanel";
 
@@ -165,13 +166,42 @@ describe("training track controls", () => {
     fireEvent.change(screen.getByLabelText("Goal"), { target: { value: "weight-loss" } });
     fireEvent.click(screen.getByRole("button", { name: "Manual routine" }));
     fireEvent.change(screen.getByLabelText("Session minutes"), { target: { value: "75" } });
+    fireEvent.click(screen.getByRole("button", { name: "Tuesday" }));
+    fireEvent.click(screen.getByRole("button", { name: "Wednesday" }));
+    fireEvent.click(screen.getByRole("button", { name: "Friday" }));
     fireEvent.click(screen.getByRole("button", { name: "Create manual track" }));
 
     expect(onCreate).toHaveBeenCalledWith(expect.objectContaining({
       focus: "weight-loss",
       sessionMinutes: 75,
+      daysPerWeek: 3,
+      trainingDays: ["monday", "wednesday", "friday"],
       creationMode: "manual",
     }));
+  });
+
+  it("reviews a newly suggested route before saving it", async () => {
+    localStorage.setItem("repbook-health-profile", JSON.stringify({
+      ...healthProfile,
+      onboardingCompleted: true,
+      initialRoutineDecision: "rejected",
+    }));
+    localStorage.setItem("repbook-training-tracks-initialized", JSON.stringify(true));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue([exercise]),
+    }));
+    render(<App />);
+
+    await screen.findByRole("heading", { name: "Training tracks" });
+    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Create track & suggest routine" }));
+
+    expect(await screen.findByRole("dialog", { name: "Review suggested routine" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Accept routine" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Accept and edit" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Reject proposal" })).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
   });
 
   it("edits an existing track without deleting its routine", () => {
@@ -263,14 +293,20 @@ describe("routine exercise controls", () => {
     expect(onGenerate).toHaveBeenCalledOnce();
   });
 
-  it("starts an empty manual routine without analysis or generated exercises", () => {
+  it("adds a searched exercise to the selected day in a manual routine", () => {
     const onGenerate = vi.fn();
     const onAddExercise = vi.fn();
     render(<WorkoutPanel
       items={[]}
       exerciseMap={new Map([[exercise.id, exercise]])}
       exercises={[exercise]}
-      track={{ ...track, workout: [], creationMode: "manual" }}
+      track={{
+        ...track,
+        workout: [],
+        creationMode: "manual",
+        daysPerWeek: 2,
+        trainingDays: ["monday", "wednesday"],
+      }}
       onClose={vi.fn()}
       onUpdate={vi.fn()}
       onAddExercise={onAddExercise}
@@ -286,10 +322,12 @@ describe("routine exercise controls", () => {
     expect(screen.queryByText("Why this routine")).toBeNull();
     expect(screen.queryByRole("button", { name: "Suggest this routine" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Start creating" }));
-    fireEvent.click(screen.getByRole("button", { name: "Add exercise" }));
+    fireEvent.click(screen.getByRole("button", { name: "Wednesday" }));
+    fireEvent.change(screen.getByLabelText("Search exercises to add"), { target: { value: "quadriceps" } });
+    fireEvent.click(screen.getByRole("button", { name: "Add Jump Squat to Wednesday" }));
 
     expect(onGenerate).not.toHaveBeenCalled();
-    expect(onAddExercise).toHaveBeenCalledWith(exercise.id);
+    expect(onAddExercise).toHaveBeenCalledWith(exercise.id, "wednesday");
   });
 
   it("shows why a routine fits the health context", () => {
@@ -319,11 +357,12 @@ describe("routine exercise controls", () => {
     expect(onOpenProfile).toHaveBeenCalledOnce();
   });
 
-  it("edits day, set plan and load, then logs the exercise load", () => {
+  it("keeps routine editing separate from logging today’s workout", () => {
     const onUpdateItem = vi.fn();
     const onLogLoad = vi.fn();
     const scheduledTrack = {
       ...track,
+      trainingDays: ["monday" as const, "wednesday" as const],
       dayLabels: { monday: "Lower body" },
       workout: [{
         ...track.workout[0],
@@ -353,15 +392,48 @@ describe("routine exercise controls", () => {
       onOpenProfile={vi.fn()}
     />);
 
+    expect(screen.getByRole("button", { name: "Start today’s workout" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Log today’s load for Jump Squat" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit routine" }));
     fireEvent.change(screen.getByLabelText("Training day for Jump Squat"), { target: { value: "wednesday" } });
     fireEvent.change(screen.getByLabelText("Set plan for Jump Squat"), { target: { value: "3 × 8 + 2 to failure" } });
-    fireEvent.change(screen.getByLabelText("Load in kilograms for Jump Squat"), { target: { value: "95" } });
-    fireEvent.click(screen.getByRole("button", { name: "Log today’s load for Jump Squat" }));
 
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ day: "wednesday" }));
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ setPlan: "3 × 8 + 2 to failure" }));
+    expect(screen.queryByRole("button", { name: "Log today’s load for Jump Squat" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Back to routine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start today’s workout" }));
+    fireEvent.change(screen.getByLabelText("Load in kilograms for Jump Squat"), { target: { value: "95" } });
+    fireEvent.click(screen.getByRole("button", { name: "Log today’s load for Jump Squat" }));
+
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ loadKg: 95 }));
     expect(onLogLoad).toHaveBeenCalledWith("monday-jump-squat");
+  });
+
+  it("shows accept, edit, and reject actions for a regular suggested route", () => {
+    const onAccept = vi.fn();
+    const onEdit = vi.fn();
+    const onReject = vi.fn();
+    render(<InitialRoutineProposal
+      language="en"
+      variant="track"
+      track={track}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      onAccept={onAccept}
+      onEdit={onEdit}
+      onReject={onReject}
+    />);
+
+    expect(screen.getByRole("dialog", { name: "Review suggested routine" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Accept routine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept and edit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reject proposal" }));
+
+    expect(onAccept).toHaveBeenCalledOnce();
+    expect(onEdit).toHaveBeenCalledOnce();
+    expect(onReject).toHaveBeenCalledOnce();
   });
 });
 

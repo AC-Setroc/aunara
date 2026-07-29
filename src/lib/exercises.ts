@@ -33,6 +33,7 @@ export function filterExercises(
 
     const haystack = [
       exercise.name,
+      exercise.category,
       exercise.target,
       exercise.muscle_group,
       exercise.body_part,
@@ -177,7 +178,7 @@ export const WEEKDAYS: Weekday[] = [
 
 export function generateTrackWorkout(
   exercises: Exercise[],
-  track: { focus: string; equipment: string; daysPerWeek?: number },
+  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[] },
 ): WorkoutItem[] {
   const eligible = track.equipment === "bodyweight"
     ? exercises.filter((exercise) => exercise.equipment === "body weight")
@@ -208,13 +209,16 @@ export function generateTrackWorkout(
       const sets = track.focus === "beach-volleyball" && index === preferredNames.length - 1
         ? 2
         : prescription.sets;
-      const dayCount = Math.max(1, Math.min(7, track.daysPerWeek ?? 1));
+      const fallbackDayCount = Math.max(1, Math.min(7, track.daysPerWeek ?? 1));
+      const trainingDays = track.trainingDays?.length
+        ? track.trainingDays
+        : WEEKDAYS.slice(0, fallbackDayCount);
       return {
         id: `${track.focus}-${exercise.id}-${index}`,
         exerciseId: exercise.id,
         sets,
         reps: prescription.reps,
-        day: WEEKDAYS[index % dayCount],
+        day: trainingDays[index % trainingDays.length],
         setPlan: `${sets} × ${prescription.reps}`,
         loadKg: null,
         loadHistory: [],
