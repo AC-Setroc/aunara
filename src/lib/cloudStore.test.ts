@@ -82,4 +82,41 @@ describe("cloud data store", () => {
 
     await expect(createCloudStore(client).load("user-123")).rejects.toThrow("database unavailable");
   });
+
+  it("records a versioned consent event for the signed-in user", async () => {
+    const insert = vi.fn().mockResolvedValue({ error: null });
+    const from = vi.fn().mockReturnValue({ insert });
+
+    await createCloudStore({ from }).recordConsent({
+      id: "11111111-1111-4111-8111-111111111111",
+      userId: "user-123",
+      consentType: "health_data",
+      action: "granted",
+      policyVersion: "1.0",
+      locale: "es",
+      source: "account",
+    });
+
+    expect(from).toHaveBeenCalledWith("repbook_consent_events");
+    expect(insert).toHaveBeenCalledWith({
+      id: "11111111-1111-4111-8111-111111111111",
+      user_id: "user-123",
+      consent_type: "health_data",
+      action: "granted",
+      policy_version: "1.0",
+      locale: "es",
+      source: "account",
+    });
+  });
+
+  it("deletes only the signed-in user's stored snapshot", async () => {
+    const eq = vi.fn().mockResolvedValue({ error: null });
+    const deleteRows = vi.fn().mockReturnValue({ eq });
+    const from = vi.fn().mockReturnValue({ delete: deleteRows });
+
+    await createCloudStore({ from }).remove("user-123");
+
+    expect(from).toHaveBeenCalledWith("repbook_user_data");
+    expect(eq).toHaveBeenCalledWith("user_id", "user-123");
+  });
 });

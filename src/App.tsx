@@ -19,7 +19,9 @@ import {
 import { ExerciseCard } from "./components/ExerciseCard";
 import { ExerciseAssignmentDialog } from "./components/ExerciseAssignmentDialog";
 import { ExerciseDetail } from "./components/ExerciseDetail";
+import { ConsentGate } from "./components/ConsentGate";
 import { InitialRoutineProposal } from "./components/InitialRoutineProposal";
+import { LegalPanel, type LegalDocument } from "./components/LegalPanel";
 import { OnboardingPanel } from "./components/OnboardingPanel";
 import { ProfilePanel } from "./components/ProfilePanel";
 import { TrainingTracks, type NewTrackInput } from "./components/TrainingTracks";
@@ -42,8 +44,9 @@ import {
 } from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
+import { buildPersonalDataExport, stripSensitiveHealthData } from "./lib/privacy";
 import { addWeeklyCheckIn, assessExerciseReadiness, buildRoutineAnalysis } from "./lib/wellness";
-import type { EquipmentPreference, Exercise, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
+import type { EquipmentPreference, Exercise, HealthDataConsentStatus, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
 
 const PAGE_SIZE = 48;
 type WorkoutPanelMode = "view" | "edit" | "training";
@@ -104,6 +107,7 @@ function App() {
   const [workoutPanelMode, setWorkoutPanelMode] = useState<WorkoutPanelMode>("view");
   const [profileOpen, setProfileOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(false);
+  const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null);
   const [initialProposal, setInitialProposal] = useState<TrainingTrack | null>(null);
   const [trackProposal, setTrackProposal] = useState<TrainingTrack | null>(null);
   const [accessMode, setAccessMode] = useState<AccessMode>("create");
@@ -191,10 +195,13 @@ function App() {
     onSignedOut: clearSignedOutProfile,
   });
   const hasAppAccess = !cloud.configured || Boolean(cloud.email);
+  const consentRequired = cloud.configured
+    && Boolean(cloud.email)
+    && cloud.healthDataConsent == null;
   const onboardingRequired = cloud.configured
     && Boolean(cloud.email)
     && healthProfile.onboardingCompleted !== true;
-  const canUseTraining = hasAppAccess && !onboardingRequired;
+  const canUseTraining = hasAppAccess && !onboardingRequired && !consentRequired;
 
   useEffect(() => {
     if (language !== "en" && language !== "es") {
@@ -568,6 +575,32 @@ function App() {
     setTrackProposal((current) => refreshProposal(current));
   }
 
+  function exportPersonalData() {
+    if (!cloud.email) return;
+    const exported = buildPersonalDataExport({
+      email: cloud.email,
+      consentStatus: cloud.healthDataConsent ?? null,
+      snapshot: cloudSnapshot,
+    });
+    const blob = new Blob([JSON.stringify(exported, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `repbook-data-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function changeHealthConsent(status: HealthDataConsentStatus) {
+    if (status !== "granted") {
+      setHealthProfile((current) => stripSensitiveHealthData(current));
+      setCheckIns([]);
+    } else {
+      setHealthProfile((current) => ({ ...current, healthDataMode: "personalized" }));
+    }
+    void cloud.recordHealthConsent(status);
+  }
+
   return (
     <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
       <header className="site-header">
@@ -778,11 +811,29 @@ function App() {
         </section>}
       </main>
 
-      {onboardingRequired && (
+      {consentRequired && (
+        <ConsentGate
+          language={language}
+          onGrant={() => void cloud.recordHealthConsent("granted", "migration-gate")}
+          onUseBasic={() => {
+            setHealthProfile((current) => stripSensitiveHealthData(current));
+            setCheckIns([]);
+            void cloud.recordHealthConsent("declined", "migration-gate");
+          }}
+          onOpenPrivacy={() => setLegalDocument("privacy")}
+        />
+      )}
+
+      {onboardingRequired && !consentRequired && (
         <OnboardingPanel
           language={language}
           name={profileName}
           profile={healthProfile}
+          healthDataConsent={cloud.healthDataConsent === "granted"}
+          onRequestHealthConsent={() => {
+            setAccessMode("create");
+            setAccessOpen(true);
+          }}
           onComplete={updateHealthProfile}
         />
       )}
@@ -818,10 +869,14 @@ function App() {
         />
       )}
 
-      {canUseTraining && <footer>
+      <footer>
         <div><strong>REPBOOK</strong><span>{tr(language, "One profile. More than one priority.", "Un perfil. Más de una prioridad.")}</span></div>
-        <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
-      </footer>}
+        <div className="footer-legal">
+          <button type="button" onClick={() => setLegalDocument("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
+          <button type="button" onClick={() => setLegalDocument("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
+        </div>
+        {canUseTraining && <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>}
+      </footer>
 
       {canUseTraining && <button className="mobile-workout" type="button" onClick={() => {
         setWorkoutPanelMode("view");
@@ -894,6 +949,7 @@ function App() {
           favoriteCount={favoriteIds.length}
           healthProfile={healthProfile}
           checkIns={checkIns}
+          healthDataConsent={cloud.healthDataConsent === "granted"}
           onNameChange={setProfileName}
           onHealthProfileChange={updateHealthProfile}
           onAddCheckIn={saveWeeklyCheckIn}
@@ -902,6 +958,11 @@ function App() {
             openTrack(trackId);
           }}
           onClose={() => setProfileOpen(false)}
+          onRequestHealthConsent={() => {
+            setProfileOpen(false);
+            setAccessMode("create");
+            setAccessOpen(true);
+          }}
         />
       )}
 
@@ -919,11 +980,31 @@ function App() {
           onResendVerification={(email) => void cloud.resendVerification(email)}
           onSignIn={(input) => void cloud.signIn(input)}
           onSignOut={cloud.signOut}
+          onOpenLegal={setLegalDocument}
+          onExportData={exportPersonalData}
+          onEditData={() => {
+            setAccessOpen(false);
+            if (healthProfile.onboardingCompleted) setProfileOpen(true);
+          }}
+          onChangeHealthConsent={changeHealthConsent}
+          onDeleteData={() => void cloud.deleteStoredData()}
+          onDeleteAccount={() => {
+            void cloud.deleteAccount();
+            setAccessOpen(false);
+          }}
           onInstall={installPrompt ? () => {
             installPrompt.prompt().finally(() => setInstallPrompt(null));
           } : null}
           initialMode={accessMode}
           onClose={() => setAccessOpen(false)}
+        />
+      )}
+
+      {legalDocument && (
+        <LegalPanel
+          language={language}
+          document={legalDocument}
+          onClose={() => setLegalDocument(null)}
         />
       )}
     </div>

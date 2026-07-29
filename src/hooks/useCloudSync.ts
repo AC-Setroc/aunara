@@ -14,7 +14,9 @@ import {
 } from "../lib/cloudSnapshot";
 import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
 import { tr } from "../lib/i18n";
+import { LEGAL_VERSION } from "../lib/privacy";
 import { cloudConfigured, supabaseClient } from "../lib/supabaseClient";
+import type { HealthDataConsentStatus } from "../types";
 
 interface UseCloudSyncOptions {
   snapshot: RepbookCloudSnapshot;
@@ -29,6 +31,25 @@ interface CloudSyncController extends CloudAccessState {
   resendVerification: (email: string) => Promise<void>;
   signIn: (input: PasswordSignInInput) => Promise<void>;
   signOut: () => Promise<void>;
+  recordHealthConsent: (status: HealthDataConsentStatus, source?: "privacy-center" | "migration-gate") => Promise<void>;
+  deleteStoredData: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
+}
+
+function createEventId(): string {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (character) => {
+    const random = Math.floor(Math.random() * 16);
+    const value = character === "x" ? random : (random & 0x3) | 0x8;
+    return value.toString(16);
+  });
+}
+
+function consentStatusFromUser(user: User | null): HealthDataConsentStatus | null {
+  const value = user?.user_metadata?.health_data_consent;
+  return value === "granted" || value === "declined" || value === "revoked"
+    ? value
+    : null;
 }
 
 export function useCloudSync({
@@ -46,6 +67,7 @@ export function useCloudSync({
   const onSignedOutRef = useRef(onSignedOut);
   const bootstrappedUserId = useRef<string | null>(null);
   const lastSavedSnapshot = useRef("");
+  const recordedConsentIds = useRef(new Set<string>());
 
   latestSnapshot.current = snapshot;
   onRemoteSnapshotRef.current = onRemoteSnapshot;
@@ -67,6 +89,40 @@ export function useCloudSync({
       listener.subscription.unsubscribe();
     };
   }, [client]);
+
+  useEffect(() => {
+    if (!client || !user) return;
+    const metadata = user.user_metadata ?? {};
+    const store = createCloudStore(client as unknown as CloudStoreClient);
+    const events = [
+      metadata.accepted_legal_event_id && {
+        id: String(metadata.accepted_legal_event_id),
+        userId: user.id,
+        consentType: "legal" as const,
+        action: "granted" as const,
+        policyVersion: String(metadata.accepted_legal_version ?? LEGAL_VERSION),
+        locale: String(metadata.language ?? latestSnapshot.current.language),
+        source: "account" as const,
+      },
+      metadata.health_data_consent_event_id && {
+        id: String(metadata.health_data_consent_event_id),
+        userId: user.id,
+        consentType: "health_data" as const,
+        action: consentStatusFromUser(user) ?? "declined",
+        policyVersion: String(metadata.health_data_consent_version ?? LEGAL_VERSION),
+        locale: String(metadata.language ?? latestSnapshot.current.language),
+        source: "account" as const,
+      },
+    ].filter(Boolean);
+
+    for (const event of events) {
+      if (!event || recordedConsentIds.current.has(event.id)) continue;
+      recordedConsentIds.current.add(event.id);
+      void store.recordConsent(event).catch(() => {
+        recordedConsentIds.current.delete(event.id);
+      });
+    }
+  }, [client, user]);
 
   useEffect(() => {
     if (!client || !user) {
@@ -139,6 +195,8 @@ export function useCloudSync({
     name,
     email,
     password,
+    acceptedLegal,
+    healthDataConsent,
   }: CreateAccountInput) => {
     const language = latestSnapshot.current.language;
     if (!client) {
@@ -146,13 +204,30 @@ export function useCloudSync({
       setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
       return;
     }
+    if (!acceptedLegal) {
+      setStatus("error");
+      setMessage(tr(language, "Accept the Terms of use and Privacy policy to create the account.", "Aceptá los Términos de uso y la Política de privacidad para crear la cuenta."));
+      return;
+    }
     setStatus("syncing");
     setMessage(undefined);
+    const acceptedAt = new Date().toISOString();
+    const healthConsentStatus = healthDataConsent ? "granted" : "declined";
     const { data, error } = await client.auth.signUp({
       email,
       password,
       options: {
-        data: { display_name: name, language },
+        data: {
+          display_name: name,
+          language,
+          accepted_legal_version: LEGAL_VERSION,
+          accepted_legal_at: acceptedAt,
+          accepted_legal_event_id: createEventId(),
+          health_data_consent: healthConsentStatus,
+          health_data_consent_version: LEGAL_VERSION,
+          health_data_consent_at: acceptedAt,
+          health_data_consent_event_id: createEventId(),
+        },
         emailRedirectTo: window.location.origin,
       },
     });
@@ -261,16 +336,104 @@ export function useCloudSync({
     onSignedOutRef.current?.();
   }, [client]);
 
+  const recordHealthConsent = useCallback(async (
+    nextStatus: HealthDataConsentStatus,
+    source: "privacy-center" | "migration-gate" = "privacy-center",
+  ) => {
+    const language = latestSnapshot.current.language;
+    if (!client || !user) return;
+    setStatus("syncing");
+    setMessage(undefined);
+    const eventId = createEventId();
+    const store = createCloudStore(client as unknown as CloudStoreClient);
+    try {
+      await store.recordConsent({
+        id: eventId,
+        userId: user.id,
+        consentType: "health_data",
+        action: nextStatus,
+        policyVersion: LEGAL_VERSION,
+        locale: language,
+        source,
+      });
+      const { data, error } = await client.auth.updateUser({
+        data: {
+          health_data_consent: nextStatus,
+          health_data_consent_version: LEGAL_VERSION,
+          health_data_consent_at: new Date().toISOString(),
+          health_data_consent_event_id: eventId,
+        },
+      });
+      if (error) throw error;
+      setUser(data.user ?? {
+        ...user,
+        user_metadata: {
+          ...user.user_metadata,
+          health_data_consent: nextStatus,
+          health_data_consent_version: LEGAL_VERSION,
+          health_data_consent_event_id: eventId,
+        },
+      });
+      setStatus("synced");
+      setMessage(nextStatus === "granted"
+        ? tr(language, "Health personalization authorized.", "Personalización con datos de salud autorizada.")
+        : tr(language, "Health authorization removed.", "Autorización de datos de salud retirada."));
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : tr(language, "Consent could not be updated.", "No se pudo actualizar la autorización."));
+    }
+  }, [client, user]);
+
+  const deleteStoredData = useCallback(async () => {
+    const language = latestSnapshot.current.language;
+    if (!client || !user) return;
+    setStatus("syncing");
+    setMessage(undefined);
+    try {
+      await createCloudStore(client as unknown as CloudStoreClient).remove(user.id);
+      onSignedOutRef.current?.();
+      lastSavedSnapshot.current = "";
+      setStatus("synced");
+      setMessage(tr(language, "Your stored Repbook data was deleted. The account remains active.", "Tus datos guardados de Repbook fueron eliminados. La cuenta sigue activa."));
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : tr(language, "Stored data could not be deleted.", "No se pudieron eliminar los datos guardados."));
+    }
+  }, [client, user]);
+
+  const deleteAccount = useCallback(async () => {
+    const language = latestSnapshot.current.language;
+    if (!client || !user) return;
+    setStatus("syncing");
+    setMessage(undefined);
+    const { error } = await client.functions.invoke("delete-my-account");
+    if (error) {
+      setStatus("error");
+      setMessage(error.message);
+      return;
+    }
+    await client.auth.signOut();
+    setUser(null);
+    setPendingVerification(null);
+    onSignedOutRef.current?.();
+    setStatus("local");
+    setMessage(tr(language, "The account and its Repbook data were deleted.", "La cuenta y sus datos de Repbook fueron eliminados."));
+  }, [client, user]);
+
   return {
     configured: cloudConfigured,
     email: user?.email ?? null,
     status,
     message,
     pendingVerification,
+    healthDataConsent: consentStatusFromUser(user),
     createAccount,
     verifyAccount,
     resendVerification,
     signIn,
     signOut,
+    recordHealthConsent,
+    deleteStoredData,
+    deleteAccount,
   };
 }

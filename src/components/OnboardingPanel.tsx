@@ -1,6 +1,7 @@
 import { Activity, Dumbbell, HeartPulse, ShieldCheck } from "lucide-react";
 import { type FormEvent, useMemo, useState } from "react";
 import { tr } from "../lib/i18n";
+import { stripSensitiveHealthData } from "../lib/privacy";
 import { adultBirthDateBounds, calculateAgeFromBirthDate } from "../lib/wellness";
 import type { EquipmentPreference, HealthProfile, LanguageCode, TrackFocus } from "../types";
 import { ReadinessAndLimitations } from "./ReadinessAndLimitations";
@@ -10,6 +11,8 @@ interface OnboardingPanelProps {
   name: string;
   profile: HealthProfile;
   onComplete: (profile: HealthProfile) => void;
+  healthDataConsent?: boolean;
+  onRequestHealthConsent?: () => void;
 }
 
 function optionalNumber(value: string): number | null {
@@ -23,6 +26,8 @@ export function OnboardingPanel({
   name,
   profile,
   onComplete,
+  healthDataConsent = true,
+  onRequestHealthConsent,
 }: OnboardingPanelProps) {
   const [draft, setDraft] = useState<HealthProfile>({
     ...profile,
@@ -34,15 +39,17 @@ export function OnboardingPanel({
   });
   const calculatedAge = calculateAgeFromBirthDate(draft.birthDate ?? "");
   const birthDateBounds = adultBirthDateBounds();
-  const ready = calculatedAge !== null
+  const basicReady = Boolean(draft.primaryGoal)
+    && Boolean(draft.trainingDaysPerWeek)
+    && Boolean(draft.sessionMinutes);
+  const ready = basicReady && (!healthDataConsent || (
+    calculatedAge !== null
     && calculatedAge >= 18
     && calculatedAge <= 100
     && draft.heightCm !== null
     && draft.currentWeightKg !== null
-    && Boolean(draft.primaryGoal)
-    && Boolean(draft.trainingDaysPerWeek)
-    && Boolean(draft.sessionMinutes)
-    && draft.readinessScreen?.confirmed === true;
+    && draft.readinessScreen?.confirmed === true
+  ));
   const orientation = useMemo(() => {
     const experience = draft.experience === "beginner"
       ? tr(language, "a gradual start with technique-first sessions", "un inicio gradual, priorizando la técnica")
@@ -74,7 +81,9 @@ export function OnboardingPanel({
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!ready) return;
-    onComplete({ ...draft, onboardingCompleted: true });
+    onComplete(healthDataConsent
+      ? { ...draft, onboardingCompleted: true, healthDataMode: "personalized" }
+      : stripSensitiveHealthData({ ...draft, onboardingCompleted: true }));
   }
 
   return (
@@ -90,8 +99,22 @@ export function OnboardingPanel({
         </header>
 
         <form onSubmit={submit}>
+          {!healthDataConsent && (
+            <div className="basic-route-notice">
+              <ShieldCheck size={21} />
+              <div>
+                <strong>{tr(language, "Basic route without sensitive health data", "Ruta básica sin datos sensibles de salud")}</strong>
+                <p>{tr(
+                  language,
+                  "We will only use your goal, available equipment, experience and schedule. Body measurements, injuries, symptoms, allergies and wellbeing check-ins will remain empty.",
+                  "Solo usaremos tu objetivo, equipo disponible, experiencia y horario. Las medidas corporales, lesiones, síntomas, alergias y registros de bienestar permanecerán vacíos.",
+                )}</p>
+                <button type="button" onClick={onRequestHealthConsent}>{tr(language, "Authorize health personalization", "Autorizar personalización de salud")}</button>
+              </div>
+            </div>
+          )}
           <div className="onboarding-grid">
-            <label className="health-field">
+            {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Date of birth", "Fecha de nacimiento")}</span>
               <input
                 aria-label={tr(language, "Date of birth", "Fecha de nacimiento")}
@@ -105,22 +128,22 @@ export function OnboardingPanel({
               <small>{calculatedAge === null
                 ? tr(language, "Used to calculate your age", "Se usa para calcular tu edad")
                 : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
-            </label>
-            <label className="health-field">
+            </label>}
+            {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Height", "Estatura")}</span>
               <input aria-label={tr(language, "Height in centimeters", "Estatura en centímetros")} type="number" min="100" max="250" value={draft.heightCm ?? ""} onChange={(event) => update("heightCm", optionalNumber(event.target.value))} required />
               <small>cm</small>
-            </label>
-            <label className="health-field">
+            </label>}
+            {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Current weight", "Peso actual")}</span>
               <input aria-label={tr(language, "Current weight in kilograms", "Peso actual en kilogramos")} type="number" min="30" max="350" step="0.1" value={draft.currentWeightKg ?? ""} onChange={(event) => update("currentWeightKg", optionalNumber(event.target.value))} required />
               <small>kg</small>
-            </label>
-            <label className="health-field">
+            </label>}
+            {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Goal weight (optional)", "Meta de peso (opcional)")}</span>
               <input type="number" min="30" max="350" step="0.1" value={draft.targetWeightKg ?? ""} onChange={(event) => update("targetWeightKg", optionalNumber(event.target.value))} />
               <small>kg</small>
-            </label>
+            </label>}
             <label className="health-field">
               <span>{tr(language, "Primary goal", "Objetivo principal")}</span>
               <select aria-label={tr(language, "Primary goal", "Objetivo principal")} value={draft.primaryGoal} onChange={(event) => update("primaryGoal", event.target.value as TrackFocus)}>
@@ -143,7 +166,7 @@ export function OnboardingPanel({
                 <option value="any">{tr(language, "All equipment", "Todo el equipo")}</option>
               </select>
             </label>
-            <label className="health-field">
+            {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Daily activity", "Actividad diaria")}</span>
               <select value={draft.activityLevel} onChange={(event) => update("activityLevel", event.target.value as HealthProfile["activityLevel"])}>
                 <option value="sedentary">{tr(language, "Mostly seated · little purposeful activity", "Mayormente sentado/a · poca actividad intencional")}</option>
@@ -152,7 +175,7 @@ export function OnboardingPanel({
                 <option value="very-active">{tr(language, "Very active · 6–7 active days or physical work", "Muy activo/a · 6–7 días activos o trabajo físico")}</option>
               </select>
               <small>{tr(language, "Count work, walking, sport and training—not only gym sessions.", "Contá trabajo, caminatas, deporte y entrenamientos; no solo el gimnasio.")}</small>
-            </label>
+            </label>}
             <label className="health-field">
               <span>{tr(language, "Training experience", "Experiencia entrenando")}</span>
               <select value={draft.experience} onChange={(event) => update("experience", event.target.value as HealthProfile["experience"])}>
@@ -171,24 +194,26 @@ export function OnboardingPanel({
             </label>
           </div>
 
-          <ReadinessAndLimitations
+          {healthDataConsent && <ReadinessAndLimitations
             language={language}
             profile={draft}
             onChange={setDraft}
             required
-          />
+          />}
 
-          <label className="health-field health-notes">
+          {healthDataConsent && <label className="health-field health-notes">
             <span>{tr(language, "Other health context (optional)", "Otro contexto de salud (opcional)")}</span>
             <textarea value={draft.healthNotes} onChange={(event) => update("healthNotes", event.target.value)} placeholder={tr(language, "Example: a professional asked me to monitor a specific symptom.", "Ejemplo: un profesional me pidió vigilar un síntoma específico.")} />
-          </label>
+          </label>}
 
           <div className="onboarding-orientation">
             <Activity size={20} />
             <div><strong>{tr(language, "Your starting orientation", "Tu orientación inicial")}</strong><p>{orientation}</p></div>
           </div>
           <div className="onboarding-disclaimer"><ShieldCheck size={17} /> {tr(language, "Repbook provides training guidance, not a medical, nutritional, or physiotherapy diagnosis.", "Repbook te orienta para entrenar; no reemplaza un diagnóstico médico, nutricional ni fisioterapéutico.")}</div>
-          <button className="onboarding-submit" type="submit" disabled={!ready}><Dumbbell size={17} /> {tr(language, "Save and continue", "Guardar y continuar")}</button>
+          <button className="onboarding-submit" type="submit" disabled={!ready}><Dumbbell size={17} /> {healthDataConsent
+            ? tr(language, "Save and continue", "Guardar y continuar")
+            : tr(language, "Continue with a basic route", "Continuar con una ruta básica")}</button>
         </form>
       </section>
     </div>

@@ -6,16 +6,21 @@ import {
   Download,
   Eye,
   EyeOff,
+  FileDown,
   LockKeyhole,
   LogOut,
   Mail,
+  Pencil,
+  ShieldX,
+  Trash2,
   UserRound,
   X,
 } from "lucide-react";
 import { type FormEvent, useEffect, useState } from "react";
 import type { InstallGuide } from "../lib/install";
 import { tr } from "../lib/i18n";
-import type { LanguageCode } from "../types";
+import type { HealthDataConsentStatus, LanguageCode } from "../types";
+import type { LegalDocument } from "./LegalPanel";
 
 export interface CloudAccessState {
   configured: boolean;
@@ -23,12 +28,15 @@ export interface CloudAccessState {
   status: "local" | "syncing" | "synced" | "error";
   message?: string;
   pendingVerification?: PendingVerification | null;
+  healthDataConsent?: HealthDataConsentStatus | null;
 }
 
 export interface CreateAccountInput {
   name: string;
   email: string;
   password: string;
+  acceptedLegal: boolean;
+  healthDataConsent: boolean;
 }
 
 export interface VerifyAccountInput {
@@ -41,7 +49,7 @@ export interface PendingVerification {
   email: string;
 }
 
-export type PasswordSignInInput = Omit<CreateAccountInput, "name">;
+export type PasswordSignInInput = Pick<CreateAccountInput, "email" | "password">;
 export type AccessMode = "create" | "sign-in";
 
 interface AccessPanelProps {
@@ -57,6 +65,12 @@ interface AccessPanelProps {
   onInstall: (() => void) | null;
   onClose: () => void;
   initialMode?: AccessMode;
+  onOpenLegal?: (document: LegalDocument) => void;
+  onExportData?: () => void;
+  onEditData?: () => void;
+  onChangeHealthConsent?: (status: HealthDataConsentStatus) => void;
+  onDeleteData?: () => void;
+  onDeleteAccount?: () => void;
 }
 
 const STATUS_LABELS: Record<CloudAccessState["status"], string> = {
@@ -89,6 +103,12 @@ export function AccessPanel({
   onInstall,
   onClose,
   initialMode = "create",
+  onOpenLegal,
+  onExportData,
+  onEditData,
+  onChangeHealthConsent,
+  onDeleteData,
+  onDeleteAccount,
 }: AccessPanelProps) {
   const [mode, setMode] = useState<AccessMode>(initialMode);
   const [name, setName] = useState(() => {
@@ -101,6 +121,9 @@ export function AccessPanel({
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
+  const [acceptedLegal, setAcceptedLegal] = useState(false);
+  const [healthDataConsent, setHealthDataConsent] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -120,11 +143,13 @@ export function AccessPanel({
     const normalizedEmail = email.trim();
     if (!normalizedEmail || !password) return;
     if (mode === "create") {
-      if (!normalizedName) return;
+      if (!normalizedName || !acceptedLegal) return;
       onCreateAccount({
         name: normalizedName,
         email: normalizedEmail,
         password,
+        acceptedLegal,
+        healthDataConsent,
       });
       return;
     }
@@ -247,15 +272,102 @@ export function AccessPanel({
                   </button>
                 </span>
               </label>
-              <button type="submit" disabled={cloud.status === "syncing"}>{mode === "create" ? tr(language, "Create my account", "Crear mi cuenta") : tr(language, "Sign in", "Ingresar")}</button>
+              {mode === "create" && (
+                <div className="legal-consents">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={acceptedLegal}
+                      onChange={(event) => setAcceptedLegal(event.target.checked)}
+                      aria-label={tr(
+                        language,
+                        "I accept the Terms of use and confirm I read the Privacy policy",
+                        "Acepto los Términos de uso y confirmo que leí la Política de privacidad",
+                      )}
+                      required
+                    />
+                    <span>{tr(language, "I accept the", "Acepto los")}</span>
+                    <button type="button" onClick={() => onOpenLegal?.("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
+                    <span>{tr(language, "and confirm I read the", "y confirmo que leí la")}</span>
+                    <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>.
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={healthDataConsent}
+                      onChange={(event) => setHealthDataConsent(event.target.checked)}
+                      aria-label={tr(
+                        language,
+                        "I authorize Repbook to use sensitive health data for personalization",
+                        "Autorizo a Repbook a usar datos sensibles de salud para personalizar mi experiencia",
+                      )}
+                    />
+                    <span>{tr(
+                      language,
+                      "Optional: I authorize sensitive health data for personalized routines, recovery and nutrition references.",
+                      "Opcional: autorizo datos sensibles de salud para personalizar rutinas, recuperación y referencias nutricionales.",
+                    )}</span>
+                  </label>
+                  <small>{tr(
+                    language,
+                    "You can create an account without health authorization and use a basic route.",
+                    "Podés crear la cuenta sin autorizar datos de salud y usar una ruta básica.",
+                  )}</small>
+                </div>
+              )}
+              <button type="submit" disabled={cloud.status === "syncing" || (mode === "create" && !acceptedLegal)}>{mode === "create" ? tr(language, "Create my account", "Crear mi cuenta") : tr(language, "Sign in", "Ingresar")}</button>
               {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
               <small>{mode === "create" ? tr(language, "This account will include your profile, health context, tracks, routines, favorites, and weekly check-ins.", "Esta cuenta incluirá tu perfil, contexto de salud, rutas, rutinas, favoritos y registros semanales.") : tr(language, "Use the email and password from your Repbook account.", "Usá el correo y la contraseña de tu cuenta de Repbook.")}</small>
             </form>
           )}
         </section>
 
+        {cloud.email && (
+          <section className="access-section privacy-center" aria-labelledby="privacy-center-title">
+            <p className="section-kicker">{tr(language, "02 / Privacy center", "02 / Centro de privacidad")}</p>
+            <h3 id="privacy-center-title">{tr(language, "Your data. Your decisions.", "Tus datos. Tus decisiones.")}</h3>
+            <p>{tr(
+              language,
+              "Export or correct your information, change sensitive-data authorization, or remove stored data.",
+              "Exportá o corregí tu información, cambiá la autorización de datos sensibles o eliminá los datos guardados.",
+            )}</p>
+            <div className="privacy-actions">
+              <button type="button" onClick={onExportData}><FileDown size={16} /> {tr(language, "Export my data", "Exportar mis datos")}</button>
+              <button type="button" onClick={onEditData}><Pencil size={16} /> {tr(language, "Correct my data", "Corregir mis datos")}</button>
+              {cloud.healthDataConsent === "granted" ? (
+                <button type="button" onClick={() => onChangeHealthConsent?.("revoked")}><ShieldX size={16} /> {tr(language, "Revoke health-data consent", "Revocar autorización de datos de salud")}</button>
+              ) : (
+                <button type="button" onClick={() => onChangeHealthConsent?.("granted")}><Check size={16} /> {tr(language, "Authorize health-data use", "Autorizar uso de datos de salud")}</button>
+              )}
+              <button className="is-danger" type="button" onClick={onDeleteData}><Trash2 size={16} /> {tr(language, "Delete my stored data", "Eliminar mis datos guardados")}</button>
+            </div>
+            <div className="account-deletion">
+              <strong>{tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}</strong>
+              <p>{tr(
+                language,
+                "This removes the account and its Repbook data. Type DELETE to confirm.",
+                "Esto elimina la cuenta y sus datos de Repbook. Escribí ELIMINAR para confirmar.",
+              )}</p>
+              <input
+                type="text"
+                value={deleteConfirmation}
+                onChange={(event) => setDeleteConfirmation(event.target.value)}
+                aria-label={tr(language, "Type DELETE to confirm", "Escribí ELIMINAR para confirmar")}
+              />
+              <button
+                className="is-danger"
+                type="button"
+                disabled={deleteConfirmation !== tr(language, "DELETE", "ELIMINAR")}
+                onClick={onDeleteAccount}
+              >
+                <Trash2 size={16} /> {tr(language, "Delete my account permanently", "Eliminar mi cuenta permanentemente")}
+              </button>
+            </div>
+          </section>
+        )}
+
         <section className="access-section" aria-labelledby="install-title">
-          <p className="section-kicker">{tr(language, "02 / Install", "02 / Instalación")}</p>
+          <p className="section-kicker">{tr(language, cloud.email ? "03 / Install" : "02 / Install", cloud.email ? "03 / Instalación" : "02 / Instalación")}</p>
           <h3 id="install-title">{tr(language, "One app. Both phones.", "Una app para ambos teléfonos.")}</h3>
           {installGuide === "installed" && (
             <div className="install-ready"><Check size={18} /> {tr(language, "Installed on this device", "Instalada en este dispositivo")}</div>
@@ -276,6 +388,10 @@ export function AccessPanel({
         </section>
 
         <p className="access-privacy">{tr(language, "Health information stays private to the signed-in account. Repbook never uses the public exercise library to expose personal data.", "Tu información de salud permanece privada en tu cuenta. Repbook nunca usa la biblioteca pública de ejercicios para exponer datos personales.")}</p>
+        <div className="access-legal-links">
+          <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
+          <button type="button" onClick={() => onOpenLegal?.("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
+        </div>
         <button className="profile-done" type="button" onClick={onClose}>{tr(language, "Done", "Listo")}</button>
       </aside>
     </div>

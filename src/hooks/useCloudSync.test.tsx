@@ -5,12 +5,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRepbookSnapshot } from "../lib/cloudSnapshot";
 import type { supabaseClient } from "../lib/supabaseClient";
 
-const { signUp, signInWithPassword, signOut, verifyOtp, resend } = vi.hoisted(() => ({
+const { signUp, signInWithPassword, signOut, verifyOtp, resend, updateUser, invoke } = vi.hoisted(() => ({
   signUp: vi.fn(),
   signInWithPassword: vi.fn(),
   signOut: vi.fn(),
   verifyOtp: vi.fn(),
   resend: vi.fn(),
+  updateUser: vi.fn(),
+  invoke: vi.fn(),
 }));
 
 import { useCloudSync } from "./useCloudSync";
@@ -26,7 +28,9 @@ const testClient = {
     signOut,
     verifyOtp,
     resend,
+    updateUser,
   },
+  functions: { invoke },
 } as unknown as NonNullable<typeof supabaseClient>;
 
 const snapshot = createRepbookSnapshot({
@@ -64,6 +68,8 @@ beforeEach(() => {
     error: null,
   });
   resend.mockResolvedValue({ data: {}, error: null });
+  updateUser.mockResolvedValue({ data: { user: null }, error: null });
+  invoke.mockResolvedValue({ data: {}, error: null });
 });
 
 describe("password account access", () => {
@@ -78,13 +84,20 @@ describe("password account access", () => {
       name: "Alejandro",
       email: "alejandro@example.com",
       password: "strong-pass-123",
+      acceptedLegal: true,
+      healthDataConsent: false,
     }));
 
     expect(signUp).toHaveBeenCalledWith({
       email: "alejandro@example.com",
       password: "strong-pass-123",
       options: {
-        data: { display_name: "Alejandro", language: "es" },
+        data: expect.objectContaining({
+          display_name: "Alejandro",
+          language: "es",
+          accepted_legal_version: "1.0",
+          health_data_consent: "declined",
+        }),
         emailRedirectTo: window.location.origin,
       },
     });
@@ -108,6 +121,8 @@ describe("password account access", () => {
       name: "Alejandro",
       email: "alejandro@example.com",
       password: "strong-pass-123",
+      acceptedLegal: true,
+      healthDataConsent: false,
     }));
     await act(() => (result.current as any).verifyAccount({
       email: "alejandro@example.com",
@@ -168,6 +183,31 @@ describe("password account access", () => {
     await act(() => result.current.signOut());
 
     expect(signOut).toHaveBeenCalledOnce();
+    expect(onSignedOut).toHaveBeenCalledOnce();
+  });
+
+  it("deletes the authenticated account through the protected server function", async () => {
+    const onSignedOut = vi.fn();
+    const authenticatedClient = {
+      ...testClient,
+      auth: {
+        ...testClient.auth,
+        getSession: vi.fn().mockResolvedValue({
+          data: { session: { user: { id: "user-1", email: "alejandro@example.com", user_metadata: {} } } },
+        }),
+      },
+    } as unknown as NonNullable<typeof supabaseClient>;
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      onSignedOut,
+      client: authenticatedClient,
+    }));
+
+    await waitFor(() => expect(result.current.email).toBe("alejandro@example.com"));
+    await act(() => result.current.deleteAccount());
+
+    expect(invoke).toHaveBeenCalledWith("delete-my-account");
     expect(onSignedOut).toHaveBeenCalledOnce();
   });
 });

@@ -6,6 +6,7 @@ import {
   Heart,
   Ruler,
   Search,
+  ShieldCheck,
   Sparkles,
   Trophy,
   UserRound,
@@ -42,6 +43,8 @@ interface ProfilePanelProps {
   onAddCheckIn: (checkIn: WeeklyCheckIn) => void;
   onOpenTrack: (trackId: string) => void;
   onClose: () => void;
+  healthDataConsent?: boolean;
+  onRequestHealthConsent?: () => void;
 }
 
 type ProfileTab = "overview" | "body" | "checkin";
@@ -69,6 +72,8 @@ export function ProfilePanel({
   onAddCheckIn,
   onOpenTrack,
   onClose,
+  healthDataConsent = true,
+  onRequestHealthConsent,
 }: ProfilePanelProps) {
   const [tab, setTab] = useState<ProfileTab>("overview");
   const [foodQuery, setFoodQuery] = useState("");
@@ -172,6 +177,19 @@ export function ProfilePanel({
           <button type="button" className={tab === "checkin" ? "is-active" : ""} onClick={() => setTab("checkin")}>{tr(language, "Weekly check-in", "Registro semanal")}</button>
         </nav>
 
+        {tab !== "overview" && !healthDataConsent && (
+          <div className="profile-consent-required">
+            <ShieldCheck size={24} />
+            <h3>{tr(language, "Health authorization is optional", "La autorización de salud es opcional")}</h3>
+            <p>{tr(
+              language,
+              "Body measurements, symptoms, limitations, nutrition preferences and weekly wellbeing check-ins remain unavailable in basic mode.",
+              "Las medidas corporales, síntomas, limitaciones, preferencias nutricionales y registros semanales de bienestar permanecen desactivados en el modo básico.",
+            )}</p>
+            <button type="button" onClick={onRequestHealthConsent}>{tr(language, "Authorize health personalization", "Autorizar personalización de salud")}</button>
+          </div>
+        )}
+
         {tab === "overview" && (
           <div className="profile-tab-panel">
             <label className="profile-name-field">
@@ -212,7 +230,7 @@ export function ProfilePanel({
           </div>
         )}
 
-        {tab === "body" && (
+        {healthDataConsent && tab === "body" && (
           <div className="profile-tab-panel">
             <div className="profile-section-intro">
               <p className="section-kicker">{tr(language, "Body & health context", "Contexto de cuerpo y salud")}</p>
@@ -297,7 +315,7 @@ export function ProfilePanel({
           </div>
         )}
 
-        {tab === "checkin" && (
+        {healthDataConsent && tab === "checkin" && (
           <div className="profile-tab-panel">
             <div className="profile-section-intro">
               <p className="section-kicker">{tr(language, "Weekly field note", "Nota semanal")}</p>
@@ -353,7 +371,7 @@ export function ProfilePanel({
           </div>
         )}
 
-        {tab === "body" && (
+        {healthDataConsent && tab === "body" && (
           <div className="profile-tab-panel">
             <div className="profile-section-intro">
               <p className="section-kicker">{tr(language, "Nutrition companion", "Acompañamiento nutricional")}</p>

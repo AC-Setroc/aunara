@@ -15,6 +15,7 @@ vi.mock("../hooks/useCloudSync", () => ({
     configured: true,
     email: "athlete@example.com",
     status: "synced",
+    healthDataConsent: "granted",
     createAccount: vi.fn(),
     signIn: vi.fn(),
     signOut: vi.fn(),
@@ -629,6 +630,32 @@ describe("profile access", () => {
       ...healthProfile,
       currentWeightKg: 81.5,
     });
+  });
+
+  it("keeps sensitive profile fields unavailable after health authorization is withdrawn", () => {
+    const onRequestHealthConsent = vi.fn();
+    render(<ProfilePanel
+      name="My profile"
+      tracks={[track]}
+      activeTrackId={track.id}
+      favoriteCount={0}
+      healthProfile={healthProfile}
+      checkIns={[]}
+      healthDataConsent={false}
+      onNameChange={vi.fn()}
+      onHealthProfileChange={vi.fn()}
+      onAddCheckIn={vi.fn()}
+      onOpenTrack={vi.fn()}
+      onRequestHealthConsent={onRequestHealthConsent}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
+
+    expect(screen.getByText(/remain unavailable in basic mode/i)).toBeTruthy();
+    expect(screen.queryByLabelText("Current weight in kilograms")).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Authorize health personalization" }));
+    expect(onRequestHealthConsent).toHaveBeenCalledOnce();
   });
 
   it("uses neutral BMI context and optional body-composition fields", () => {

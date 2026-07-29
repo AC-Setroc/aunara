@@ -142,9 +142,11 @@ export type MetabolicSex = "unspecified" | "female" | "male";
 export type ActivityLevel = "sedentary" | "light" | "moderate" | "very-active";
 export type TrainingExperience = "beginner" | "intermediate" | "advanced";
 export type DietaryPattern = "omnivore" | "vegetarian" | "vegan" | "pescatarian" | "other";
+export type HealthDataConsentStatus = "granted" | "declined" | "revoked";
 
 export interface HealthProfile {
   onboardingCompleted?: boolean;
+  healthDataMode?: "personalized" | "basic";
   initialRoutineDecision?: "accepted" | "rejected";
   primaryGoal?: TrackFocus;
   equipmentPreference?: EquipmentPreference;

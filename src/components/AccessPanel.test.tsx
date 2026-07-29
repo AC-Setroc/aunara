@@ -50,13 +50,49 @@ describe("access and installation panel", () => {
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "strong-pass-123" },
     });
+    fireEvent.click(screen.getByRole("checkbox", { name: /I accept the Terms of use/ }));
     fireEvent.click(screen.getByRole("button", { name: "Create my account" }));
 
     expect(onCreateAccount).toHaveBeenCalledWith({
       name: "Alejandro Y.",
       email: "alejandro@example.com",
       password: "strong-pass-123",
+      acceptedLegal: true,
+      healthDataConsent: false,
     });
+  });
+
+  it("keeps sensitive health consent separate and optional", () => {
+    const onCreateAccount = vi.fn();
+    const onOpenLegal = vi.fn();
+    render(<AccessPanel
+      cloud={{ configured: true, email: null, status: "local" }}
+      profileName=""
+      installGuide="desktop"
+      onCreateAccount={onCreateAccount}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onOpenLegal={onOpenLegal}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Privacy policy" })[0]);
+    expect(onOpenLegal).toHaveBeenCalledWith("privacy");
+    fireEvent.click(screen.getAllByRole("button", { name: "Terms of use" })[0]);
+    expect(onOpenLegal).toHaveBeenCalledWith("terms");
+
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Alejandro" } });
+    fireEvent.change(screen.getByLabelText("Email address"), { target: { value: "alejandro@example.com" } });
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "strong-pass-123" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /I accept the Terms of use/ }));
+    fireEvent.click(screen.getByRole("checkbox", { name: /I authorize Repbook to use sensitive health data/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Create my account" }));
+
+    expect(onCreateAccount).toHaveBeenCalledWith(expect.objectContaining({
+      acceptedLegal: true,
+      healthDataConsent: true,
+    }));
   });
 
   it("shows and hides the password without changing its value", () => {
@@ -184,5 +220,46 @@ describe("access and installation panel", () => {
     expect(screen.getByText("Saved across devices")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
     expect(onSignOut).toHaveBeenCalledOnce();
+  });
+
+  it("provides export, correction, consent revocation, data deletion and account deletion controls", () => {
+    const onExportData = vi.fn();
+    const onEditData = vi.fn();
+    const onChangeHealthConsent = vi.fn();
+    const onDeleteData = vi.fn();
+    const onDeleteAccount = vi.fn();
+    render(<AccessPanel
+      cloud={{
+        configured: true,
+        email: "alejandro@example.com",
+        status: "synced",
+        healthDataConsent: "granted",
+      }}
+      profileName="Alejandro"
+      installGuide="installed"
+      onCreateAccount={vi.fn()}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onExportData={onExportData}
+      onEditData={onEditData}
+      onChangeHealthConsent={onChangeHealthConsent}
+      onDeleteData={onDeleteData}
+      onDeleteAccount={onDeleteAccount}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Export my data" }));
+    fireEvent.click(screen.getByRole("button", { name: "Correct my data" }));
+    fireEvent.click(screen.getByRole("button", { name: "Revoke health-data consent" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete my stored data" }));
+    fireEvent.change(screen.getByLabelText("Type DELETE to confirm"), { target: { value: "DELETE" } });
+    fireEvent.click(screen.getByRole("button", { name: "Delete my account permanently" }));
+
+    expect(onExportData).toHaveBeenCalledOnce();
+    expect(onEditData).toHaveBeenCalledOnce();
+    expect(onChangeHealthConsent).toHaveBeenCalledWith("revoked");
+    expect(onDeleteData).toHaveBeenCalledOnce();
+    expect(onDeleteAccount).toHaveBeenCalledOnce();
   });
 });

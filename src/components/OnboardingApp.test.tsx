@@ -8,6 +8,7 @@ vi.mock("../hooks/useCloudSync", () => ({
     configured: true,
     email: "new-athlete@example.com",
     status: "synced",
+    healthDataConsent: "granted",
     pendingVerification: null,
     createAccount: vi.fn(),
     verifyAccount: vi.fn(),

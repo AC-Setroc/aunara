@@ -16,12 +16,36 @@ export interface CloudStoreClient {
       value: { user_id: string; payload: RepbookCloudSnapshot },
       options: { onConflict: string },
     ) => Promise<QueryResult<unknown>>;
+    insert?: (value: {
+      id: string;
+      user_id: string;
+      consent_type: ConsentEvent["consentType"];
+      action: ConsentEvent["action"];
+      policy_version: string;
+      locale: string;
+      source: string;
+    }) => Promise<QueryResult<unknown>>;
+    delete?: () => {
+      eq: (column: string, value: string) => Promise<QueryResult<unknown>>;
+    };
   };
+}
+
+export interface ConsentEvent {
+  id: string;
+  userId: string;
+  consentType: "legal" | "health_data";
+  action: "granted" | "declined" | "revoked";
+  policyVersion: string;
+  locale: string;
+  source: "account" | "privacy-center" | "migration-gate";
 }
 
 export interface CloudStore {
   load: (userId: string) => Promise<RepbookCloudSnapshot | null>;
   save: (userId: string, snapshot: RepbookCloudSnapshot) => Promise<void>;
+  remove: (userId: string) => Promise<void>;
+  recordConsent: (event: ConsentEvent) => Promise<void>;
 }
 
 function asError(error: unknown): Error {
@@ -30,6 +54,11 @@ function asError(error: unknown): Error {
     return new Error(String(error.message));
   }
   return new Error("Cloud database request failed.");
+}
+
+function isDuplicate(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  return "code" in error && String((error as { code?: unknown }).code) === "23505";
 }
 
 export function createCloudStore(client: CloudStoreClient): CloudStore {
@@ -54,6 +83,28 @@ export function createCloudStore(client: CloudStoreClient): CloudStore {
         onConflict: "user_id",
       });
       if (error) throw asError(error);
+    },
+
+    async remove(userId) {
+      const table = client.from("repbook_user_data");
+      if (!table.delete) throw new Error("Cloud database is not available.");
+      const { error } = await table.delete().eq("user_id", userId);
+      if (error) throw asError(error);
+    },
+
+    async recordConsent(event) {
+      const table = client.from("repbook_consent_events");
+      if (!table.insert) throw new Error("Consent records are not available.");
+      const { error } = await table.insert({
+        id: event.id,
+        user_id: event.userId,
+        consent_type: event.consentType,
+        action: event.action,
+        policy_version: event.policyVersion,
+        locale: event.locale,
+        source: event.source,
+      });
+      if (error && !isDuplicate(error)) throw asError(error);
     },
   };
 }
