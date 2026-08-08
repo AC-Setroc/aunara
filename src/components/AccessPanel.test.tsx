@@ -7,7 +7,7 @@ import { AccessPanel } from "./AccessPanel";
 afterEach(cleanup);
 
 describe("access and installation panel", () => {
-  it("explains how to install Repbook on both Android and iPhone", () => {
+  it("explains how to install Aunara on both Android and iPhone", () => {
     render(<AccessPanel
       cloud={{ configured: false, email: null, status: "local" }}
       profileName="Alejandro"
@@ -86,7 +86,7 @@ describe("access and installation panel", () => {
     fireEvent.change(screen.getByLabelText("Email address"), { target: { value: "alejandro@example.com" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "strong-pass-123" } });
     fireEvent.click(screen.getByRole("checkbox", { name: /I accept the Terms of use/ }));
-    fireEvent.click(screen.getByRole("checkbox", { name: /I authorize Repbook to use sensitive health data/ }));
+    fireEvent.click(screen.getByRole("checkbox", { name: /I authorize Aunara to use sensitive health data/ }));
     fireEvent.click(screen.getByRole("button", { name: "Create my account" }));
 
     expect(onCreateAccount).toHaveBeenCalledWith(expect.objectContaining({
@@ -156,6 +156,90 @@ describe("access and installation panel", () => {
       email: "alejandro@example.com",
       token: "123456",
     });
+  });
+
+  it("warns when the email already has an account and offers sign-in or recovery", () => {
+    const onUseExistingAccount = vi.fn();
+    const onRequestPasswordReset = vi.fn();
+    render(<AccessPanel
+      cloud={{
+        configured: true,
+        email: null,
+        status: "local",
+        existingAccountEmail: "alejandro@example.com",
+      }}
+      profileName="Alejandro Cortés"
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onUseExistingAccount={onUseExistingAccount}
+      onRequestPasswordReset={onRequestPasswordReset}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClose={vi.fn()}
+    />);
+
+    expect(screen.getByText("An account is already associated with this email.")).toBeTruthy();
+    expect(screen.getByText("alejandro@example.com")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Sign in here" }));
+    expect(onUseExistingAccount).toHaveBeenCalledOnce();
+    expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("alejandro@example.com");
+    expect((screen.getByLabelText("Password") as HTMLInputElement).value).toBe("");
+  });
+
+  it("starts password recovery from the existing-account warning", () => {
+    const onRequestPasswordReset = vi.fn();
+    render(<AccessPanel
+      cloud={{
+        configured: true,
+        email: null,
+        status: "local",
+        existingAccountEmail: "alejandro@example.com",
+      }}
+      profileName="Alejandro Cortés"
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onUseExistingAccount={vi.fn()}
+      onRequestPasswordReset={onRequestPasswordReset}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Recover your password here" }));
+    expect(onRequestPasswordReset).toHaveBeenCalledWith("alejandro@example.com");
+  });
+
+  it("sets a new password after the recovery link returns to Aunara", () => {
+    const onUpdatePassword = vi.fn();
+    render(<AccessPanel
+      cloud={{
+        configured: true,
+        email: "alejandro@example.com",
+        status: "local",
+        passwordRecoveryState: "ready",
+      }}
+      profileName="Alejandro Cortés"
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onUpdatePassword={onUpdatePassword}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.change(screen.getByLabelText("New password"), {
+      target: { value: "new-strong-pass-123" },
+    });
+    fireEvent.change(screen.getByLabelText("Confirm new password"), {
+      target: { value: "new-strong-pass-123" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Save new password" }));
+
+    expect(onUpdatePassword).toHaveBeenCalledWith("new-strong-pass-123");
   });
 
   it("keeps both account choices the same width", () => {

@@ -20,7 +20,7 @@ export function ConsentGate({
       <section className="consent-gate" role="dialog" aria-modal="true" aria-label={tr(language, "Choose your privacy level", "Elegí tu nivel de privacidad")}>
         <span className="consent-gate-mark"><ShieldCheck size={25} /></span>
         <p className="eyebrow">{tr(language, "Sensitive data / separate authorization", "Datos sensibles / autorización separada")}</p>
-        <h2>{tr(language, "Choose how Repbook personalizes.", "Elegí cómo personaliza Repbook.")}</h2>
+        <h2>{tr(language, "Choose how Aunara personalizes.", "Elegí cómo personaliza Aunara.")}</h2>
         <p>{tr(
           language,
           "Health information is optional. You can authorize it for personalized routines and general nutrition references, or continue with a basic route without body measurements, symptoms, injuries, allergies or wellbeing check-ins.",

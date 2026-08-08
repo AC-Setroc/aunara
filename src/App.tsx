@@ -194,6 +194,12 @@ function App() {
     onRemoteSnapshot: applyRemoteSnapshot,
     onSignedOut: clearSignedOutProfile,
   });
+
+  useEffect(() => {
+    if (cloud.passwordRecoveryState !== "ready") return;
+    setAccessMode("sign-in");
+    setAccessOpen(true);
+  }, [cloud.passwordRecoveryState]);
   const hasAppAccess = !cloud.configured || Boolean(cloud.email);
   const consentRequired = cloud.configured
     && Boolean(cloud.email)
@@ -586,7 +592,7 @@ function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `repbook-data-${new Date().toISOString().slice(0, 10)}.json`;
+    link.download = `aunara-data-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -604,9 +610,9 @@ function App() {
   return (
     <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
       <header className="site-header">
-        <a className="brand" href="#top" onClick={() => setAppSection("home")} aria-label={tr(language, "Repbook home", "Inicio de Repbook")}>
-          <span className="brand-mark">R/B</span>
-          <span><strong>REPBOOK</strong><small>{tr(language, "Personal field notes", "Bitácora personal")}</small></span>
+        <a className="brand" href="#top" onClick={() => setAppSection("home")} aria-label={tr(language, "Aunara home", "Inicio de Aunara")}>
+          <img className="brand-lockup" src="/brand/aunara-training-systems.svg" alt="Aunara Training Systems" />
+          <img className="brand-symbol" src="/brand/aunara-symbol.svg" alt="" aria-hidden="true" />
         </a>
 
         {hasAppAccess ? (
@@ -664,17 +670,20 @@ function App() {
 
       <main id="top">
         {appSection === "home" && <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-index" aria-hidden="true">001—1324</div>
+          <div className="hero-index" aria-hidden="true">{tr(language, "STRENGTH · CAPABILITY · PROGRESS", "FUERZA · CAPACIDAD · PROGRESO")}</div>
           <div className="hero-copy">
-            <p className="eyebrow">{tr(language, "The movement archive", "El archivo de movimiento")}</p>
-            <h1 id="hero-title">{tr(language, "Train with", "Entrená con")}<br /><em>{tr(language, "intention.", "intención.")}</em></h1>
+            <p className="eyebrow">{tr(language, "Training systems for real life", "Sistemas de entrenamiento para la vida real")}</p>
+            <h1 id="hero-title">
+              {tr(language, "A body ready", "Un cuerpo preparado")}<br />
+              <em>{tr(language, "for what matters most.", "para todo lo que te importa.")}</em>
+            </h1>
             <p className="hero-description">
-              {tr(language, "Build distinct routines for personal goals and sport performance—without losing either one.", "Creá rutinas distintas para tus metas personales y tu rendimiento deportivo, sin dejar ninguna de lado.")}
+              {tr(language, "Bring your training goals together, train with intention, and see how each session builds what your body can do.", "Organizá tus metas, entrená con intención y entendé cómo cada sesión construye lo que tu cuerpo puede hacer.")}
             </p>
           </div>
           <div className="hero-note">
-            <span>{tr(language, "FIELD NOTE / 01", "NOTA DE CAMPO / 01")}</span>
-            <p>{tr(language, "Good training is repeatable. Choose fewer movements. Record the work. Return stronger.", "Un buen entrenamiento se puede repetir. Elegí menos movimientos, registrá el trabajo y volvé más fuerte.")}</p>
+            <span>{tr(language, "AUNARA PRINCIPLE / 01", "PRINCIPIO AUNARA / 01")}</span>
+            <p>{tr(language, "Understand what you do and why. Review every proposal, adjust it to your context, and keep your history under your control.", "Entendé lo que hacés y por qué. Revisá cada propuesta, ajustala a tu contexto y mantené tu historia bajo tu control.")}</p>
             {hasAppAccess && <ArrowDown size={20} />}
           </div>
         </section>}
@@ -870,7 +879,7 @@ function App() {
       )}
 
       <footer>
-        <div><strong>REPBOOK</strong><span>{tr(language, "One profile. More than one priority.", "Un perfil. Más de una prioridad.")}</span></div>
+        <div className="footer-brand"><img src="/brand/aunara-training-systems.svg" alt="Aunara Training Systems" /><span>{tr(language, "Train for what you want to be able to do.", "Entrená para poder.")}</span></div>
         <div className="footer-legal">
           <button type="button" onClick={() => setLegalDocument("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
           <button type="button" onClick={() => setLegalDocument("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
@@ -978,6 +987,9 @@ function App() {
           }}
           onVerifyAccount={(input) => void cloud.verifyAccount(input)}
           onResendVerification={(email) => void cloud.resendVerification(email)}
+          onUseExistingAccount={cloud.clearExistingAccount}
+          onRequestPasswordReset={(email) => void cloud.requestPasswordReset(email)}
+          onUpdatePassword={(password) => void cloud.updatePassword(password)}
           onSignIn={(input) => void cloud.signIn(input)}
           onSignOut={cloud.signOut}
           onOpenLegal={setLegalDocument}

@@ -1,6 +1,6 @@
-# Repbook
+# Aunara
 
-A local-first personal exercise library and workout planner. Repbook uses the 1,324-record [hasaneyldrm/exercises-dataset](https://github.com/hasaneyldrm/exercises-dataset). It keeps data on the device by default and can privately sync each person's profile through Supabase when configured.
+A local-first personal exercise library and workout planner. Aunara uses the 1,324-record [hasaneyldrm/exercises-dataset](https://github.com/hasaneyldrm/exercises-dataset). It keeps data on the device by default and can privately sync each person's profile through Supabase when configured.
 
 ## Run locally
 

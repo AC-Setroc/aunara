@@ -302,7 +302,7 @@ export function ProfilePanel({
                 onChange={(event) => updateHealth("healthNotes", event.target.value)}
                 placeholder={tr(language, "Example: a professional asked me to monitor a specific symptom.", "Ejemplo: un profesional me pidió vigilar un síntoma específico.")}
               />
-              <small>{tr(language, "Repbook stores this note but does not medically interpret free text.", "Repbook guarda esta nota, pero no interpreta médicamente el texto libre.")}</small>
+              <small>{tr(language, "Aunara stores this note but does not medically interpret free text.", "Aunara guarda esta nota, pero no interpreta médicamente el texto libre.")}</small>
             </label>
 
             <div className="reference-card">

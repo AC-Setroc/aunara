@@ -28,6 +28,8 @@ export interface CloudAccessState {
   status: "local" | "syncing" | "synced" | "error";
   message?: string;
   pendingVerification?: PendingVerification | null;
+  existingAccountEmail?: string | null;
+  passwordRecoveryState?: "requested" | "ready" | null;
   healthDataConsent?: HealthDataConsentStatus | null;
 }
 
@@ -60,6 +62,9 @@ interface AccessPanelProps {
   onCreateAccount: (input: CreateAccountInput) => void;
   onVerifyAccount?: (input: VerifyAccountInput) => void;
   onResendVerification?: (email: string) => void;
+  onUseExistingAccount?: () => void;
+  onRequestPasswordReset?: (email: string) => void;
+  onUpdatePassword?: (password: string) => void;
   onSignIn: (input: PasswordSignInInput) => void;
   onSignOut: () => void;
   onInstall: (() => void) | null;
@@ -98,6 +103,9 @@ export function AccessPanel({
   onCreateAccount,
   onVerifyAccount,
   onResendVerification,
+  onUseExistingAccount,
+  onRequestPasswordReset,
+  onUpdatePassword,
   onSignIn,
   onSignOut,
   onInstall,
@@ -119,6 +127,7 @@ export function AccessPanel({
   });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [acceptedLegal, setAcceptedLegal] = useState(false);
@@ -166,20 +175,36 @@ export function AccessPanel({
     });
   }
 
+  function useExistingAccount() {
+    if (!cloud.existingAccountEmail) return;
+    setEmail(cloud.existingAccountEmail);
+    setPassword("");
+    setPasswordConfirmation("");
+    setVerificationCode("");
+    setMode("sign-in");
+    onUseExistingAccount?.();
+  }
+
+  function submitNewPassword(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (password.length < 8 || password !== passwordConfirmation) return;
+    onUpdatePassword?.(password);
+  }
+
   return (
     <div className="access-backdrop" role="presentation" onMouseDown={onClose}>
       <aside
         className="access-panel"
         role="dialog"
         aria-modal="true"
-        aria-label={tr(language, "Access Repbook anywhere", "Accedé a Repbook desde cualquier lugar")}
+        aria-label={tr(language, "Access Aunara anywhere", "Accedé a Aunara desde cualquier lugar")}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="access-heading">
           <div className="access-mark"><Cloud size={25} /></div>
           <div>
             <p className="eyebrow">{tr(language, "Private account / any device", "Cuenta privada / cualquier dispositivo")}</p>
-            <h2>{tr(language, "Use Repbook anywhere", "Usá Repbook donde querás")}</h2>
+            <h2>{tr(language, "Use Aunara anywhere", "Usá Aunara donde querás")}</h2>
           </div>
           <button className="close-button inline" type="button" onClick={onClose} aria-label={tr(language, "Close access panel", "Cerrar acceso")}><X size={20} /></button>
         </div>
@@ -192,6 +217,60 @@ export function AccessPanel({
               <Cloud size={19} />
               <div><strong>{tr(language, "Cloud setup is being prepared.", "Estamos preparando la conexión en la nube.")}</strong><span>{tr(language, "Your current data remains safely on this device.", "Tus datos actuales permanecen seguros en este dispositivo.")}</span></div>
             </div>
+          ) : cloud.passwordRecoveryState === "ready" ? (
+            <form className="access-login password-recovery" onSubmit={submitNewPassword}>
+              <div className="verification-account">
+                <span>{tr(language, "Password recovery for", "Recuperación de contraseña para")}</span>
+                <strong>{cloud.email ?? cloud.existingAccountEmail}</strong>
+              </div>
+              <p>{tr(
+                language,
+                "Create a new password for your Aunara account.",
+                "Creá una contraseña nueva para tu cuenta de Aunara.",
+              )}</p>
+              <label>
+                <span>{tr(language, "New password", "Nueva contraseña")}</span>
+                <span className="password-input">
+                  <LockKeyhole size={17} />
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    minLength={8}
+                    autoComplete="new-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordVisible((current) => !current)}
+                    aria-label={passwordVisible ? tr(language, "Hide password", "Ocultar contraseña") : tr(language, "Show password", "Mostrar contraseña")}
+                  >
+                    {passwordVisible ? <EyeOff size={17} /> : <Eye size={17} />}
+                  </button>
+                </span>
+              </label>
+              <label>
+                <span>{tr(language, "Confirm new password", "Confirmá la contraseña nueva")}</span>
+                <span>
+                  <LockKeyhole size={17} />
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={passwordConfirmation}
+                    onChange={(event) => setPasswordConfirmation(event.target.value)}
+                    minLength={8}
+                    autoComplete="new-password"
+                    required
+                  />
+                </span>
+              </label>
+              <button
+                type="submit"
+                disabled={cloud.status === "syncing" || password.length < 8 || password !== passwordConfirmation}
+              >
+                {tr(language, "Save new password", "Guardar nueva contraseña")}
+              </button>
+              {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
+            </form>
           ) : cloud.email ? (
             <div className={`access-account is-${cloud.status}`}>
               <div>
@@ -200,6 +279,36 @@ export function AccessPanel({
                 <small>{cloud.message ?? statusLabel(language, cloud.status)}</small>
               </div>
               <button type="button" onClick={onSignOut}><LogOut size={15} /> {tr(language, "Sign out", "Cerrar sesión")}</button>
+            </div>
+          ) : cloud.existingAccountEmail ? (
+            <div className="account-conflict" role="alert">
+              <div className="verification-account">
+                <span>{tr(language, "Account already registered", "Cuenta ya registrada")}</span>
+                <strong>{cloud.existingAccountEmail}</strong>
+              </div>
+              <h4>{tr(
+                language,
+                "An account is already associated with this email.",
+                "Ya existe una cuenta asociada a este correo.",
+              )}</h4>
+              <p>{tr(
+                language,
+                "Are you sure this is the correct email? If so, choose how you want to continue.",
+                "¿Estás seguro de que es el correo correcto? Si es así, elegí cómo querés continuar.",
+              )}</p>
+              <div className="account-conflict-actions">
+                <button type="button" onClick={useExistingAccount} disabled={cloud.status === "syncing"}>
+                  {tr(language, "Sign in here", "Iniciar sesión aquí")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onRequestPasswordReset?.(cloud.existingAccountEmail!)}
+                  disabled={cloud.status === "syncing"}
+                >
+                  {tr(language, "Recover your password here", "Recuperar tu contraseña aquí")}
+                </button>
+              </div>
+              {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
             </div>
           ) : cloud.pendingVerification ? (
             <form className="access-login account-verification" onSubmit={verifyAccount}>
@@ -210,8 +319,8 @@ export function AccessPanel({
               </div>
               <p>{tr(
                 language,
-                "Open the confirmation link in your email. This account will activate automatically. If your email includes a six-digit code, you can enter it below.",
-                "Abrí el enlace de confirmación que te enviamos al correo. La cuenta se activará automáticamente. Si tu correo incluye un código de seis dígitos, también podés ingresarlo abajo.",
+                "Open the confirmation link in your email or enter its six-digit code.",
+                "Abrí el enlace de confirmación del correo o ingresá su código de seis dígitos.",
               )}</p>
               <label>
                 <span>{tr(language, "Confirmation code", "Código de confirmación")}</span>
@@ -298,8 +407,8 @@ export function AccessPanel({
                       onChange={(event) => setHealthDataConsent(event.target.checked)}
                       aria-label={tr(
                         language,
-                        "I authorize Repbook to use sensitive health data for personalization",
-                        "Autorizo a Repbook a usar datos sensibles de salud para personalizar mi experiencia",
+                        "I authorize Aunara to use sensitive health data for personalization",
+                        "Autorizo a Aunara a usar datos sensibles de salud para personalizar mi experiencia",
                       )}
                     />
                     <span>{tr(
@@ -317,7 +426,7 @@ export function AccessPanel({
               )}
               <button type="submit" disabled={cloud.status === "syncing" || (mode === "create" && !acceptedLegal)}>{mode === "create" ? tr(language, "Create my account", "Crear mi cuenta") : tr(language, "Sign in", "Ingresar")}</button>
               {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
-              <small>{mode === "create" ? tr(language, "This account will include your profile, health context, tracks, routines, favorites, and weekly check-ins.", "Esta cuenta incluirá tu perfil, contexto de salud, rutas, rutinas, favoritos y registros semanales.") : tr(language, "Use the email and password from your Repbook account.", "Usá el correo y la contraseña de tu cuenta de Repbook.")}</small>
+              <small>{mode === "create" ? tr(language, "This account will include your profile, health context, tracks, routines, favorites, and weekly check-ins.", "Esta cuenta incluirá tu perfil, contexto de salud, rutas, rutinas, favoritos y registros semanales.") : tr(language, "Use the email and password from your Aunara account.", "Usá el correo y la contraseña de tu cuenta de Aunara.")}</small>
             </form>
           )}
         </section>
@@ -345,8 +454,8 @@ export function AccessPanel({
               <strong>{tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}</strong>
               <p>{tr(
                 language,
-                "This removes the account and its Repbook data. Type DELETE to confirm.",
-                "Esto elimina la cuenta y sus datos de Repbook. Escribí ELIMINAR para confirmar.",
+                "This removes the account and its Aunara data. Type DELETE to confirm.",
+                "Esto elimina la cuenta y sus datos de Aunara. Escribí ELIMINAR para confirmar.",
               )}</p>
               <input
                 type="text"
@@ -373,21 +482,21 @@ export function AccessPanel({
             <div className="install-ready"><Check size={18} /> {tr(language, "Installed on this device", "Instalada en este dispositivo")}</div>
           )}
           {onInstall && installGuide !== "installed" && (
-            <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Repbook now", "Instalar Repbook ahora")}</button>
+            <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Aunara now", "Instalar Aunara ahora")}</button>
           )}
           <div className="install-guides">
             <article className={installGuide === "android" ? "is-current" : ""}>
               <Bot size={20} />
-              <div><strong>Android</strong><p>{tr(language, "Open Repbook in Chrome, tap the menu, then choose “Install app” or “Add to Home screen”.", "Abrí Repbook en Chrome, tocá el menú y elegí “Instalar aplicación” o “Agregar a pantalla principal”.")}</p></div>
+              <div><strong>Android</strong><p>{tr(language, "Open Aunara in Chrome, tap the menu, then choose “Install app” or “Add to Home screen”.", "Abrí Aunara en Chrome, tocá el menú y elegí “Instalar aplicación” o “Agregar a pantalla principal”.")}</p></div>
             </article>
             <article className={installGuide === "ios" ? "is-current" : ""}>
               <Apple size={20} />
-              <div><strong>iPhone</strong><p>{tr(language, "Open Repbook in Safari, tap Share, then choose “Add to Home Screen”.", "Abrí Repbook en Safari, tocá Compartir y elegí “Agregar a pantalla de inicio”.")}</p></div>
+              <div><strong>iPhone</strong><p>{tr(language, "Open Aunara in Safari, tap Share, then choose “Add to Home Screen”.", "Abrí Aunara en Safari, tocá Compartir y elegí “Agregar a pantalla de inicio”.")}</p></div>
             </article>
           </div>
         </section>
 
-        <p className="access-privacy">{tr(language, "Health information stays private to the signed-in account. Repbook never uses the public exercise library to expose personal data.", "Tu información de salud permanece privada en tu cuenta. Repbook nunca usa la biblioteca pública de ejercicios para exponer datos personales.")}</p>
+        <p className="access-privacy">{tr(language, "Health information stays private to the signed-in account. Aunara never uses the public exercise library to expose personal data.", "Tu información de salud permanece privada en tu cuenta. Aunara nunca usa la biblioteca pública de ejercicios para exponer datos personales.")}</p>
         <div className="access-legal-links">
           <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
           <button type="button" onClick={() => onOpenLegal?.("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>

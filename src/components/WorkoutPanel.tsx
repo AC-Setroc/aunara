@@ -253,7 +253,7 @@ export function WorkoutPanel({
           <h3>{tr(language, "This routine is empty.", "Esta rutina está vacía.")}</h3>
           {isManual ? (
             <>
-              <p>{tr(language, "Build it exercise by exercise. Repbook will not add suggested movements to this manual route.", "Armala ejercicio por ejercicio. Repbook no agregará movimientos sugeridos a esta ruta manual.")}</p>
+              <p>{tr(language, "Build it exercise by exercise. Aunara will not add suggested movements to this manual route.", "Armala ejercicio por ejercicio. Aunara no agregará movimientos sugeridos a esta ruta manual.")}</p>
               {!manualBuilderOpen && (
                 <button className="suggest-routine-button" type="button" onClick={() => {
                   setMode("edit");

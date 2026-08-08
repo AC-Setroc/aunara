@@ -1,5 +1,5 @@
-const CACHE_NAME = "repbook-shell-v1";
-const APP_SHELL = ["/", "/manifest.webmanifest", "/icons/repbook-192.png", "/icons/repbook-512.png"];
+const CACHE_NAME = "aunara-shell-v2";
+const APP_SHELL = ["/", "/manifest.webmanifest", "/icons/aunara-192.png", "/icons/aunara-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));

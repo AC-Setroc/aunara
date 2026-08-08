@@ -210,7 +210,7 @@ export function OnboardingPanel({
             <Activity size={20} />
             <div><strong>{tr(language, "Your starting orientation", "Tu orientación inicial")}</strong><p>{orientation}</p></div>
           </div>
-          <div className="onboarding-disclaimer"><ShieldCheck size={17} /> {tr(language, "Repbook provides training guidance, not a medical, nutritional, or physiotherapy diagnosis.", "Repbook te orienta para entrenar; no reemplaza un diagnóstico médico, nutricional ni fisioterapéutico.")}</div>
+          <div className="onboarding-disclaimer"><ShieldCheck size={17} /> {tr(language, "Aunara provides training guidance, not a medical, nutritional, or physiotherapy diagnosis.", "Aunara te orienta para entrenar; no reemplaza un diagnóstico médico, nutricional ni fisioterapéutico.")}</div>
           <button className="onboarding-submit" type="submit" disabled={!ready}><Dumbbell size={17} /> {healthDataConsent
             ? tr(language, "Save and continue", "Guardar y continuar")
             : tr(language, "Continue with a basic route", "Continuar con una ruta básica")}</button>

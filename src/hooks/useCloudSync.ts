@@ -29,6 +29,9 @@ interface CloudSyncController extends CloudAccessState {
   createAccount: (input: CreateAccountInput) => Promise<void>;
   verifyAccount: (input: VerifyAccountInput) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
+  clearExistingAccount: () => void;
+  requestPasswordReset: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
   signIn: (input: PasswordSignInInput) => Promise<void>;
   signOut: () => Promise<void>;
   recordHealthConsent: (status: HealthDataConsentStatus, source?: "privacy-center" | "migration-gate") => Promise<void>;
@@ -62,6 +65,8 @@ export function useCloudSync({
   const [status, setStatus] = useState<CloudAccessState["status"]>("local");
   const [message, setMessage] = useState<string>();
   const [pendingVerification, setPendingVerification] = useState<PendingVerification | null>(null);
+  const [existingAccountEmail, setExistingAccountEmail] = useState<string | null>(null);
+  const [passwordRecoveryState, setPasswordRecoveryState] = useState<"requested" | "ready" | null>(null);
   const latestSnapshot = useRef(snapshot);
   const onRemoteSnapshotRef = useRef(onRemoteSnapshot);
   const onSignedOutRef = useRef(onSignedOut);
@@ -80,8 +85,14 @@ export function useCloudSync({
     client.auth.getSession().then(({ data }) => {
       if (active) setUser(data.session?.user ?? null);
     });
-    const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
-      if (active) setUser(session?.user ?? null);
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
+      if (!active) return;
+      setUser(session?.user ?? null);
+      if (event === "PASSWORD_RECOVERY") {
+        setExistingAccountEmail(session?.user.email ?? null);
+        setPasswordRecoveryState("ready");
+        setMessage(undefined);
+      }
     });
 
     return () => {
@@ -238,16 +249,28 @@ export function useCloudSync({
     }
     if (data.session) {
       setPendingVerification(null);
+      setExistingAccountEmail(null);
+      setPasswordRecoveryState(null);
       setStatus("syncing");
-      setMessage(tr(language, "Account created. Saving all your Repbook data…", "Cuenta creada. Estamos guardando tus datos de Repbook…"));
+      setMessage(tr(language, "Account created. Saving all your Aunara data…", "Cuenta creada. Estamos guardando tus datos de Aunara…"));
       return;
     }
+    if (data.user?.identities?.length === 0) {
+      setPendingVerification(null);
+      setExistingAccountEmail(email);
+      setPasswordRecoveryState(null);
+      setStatus("local");
+      setMessage(undefined);
+      return;
+    }
+    setExistingAccountEmail(null);
+    setPasswordRecoveryState(null);
     setPendingVerification({ name, email });
     setStatus("local");
     setMessage(tr(
       language,
-      "Account created. Open the confirmation email to activate it.",
-      "Cuenta creada. Abrí el correo de confirmación para activarla.",
+      "Check your email to confirm the new account.",
+      "Revisá tu correo para confirmar la cuenta nueva.",
     ));
   }, [client]);
 
@@ -273,7 +296,7 @@ export function useCloudSync({
     setPendingVerification(null);
     setUser(data.user ?? data.session?.user ?? null);
     setStatus("syncing");
-    setMessage(tr(language, "Account confirmed. Saving your Repbook data…", "Cuenta confirmada. Estamos guardando tus datos de Repbook…"));
+    setMessage(tr(language, "Account confirmed. Saving your Aunara data…", "Cuenta confirmada. Estamos guardando tus datos de Aunara…"));
   }, [client]);
 
   const resendVerification = useCallback(async (email: string) => {
@@ -298,8 +321,61 @@ export function useCloudSync({
     setStatus("local");
     setMessage(tr(
       language,
-      "We sent you a new confirmation email.",
-      "Te enviamos un nuevo correo de confirmación.",
+      "If the account is pending confirmation, a new email was requested. If it is already active, sign in instead.",
+      "Si la cuenta está pendiente de confirmación, solicitamos un nuevo correo. Si ya está activa, ingresá directamente.",
+    ));
+  }, [client]);
+
+  const clearExistingAccount = useCallback(() => {
+    setExistingAccountEmail(null);
+    setMessage(undefined);
+  }, []);
+
+  const requestPasswordReset = useCallback(async (email: string) => {
+    const language = latestSnapshot.current.language;
+    if (!client) {
+      setStatus("error");
+      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      return;
+    }
+    setStatus("syncing");
+    setMessage(undefined);
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin,
+    });
+    if (error) {
+      setStatus("error");
+      setMessage(error.message);
+      return;
+    }
+    setExistingAccountEmail(email);
+    setPasswordRecoveryState("requested");
+    setStatus("local");
+    setMessage(tr(
+      language,
+      "We sent you an email to recover your password.",
+      "Te enviamos un correo para recuperar tu contraseña.",
+    ));
+  }, [client]);
+
+  const updatePassword = useCallback(async (password: string) => {
+    const language = latestSnapshot.current.language;
+    if (!client) return;
+    setStatus("syncing");
+    setMessage(undefined);
+    const { error } = await client.auth.updateUser({ password });
+    if (error) {
+      setStatus("error");
+      setMessage(error.message);
+      return;
+    }
+    setExistingAccountEmail(null);
+    setPasswordRecoveryState(null);
+    setStatus("synced");
+    setMessage(tr(
+      language,
+      "Password updated. Your session is now active.",
+      "Contraseña actualizada. Tu sesión ya está activa.",
     ));
   }, [client]);
 
@@ -321,7 +397,9 @@ export function useCloudSync({
       setMessage(error.message);
       return;
     }
-    setMessage(tr(language, "Signed in. Loading your Repbook data…", "Sesión iniciada. Estamos cargando tus datos de Repbook…"));
+    setExistingAccountEmail(null);
+    setPasswordRecoveryState(null);
+    setMessage(tr(language, "Signed in. Loading your Aunara data…", "Sesión iniciada. Estamos cargando tus datos de Aunara…"));
   }, [client]);
 
   const signOut = useCallback(async () => {
@@ -333,6 +411,8 @@ export function useCloudSync({
       return;
     }
     setPendingVerification(null);
+    setExistingAccountEmail(null);
+    setPasswordRecoveryState(null);
     onSignedOutRef.current?.();
   }, [client]);
 
@@ -394,7 +474,7 @@ export function useCloudSync({
       onSignedOutRef.current?.();
       lastSavedSnapshot.current = "";
       setStatus("synced");
-      setMessage(tr(language, "Your stored Repbook data was deleted. The account remains active.", "Tus datos guardados de Repbook fueron eliminados. La cuenta sigue activa."));
+      setMessage(tr(language, "Your stored Aunara data was deleted. The account remains active.", "Tus datos guardados de Aunara fueron eliminados. La cuenta sigue activa."));
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : tr(language, "Stored data could not be deleted.", "No se pudieron eliminar los datos guardados."));
@@ -415,9 +495,11 @@ export function useCloudSync({
     await client.auth.signOut();
     setUser(null);
     setPendingVerification(null);
+    setExistingAccountEmail(null);
+    setPasswordRecoveryState(null);
     onSignedOutRef.current?.();
     setStatus("local");
-    setMessage(tr(language, "The account and its Repbook data were deleted.", "La cuenta y sus datos de Repbook fueron eliminados."));
+    setMessage(tr(language, "The account and its Aunara data were deleted.", "La cuenta y sus datos de Aunara fueron eliminados."));
   }, [client, user]);
 
   return {
@@ -426,10 +508,15 @@ export function useCloudSync({
     status,
     message,
     pendingVerification,
+    existingAccountEmail,
+    passwordRecoveryState,
     healthDataConsent: consentStatusFromUser(user),
     createAccount,
     verifyAccount,
     resendVerification,
+    clearExistingAccount,
+    requestPasswordReset,
+    updatePassword,
     signIn,
     signOut,
     recordHealthConsent,

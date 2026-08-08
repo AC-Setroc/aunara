@@ -31,7 +31,7 @@ describe("signed-out home", () => {
   it("shows only public navigation and hides personal training content", () => {
     render(<App />);
 
-    expect(screen.getByRole("link", { name: "Inicio de Repbook" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Inicio de Aunara" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Inicio" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Ingresar" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Sign up" })).toBeNull();
@@ -57,7 +57,7 @@ describe("signed-out home", () => {
 
     fireEvent.change(screen.getByLabelText("Idioma"), { target: { value: "en" } });
 
-    expect(screen.getByRole("heading", { name: /Train withintention/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /A body ready.*for what matters most/i })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Login" })).toBeTruthy();
   });
 

@@ -586,7 +586,7 @@ describe("profile access", () => {
     expect(screen.queryByRole("button", { name: "iPhone installation instructions" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
 
-    expect(screen.getByRole("dialog", { name: "Access Repbook anywhere" })).toBeTruthy();
+    expect(screen.getByRole("dialog", { name: "Access Aunara anywhere" })).toBeTruthy();
     expect(screen.getByText("Android")).toBeTruthy();
     expect(screen.getByText("iPhone")).toBeTruthy();
   });

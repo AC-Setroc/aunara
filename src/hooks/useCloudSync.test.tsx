@@ -5,29 +5,34 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRepbookSnapshot } from "../lib/cloudSnapshot";
 import type { supabaseClient } from "../lib/supabaseClient";
 
-const { signUp, signInWithPassword, signOut, verifyOtp, resend, updateUser, invoke } = vi.hoisted(() => ({
+const { signUp, signInWithPassword, signOut, verifyOtp, resend, resetPasswordForEmail, updateUser, invoke } = vi.hoisted(() => ({
   signUp: vi.fn(),
   signInWithPassword: vi.fn(),
   signOut: vi.fn(),
   verifyOtp: vi.fn(),
   resend: vi.fn(),
+  resetPasswordForEmail: vi.fn(),
   updateUser: vi.fn(),
   invoke: vi.fn(),
 }));
+
+let authStateHandler: ((event: string, session: any) => void) | undefined;
 
 import { useCloudSync } from "./useCloudSync";
 
 const testClient = {
   auth: {
     getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
-    onAuthStateChange: vi.fn().mockReturnValue({
-      data: { subscription: { unsubscribe: vi.fn() } },
+    onAuthStateChange: vi.fn((handler) => {
+      authStateHandler = handler;
+      return { data: { subscription: { unsubscribe: vi.fn() } } };
     }),
     signUp,
     signInWithPassword,
     signOut,
     verifyOtp,
     resend,
+    resetPasswordForEmail,
     updateUser,
   },
   functions: { invoke },
@@ -57,7 +62,14 @@ const snapshot = createRepbookSnapshot({
 
 beforeEach(() => {
   vi.clearAllMocks();
-  signUp.mockResolvedValue({ data: { session: null }, error: null });
+  authStateHandler = undefined;
+  signUp.mockResolvedValue({
+    data: {
+      session: null,
+      user: { identities: [{ id: "identity-1", provider: "email" }] },
+    },
+    error: null,
+  });
   signInWithPassword.mockResolvedValue({ data: {}, error: null });
   signOut.mockResolvedValue({ error: null });
   verifyOtp.mockResolvedValue({
@@ -68,6 +80,7 @@ beforeEach(() => {
     error: null,
   });
   resend.mockResolvedValue({ data: {}, error: null });
+  resetPasswordForEmail.mockResolvedValue({ data: {}, error: null });
   updateUser.mockResolvedValue({ data: { user: null }, error: null });
   invoke.mockResolvedValue({ data: {}, error: null });
 });
@@ -151,6 +164,64 @@ describe("password account access", () => {
       email: "alejandro@example.com",
       options: { emailRedirectTo: window.location.origin },
     });
+  });
+
+  it("detects an existing account from Supabase's empty identities response", async () => {
+    signUp.mockResolvedValueOnce({
+      data: { session: null, user: { identities: [] } },
+      error: null,
+    });
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: testClient,
+    }));
+
+    await act(() => result.current.createAccount({
+      name: "Alejandro",
+      email: "alejandro@example.com",
+      password: "strong-pass-123",
+      acceptedLegal: true,
+      healthDataConsent: false,
+    }));
+    expect(result.current.pendingVerification).toBeNull();
+    expect((result.current as any).existingAccountEmail).toBe("alejandro@example.com");
+  });
+
+  it("requests a password recovery email for an existing account", async () => {
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: testClient,
+    }));
+
+    await act(() => (result.current as any).requestPasswordReset("alejandro@example.com"));
+
+    expect(resetPasswordForEmail).toHaveBeenCalledWith(
+      "alejandro@example.com",
+      { redirectTo: window.location.origin },
+    );
+    expect((result.current as any).passwordRecoveryState).toBe("requested");
+    expect(result.current.message).toContain("recuperar");
+  });
+
+  it("accepts a new password after returning from the recovery email", async () => {
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: testClient,
+    }));
+
+    await waitFor(() => expect(authStateHandler).toEqual(expect.any(Function)));
+    act(() => authStateHandler?.("PASSWORD_RECOVERY", {
+      user: { id: "user-1", email: "alejandro@example.com", user_metadata: {} },
+    }));
+
+    expect((result.current as any).passwordRecoveryState).toBe("ready");
+    await act(() => (result.current as any).updatePassword("new-strong-pass-123"));
+
+    expect(updateUser).toHaveBeenCalledWith({ password: "new-strong-pass-123" });
+    expect((result.current as any).passwordRecoveryState).toBeNull();
   });
 
   it("signs in with an existing email and password", async () => {

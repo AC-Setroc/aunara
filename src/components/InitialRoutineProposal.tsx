@@ -106,7 +106,7 @@ export function InitialRoutineProposal({
 
         {track.adaptations?.length ? (
           <section className="proposal-adaptations" aria-label={tr(language, "Applied adaptations", "Adaptaciones aplicadas")}>
-            <h3>{tr(language, "What Repbook changed", "Qué cambió Repbook")}</h3>
+            <h3>{tr(language, "What Aunara changed", "Qué cambió Aunara")}</h3>
             <p>{tr(
               language,
               "This automatic filter matches exercise movement tags against the restrictions you saved. It is not a clinical assessment, so review every movement and follow professional guidance.",
@@ -164,8 +164,8 @@ export function InitialRoutineProposal({
             <strong>{tr(language, "Your saved health note needs your review.", "Tu nota de salud guardada necesita tu revisión.")}</strong>{" "}
             {tr(
               language,
-              "Repbook does not medically interpret free text or replace professional guidance; open each movement and reject or edit anything that conflicts with your instructions.",
-              "Repbook no interpreta médicamente el texto libre ni reemplaza indicaciones profesionales; abrí cada movimiento y rechazá o editá lo que contradiga tus indicaciones.",
+              "Aunara does not medically interpret free text or replace professional guidance; open each movement and reject or edit anything that conflicts with your instructions.",
+              "Aunara no interpreta médicamente el texto libre ni reemplaza indicaciones profesionales; abrí cada movimiento y rechazá o editá lo que contradiga tus indicaciones.",
             )}
           </p>
         )}

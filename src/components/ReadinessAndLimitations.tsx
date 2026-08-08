@@ -110,8 +110,8 @@ export function ReadinessAndLimitations({
       </div>
       <p>{tr(
         language,
-        "These questions do not diagnose you. They help Repbook decide whether to suggest normally, adapt movements, or pause the suggestion for professional review.",
-        "Estas preguntas no te diagnostican. Le ayudan a Repbook a decidir si sugiere normalmente, adapta movimientos o pausa la sugerencia para una valoración profesional.",
+        "These questions do not diagnose you. They help Aunara decide whether to suggest normally, adapt movements, or pause the suggestion for professional review.",
+        "Estas preguntas no te diagnostican. Le ayudan a Aunara a decidir si sugiere normalmente, adapta movimientos o pausa la sugerencia para una valoración profesional.",
       )}</p>
 
       <div className="readiness-questions">
@@ -139,7 +139,7 @@ export function ReadinessAndLimitations({
           <strong>{assessment.level === "professional-review"
             ? tr(language, "Consult a qualified professional before accepting a suggestion", "Consultá a un profesional idóneo antes de aceptar una sugerencia")
             : assessment.level === "adapt"
-              ? tr(language, "Repbook will apply your movement restrictions", "Repbook aplicará tus restricciones de movimiento")
+              ? tr(language, "Aunara will apply your movement restrictions", "Aunara aplicará tus restricciones de movimiento")
               : assessment.level === "setup"
                 ? tr(language, "Confirm this review to continue", "Confirmá esta revisión para continuar")
                 : tr(language, "No warning was reported in this review", "No reportaste alertas en esta revisión")}</strong>
