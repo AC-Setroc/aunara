@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aunara.app/schemas/exercise-directory/en-es.schema.json",
+  "title": "Aunara bilingual exercise directory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "languages", "translationSummary", "exercises"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "source": {
+      "type": "object",
+      "required": ["repository", "url", "license", "dataPath", "exerciseCount"],
+      "properties": {
+        "repository": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "license": { "type": "string" },
+        "dataPath": { "type": "string" },
+        "exerciseCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "languages": {
+      "type": "array",
+      "prefixItems": [{ "const": "en" }, { "const": "es" }],
+      "items": false
+    },
+    "translationSummary": {
+      "type": "object",
+      "required": ["curated", "pending"],
+      "properties": {
+        "curated": { "type": "integer", "minimum": 0 },
+        "pending": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "exercises": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/exercise" }
+    }
+  },
+  "$defs": {
+    "localizedText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en", "es"],
+      "properties": {
+        "en": { "type": "string", "minLength": 1 },
+        "es": { "type": "string", "minLength": 1 }
+      }
+    },
+    "localizedTaxonomy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "en", "es"],
+      "properties": {
+        "key": { "type": "string", "minLength": 1 },
+        "en": { "type": "string", "minLength": 1 },
+        "es": { "type": "string", "minLength": 1 }
+      }
+    },
+    "exercise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "canonicalKey", "name", "nameTranslation", "taxonomy", "searchAliases", "contentReference", "legacyMedia", "ownedMedia"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[0-9]{4}$" },
+        "canonicalKey": { "type": "string", "minLength": 1 },
+        "name": { "$ref": "#/$defs/localizedText" },
+        "nameTranslation": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "source"],
+              "properties": {
+                "status": { "const": "curated" },
+                "source": { "const": "aunara-override" }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "source"],
+              "properties": {
+                "status": { "const": "pending" },
+                "source": { "const": "english-fallback" }
+              }
+            }
+          ]
+        },
+        "taxonomy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["category", "bodyPart", "equipment", "target", "muscleGroup", "secondaryMuscles"],
+          "properties": {
+            "category": { "$ref": "#/$defs/localizedTaxonomy" },
+            "bodyPart": { "$ref": "#/$defs/localizedTaxonomy" },
+            "equipment": { "$ref": "#/$defs/localizedTaxonomy" },
+            "target": { "$ref": "#/$defs/localizedTaxonomy" },
+            "muscleGroup": { "$ref": "#/$defs/localizedTaxonomy" },
+            "secondaryMuscles": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/localizedTaxonomy" }
+            }
+          }
+        },
+        "searchAliases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["en", "es"],
+          "properties": {
+            "en": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+            "es": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+          }
+        },
+        "contentReference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["datasetId", "languages"],
+          "properties": {
+            "datasetId": { "type": "string" },
+            "languages": {
+              "type": "array",
+              "prefixItems": [{ "const": "en" }, { "const": "es" }],
+              "items": false
+            }
+          }
+        },
+        "legacyMedia": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mediaId", "image", "animation", "attribution"],
+          "properties": {
+            "mediaId": { "type": "string" },
+            "image": { "type": "string" },
+            "animation": { "type": "string" },
+            "attribution": { "type": "string" }
+          }
+        },
+        "ownedMedia": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status"],
+              "properties": { "status": { "const": "not-started" } }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "animation", "poster", "version"],
+              "properties": {
+                "status": { "const": "ready" },
+                "animation": { "type": "string", "minLength": 1 },
+                "poster": { "type": "string", "minLength": 1 },
+                "version": { "type": "integer", "minimum": 1 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Aunara — Training Systems",
+  "short_name": "Aunara",
+  "description": "Private training routes, editable guidance, progress records, and wellbeing context.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5f1ea",
+  "theme_color": "#063f43",
+  "categories": ["fitness", "health", "sports"],
+  "icons": [
+    {
+      "src": "/icons/aunara-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/aunara-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
