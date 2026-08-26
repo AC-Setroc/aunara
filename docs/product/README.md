@@ -35,8 +35,8 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
 - Ese repositorio contiene la compilación publicada, no el proyecto fuente ni
   la documentación completa.
 - `AC-Setroc/aunara-app` es el repositorio fuente privado aprobado.
-- El proyecto local está conectado a ese remoto; la verificación continua y el
-  flujo reproducible hacia Pages se completan durante el bootstrap.
+- El proyecto local está conectado a ese remoto y su verificación continua
+  ejecuta tipos, pruebas y compilación desde una instalación limpia.
 - GitHub Pages se mantiene como repositorio de despliegue y no como fuente.
 
 ## Regla de actualización

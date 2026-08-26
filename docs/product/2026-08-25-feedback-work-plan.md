@@ -44,16 +44,17 @@ compilado.
 | ID | Tarea | Dependencia | Criterio de cierre | Estado |
 | --- | --- | --- | --- | --- |
 | GOV-01 | Aprobar repositorio fuente privado | Decisión del propietario | Nombre, visibilidad y responsables definidos | Completado |
-| GOV-02 | Conectar el proyecto local al repositorio fuente | GOV-01 | Remoto configurado y rama protegida | En implementación |
-| GOV-03 | Revisar y organizar cambios locales actuales | GOV-01 | Cambios agrupados, probados y documentados sin incluir secretos | En implementación |
-| GOV-04 | Publicar código fuente, specs y documentación | GOV-02, GOV-03 | GitHub contiene una versión reproducible y los documentos activos | En implementación |
+| GOV-02 | Conectar el proyecto local al repositorio fuente | GOV-01 | Remoto configurado y rama principal creada | Completado |
+| GOV-03 | Revisar y organizar cambios locales actuales | GOV-01 | Cambios agrupados, probados y documentados sin incluir secretos | Completado |
+| GOV-04 | Publicar código fuente, specs y documentación | GOV-02, GOV-03 | GitHub contiene una versión reproducible y los documentos activos | Completado |
 | GOV-05 | Actualizar documentación antigua de Repbook/OpenAI Sites | GOV-04 | Nombre, hosting, estado y fechas coherentes con Aunara/GitHub Pages | Pendiente |
 | GOV-06 | Definir relación fuente → GitHub Pages | GOV-04 | Despliegue documentado, verificable y reversible | Pendiente |
+| GOV-07 | Proteger la rama principal | GOV-04 | Revisión requerida y verificación obligatoria antes de integrar | Pendiente |
 
 **Estado actual verificado:** `AC-Setroc/AC-Setroc.github.io` conserva la
 compilación pública y `AC-Setroc/aunara-app` fue creado como repositorio fuente
-privado. El bootstrap, la protección de rama y el CI se verifican antes de cerrar
-GOV-02 a GOV-04.
+privado. El bootstrap y el CI pasaron en una instalación limpia. La protección
+de la rama y la automatización de publicación permanecen como tareas separadas.
 
 ### Fase 1 — Propuesta de home autenticado
 
@@ -146,6 +147,7 @@ Esta fase queda deliberadamente pausada hasta cerrar el UAT personal.
 | 2026-08-25 | Repositorio fuente privado creado y conectado | `AC-Setroc/aunara-app` | Desarrollo |
 | 2026-08-25 | Prototipo responsive del home preparado para revisión | `prototypes/authenticated-home-v1/` | Diseño/producto |
 | 2026-08-25 | Matriz metodológica v0.1 creada | `docs/methodology/workout-rules-matrix-v0.1.md` | Producto/metodología |
+| 2026-08-25 | Fuente publicada y verificada en CI | GitHub Actions `Verify source` | Desarrollo |
 
 ## 6. Definición de “terminado” de esta etapa
 
