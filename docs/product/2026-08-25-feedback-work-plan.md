@@ -28,8 +28,8 @@ enlace a su evidencia.
 | FB-01 | La biblioteca de ejercicios es una fortaleza | Conservarla | Crear pruebas de regresión de búsqueda, filtros, detalle e idioma | Alta | Pendiente |
 | FB-02 | GIFs e instrucciones facilitan entender el ejercicio | Conservar la experiencia y migrar a material propio | Continuar directorio bilingüe, derechos de medios y animaciones Aunara | Alta | En definición |
 | FB-03 | Revisar terminología técnica | Validación editorial con entrenador | Exportar términos, revisar ES/EN, registrar aprobador y versión | Alta | Pendiente |
-| FB-04 | El home y la ruta sugerida son confusos | Rediseñar alrededor de la siguiente acción | Aprobar arquitectura, prototipo y estados del home autenticado | Crítica | En definición |
-| FB-05 | Una sugerencia directa puede ser riesgosa para principiantes | Reforzar metodología, transparencia y controles | Matriz de reglas, cribado, límites, progresión y revisión profesional | Crítica | En definición |
+| FB-04 | El home y la ruta sugerida son confusos | Rediseñar alrededor de la siguiente acción | Aprobar arquitectura, prototipo y estados del home autenticado | Crítica | Dirección aprobada; copy/accesibilidad pendientes |
+| FB-05 | Una sugerencia directa puede ser riesgosa para principiantes | Reforzar metodología, transparencia y controles | Matriz de reglas, cribado, límites, progresión y revisión profesional | Crítica | En revisión externa |
 | FB-06 | El entrenador debería controlar su grupo | Mantener registro autónomo + invitación del entrenador | Diseñar invitación, consentimiento, permisos y salida; implementar después del producto personal | Media/futura | Pausado |
 | FB-07 | Validar la experiencia móvil | UAT web instalable ahora; nativa después | Matriz de dispositivos y pruebas de flujos críticos | Alta | Pendiente |
 | FB-08 | Definir onboarding | El perfil inicial debe producir una propuesta revisable | Diseñar continuidad perfil → propuesta → aceptar/editar/descartar | Crítica | En definición |
@@ -61,9 +61,9 @@ de la rama y la automatización de publicación permanecen como tareas separadas
 | ID | Tarea | Entregable / criterio de cierre | Estado |
 | --- | --- | --- | --- |
 | UX-01 | Mapear estados del usuario | Estados nuevos, propuesta pendiente, día de entrenamiento, descanso e invitación | Completado en propuesta |
-| UX-02 | Aprobar jerarquía de información | Una acción principal por estado; catálogo y rutas fuera del foco del home | En definición |
-| UX-03 | Crear wireframes móvil y escritorio | Flujos completos y responsive, incluidos vacíos/errores | En UAT |
-| UX-04 | Prototipo navegable | Onboarding → propuesta → entrenamiento probado sin código productivo | En UAT |
+| UX-02 | Aprobar jerarquía de información | Una acción principal por estado; catálogo y rutas fuera del foco del home | Completado |
+| UX-03 | Crear wireframes móvil y escritorio | Flujos completos y responsive, incluidos vacíos/errores | Completado |
+| UX-04 | Prototipo navegable | Onboarding → propuesta → entrenamiento probado sin código productivo | Completado |
 | UX-05 | Revisión de accesibilidad y copy | Idioma completo ES/EN, foco, lectura y estados claros | Pendiente |
 
 **Puerta A:** Alejandro aprueba UX-02 a UX-05 antes de modificar el home.
@@ -75,14 +75,16 @@ de la rama y la automatización de publicación permanecen como tareas separadas
 | MET-01 | Documentar el motor actual | Entradas, reglas, exclusiones, salidas y límites auditables | Parcial |
 | MET-02 | Diseñar cribado previo | Flujo, licencias, derivación y ruta básica sin salud | En definición |
 | MET-03 | Estructurar restricciones | Campos automáticos separados de notas libres no interpretadas | En definición |
-| MET-04 | Matriz por objetivo y experiencia | Volumen, esfuerzo, frecuencia, descanso, progresión y regresión versionados | En definición: v0.1 |
+| MET-04 | Matriz por objetivo y experiencia | Volumen, esfuerzo, frecuencia, descanso, progresión y regresión versionados | v0.1 entregada; feedback pendiente |
 | MET-05 | Política de técnicas avanzadas | Elegibilidad, advertencias y prohibición automática en principiantes | En definición |
 | MET-06 | Explicación de cada propuesta | Datos usados/ignorados, reglas, versión, fecha y decisiones disponibles | En definición |
-| MET-07 | Revisión profesional | Firma de revisión, observaciones resueltas y versión aprobada | Pendiente |
+| MET-07 | Revisión profesional | Firma de revisión, observaciones resueltas y versión aprobada | En revisión con entrenador; revisión médica pendiente |
 | MET-08 | Copy de seguridad | Mensajes no diagnósticos, criterios de detención y consulta profesional | Pendiente |
+| MET-09 | Perfiles para condiciones médicas | Elegibilidad, dosificación, monitoreo y derivación; hipertensión como primer caso | En definición; anexo creado |
+| MET-10 | Adaptación y progreso | Fases de acondicionamiento y reglas de progreso, mantenimiento y regresión | En definición; anexo creado |
 
 **Puerta B:** revisión del entrenador y del profesional competente; aprobación de
-MET-02 a MET-08 antes de cambiar el generador de rutinas.
+MET-02 a MET-10 antes de cambiar el generador de rutinas.
 
 ### Fase 3 — Implementación del producto personal
 
@@ -127,10 +129,10 @@ Esta fase queda deliberadamente pausada hasta cerrar el UAT personal.
 
 ## 4. Secuencia recomendada inmediata
 
-1. Aprobar o ajustar la propuesta de home y seguridad metodológica.
-2. Autorizar la creación del repositorio fuente privado.
-3. Crear wireframes/prototipo sin tocar la aplicación productiva.
-4. Construir la matriz metodológica con el entrenador y revisión competente.
+1. Esperar y registrar el feedback del entrenador sobre la v0.1.
+2. Resolver observaciones y crear la matriz v0.2 sin alterar la copia entregada.
+3. Obtener revisión competente para hipertensión, cribado y derivación.
+4. Completar accesibilidad y copy del home aprobado.
 5. Aprobar puertas A y B.
 6. Implementar en bloques pequeños: home, propuesta inicial, guardas y
    transparencia.
@@ -148,6 +150,9 @@ Esta fase queda deliberadamente pausada hasta cerrar el UAT personal.
 | 2026-08-25 | Prototipo responsive del home preparado para revisión | `prototypes/authenticated-home-v1/` | Diseño/producto |
 | 2026-08-25 | Matriz metodológica v0.1 creada | `docs/methodology/workout-rules-matrix-v0.1.md` | Producto/metodología |
 | 2026-08-25 | Fuente publicada y verificada en CI | GitHub Actions `Verify source` | Desarrollo |
+| 2026-08-26 | Dirección visual del home aceptada | Prototipo `authenticated-home-v1` | Producto |
+| 2026-08-26 | Matriz v0.1 entregada al entrenador | Registro de revisión metodológica | Producto/metodología |
+| 2026-08-26 | Condiciones, lesiones, acondicionamiento y progreso documentados | Anexo metodológico | Producto/metodología |
 
 ## 6. Definición de “terminado” de esta etapa
 

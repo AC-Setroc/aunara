@@ -28,6 +28,11 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
    bloquea el cierre del producto personal.
 6. Las propuestas actuales de rutina se generan con reglas locales y datos del
    catálogo; no usan la cuenta personal de ChatGPT del usuario.
+7. La dirección visual del nuevo home fue aceptada el 26 de agosto de 2026; la
+   implementación espera el cierre de accesibilidad/copy y la puerta
+   metodológica.
+8. La matriz metodológica v0.1 fue entregada al entrenador y permanece en
+   revisión. No se implementarán reglas médicas mientras se espera su feedback.
 
 ## Estado de repositorios
 
