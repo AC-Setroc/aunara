@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aunara.app/schemas/exercise-directory/owned-media.schema.json",
+  "title": "Aunara owned exercise media manifest",
+  "type": "object",
+  "propertyNames": { "pattern": "^[0-9]{4}$" },
+  "additionalProperties": {
+    "oneOf": [
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status"],
+        "properties": { "status": { "const": "not-started" } }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "animation", "poster", "version"],
+        "properties": {
+          "status": { "const": "ready" },
+          "animation": { "type": "string", "minLength": 1 },
+          "poster": { "type": "string", "minLength": 1 },
+          "version": { "type": "integer", "minimum": 1 }
+        }
+      }
+    ]
+  }
+}

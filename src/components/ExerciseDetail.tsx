@@ -47,6 +47,11 @@ export function ExerciseDetail({
     : origin === "proposal"
       ? tr(language, "Back to proposal", "Volver a la propuesta")
       : tr(language, "Back", "Volver");
+  const addLabel = inWorkout
+    ? tr(language, "Manage in routines", "Gestionar en rutinas")
+    : origin === "workout"
+      ? tr(language, "Add to this routine", "Agregar a esta ruta")
+      : tr(language, "Add to routine", "Agregar a una ruta");
 
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
@@ -108,7 +113,7 @@ export function ExerciseDetail({
             </button>
             <button className="primary-button" type="button" onClick={onAdd}>
               {inWorkout ? <Check size={18} /> : <Plus size={18} />}
-              {inWorkout ? tr(language, "Manage in routines", "Gestionar en rutinas") : tr(language, "Add to routine", "Agregar a una ruta")}
+              {addLabel}
             </button>
           </div>
         </div>

@@ -8,6 +8,8 @@ import type {
   Weekday,
   WorkoutItem,
 } from "../types";
+import spanishExerciseNames from "../../public/data/exercise-directory/name-overrides.es.json";
+import spanishTaxonomy from "../../public/data/exercise-directory/taxonomy.es.json";
 
 export const DATASET_COMMIT = "7455efae41b330c265e7cd4b78dfa848e7ce5ebd";
 const MEDIA_ROOT = `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/${DATASET_COMMIT}`;
@@ -17,7 +19,11 @@ export function mediaUrl(path: string): string {
 }
 
 export function normalize(value: string): string {
-  return value.trim().toLocaleLowerCase();
+  return value
+    .trim()
+    .toLocaleLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 export interface ExerciseFilters {
@@ -25,8 +31,37 @@ export interface ExerciseFilters {
   bodyPart: string;
   equipment: string;
   equipmentPreference?: EquipmentPreference;
+  language?: LanguageCode;
   favoritesOnly: boolean;
   favoriteIds: Set<string>;
+}
+
+type BodyRegion = "lower-body" | "upper-body";
+
+const BODY_REGION_PARTS: Record<BodyRegion, Set<string>> = {
+  "lower-body": new Set(["upper legs", "lower legs"]),
+  "upper-body": new Set(["back", "chest", "shoulders", "upper arms", "lower arms"]),
+};
+
+const BODY_REGION_ALIASES: Record<BodyRegion, string[]> = {
+  "lower-body": ["lower body", "lower-body", "tren inferior", "cuerpo inferior"],
+  "upper-body": ["upper body", "upper-body", "tren superior", "cuerpo superior"],
+};
+
+function bodyRegionIntent(query: string): BodyRegion | null {
+  if (query.length < 3 || query.includes(" ")) return null;
+  const matchingRegions = (Object.entries(BODY_REGION_ALIASES) as [BodyRegion, string[]][])
+    .filter(([, aliases]) => aliases.some((alias) => normalize(alias).startsWith(query)))
+    .map(([region]) => region);
+  return matchingRegions.length === 1 ? matchingRegions[0] : null;
+}
+
+function belongsToBodyRegion(exercise: Exercise, region: BodyRegion): boolean {
+  return BODY_REGION_PARTS[region].has(exercise.body_part);
+}
+
+function translatedTaxonomy(value: string): string {
+  return spanishTaxonomy[value as keyof typeof spanishTaxonomy] ?? value;
 }
 
 const SUPPORT_EQUIPMENT_PATTERN = /\b(?:pull[\s-]?ups?|chin(?:-ups?)?|inverted rows?|hanging|bench|box|chair|lever|rings?|parallel bars?|cage|vertical bar|dip(?:s|ping)?|human flag|skin the cat|balance board|step[\s-]?ups?|stairs|tire|wheel run|hyperextension)\b/i;
@@ -35,46 +70,10 @@ export function isEquipmentFreeExercise(exercise: Exercise): boolean {
   return exercise.equipment === "body weight" && !SUPPORT_EQUIPMENT_PATTERN.test(exercise.name);
 }
 
-const SPANISH_EXERCISE_NAMES: Record<string, string> = {
-  "astride jumps (male)": "Saltos laterales",
-  "barbell bench press": "Press de banca con barra",
-  "barbell deadlift": "Peso muerto con barra",
-  "barbell full squat": "Sentadilla profunda con barra",
-  "bodyweight standing calf raise": "Elevación de pantorrilla de pie",
-  "cable lat pulldown full range of motion": "Jalón al pecho en polea con rango completo",
-  "cable standing calf raise": "Elevación de pantorrilla en polea",
-  "cable standing shoulder external rotation": "Rotación externa de hombro en polea",
-  "calf stretch with hands against wall": "Estiramiento de pantorrilla contra la pared",
-  "chest and front of shoulder stretch": "Estiramiento de pecho y hombro anterior",
-  "dead bug": "Dead bug",
-  "dumbbell bench press": "Press de banca con mancuernas",
-  "dumbbell biceps curl": "Curl de bíceps con mancuernas",
-  "dumbbell goblet squat": "Sentadilla goblet con mancuerna",
-  "dumbbell rear lateral raise": "Elevación lateral posterior con mancuernas",
-  "dumbbell rear lunge": "Zancada hacia atrás con mancuernas",
-  "dumbbell seated shoulder press": "Press de hombros sentado con mancuernas",
-  "dumbbell single leg deadlift": "Peso muerto a una pierna con mancuerna",
-  "dumbbell step-up": "Subida al banco con mancuernas",
-  "forward lunge (male)": "Zancada hacia adelante",
-  "hamstring stretch": "Estiramiento de isquiotibiales",
-  "jack jump (male)": "Saltos de tijera",
-  "jump rope": "Salto de cuerda",
-  "jump squat": "Sentadilla con salto",
-  "low glute bridge on floor": "Puente de glúteos en el suelo",
-  "mountain climber": "Escalador",
-  "pull-up": "Dominada",
-  "push-up": "Flexión de pecho",
-  "rear deltoid stretch": "Estiramiento de deltoides posterior",
-  "runners stretch": "Estiramiento del corredor",
-  "single leg bridge with outstretched leg": "Puente de glúteo a una pierna",
-  "spine stretch": "Estiramiento de columna",
-  "swimmer kicks v. 2 (male)": "Patada de nadador",
-  "world greatest stretch": "Estiramiento global",
-};
-
 export function exerciseDisplayName(exercise: Exercise, language: LanguageCode): string {
-  if (language === "es" && SPANISH_EXERCISE_NAMES[exercise.name]) {
-    return SPANISH_EXERCISE_NAMES[exercise.name];
+  const spanishName = spanishExerciseNames[exercise.name as keyof typeof spanishExerciseNames];
+  if (language === "es" && spanishName) {
+    return spanishName;
   }
   return titleCase(exercise.name);
 }
@@ -84,6 +83,7 @@ export function filterExercises(
   filters: ExerciseFilters,
 ): Exercise[] {
   const query = normalize(filters.query);
+  const regionIntent = bodyRegionIntent(query);
 
   return exercises.filter((exercise) => {
     if (filters.equipmentPreference === "bodyweight" && !isEquipmentFreeExercise(exercise)) return false;
@@ -91,18 +91,24 @@ export function filterExercises(
     if (filters.equipment && exercise.equipment !== filters.equipment) return false;
     if (filters.favoritesOnly && !filters.favoriteIds.has(exercise.id)) return false;
     if (!query) return true;
+    if (regionIntent) return belongsToBodyRegion(exercise, regionIntent);
 
-    const haystack = [
+    const haystack = normalize([
       exercise.name,
+      exerciseDisplayName(exercise, "es"),
       exercise.category,
       exercise.target,
       exercise.muscle_group,
       exercise.body_part,
       exercise.equipment,
       ...exercise.secondary_muscles,
-    ]
-      .join(" ")
-      .toLocaleLowerCase();
+      translatedTaxonomy(exercise.category),
+      translatedTaxonomy(exercise.target),
+      translatedTaxonomy(exercise.muscle_group),
+      translatedTaxonomy(exercise.body_part),
+      translatedTaxonomy(exercise.equipment),
+      ...exercise.secondary_muscles.map(translatedTaxonomy),
+    ].join(" "));
 
     return haystack.includes(query);
   });
@@ -387,6 +393,22 @@ export function updateWorkoutItem(
   changes: Partial<WorkoutItem>,
 ): WorkoutItem[] {
   return workout.map((item) => matchesWorkoutItem(item, itemId) ? { ...item, ...changes } : item);
+}
+
+export function adjustWorkoutPrescription(
+  workout: WorkoutItem[],
+  itemId: string,
+  field: "sets" | "reps",
+  delta: number,
+): WorkoutItem[] {
+  return workout.map((item) => {
+    if (!matchesWorkoutItem(item, itemId)) return item;
+    const maximum = field === "sets" ? 12 : 100;
+    const nextValue = Math.min(maximum, Math.max(1, item[field] + delta));
+    const sets = field === "sets" ? nextValue : item.sets;
+    const reps = field === "reps" ? nextValue : item.reps;
+    return { ...item, [field]: nextValue, setPlan: `${sets} × ${reps}` };
+  });
 }
 
 export function logWorkoutLoad(

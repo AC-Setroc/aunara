@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/prepare-sites-dist.mjs",
+    "build": "npm run check:exercise-directory && tsc -b && vite build && node scripts/prepare-sites-dist.mjs",
+    "build:exercise-directory": "node scripts/build-bilingual-exercise-directory.mjs",
+    "check:exercise-directory": "node scripts/build-bilingual-exercise-directory.mjs --check",
     "typecheck": "tsc -b --pretty false",
-    "test": "vitest run && node --test scripts/prepare-sites-dist.node-test.mjs"
+    "test": "vitest run --maxWorkers=2 && node --test scripts/prepare-sites-dist.node-test.mjs",
+    "test:exercise-directory": "node --test scripts/build-bilingual-exercise-directory.node-test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.8",

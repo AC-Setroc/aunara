@@ -30,6 +30,7 @@ import { useCloudSync } from "./hooks/useCloudSync";
 import { useStoredState } from "./hooks/useStoredState";
 import { createRepbookSnapshot, type RepbookCloudSnapshot } from "./lib/cloudSnapshot";
 import {
+  adjustWorkoutPrescription,
   equipmentOptionsForBodyPart,
   filterExercises,
   generateAdaptiveTrackWorkout,
@@ -46,7 +47,7 @@ import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
 import { buildPersonalDataExport, stripSensitiveHealthData } from "./lib/privacy";
 import { addWeeklyCheckIn, assessExerciseReadiness, buildRoutineAnalysis } from "./lib/wellness";
-import type { EquipmentPreference, Exercise, HealthDataConsentStatus, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem } from "./types";
+import type { EquipmentPreference, Exercise, HealthDataConsentStatus, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem, WorkoutStructure, WorkoutStructureType } from "./types";
 
 const PAGE_SIZE = 48;
 type WorkoutPanelMode = "view" | "edit" | "training";
@@ -365,14 +366,16 @@ function App() {
     });
   }
 
-  function buildWorkoutItem(exerciseId: string, day: Weekday): WorkoutItem {
+  function buildWorkoutItem(exerciseId: string, day: Weekday, structure?: WorkoutStructure): WorkoutItem {
     return {
-      id: typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `movement-${Date.now()}`,
+      id: typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `movement-${Date.now()}-${Math.random().toString(16).slice(2)}`,
       exerciseId,
       sets: 3,
       reps: 10,
       day,
       setPlan: "3 × 10",
+      prescriptionMode: "standard",
+      structure,
       loadKg: null,
       loadHistory: [],
     };
@@ -395,6 +398,20 @@ function App() {
     );
   }
 
+  function appendWorkoutStructure(type: WorkoutStructureType, exerciseIds: string[], day: Weekday) {
+    if (!activeTrack || !exerciseIds.length) return;
+    const structureId = typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `structure-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const additions = exerciseIds.map((exerciseId, position) => buildWorkoutItem(exerciseId, day, {
+      id: structureId,
+      type,
+      position,
+      size: exerciseIds.length,
+    }));
+    updateActiveWorkout((current) => [...current, ...additions]);
+  }
+
   function addToWorkout(exerciseId: string) {
     const exercise = exerciseMap.get(exerciseId);
     if (exercise) setAssignmentExercise(exercise);
@@ -407,18 +424,7 @@ function App() {
   }
 
   function updateWorkout(itemId: string, field: "sets" | "reps", delta: number) {
-    updateActiveWorkout((current) => current.map((item) => {
-      if ((item.id ?? item.exerciseId) !== itemId) return item;
-      const maximum = field === "sets" ? 12 : 100;
-      const nextValue = Math.min(maximum, Math.max(1, item[field] + delta));
-      return {
-        ...item,
-        [field]: nextValue,
-        setPlan: item.setPlan === `${item.sets} × ${item.reps}`
-          ? `${field === "sets" ? nextValue : item.sets} × ${field === "reps" ? nextValue : item.reps}`
-          : item.setPlan,
-      };
-    }));
+    updateActiveWorkout((current) => adjustWorkoutPrescription(current, itemId, field, delta));
   }
 
   function swapWorkoutExercise(itemId: string, replacementId: string) {
@@ -933,6 +939,7 @@ function App() {
             onUpdateItem={updateWorkoutItemFields}
             onSetDayLabel={setTrainingDayLabel}
             onAddExercise={(exerciseId, day) => appendWorkoutExercise(exerciseId, true, day)}
+            onAddStructure={appendWorkoutStructure}
             onLogLoad={logCurrentWorkoutLoad}
             onRemove={(itemId) => updateActiveWorkout((current) => current.filter((item) => (item.id ?? item.exerciseId) !== itemId))}
             onSwap={swapWorkoutExercise}

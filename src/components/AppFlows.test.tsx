@@ -9,6 +9,7 @@ import { ExerciseDetail } from "./ExerciseDetail";
 import { InitialRoutineProposal } from "./InitialRoutineProposal";
 import { TrainingTracks } from "./TrainingTracks";
 import { WorkoutPanel } from "./WorkoutPanel";
+import { createSpecialPrescription } from "../lib/workoutPrescription";
 
 vi.mock("../hooks/useCloudSync", () => ({
   useCloudSync: () => ({
@@ -40,6 +41,18 @@ const exercise: Exercise = {
   gif_url: "videos/a.gif",
   attribution: "© Gym visual — https://gymvisual.com/",
   created_at: "2026-01-01T00:00:00Z",
+};
+
+const pressExercise: Exercise = {
+  ...exercise,
+  id: "0405",
+  name: "dumbbell seated shoulder press",
+  category: "shoulders",
+  body_part: "shoulders",
+  equipment: "dumbbell",
+  target: "delts",
+  muscle_group: "deltoids",
+  secondary_muscles: ["triceps"],
 };
 
 const track: TrainingTrack = {
@@ -351,12 +364,113 @@ describe("routine exercise controls", () => {
     expect(screen.queryByText("Why this routine")).toBeNull();
     expect(screen.queryByRole("button", { name: "Suggest this routine" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Start creating" }));
+    fireEvent.click(screen.getByRole("button", { name: "Single set" }));
     fireEvent.click(screen.getByRole("button", { name: "Wednesday" }));
-    fireEvent.change(screen.getByLabelText("Search exercises to add"), { target: { value: "quadriceps" } });
-    fireEvent.click(screen.getByRole("button", { name: "Add Jump Squat to Wednesday" }));
+    fireEvent.change(screen.getByLabelText("Search exercise 1"), { target: { value: "quadriceps" } });
+    fireEvent.click(screen.getByRole("button", { name: "Select Jump Squat as exercise 1" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add single set" }));
 
     expect(onGenerate).not.toHaveBeenCalled();
     expect(onAddExercise).toHaveBeenCalledWith(exercise.id, "wednesday");
+  });
+
+  it("starts manual building with only the training-structure choices", () => {
+    render(<WorkoutPanel
+      language="es"
+      items={[]}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{
+        ...track,
+        workout: [],
+        creationMode: "manual",
+        trainingDays: ["monday"],
+      }}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onAddExercise={vi.fn()}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "El contexto respalda este plan", points: [] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
+
+    expect(screen.getByRole("button", { name: "Monoserie" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Biserie" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Triserie" })).toBeTruthy();
+    expect(screen.queryByLabelText("Buscar ejercicios para agregar")).toBeNull();
+  });
+
+  it("collects two exercise fields before adding a biset", () => {
+    const onAddStructure = vi.fn();
+    const TestPanel = WorkoutPanel as unknown as React.ComponentType<Record<string, unknown>>;
+    render(<TestPanel
+      language="es"
+      items={[]}
+      exerciseMap={new Map([[exercise.id, exercise], [pressExercise.id, pressExercise]])}
+      exercises={[exercise, pressExercise]}
+      track={{ ...track, workout: [], creationMode: "manual", trainingDays: ["monday"] }}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onAddStructure={onAddStructure}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "El contexto respalda este plan", points: [] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
+    fireEvent.click(screen.getByRole("button", { name: "Biserie" }));
+
+    fireEvent.change(screen.getByLabelText("Buscar ejercicio 1"), { target: { value: "jump" } });
+    fireEvent.click(screen.getByRole("button", { name: "Seleccionar Sentadilla con salto como ejercicio 1" }));
+    fireEvent.change(screen.getByLabelText("Buscar ejercicio 2"), { target: { value: "shoulder" } });
+    fireEvent.click(screen.getByRole("button", { name: "Seleccionar Press de hombros sentado con mancuernas como ejercicio 2" }));
+    fireEvent.click(screen.getByRole("button", { name: "Agregar biserie" }));
+
+    expect(onAddStructure).toHaveBeenCalledWith("biset", [exercise.id, pressExercise.id], "monday");
+  });
+
+  it("opens the exercise preview from a manual routine search result", () => {
+    const onOpenExercise = vi.fn();
+    const onAddExercise = vi.fn();
+    render(<WorkoutPanel
+      language="es"
+      items={[]}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{
+        ...track,
+        workout: [],
+        creationMode: "manual",
+        trainingDays: ["monday"],
+      }}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onAddExercise={onAddExercise}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={onOpenExercise}
+      analysis={{ tone: "ready", headline: "El contexto respalda este plan", points: ["La fuerza es el foco principal."] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
+    fireEvent.click(screen.getByRole("button", { name: "Monoserie" }));
+    fireEvent.click(screen.getByRole("button", { name: "Ver Sentadilla con salto demostración y pasos" }));
+
+    expect(onOpenExercise).toHaveBeenCalledWith(exercise);
+    expect(onAddExercise).not.toHaveBeenCalled();
   });
 
   it("shows why a routine fits the health context", () => {
@@ -426,10 +540,8 @@ describe("routine exercise controls", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Edit routine" }));
     fireEvent.change(screen.getByLabelText("Training day for Jump Squat"), { target: { value: "wednesday" } });
-    fireEvent.change(screen.getByLabelText("Set plan for Jump Squat"), { target: { value: "3 × 8 + 2 to failure" } });
 
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ day: "wednesday" }));
-    expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ setPlan: "3 × 8 + 2 to failure" }));
     expect(screen.queryByRole("button", { name: "Log today’s load for Jump Squat" })).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Back to routine" }));
@@ -441,6 +553,98 @@ describe("routine exercise controls", () => {
 
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ loadKg: 95 }));
     expect(onLogLoad).toHaveBeenCalledWith("monday-jump-squat");
+  });
+
+  it("uses the lower controls as the only editable source for the set plan", () => {
+    const onUpdate = vi.fn();
+    const mismatchedItem = {
+      ...track.workout[0],
+      id: "monday-jump-squat",
+      day: "monday" as const,
+      sets: 3,
+      reps: 10,
+      setPlan: "3 × 8",
+    };
+    render(<WorkoutPanel
+      items={[mismatchedItem]}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{ ...track, workout: [mismatchedItem], creationMode: "manual", trainingDays: ["monday"] }}
+      initialMode="edit"
+      onClose={vi.fn()}
+      onUpdate={onUpdate}
+      onUpdateItem={vi.fn()}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "Context supports this plan", points: [] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    const planSummary = screen.getByLabelText("Set plan for Jump Squat");
+    expect(planSummary.tagName).toBe("OUTPUT");
+    expect(planSummary.textContent).toBe("3 × 10");
+
+    fireEvent.click(screen.getByRole("button", { name: "Increase repetitions" }));
+    expect(onUpdate).toHaveBeenCalledWith("monday-jump-squat", "reps", 1);
+  });
+
+  it("shows a brief explanation beside every advanced technique choice", () => {
+    const onUpdateItem = vi.fn();
+    const specialItem = {
+      ...track.workout[0],
+      prescriptionMode: "special" as const,
+      specialPrescription: createSpecialPrescription("rest-pause"),
+    };
+    const { rerender } = render(<WorkoutPanel
+      language="es"
+      items={track.workout}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{ ...track, creationMode: "manual", trainingDays: ["monday"] }}
+      initialMode="edit"
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onUpdateItem={onUpdateItem}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "El contexto respalda este plan", points: [] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Configuración especial" }));
+    expect(onUpdateItem).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+      prescriptionMode: "special",
+      specialPrescription: expect.objectContaining({ technique: "rest-pause" }),
+    }));
+
+    rerender(<WorkoutPanel
+      language="es"
+      items={[specialItem]}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{ ...track, workout: [specialItem], creationMode: "manual", trainingDays: ["monday"] }}
+      initialMode="edit"
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onUpdateItem={onUpdateItem}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "El contexto respalda este plan", points: [] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    expect(screen.getByText(/Divide una serie exigente en bloques de trabajo/)).toBeTruthy();
+    expect(screen.getByText(/Continúa la serie reduciendo la carga/)).toBeTruthy();
+    expect(screen.getByText(/Agrega descansos breves y planificados/)).toBeTruthy();
   });
 
   it("checks for new warning symptoms before starting today’s workout", () => {
@@ -558,6 +762,34 @@ describe("routine exercise controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Conservar y volver a la rutina" }));
 
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("labels the add action as the current route only when opened from a route", () => {
+    const { rerender } = render(<ExerciseDetail
+      language="es"
+      origin="workout"
+      exercise={exercise}
+      isFavorite={false}
+      inWorkout={false}
+      onClose={vi.fn()}
+      onToggleFavorite={vi.fn()}
+      onAdd={vi.fn()}
+    />);
+
+    expect(screen.getByRole("button", { name: "Agregar a esta ruta" })).toBeTruthy();
+
+    rerender(<ExerciseDetail
+      language="es"
+      origin="library"
+      exercise={exercise}
+      isFavorite={false}
+      inWorkout={false}
+      onClose={vi.fn()}
+      onToggleFavorite={vi.fn()}
+      onAdd={vi.fn()}
+    />);
+
+    expect(screen.getByRole("button", { name: "Agregar a una ruta" })).toBeTruthy();
   });
 
   it("explains how free-text health notes are handled before accepting a suggestion", () => {

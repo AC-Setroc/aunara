@@ -49,7 +49,7 @@ describe("signed-out home", () => {
     expect(screen.getByRole("option", { name: "Español" })).toBeTruthy();
     expect(screen.getByRole("option", { name: "English" })).toBeTruthy();
     expect(screen.getAllByRole("option")).toHaveLength(2);
-    expect(screen.getByRole("heading", { name: /Entrená conintención/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /Un cuerpo preparado.*para todo lo que te importa/i })).toBeTruthy();
   });
 
   it("changes the public interface to English", () => {

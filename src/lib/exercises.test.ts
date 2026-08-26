@@ -39,6 +39,18 @@ const squat: Exercise = {
   secondary_muscles: ["quadriceps"],
 };
 
+const curl: Exercise = {
+  ...baseExercise,
+  id: "0003",
+  name: "barbell wrist curl",
+  category: "lower arms",
+  body_part: "lower arms",
+  equipment: "barbell",
+  target: "forearms",
+  muscle_group: "wrist flexors",
+  secondary_muscles: [],
+};
+
 const beachVolleyExercises: Exercise[] = [
   { ...squat, id: "0514", name: "jump squat", target: "glutes" },
   { ...squat, id: "3470", name: "forward lunge (male)", target: "glutes" },
@@ -94,6 +106,18 @@ describe("exercise helpers", () => {
       { ...squat, category: "plyometrics" },
     ], {
       query: "plyometric",
+      bodyPart: "",
+      equipment: "",
+      favoritesOnly: false,
+      favoriteIds: new Set(),
+    });
+
+    expect(results.map((exercise) => exercise.id)).toEqual(["0002"]);
+  });
+
+  it("recognizes a lower-body prefix as a body-region search instead of matching every lower taxonomy", () => {
+    const results = filterExercises([baseExercise, squat, curl], {
+      query: "low",
       bodyPart: "",
       equipment: "",
       favoritesOnly: false,
@@ -429,6 +453,32 @@ describe("training tracks", () => {
       expect.objectContaining({ date: "2026-07-27", loadKg: 90 }),
     ]);
     expect(item).not.toHaveProperty("loadHistory");
+  });
+
+  it("keeps the stored set plan synchronized with sets and repetitions", () => {
+    const adjustPrescription = (exerciseLibrary as unknown as {
+      adjustWorkoutPrescription?: (
+        workout: Array<{ id: string; exerciseId: string; sets: number; reps: number; setPlan?: string }>,
+        itemId: string,
+        field: "sets" | "reps",
+        delta: number,
+      ) => Array<{ sets: number; reps: number; setPlan?: string }>;
+    }).adjustWorkoutPrescription;
+
+    expect(adjustPrescription).toBeTypeOf("function");
+    if (!adjustPrescription) return;
+
+    const original = [{
+      id: "monday-squat",
+      exerciseId: "0043",
+      sets: 3,
+      reps: 10,
+      setPlan: "3 × 8",
+    }];
+    const updated = adjustPrescription(original, "monday-squat", "reps", 1);
+
+    expect(updated[0]).toMatchObject({ sets: 3, reps: 11, setPlan: "3 × 11" });
+    expect(original[0]).toMatchObject({ reps: 10, setPlan: "3 × 8" });
   });
 
   it("exposes equipment-aware exercise alternatives", () => {

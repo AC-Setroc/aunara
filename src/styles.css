@@ -540,7 +540,7 @@ footer a { text-underline-offset: 3px; }
 .empty-training-day span { font-size: .75rem; }
 .workout-day-labels { margin: 12px 0 4px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .workout-day-labels label { padding: 9px; display: grid; gap: 5px; border: 1px solid var(--line); background: var(--white); }
-.workout-day-labels span, .workout-prescription-grid label > span, .manual-exercise-adder label > span { font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .06em; }
+.workout-day-labels span, .workout-prescription-grid label > span, .workout-prescription-readout > span, .manual-exercise-adder label > span { font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .06em; }
 .workout-day-labels input { min-width: 0; width: 100%; border: 0; border-bottom: 1px solid var(--line); background: transparent; outline: 0; font-size: .75rem; }
 .routine-analysis { margin: 18px 0 4px; padding: 16px; border: 1px solid var(--ink); background: var(--white); box-shadow: 5px 5px 0 var(--acid); }
 .routine-analysis.is-watch { box-shadow: 5px 5px 0 var(--red); }
@@ -563,6 +563,9 @@ footer a { text-underline-offset: 3px; }
 .workout-prescription-grid { margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .workout-prescription-grid label { min-width: 0; display: grid; gap: 5px; }
 .workout-prescription-grid input, .workout-prescription-grid select { min-width: 0; width: 100%; height: 38px; padding: 0 8px; border: 1px solid var(--line); border-radius: 0; background: var(--white); font-size: .72rem; }
+.workout-prescription-readout { min-width: 0; display: grid; gap: 5px; }
+.workout-prescription-readout output { min-width: 0; width: 100%; height: 38px; padding: 0 8px; display: flex; align-items: center; border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 78%, var(--white)); font-size: .72rem; font-weight: 800; }
+.workout-prescription-readout small { color: var(--muted); font-size: .58rem; line-height: 1.3; }
 .training-entry-grid .is-wide { grid-column: 1 / -1; }
 .workout-plan-summary { margin-top: 13px; padding: 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 7px 12px; border-left: 3px solid var(--acid); background: var(--white); }
 .workout-plan-summary > span { color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
@@ -602,10 +605,14 @@ footer a { text-underline-offset: 3px; }
 .restriction-filter-note { margin: -3px 0 0; padding: 8px; border-left: 3px solid var(--acid); background: var(--paper); color: var(--muted); font-size: .64rem; line-height: 1.4; }
 .manual-exercise-results { max-height: 360px; overflow-y: auto; display: grid; gap: 6px; }
 .manual-exercise-results article { padding: 9px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--paper); }
-.manual-exercise-results article > div { min-width: 0; display: grid; gap: 4px; }
+.manual-exercise-preview { min-width: 0; padding: 2px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; }
+.manual-exercise-preview > span { min-width: 0; display: grid; gap: 4px; }
+.manual-exercise-preview svg { flex: 0 0 auto; }
+.manual-exercise-preview:hover strong, .manual-exercise-preview:focus-visible strong { text-decoration: underline; text-underline-offset: 3px; }
+.manual-exercise-preview:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 .manual-exercise-results article strong { overflow: hidden; font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
 .manual-exercise-results article small { overflow: hidden; color: var(--muted); font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
-.manual-exercise-results button { min-height: 34px; padding: 0 9px; display: flex; align-items: center; gap: 5px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; font-size: .67rem; font-weight: 800; }
+.manual-exercise-add { min-height: 34px; padding: 0 9px; display: flex; align-items: center; gap: 5px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; font-size: .67rem; font-weight: 800; }
 .manual-exercise-results > p { margin: 12px; color: var(--muted); font-size: .72rem; text-align: center; }
 .mobile-workout { display: none; }
 
@@ -1067,7 +1074,7 @@ footer a { text-underline-offset: 3px; }
   .workout-panel { padding: 24px 20px 90px; }
   .workout-day-labels, .workout-prescription-grid, .meal-options-grid { grid-template-columns: 1fr; }
   .manual-exercise-results article { grid-template-columns: 1fr; }
-  .manual-exercise-results button { justify-content: center; }
+  .manual-exercise-add { justify-content: center; }
   .profile-panel { padding: 22px 18px 90px; }
   .access-panel { padding: 22px 18px 60px; }
   .access-heading { grid-template-columns: 48px 1fr auto; }
@@ -1554,4 +1561,158 @@ footer {
   .exercise-detail { border-radius: 22px 22px 0 0; }
   .access-panel { border-radius: 22px 0 0 0; }
   footer { padding-bottom: 100px; }
+}
+
+/* Routine composition: grouped movements and advanced set prescriptions */
+.workout-structure-tag {
+  margin: 0 8px 7px 0;
+  padding: 4px 7px;
+  display: inline-flex;
+  border-radius: 999px;
+  background: var(--blue-50);
+  color: var(--blue-600);
+  font: 700 8px/1 "Avenir Next", Avenir, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.prescription-mode-switch {
+  margin-top: 16px;
+  padding: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+}
+.prescription-mode-switch button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .7rem;
+  font-weight: 750;
+}
+.prescription-mode-switch button.is-active { background: var(--blue-600); color: var(--white); }
+
+.special-technique-editor {
+  margin-top: 14px;
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(22,78,223,.2);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--blue-50) 74%, var(--white));
+}
+.special-technique-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--blue-600); }
+.special-technique-heading > div { display: grid; gap: 3px; }
+.special-technique-heading span,
+.special-round-settings span,
+.technique-block label > span {
+  color: var(--muted);
+  font: 700 8px/1 "Avenir Next", Avenir, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.special-technique-heading strong { font-size: 1rem; }
+.technique-option-list { max-height: 330px; padding-right: 4px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; overflow-y: auto; }
+.technique-option-list button {
+  min-width: 0;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.78);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.technique-option-list button:hover { border-color: var(--blue-600); }
+.technique-option-list button.is-active { border-color: var(--blue-600); box-shadow: inset 3px 0 0 var(--blue-600); }
+.technique-option-list strong { color: var(--teal-800); font-size: .7rem; }
+.technique-option-list span { color: var(--muted); font-size: .62rem; line-height: 1.4; }
+.special-round-settings { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; }
+.special-round-settings label { min-width: 0; padding: 10px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 7px; border-radius: var(--radius-sm); background: var(--white); }
+.special-round-settings label > span { grid-column: 1 / -1; }
+.special-round-settings input { width: 74px; height: 36px; padding: 0 8px; border: 1px solid var(--line); }
+.special-round-settings small { color: var(--muted); font-size: .62rem; }
+.technique-block-list { display: grid; gap: 8px; }
+.technique-block { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
+.technique-block.is-rest { background: color-mix(in srgb, var(--paper) 82%, var(--white)); }
+.technique-block header { min-height: 36px; padding: 0 10px; display: grid; grid-template-columns: 30px 1fr 28px; align-items: center; border-bottom: 1px solid var(--line); }
+.technique-block header span { color: var(--blue-600); font-size: .62rem; font-weight: 800; }
+.technique-block header strong { font-size: .7rem; text-transform: uppercase; }
+.technique-block header button { width: 28px; height: 28px; display: grid; place-items: center; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.technique-block header button:disabled { opacity: .25; cursor: default; }
+.technique-block > label { padding: 10px; display: grid; gap: 6px; }
+.technique-block > label > div { display: flex; align-items: center; gap: 7px; }
+.technique-block > label input { width: 100px; height: 36px; padding: 0 8px; border: 1px solid var(--line); }
+.technique-block > label small { color: var(--muted); font-size: .64rem; }
+.work-block-fields { padding: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.work-block-fields label { min-width: 0; display: grid; gap: 5px; }
+.work-block-fields label.is-wide { grid-column: 1 / -1; }
+.work-block-fields input,
+.work-block-fields select { min-width: 0; width: 100%; height: 38px; padding: 0 8px; border: 1px solid var(--line); background: var(--white); font-size: .68rem; }
+.technique-block-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.technique-block-actions button { min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--blue-600); border-radius: 999px; background: transparent; color: var(--blue-600); cursor: pointer; font-size: .66rem; font-weight: 800; }
+.technique-block-actions button:hover { background: var(--blue-600); color: var(--white); }
+
+.manual-exercise-adder {
+  padding: 14px;
+  border-color: var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,.78);
+}
+.structure-choice { display: grid; gap: 12px; }
+.structure-choice > div:first-child { display: grid; gap: 5px; }
+.structure-choice span,
+.structure-builder-heading span { color: var(--muted); font: 700 8px/1 "Avenir Next", Avenir, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.structure-choice strong,
+.structure-builder-heading strong { font-family: "Avenir Next", Avenir, sans-serif; font-size: 1rem; letter-spacing: -.02em; }
+.structure-choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.structure-choice-grid button {
+  min-height: 52px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--teal-800);
+  cursor: pointer;
+  font-size: .68rem;
+  font-weight: 800;
+}
+.structure-choice-grid button:hover,
+.structure-choice-grid button:focus-visible { border-color: var(--blue-600); background: var(--blue-50); color: var(--blue-600); }
+.structure-builder-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.structure-builder-heading > button { min-height: 34px; padding: 0 9px; display: flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 999px; background: transparent; cursor: pointer; font-size: .65rem; font-weight: 800; }
+.structure-builder-heading > div { display: grid; gap: 3px; text-align: right; }
+.structure-slots { display: grid; gap: 7px; }
+.structure-slot { padding: 7px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 7px; border: 1px solid transparent; border-radius: var(--radius-sm); }
+.structure-slot.is-active { border-color: rgba(22,78,223,.28); background: var(--blue-50); }
+.structure-slot .manual-exercise-search { border-color: var(--line); border-radius: var(--radius-sm); background: var(--white); }
+.structure-slot .manual-exercise-search > span { color: var(--blue-600); font-size: .62rem; }
+.selected-exercise-preview { min-height: 34px; padding: 0 9px; display: flex; align-items: center; gap: 5px; border: 0; background: transparent; color: var(--blue-600); cursor: pointer; font-size: .62rem; font-weight: 800; }
+.manual-exercise-results { padding-right: 4px; }
+.exercise-result-count { margin: 0 !important; padding: 5px 2px !important; color: var(--muted); font-size: .62rem !important; text-align: left !important; }
+.manual-exercise-results article { border-color: var(--line); border-radius: var(--radius-sm); background: var(--paper); }
+.manual-exercise-add { border-color: var(--blue-600); border-radius: 999px; background: var(--blue-50); color: var(--blue-600); }
+.manual-results-more { min-height: 38px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--blue-600); cursor: pointer; font-size: .65rem; font-weight: 800; }
+.structure-add-submit { min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--teal-800); border-radius: 999px; background: var(--teal-800); color: var(--white); cursor: pointer; font-size: .72rem; font-weight: 850; }
+.structure-add-submit:hover:not(:disabled) { border-color: var(--blue-600); background: var(--blue-600); }
+.structure-add-submit:disabled { opacity: .38; cursor: not-allowed; }
+
+@media (max-width: 760px) {
+  .prescription-mode-switch { grid-template-columns: 1fr; border-radius: var(--radius-md); }
+  .technique-option-list,
+  .special-round-settings,
+  .technique-block-actions { grid-template-columns: 1fr; }
+  .work-block-fields { grid-template-columns: 1fr; }
+  .work-block-fields label.is-wide { grid-column: auto; }
+  .structure-choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .structure-slot { grid-template-columns: 1fr; }
+  .selected-exercise-preview { justify-content: flex-start; }
 }

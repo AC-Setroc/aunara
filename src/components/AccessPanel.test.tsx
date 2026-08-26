@@ -161,7 +161,7 @@ describe("access and installation panel", () => {
   it("warns when the email already has an account and offers sign-in or recovery", () => {
     const onUseExistingAccount = vi.fn();
     const onRequestPasswordReset = vi.fn();
-    render(<AccessPanel
+    const { rerender } = render(<AccessPanel
       cloud={{
         configured: true,
         email: null,
@@ -184,6 +184,18 @@ describe("access and installation panel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Sign in here" }));
     expect(onUseExistingAccount).toHaveBeenCalledOnce();
+    rerender(<AccessPanel
+      cloud={{ configured: true, email: null, status: "local" }}
+      profileName="Alejandro Cortés"
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onUseExistingAccount={onUseExistingAccount}
+      onRequestPasswordReset={onRequestPasswordReset}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClose={vi.fn()}
+    />);
     expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("alejandro@example.com");
     expect((screen.getByLabelText("Password") as HTMLInputElement).value).toBe("");
   });

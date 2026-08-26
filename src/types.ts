@@ -35,10 +35,77 @@ export interface WorkoutItem {
   reps: number;
   day?: Weekday;
   setPlan?: string;
+  prescriptionMode?: WorkoutPrescriptionMode;
+  specialPrescription?: SpecialWorkoutPrescription;
+  structure?: WorkoutStructure;
   loadKg?: number | null;
   loadNote?: string;
   notes?: string;
   loadHistory?: WorkoutLoadEntry[];
+}
+
+export type WorkoutPrescriptionMode = "standard" | "special";
+
+export type WorkoutStructureType =
+  | "single"
+  | "superset"
+  | "biset"
+  | "triset"
+  | "giant-set"
+  | "pre-exhaustion"
+  | "post-exhaustion"
+  | "circuit"
+  | "contrast-complex";
+
+export interface WorkoutStructure {
+  id: string;
+  type: WorkoutStructureType;
+  position: number;
+  size: number;
+}
+
+export type SpecialTechniqueKind =
+  | "rest-pause"
+  | "drop-set"
+  | "cluster"
+  | "myo-reps"
+  | "paused-reps"
+  | "tempo"
+  | "eccentric"
+  | "isometric"
+  | "partials"
+  | "amrap"
+  | "pyramid"
+  | "top-set-backoff"
+  | "custom";
+
+export type WorkTargetType = "reps" | "technical-failure" | "amrap" | "time";
+export type WorkLoadType = "reference-percent" | "same" | "kg" | "bodyweight";
+
+export interface WorkoutWorkBlock {
+  id: string;
+  type: "work";
+  target: WorkTargetType;
+  value?: number;
+  loadType: WorkLoadType;
+  loadValue?: number;
+  tempo?: string;
+  note?: string;
+}
+
+export interface WorkoutRestBlock {
+  id: string;
+  type: "rest";
+  seconds: number;
+}
+
+export type WorkoutTechniqueBlock = WorkoutWorkBlock | WorkoutRestBlock;
+
+export interface SpecialWorkoutPrescription {
+  technique: SpecialTechniqueKind;
+  rounds: number;
+  restBetweenRoundsSeconds: number;
+  blocks: WorkoutTechniqueBlock[];
 }
 
 export type Weekday =
