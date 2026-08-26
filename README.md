@@ -32,3 +32,15 @@ Then open the local address printed by Vite.
 ## Dataset and media terms
 
 The dataset structure and instruction text are MIT-licensed. The thumbnail and GIF media are owned by Gym Visual, require attribution, and are subject to separate reuse terms. This project keeps the attribution visible and loads those assets from the source repository at a pinned commit. Review `public/DATASET_LICENSE` and `public/DATASET_NOTICE.md` before distributing the app.
+
+## Product and methodology documents
+
+- Product decisions and current work plan: `docs/product/`
+- Methodological rule proposals: `docs/methodology/`
+- Architecture decisions: `docs/architecture/`
+- Privacy and compliance record: `docs/compliance/`
+- Isolated design prototypes: `prototypes/`
+
+The deploy-only GitHub Pages repository is intentionally separate from this
+source project. Prototypes and draft methodology documents do not change the
+published application until they are explicitly approved and implemented.

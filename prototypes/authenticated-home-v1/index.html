@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Prototipo aislado del home autenticado de Aunara" />
+    <title>Aunara — prototipo de home</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="prototype-bar" aria-label="Controles del prototipo">
+      <div>
+        <span class="prototype-label">PROTOTIPO · HOME V1</span>
+        <strong>Elegí un estado para revisarlo</strong>
+      </div>
+      <div class="state-switcher" role="group" aria-label="Estado del usuario">
+        <button type="button" data-state="onboarding">Perfil inicial</button>
+        <button type="button" data-state="proposal">Propuesta</button>
+        <button type="button" data-state="training" class="is-selected">Entrenamiento</button>
+        <button type="button" data-state="rest">Descanso</button>
+        <button type="button" data-state="invite">Invitación</button>
+      </div>
+    </div>
+
+    <div class="app-frame">
+      <header class="app-header">
+        <a class="brand" href="#" aria-label="Aunara, inicio">
+          <img src="../../public/brand/aunara-symbol.svg" alt="" />
+          <span>
+            <strong>AUNARA</strong>
+            <small>Training systems</small>
+          </span>
+        </a>
+        <div class="header-actions">
+          <button class="icon-button" type="button" aria-label="Notificaciones">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+            <span class="notification-dot"></span>
+          </button>
+          <button class="profile-button" type="button" aria-label="Abrir perfil">
+            <span>AC</span>
+            <strong>Alejandro</strong>
+          </button>
+        </div>
+      </header>
+
+      <main class="home-shell">
+        <section class="welcome-row" aria-labelledby="welcome-title">
+          <div>
+            <p class="eyebrow" id="today-label">MARTES · 25 AGO</p>
+            <h1 id="welcome-title">Hoy cuenta.</h1>
+            <p class="welcome-copy" id="welcome-copy">Tu plan se adapta a lo que podés hacer hoy.</p>
+          </div>
+          <div class="week-stamp" aria-label="Semana de entrenamiento">
+            <span>SEMANA</span>
+            <strong>04</strong>
+            <small>de tu ruta</small>
+          </div>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="next-step" aria-labelledby="next-step-title">
+            <div class="next-step-topline">
+              <p class="eyebrow">TU SIGUIENTE PASO</p>
+              <span class="status-pill" id="status-pill">LISTO PARA HOY</span>
+            </div>
+            <div class="next-step-copy">
+              <p class="step-number">01</p>
+              <div>
+                <h2 id="next-step-title">Entrená tren inferior</h2>
+                <p id="next-step-description">6 movimientos · 55 min · Gimnasio</p>
+              </div>
+            </div>
+
+            <div class="session-map" id="session-map" aria-label="Resumen de la sesión">
+              <div><span>PREPARACIÓN</span><strong>8 min</strong></div>
+              <div><span>TRABAJO</span><strong>39 min</strong></div>
+              <div><span>VUELTA A CALMA</span><strong>8 min</strong></div>
+            </div>
+
+            <div class="context-note" id="context-note">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg>
+              <p><strong>Antes de empezar</strong><span>Contanos cómo llegás para ajustar la sesión sin cambiar tu propósito.</span></p>
+            </div>
+
+            <button class="primary-action" id="primary-action" type="button">
+              <span>Iniciar entrenamiento</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+            </button>
+            <button class="text-action" id="secondary-action" type="button">Ver la sesión antes de empezar</button>
+          </section>
+
+          <aside class="side-column">
+            <section class="readiness-card" id="readiness-card" aria-labelledby="readiness-title">
+              <div class="card-heading">
+                <p class="eyebrow">CHECK-IN RÁPIDO</p>
+                <span>30 seg</span>
+              </div>
+              <h2 id="readiness-title">¿Cómo llegás hoy?</h2>
+              <p>Elegí tu energía. Podés contar molestias en el paso siguiente.</p>
+              <div class="energy-scale" role="group" aria-label="Nivel de energía">
+                <button type="button" aria-label="Energía muy baja">1</button>
+                <button type="button" aria-label="Energía baja">2</button>
+                <button type="button" aria-label="Energía media">3</button>
+                <button type="button" aria-label="Energía buena" class="is-selected">4</button>
+                <button type="button" aria-label="Energía alta">5</button>
+              </div>
+              <div class="scale-ends"><span>Necesito bajar</span><span>Me siento fuerte</span></div>
+            </section>
+
+            <section class="transparency-card" aria-labelledby="transparency-title">
+              <div class="symbol-orbit" aria-hidden="true"><span></span></div>
+              <div>
+                <p class="eyebrow">CON CRITERIO, SIEMPRE</p>
+                <h2 id="transparency-title">Sabés por qué.</h2>
+                <p id="transparency-copy">Esta sesión viene de tu ruta aceptada. No cambia por un único dato.</p>
+                <button type="button" id="transparency-button">Ver qué está usando Aunara</button>
+              </div>
+            </section>
+          </aside>
+
+          <section class="week-card" aria-labelledby="week-title">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">TU SEMANA</p>
+                <h2 id="week-title">Constancia, no perfección.</h2>
+              </div>
+              <strong>2 <span>de 5</span></strong>
+            </div>
+            <div class="week-days" aria-label="Sesiones de la semana">
+              <div class="is-done"><span>L</span><i>✓</i><small>Inferior</small></div>
+              <div class="is-today"><span>M</span><i>02</i><small>Superior</small></div>
+              <div><span>X</span><i>03</i><small>Inferior</small></div>
+              <div><span>J</span><i>04</i><small>Superior</small></div>
+              <div><span>V</span><i>05</i><small>Inferior</small></div>
+              <div class="is-rest"><span>S</span><i>—</i><small>Libre</small></div>
+              <div class="is-rest"><span>D</span><i>—</i><small>Revisión</small></div>
+            </div>
+          </section>
+
+          <section class="progress-card" aria-labelledby="progress-title">
+            <div>
+              <p class="eyebrow">SEÑAL DE PROGRESO</p>
+              <h2 id="progress-title">Tu trabajo se está sosteniendo.</h2>
+              <p>Completaste 7 de las últimas 8 sesiones. El registro de carga queda para el entrenamiento, no para el plan.</p>
+            </div>
+            <div class="progress-graphic" aria-label="Siete de ocho sesiones completadas">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="is-open"></span>
+            </div>
+            <button type="button">Ver progreso</button>
+          </section>
+        </div>
+      </main>
+
+      <nav class="mobile-nav" aria-label="Navegación principal">
+        <button type="button" class="is-active"><span>⌂</span>Hoy</button>
+        <button type="button"><span>≡</span>Plan</button>
+        <button type="button"><span>↗</span>Progreso</button>
+        <button type="button"><span>＋</span>Más</button>
+      </nav>
+    </div>
+
+    <dialog id="prototype-dialog">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="Cerrar">×</button>
+        <p class="eyebrow">ESTE ES UN PROTOTIPO</p>
+        <h2 id="dialog-title">Acción de muestra</h2>
+        <p id="dialog-copy">Este botón conectará con el flujo correspondiente después de aprobar el diseño.</p>
+        <button class="primary-action" value="close">Entendido</button>
+      </form>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
