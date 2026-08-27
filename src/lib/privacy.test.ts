@@ -66,6 +66,8 @@ describe("privacy controls", () => {
       allergies: "",
       healthNotes: "",
       preferredIngredients: [],
+      nutritionPlanMode: "simple",
+      macroMealsPerDay: 4,
       limitations: [],
     });
   });

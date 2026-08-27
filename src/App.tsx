@@ -74,6 +74,8 @@ const DEFAULT_HEALTH_PROFILE: HealthProfile = {
   activityLevel: "moderate",
   experience: "beginner",
   dietaryPattern: "omnivore",
+  nutritionPlanMode: "simple",
+  macroMealsPerDay: 4,
   allergies: "",
   healthNotes: "",
   readinessScreen: {

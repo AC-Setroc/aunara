@@ -980,6 +980,34 @@ describe("profile access", () => {
     expect(screen.getByRole("heading", { name: /Egg.*cooked white rice.*raw spinach/i })).toBeTruthy();
   });
 
+  it("shows a coherent macro plan separately from the simple plan", () => {
+    render(<ProfilePanel
+      name="My profile"
+      tracks={[track]}
+      activeTrackId={track.id}
+      favoriteCount={0}
+      healthProfile={{
+        ...healthProfile,
+        nutritionPlanMode: "macros",
+        macroMealsPerDay: 4,
+      }}
+      checkIns={[]}
+      onNameChange={vi.fn()}
+      onHealthProfileChange={vi.fn()}
+      onAddCheckIn={vi.fn()}
+      onOpenTrack={vi.fn()}
+      onClose={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Body and health" }));
+
+    expect(screen.getByRole("button", { name: /Macro-based nutrition plan/ }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByText("2,800 kcal")).toBeTruthy();
+    expect(screen.getByText(/35 g protein.*88 g carbs.*23 g fat/)).toBeTruthy();
+    expect(screen.getByText(/does not silently add a calorie deficit or surplus/i)).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Choose foods for this plan" })).toBeTruthy();
+  });
+
   it("shows only equipment matching the selected body part", async () => {
     const upperLegSmith = { ...exercise, id: "smith", equipment: "smith machine" };
     const chestBarbell = { ...exercise, id: "barbell", body_part: "chest", equipment: "barbell" };

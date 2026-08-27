@@ -16,6 +16,26 @@ export interface RecipeIdea {
   description: string;
 }
 
+export interface MacroTarget {
+  grams: number;
+  calories: number;
+  energyPercent: number;
+}
+
+export interface MacroPlan {
+  energyKcal: number;
+  maintenanceRange: { min: number; max: number };
+  protein: MacroTarget & { referenceRange: { min: number; max: number } };
+  carbohydrates: MacroTarget;
+  fat: MacroTarget;
+  mealsPerDay: 3 | 4 | 5;
+  perMeal: {
+    proteinGrams: number;
+    carbohydrateGrams: number;
+    fatGrams: number;
+  };
+}
+
 export interface FoodGroupDefinition {
   key: FoodGroupKey;
   label: { en: string; es: string };
@@ -123,6 +143,53 @@ export function createDailyFoodOptions(
       ? tr(language, "Optional according to hunger and training", "Opcional según hambre y entrenamiento")
       : tr(language, "1 cupped-hand portion; adjust around training", "1 porción del tamaño de la mano; ajustá alrededor del entrenamiento"),
   }));
+}
+
+function macroTarget(grams: number, caloriesPerGram: number, totalCalories: number): MacroTarget {
+  const calories = Math.round(grams * caloriesPerGram);
+  return {
+    grams,
+    calories,
+    energyPercent: Math.round((calories / totalCalories) * 100),
+  };
+}
+
+/**
+ * Builds one coherent maintenance-based starting point. It deliberately does
+ * not create an automatic calorie deficit or surplus from a goal label.
+ */
+export function createMacroPlan(profile: HealthProfile): MacroPlan | null {
+  const wellness = createWellnessSummary(profile);
+  const maintenance = wellness.maintenanceCalories;
+  const proteinRange = wellness.proteinGrams;
+  if (!maintenance || !proteinRange) return null;
+
+  const energyKcal = Math.round(((maintenance.min + maintenance.max) / 2) / 50) * 50;
+  const proteinGrams = Math.round((proteinRange.min + proteinRange.max) / 2);
+  const fatGrams = Math.round((energyKcal * 0.3) / 9);
+  const carbohydrateGrams = Math.round((energyKcal - (proteinGrams * 4) - (fatGrams * 9)) / 4);
+  if (carbohydrateGrams <= 0) return null;
+
+  const requestedMeals = profile.macroMealsPerDay;
+  const mealsPerDay: 3 | 4 | 5 = requestedMeals === 3 || requestedMeals === 4 || requestedMeals === 5
+    ? requestedMeals
+    : 4;
+  return {
+    energyKcal,
+    maintenanceRange: maintenance,
+    protein: {
+      ...macroTarget(proteinGrams, 4, energyKcal),
+      referenceRange: proteinRange,
+    },
+    carbohydrates: macroTarget(carbohydrateGrams, 4, energyKcal),
+    fat: macroTarget(fatGrams, 9, energyKcal),
+    mealsPerDay,
+    perMeal: {
+      proteinGrams: Math.round(proteinGrams / mealsPerDay),
+      carbohydrateGrams: Math.round(carbohydrateGrams / mealsPerDay),
+      fatGrams: Math.round(fatGrams / mealsPerDay),
+    },
+  };
 }
 
 function selectedByGroup(selected: Set<string>, groups: FoodGroupKey[]): FoodExchangeItem[] {

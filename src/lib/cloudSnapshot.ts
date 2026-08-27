@@ -42,6 +42,8 @@ const METABOLIC_SEXES = ["unspecified", "female", "male"];
 const ACTIVITY_LEVELS = ["sedentary", "light", "moderate", "very-active"];
 const TRAINING_EXPERIENCE = ["beginner", "intermediate", "advanced"];
 const DIETARY_PATTERNS = ["omnivore", "vegetarian", "vegan", "pescatarian", "other"];
+const NUTRITION_PLAN_MODES = ["simple", "macros"];
+const MACRO_MEALS_PER_DAY = [3, 4, 5];
 const WEEKDAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 const MOVEMENT_RESTRICTIONS = ["impact", "deep-knee-flexion", "hip-hinge", "overhead", "push", "pull", "rotation", "single-leg-balance"];
 const LIMITATION_AREAS = ["knee", "hip", "lower-back", "shoulder", "elbow-wrist", "ankle-foot", "neck", "other"];
@@ -161,6 +163,11 @@ function isHealthProfile(value: unknown): boolean {
     && isEnumValue(value.activityLevel, ACTIVITY_LEVELS)
     && isEnumValue(value.experience, TRAINING_EXPERIENCE)
     && isEnumValue(value.dietaryPattern, DIETARY_PATTERNS)
+    && (value.nutritionPlanMode === undefined || isEnumValue(value.nutritionPlanMode, NUTRITION_PLAN_MODES))
+    && (value.macroMealsPerDay === undefined || (
+      typeof value.macroMealsPerDay === "number"
+      && MACRO_MEALS_PER_DAY.includes(value.macroMealsPerDay)
+    ))
     && typeof value.allergies === "string"
     && typeof value.healthNotes === "string"
     && (value.readinessScreen === undefined || isReadinessScreen(value.readinessScreen))

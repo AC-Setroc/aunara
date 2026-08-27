@@ -29,6 +29,8 @@ export function stripSensitiveHealthData(profile: HealthProfile): HealthProfile 
     visceralFatLevel: null,
     activityLevel: "moderate",
     dietaryPattern: "omnivore",
+    nutritionPlanMode: "simple",
+    macroMealsPerDay: 4,
     allergies: "",
     healthNotes: "",
     preferredIngredients: [],

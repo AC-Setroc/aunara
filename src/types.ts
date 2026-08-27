@@ -209,6 +209,8 @@ export type MetabolicSex = "unspecified" | "female" | "male";
 export type ActivityLevel = "sedentary" | "light" | "moderate" | "very-active";
 export type TrainingExperience = "beginner" | "intermediate" | "advanced";
 export type DietaryPattern = "omnivore" | "vegetarian" | "vegan" | "pescatarian" | "other";
+export type NutritionPlanMode = "simple" | "macros";
+export type MacroMealsPerDay = 3 | 4 | 5;
 export type HealthDataConsentStatus = "granted" | "declined" | "revoked";
 
 export interface HealthProfile {
@@ -234,6 +236,8 @@ export interface HealthProfile {
   dietaryPattern: DietaryPattern;
   allergies: string;
   healthNotes: string;
+  nutritionPlanMode?: NutritionPlanMode;
+  macroMealsPerDay?: MacroMealsPerDay;
   preferredIngredients?: string[];
   readinessScreen?: ExerciseReadinessScreen;
   limitations?: TrainingLimitation[];

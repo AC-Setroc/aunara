@@ -731,6 +731,33 @@ footer a { text-underline-offset: 3px; }
 .nutrition-method-note, .meal-protein-explainer { color: var(--muted); font-size: .67rem; line-height: 1.5; }
 .nutrition-method-note { margin: 10px 0 18px; }
 .nutrition-method-note a { font-weight: 800; text-underline-offset: 3px; }
+.nutrition-mode-section { margin: 20px 0; }
+.nutrition-mode-heading h4 { margin: 5px 0 12px; font-size: 1rem; }
+.nutrition-mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.nutrition-mode-switch button { min-height: 106px; padding: 15px; display: grid; align-content: center; gap: 7px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); color: var(--ink); cursor: pointer; text-align: left; }
+.nutrition-mode-switch button:hover { border-color: var(--blue-600); }
+.nutrition-mode-switch button.is-active { border-color: var(--blue-600); background: var(--blue-50); box-shadow: inset 4px 0 0 var(--blue-600); }
+.nutrition-mode-switch strong { font-size: .78rem; }
+.nutrition-mode-switch span { color: var(--muted); font-size: .67rem; line-height: 1.4; }
+.macro-plan { margin: 0 0 20px; padding: 17px; border: 1px solid rgba(22,78,223,.2); border-radius: var(--radius-sm); background: var(--blue-50); }
+.macro-plan-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+.macro-plan-heading h4 { margin: 5px 0 12px; font-size: 1rem; }
+.macro-plan-heading label { min-width: 135px; display: grid; gap: 5px; }
+.macro-plan-heading label span { color: var(--muted); font-size: .62rem; font-weight: 800; }
+.macro-plan-heading select { height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
+.macro-target-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+.macro-target-grid article { min-height: 125px; padding: 12px; display: grid; align-content: space-between; background: var(--white); }
+.macro-target-grid span { color: var(--muted); font-size: .6rem; font-weight: 800; text-transform: uppercase; }
+.macro-target-grid strong { font: 500 1.25rem/1 "Avenir Next", Avenir, sans-serif; }
+.macro-target-grid small { color: var(--muted); font-size: .58rem; line-height: 1.4; }
+.macro-per-meal { margin-top: 9px; padding: 11px; display: flex; justify-content: space-between; gap: 14px; border-radius: var(--radius-sm); background: var(--teal-800); color: var(--white); font-size: .67rem; line-height: 1.4; }
+.macro-per-meal strong { white-space: nowrap; }
+.macro-per-meal span { text-align: right; }
+.macro-plan-note { margin: 10px 0 0; color: var(--muted); font-size: .64rem; line-height: 1.5; }
+.macro-plan-note a { font-weight: 800; text-underline-offset: 3px; }
+.macro-plan-missing { padding: 14px; border-left: 4px solid var(--blue-600); background: var(--white); }
+.macro-plan-missing strong { font-size: .74rem; }
+.macro-plan-missing p { margin: 6px 0 0; color: var(--muted); font-size: .66rem; line-height: 1.45; }
 .nutrition-preferences { margin: 18px 0 28px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 12px; }
 .meal-planner { margin: 0 0 28px; padding: 17px; border: 1px solid var(--ink); background: var(--white); }
 .meal-planner > div:first-child h4 { margin: 5px 0 7px; font: 800 1.05rem/1.1 "Arial Narrow", sans-serif; text-transform: uppercase; }
@@ -1100,6 +1127,12 @@ footer a { text-underline-offset: 3px; }
   .nutrition-ranges > div { min-height: 104px; grid-template-columns: 25px 1fr auto; align-items: center; gap: 8px; }
   .nutrition-ranges span { margin-top: 0; }
   .nutrition-ranges small { grid-column: 2 / -1; }
+  .nutrition-mode-switch, .macro-target-grid { grid-template-columns: 1fr; }
+  .macro-plan-heading { align-items: stretch; flex-direction: column; }
+  .macro-plan-heading label { min-width: 0; }
+  .macro-target-grid article { min-height: 94px; }
+  .macro-per-meal { display: grid; }
+  .macro-per-meal span { text-align: left; }
   .food-search-row, .food-results article { grid-template-columns: 1fr; }
   .food-search-row button { width: 100%; }
   .checkin-notes, .save-checkin { grid-column: auto; }

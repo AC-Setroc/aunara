@@ -99,6 +99,7 @@ Esta fase comienza solo después de las puertas A y B.
 | DEV-05 | Mostrar transparencia de reglas | Puerta B | Cada propuesta identifica datos, límites y versión | Pendiente |
 | DEV-06 | Completar traducción de interfaz/ejercicios | FB-03 | Sin mezcla involuntaria de idiomas; pendientes visibles y medibles | En curso previo |
 | DEV-07 | Proteger funcionalidades existentes | FB-01, FB-02 | Biblioteca, filtros, previews, rutas y cuenta pasan regresión | Pendiente |
+| DEV-08 | Separar nutrición Simple y por Macros | Datos corporales y consentimiento | Dos niveles de detalle, cálculo transparente, persistencia y pruebas | En UAT; revisión nutricional pendiente |
 
 ### Fase 4 — UAT y salida del producto personal
 
@@ -153,6 +154,7 @@ Esta fase queda deliberadamente pausada hasta cerrar el UAT personal.
 | 2026-08-26 | Dirección visual del home aceptada | Prototipo `authenticated-home-v1` | Producto |
 | 2026-08-26 | Matriz v0.1 entregada al entrenador | Registro de revisión metodológica | Producto/metodología |
 | 2026-08-26 | Condiciones, lesiones, acondicionamiento y progreso documentados | Anexo metodológico | Producto/metodología |
+| 2026-08-27 | Nutrición Simple y por Macros implementada para UAT | Spec, cálculo transparente y pruebas | Producto/desarrollo |
 
 ## 6. Definición de “terminado” de esta etapa
 

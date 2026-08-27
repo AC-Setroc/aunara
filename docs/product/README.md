@@ -1,6 +1,6 @@
 # Producto Aunara — índice de decisiones y avance
 
-Estado del índice: 25 de agosto de 2026.
+Estado del índice: 27 de agosto de 2026.
 
 Este directorio concentra las decisiones de producto que deben aprobarse antes
 de convertirse en cambios de la aplicación. Su propósito es mantener separados:
@@ -14,6 +14,7 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
 
 - [Propuesta de home y seguridad metodológica](./2026-08-25-home-and-methodological-safety-proposal.md)
 - [Plan de trabajo derivado del feedback](./2026-08-25-feedback-work-plan.md)
+- [Planes nutricionales Simple y por Macros](./2026-08-27-dual-nutrition-plans.md)
 
 ## Decisiones ya fijadas
 
@@ -33,6 +34,8 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
    metodológica.
 8. La matriz metodológica v0.1 fue entregada al entrenador y permanece en
    revisión. No se implementarán reglas médicas mientras se espera su feedback.
+9. Nutrición ofrece un modo Simple y otro por Macros. La primera versión por
+   macros usa mantenimiento estimado y no aplica déficits o superávits ocultos.
 
 ## Estado de repositorios
 

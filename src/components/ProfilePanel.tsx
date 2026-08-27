@@ -18,6 +18,7 @@ import { searchFoodData, type FoodSearchResult } from "../lib/foodData";
 import { tr } from "../lib/i18n";
 import {
   createDailyFoodOptions,
+  createMacroPlan,
   createRecipeIdeas,
   FOOD_GROUPS,
   FOOD_ITEMS,
@@ -94,6 +95,9 @@ export function ProfilePanel({
   }));
   const plannedSessions = tracks.reduce((sum, track) => sum + track.daysPerWeek, 0);
   const wellness = useMemo(() => createWellnessSummary(healthProfile, language), [healthProfile, language]);
+  const macroPlan = useMemo(() => createMacroPlan(healthProfile), [healthProfile]);
+  const nutritionMode = healthProfile.nutritionPlanMode ?? "simple";
+  const numberLocale = language === "es" ? "es-CO" : "en-US";
   const calculatedAge = calculateAgeFromBirthDate(healthProfile.birthDate ?? "");
   const birthDateBounds = adultBirthDateBounds();
   const selectedIngredients = normalizePreferredIngredients(healthProfile.preferredIngredients ?? []);
@@ -395,6 +399,102 @@ export function ProfilePanel({
               <a href="https://www.acsm.org/docs/default-source/files-for-resource-library/protein-intake-for-optimal-muscle-maintenance.pdf" target="_blank" rel="noreferrer">ACSM</a>
             </p>
 
+            <section className="nutrition-mode-section" aria-labelledby="nutrition-mode-title">
+              <div className="nutrition-mode-heading">
+                <p className="section-kicker">{tr(language, "Choose your level of detail", "Elegí cuánto detalle querés")}</p>
+                <h4 id="nutrition-mode-title">{tr(language, "Two ways to plan. The same food-first approach.", "Dos formas de planear. El mismo enfoque basado en alimentos.")}</h4>
+              </div>
+              <div className="nutrition-mode-switch">
+                <button
+                  type="button"
+                  className={nutritionMode === "simple" ? "is-active" : ""}
+                  aria-pressed={nutritionMode === "simple"}
+                  onClick={() => updateHealth("nutritionPlanMode", "simple")}
+                >
+                  <strong>{tr(language, "Simple nutrition plan", "Plan nutricional simple")}</strong>
+                  <span>{tr(language, "I do not want to measure everything.", "No quiero complicarme midiendo todo.")}</span>
+                </button>
+                <button
+                  type="button"
+                  className={nutritionMode === "macros" ? "is-active" : ""}
+                  aria-pressed={nutritionMode === "macros"}
+                  onClick={() => updateHealth("nutritionPlanMode", "macros")}
+                >
+                  <strong>{tr(language, "Macro-based nutrition plan", "Plan nutricional basado en macros")}</strong>
+                  <span>{tr(language, "I want more precision for my goals.", "Quiero mayor precisión para mis objetivos.")}</span>
+                </button>
+              </div>
+            </section>
+
+            {nutritionMode === "macros" && (
+              <section className="macro-plan" aria-labelledby="macro-plan-title">
+                <div className="macro-plan-heading">
+                  <div>
+                    <p className="section-kicker">{tr(language, "Daily starting point", "Punto de partida diario")}</p>
+                    <h4 id="macro-plan-title">{tr(language, "A coherent macro target—not three unrelated numbers.", "Una meta coherente de macros, no tres números aislados.")}</h4>
+                  </div>
+                  <label>
+                    <span>{tr(language, "Eating moments", "Momentos de comida")}</span>
+                    <select
+                      value={healthProfile.macroMealsPerDay ?? 4}
+                      onChange={(event) => updateHealth("macroMealsPerDay", Number(event.target.value) as 3 | 4 | 5)}
+                    >
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                    </select>
+                  </label>
+                </div>
+
+                {macroPlan ? (
+                  <>
+                    <div className="macro-target-grid">
+                      <article>
+                        <span>{tr(language, "Energy base", "Base energética")}</span>
+                        <strong>{macroPlan.energyKcal.toLocaleString(numberLocale)} kcal</strong>
+                        <small>{macroPlan.maintenanceRange.min.toLocaleString(numberLocale)}–{macroPlan.maintenanceRange.max.toLocaleString(numberLocale)} {tr(language, "estimated maintenance range", "rango estimado de mantenimiento")}</small>
+                      </article>
+                      <article>
+                        <span>{tr(language, "Protein", "Proteína")}</span>
+                        <strong>{macroPlan.protein.grams} g</strong>
+                        <small>{macroPlan.protein.energyPercent}% · {tr(language, "reference range", "rango de referencia")} {macroPlan.protein.referenceRange.min}–{macroPlan.protein.referenceRange.max} g</small>
+                      </article>
+                      <article>
+                        <span>{tr(language, "Carbohydrates", "Carbohidratos")}</span>
+                        <strong>{macroPlan.carbohydrates.grams} g</strong>
+                        <small>{macroPlan.carbohydrates.energyPercent}% {tr(language, "of the energy base", "de la base energética")}</small>
+                      </article>
+                      <article>
+                        <span>{tr(language, "Fat", "Grasa")}</span>
+                        <strong>{macroPlan.fat.grams} g</strong>
+                        <small>{macroPlan.fat.energyPercent}% {tr(language, "of the energy base", "de la base energética")}</small>
+                      </article>
+                    </div>
+                    <div className="macro-per-meal">
+                      <strong>{tr(language, "If divided evenly", "Si los distribuís por igual")}</strong>
+                      <span>{macroPlan.perMeal.proteinGrams} g {tr(language, "protein", "proteína")} · {macroPlan.perMeal.carbohydrateGrams} g {tr(language, "carbs", "carbohidratos")} · {macroPlan.perMeal.fatGrams} g {tr(language, "fat", "grasa")} {tr(language, "per eating moment", "por momento de comida")}</span>
+                    </div>
+                    <p className="macro-plan-note">
+                      {tr(
+                        language,
+                        "This first version uses the midpoint of your estimated maintenance range. It does not silently add a calorie deficit or surplus from your goal. Meal distribution is flexible, and personalized sports or clinical nutrition requires a registered nutrition professional.",
+                        "Esta primera versión usa el punto medio de tu mantenimiento estimado. No agrega silenciosamente un déficit o superávit por tu objetivo. La distribución entre comidas es flexible, y la nutrición deportiva o clínica personalizada requiere un profesional de nutrición.",
+                      )}
+                      {" "}
+                      <a href="https://odphp.health.gov/our-work/nutrition-physical-activity/dietary-guidelines/current-dietary-guidelines" target="_blank" rel="noreferrer">DGA 2025–2030</a>
+                      {" · "}
+                      <a href="https://www.nationalacademies.org/read/10872/chapter/7" target="_blank" rel="noreferrer">NASEM</a>
+                    </p>
+                  </>
+                ) : (
+                  <div className="macro-plan-missing" role="status">
+                    <strong>{tr(language, "Complete the data needed for a macro estimate.", "Completá los datos necesarios para estimar tus macros.")}</strong>
+                    <p>{tr(language, "Add date of birth, height, current weight and metabolic reference in Body and health.", "Agregá fecha de nacimiento, estatura, peso actual y referencia metabólica en Cuerpo y salud.")}</p>
+                  </div>
+                )}
+              </section>
+            )}
+
             <div className="nutrition-preferences">
               <label className="health-field">
                 <span>{tr(language, "Eating pattern", "Patrón de alimentación")}</span>
@@ -415,57 +515,67 @@ export function ProfilePanel({
             <section className="meal-planner">
               <div>
                 <p className="section-kicker">{tr(language, "Daily food options", "Opciones alimentarias diarias")}</p>
-                <h4>{tr(language, "Plan quantities by meal, then choose ingredients you enjoy.", "Organizá cantidades por comida y luego elegí ingredientes que te gusten.")}</h4>
-                <p>{tr(language, "These are flexible planning references for protein, vegetables and carbohydrates—not a prescribed diet.", "Son referencias flexibles de proteína, vegetales y carbohidratos; no una dieta prescrita.")}</p>
+                <h4>{nutritionMode === "simple"
+                  ? tr(language, "Plan quantities by meal, then choose ingredients you enjoy.", "Organizá cantidades por comida y luego elegí ingredientes que te gusten.")
+                  : tr(language, "Choose foods you enjoy to build around your macro starting point.", "Elegí alimentos que te gusten para construir alrededor de tu punto de partida de macros.")}</h4>
+                <p>{nutritionMode === "simple"
+                  ? tr(language, "These are flexible planning references for protein, vegetables and carbohydrates—not a prescribed diet.", "Son referencias flexibles de proteína, vegetales y carbohidratos; no una dieta prescrita.")
+                  : tr(language, "The exchange servings help you compare foods; they do not automatically equal your macro targets.", "Las porciones de intercambio te ayudan a comparar alimentos; no equivalen automáticamente a tus metas de macros.")}</p>
               </div>
               <button type="button" onClick={() => setShowMealOptions(true)}>
-                {tr(language, "Create daily food options", "Crear opciones alimentarias diarias")}
+                {nutritionMode === "simple"
+                  ? tr(language, "Create daily food options", "Crear opciones alimentarias diarias")
+                  : tr(language, "Choose foods for this plan", "Elegir alimentos para este plan")}
               </button>
 
               {showMealOptions && (
                 <>
-                  <p className="meal-protein-heading">{tr(language, "Protein target per meal", "Meta de proteína por comida")}</p>
-                  <p className="meal-protein-explainer">
-                    {tr(
-                      language,
-                      "The number shown is grams of the protein nutrient—not grams of food. It simply divides the daily planning range across four eating moments; adjust the distribution to your appetite and training schedule.",
-                      "El número mostrado son gramos del nutriente proteína, no gramos de alimento. Solo distribuye el rango diario entre cuatro momentos de comida; ajustá la distribución según tu apetito y horario de entrenamiento.",
-                    )}
-                  </p>
-                  <div className="protein-food-reference">
-                    <strong>{tr(language, "Food-to-nutrient example", "Ejemplo de alimento a nutriente")}</strong>
-                    <p>
+                  {nutritionMode === "simple" && (
+                    <>
+                      <p className="meal-protein-heading">{tr(language, "Protein target per meal", "Meta de proteína por comida")}</p>
+                      <p className="meal-protein-explainer">
                       {tr(
                         language,
-                        "180 g of cooked lean beef (tenderloin) provide about 55 g of protein.",
-                        "180 g de carne magra de res cocida (lomo) aportan aproximadamente 55 g de proteína.",
+                        "The number shown is grams of the protein nutrient—not grams of food. It simply divides the daily planning range across four eating moments; adjust the distribution to your appetite and training schedule.",
+                        "El número mostrado son gramos del nutriente proteína, no gramos de alimento. Solo distribuye el rango diario entre cuatro momentos de comida; ajustá la distribución según tu apetito y horario de entrenamiento.",
                       )}
-                    </p>
-                    <small>
-                      {tr(
-                        language,
-                        "USDA reference: 30.7 g protein per 100 g cooked. The result varies by cut, fat trimming and cooking; raw and cooked weights are not interchangeable.",
-                        "Referencia USDA: 30,7 g de proteína por cada 100 g cocidos. El resultado cambia según el corte, la grasa retirada y la cocción; el peso crudo y el cocido no son intercambiables.",
-                      )}{" "}
-                      <a
-                        href="https://fdc.nal.usda.gov/food-details/170641/nutrients"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tr(language, "USDA FoodData Central source", "Fuente USDA FoodData Central")}
-                      </a>
-                    </small>
-                  </div>
-                  <div className="meal-options-grid">
-                    {createDailyFoodOptions(healthProfile, language).map((meal) => (
-                      <article key={meal.key}>
-                        <h4>{meal.name}</h4>
-                        <p><strong>{tr(language, "Protein", "Proteína")}:</strong> {meal.proteinTarget}</p>
-                        <p><strong>{tr(language, "Vegetables / fruit", "Vegetales / fruta")}:</strong> {meal.vegetables}</p>
-                        <p><strong>{tr(language, "Carbohydrates", "Carbohidratos")}:</strong> {meal.carbohydrates}</p>
-                      </article>
-                    ))}
-                  </div>
+                      </p>
+                      <div className="protein-food-reference">
+                        <strong>{tr(language, "Food-to-nutrient example", "Ejemplo de alimento a nutriente")}</strong>
+                        <p>
+                          {tr(
+                            language,
+                            "180 g of cooked lean beef (tenderloin) provide about 55 g of protein.",
+                            "180 g de carne magra de res cocida (lomo) aportan aproximadamente 55 g de proteína.",
+                          )}
+                        </p>
+                        <small>
+                          {tr(
+                            language,
+                            "USDA reference: 30.7 g protein per 100 g cooked. The result varies by cut, fat trimming and cooking; raw and cooked weights are not interchangeable.",
+                            "Referencia USDA: 30,7 g de proteína por cada 100 g cocidos. El resultado cambia según el corte, la grasa retirada y la cocción; el peso crudo y el cocido no son intercambiables.",
+                          )}{" "}
+                          <a
+                            href="https://fdc.nal.usda.gov/food-details/170641/nutrients"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {tr(language, "USDA FoodData Central source", "Fuente USDA FoodData Central")}
+                          </a>
+                        </small>
+                      </div>
+                      <div className="meal-options-grid">
+                        {createDailyFoodOptions(healthProfile, language).map((meal) => (
+                          <article key={meal.key}>
+                            <h4>{meal.name}</h4>
+                            <p><strong>{tr(language, "Protein", "Proteína")}:</strong> {meal.proteinTarget}</p>
+                            <p><strong>{tr(language, "Vegetables / fruit", "Vegetales / fruta")}:</strong> {meal.vegetables}</p>
+                            <p><strong>{tr(language, "Carbohydrates", "Carbohidratos")}:</strong> {meal.carbohydrates}</p>
+                          </article>
+                        ))}
+                      </div>
+                    </>
+                  )}
                   <div className="ingredient-groups">
                     <div className="ingredient-library-heading">
                       <p>{tr(language, "Complete food list", "Lista completa de alimentos")}</p>
