@@ -39,13 +39,11 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
 
 ## Estado de repositorios
 
-- La aplicación pública se despliega desde `AC-Setroc/AC-Setroc.github.io`.
-- Ese repositorio contiene la compilación publicada, no el proyecto fuente ni
-  la documentación completa.
-- `AC-Setroc/aunara-app` es el repositorio fuente privado aprobado.
-- El proyecto local está conectado a ese remoto y su verificación continua
-  ejecuta tipos, pruebas y compilación desde una instalación limpia.
-- GitHub Pages se mantiene como repositorio de despliegue y no como fuente.
+Desde la decisión del Operator del 2026-10-01, el repo público `AC-Setroc/aunara`
+contiene fuente y workflow de Pages. El artifact de publicación contiene solo
+`dist/client/` y apunta a `https://ac-setroc.github.io/aunara/`, pendiente de
+despliegue y smoke. La raíz publicada antes desde `AC-Setroc/AC-Setroc.github.io`
+es histórica; no se retira sin autorización separada. Ver [ADR 0003](../architecture/0003-pages-from-aunara-repository.md).
 
 ## Regla de actualización
 

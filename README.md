@@ -35,12 +35,17 @@ The dataset structure and instruction text are MIT-licensed. The thumbnail and G
 
 ## Product and methodology documents
 
+Project governance, current status, pending decisions, and the runbook live in [AUNARA_SOT/](AUNARA_SOT/README.md). The canonical local checkout is `~/AI Projects/Personal/aunara`.
+
 - Product decisions and current work plan: `docs/product/`
 - Methodological rule proposals: `docs/methodology/`
 - Architecture decisions: `docs/architecture/`
 - Privacy and compliance record: `docs/compliance/`
 - Isolated design prototypes: `prototypes/`
 
-The deploy-only GitHub Pages repository is intentionally separate from this
-source project. Prototypes and draft methodology documents do not change the
-published application until they are explicitly approved and implemented.
+By the Operator's 2026-10-01 decision, this public `AC-Setroc/aunara` repository
+holds both source and its GitHub Pages workflow. Only `dist/client/` is uploaded
+as a Pages artifact for `https://ac-setroc.github.io/aunara/`; source and SOT
+documents are not part of that artifact. The older root-site deployment is
+historical and is not modified by this workflow. Local reference files under
+`AUNARA_SOT/reference/` have not been cleared for a public commit.

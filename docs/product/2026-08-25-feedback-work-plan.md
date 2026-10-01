@@ -56,6 +56,13 @@ compilación pública y `AC-Setroc/aunara-app` fue creado como repositorio fuent
 privado. El bootstrap y el CI pasaron en una instalación limpia. La protección
 de la rama y la automatización de publicación permanecen como tareas separadas.
 
+**Actualización de gobierno del 2026-10-01:** el registro anterior es histórico.
+El Operator aprobó el repo público `AC-Setroc/aunara` como fuente y publicación
+Pages desde un artifact limitado a `dist/client/`, con URL objetivo
+`https://ac-setroc.github.io/aunara/`. El despliegue y smoke aún no están
+verificados; la publicación de raíz no se retira en esta orden. Ver
+[ADR 0003](../architecture/0003-pages-from-aunara-repository.md).
+
 ### Fase 1 — Propuesta de home autenticado
 
 | ID | Tarea | Entregable / criterio de cierre | Estado |

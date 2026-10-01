@@ -111,7 +111,7 @@ describe("password account access", () => {
           accepted_legal_version: "1.0",
           health_data_consent: "declined",
         }),
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).href,
       },
     });
     await waitFor(() => {
@@ -162,7 +162,7 @@ describe("password account access", () => {
     expect(resend).toHaveBeenCalledWith({
       type: "signup",
       email: "alejandro@example.com",
-      options: { emailRedirectTo: window.location.origin },
+      options: { emailRedirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).href },
     });
   });
 
@@ -199,7 +199,7 @@ describe("password account access", () => {
 
     expect(resetPasswordForEmail).toHaveBeenCalledWith(
       "alejandro@example.com",
-      { redirectTo: window.location.origin },
+      { redirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).href },
     );
     expect((result.current as any).passwordRecoveryState).toBe("requested");
     expect(result.current.message).toContain("recuperar");

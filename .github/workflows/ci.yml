@@ -36,5 +36,55 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Test Pages artifact guard
+        run: node --test scripts/check-pages-client.node-test.mjs scripts/sw-scope.node-test.mjs
+
+      - name: Require public client configuration before release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "Missing required public Supabase build variables" >&2
+            exit 1
+          fi
+
       - name: Build
         run: npm run build
+        env:
+          AUNARA_BASE_PATH: /aunara/
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Check Pages client and SPA fallback
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: node scripts/check-pages-client.mjs
+        env:
+          AUNARA_BASE_PATH: /aunara/
+
+      - name: Upload only the Pages client
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/client
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy verified client artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

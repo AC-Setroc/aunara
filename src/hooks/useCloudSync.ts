@@ -14,6 +14,7 @@ import {
 } from "../lib/cloudSnapshot";
 import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
 import { tr } from "../lib/i18n";
+import { publicBaseUrl } from "../lib/publicBase";
 import { LEGAL_VERSION } from "../lib/privacy";
 import { cloudConfigured, supabaseClient } from "../lib/supabaseClient";
 import type { HealthDataConsentStatus } from "../types";
@@ -239,7 +240,7 @@ export function useCloudSync({
           health_data_consent_at: acceptedAt,
           health_data_consent_event_id: createEventId(),
         },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: publicBaseUrl(import.meta.env.BASE_URL, window.location.origin),
       },
     });
     if (error) {
@@ -311,7 +312,7 @@ export function useCloudSync({
     const { error } = await client.auth.resend({
       type: "signup",
       email,
-      options: { emailRedirectTo: window.location.origin },
+      options: { emailRedirectTo: publicBaseUrl(import.meta.env.BASE_URL, window.location.origin) },
     });
     if (error) {
       setStatus("error");
@@ -341,7 +342,7 @@ export function useCloudSync({
     setStatus("syncing");
     setMessage(undefined);
     const { error } = await client.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin,
+      redirectTo: publicBaseUrl(import.meta.env.BASE_URL, window.location.origin),
     });
     if (error) {
       setStatus("error");

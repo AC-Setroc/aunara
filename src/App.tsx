@@ -239,7 +239,7 @@ function App() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch("/data/exercises.json", { signal: controller.signal })
+    fetch(`${import.meta.env.BASE_URL}data/exercises.json`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`Dataset request failed (${response.status})`);
         return response.json() as Promise<Exercise[]>;
@@ -619,8 +619,8 @@ function App() {
     <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
       <header className="site-header">
         <a className="brand" href="#top" onClick={() => setAppSection("home")} aria-label={tr(language, "Aunara home", "Inicio de Aunara")}>
-          <img className="brand-lockup" src="/brand/aunara-training-systems.svg" alt="Aunara Training Systems" />
-          <img className="brand-symbol" src="/brand/aunara-symbol.svg" alt="" aria-hidden="true" />
+          <img className="brand-lockup" src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" />
+          <img className="brand-symbol" src={`${import.meta.env.BASE_URL}brand/aunara-symbol.svg`} alt="" aria-hidden="true" />
         </a>
 
         {hasAppAccess ? (
@@ -887,7 +887,7 @@ function App() {
       )}
 
       <footer>
-        <div className="footer-brand"><img src="/brand/aunara-training-systems.svg" alt="Aunara Training Systems" /><span>{tr(language, "Train for what you want to be able to do.", "Entrená para poder.")}</span></div>
+        <div className="footer-brand"><img src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" /><span>{tr(language, "Train for what you want to be able to do.", "Entrená para poder.")}</span></div>
         <div className="footer-legal">
           <button type="button" onClick={() => setLegalDocument("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
           <button type="button" onClick={() => setLegalDocument("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>

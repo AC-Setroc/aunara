@@ -1,7 +1,7 @@
 # ADR 0002 — Separación de fuente y publicación
 
 Fecha: 25 de agosto de 2026
-Estado: Aceptada
+Estado: Supersedida el 2026-10-01 por [ADR 0003](./0003-pages-from-aunara-repository.md); se conserva como decisión histórica.
 
 ## Contexto
 
