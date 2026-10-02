@@ -4,6 +4,10 @@ Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Verificado
 
+### SDD-004 E2 — retorno rápido técnicamente aprobado; entrega local aislada
+
+- `[AUNARA/codex · GPT-5]` — [Enmienda 2](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) implementada y revisión independiente **APPROVED**: el evento Auth verificado puede preceder al montaje de UI en WebKit y ahora se conserva como identidad mínima efímera hasta consumirlo, sin sesión/token/URL ni persistencia. Pasaron 281 pruebas/23 + Node1, tipos/directorio/guards/builds, matriz compilada 96/96, orden natural 32/32, premount 32/32 y regresión auth 16/16. El árbol aislado HEAD+solo E2 pasó typecheck, 159 pruebas/18 + Node1, directorio4, guards5, builds raíz/Pages y artifact30. Esto supera únicamente CA03 técnico rápido; UAT real/mail, dominio/DNS/SMTP, metodología, fatiga/Health y dirty previo siguen abiertos. Sin push ni publicación.
+
 - El working tree del repo fuente está en la ruta canónica de Personal. HEAD inicial `d3da8c0`, rama `codex/aunara-rebrand` y cambios documentales previos preservados. El remoto canónico confirmado por el Operator es `AC-Setroc/aunara`.
 - Siete referencias se integraron en `reference/` sin alterar bytes. Los SDD previos mantienen su estado pendiente de aprobación; no son cambios de producto implementados.
 - El Operator aprobó el 2026-10-01 que el repo público `AC-Setroc/aunara` sirva también Pages desde un artifact cliente. El cambio técnico está publicado desde Actions en el mismo repo. Ver [ADR 0003](../docs/architecture/0003-pages-from-aunara-repository.md).

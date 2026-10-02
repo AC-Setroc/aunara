@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-02 · SDD-004 E2 aprobada técnicamente; delivery local aislado
+
+`[AUNARA/codex · GPT-5]` — El evento Auth verificado podía preceder al montaje de UI en WebKit inmediato; E2 conserva identidad mínima efímera hasta consumo, sin sesión/token/URL ni persistencia. Revisión independiente APPROVED: 281 pruebas/23 + Node1, tipos/directorio/guards/builds, UI 96/96, orden natural 32/32, premount 32/32 y regresión 16/16. Árbol HEAD+solo E2: typecheck, 159 pruebas/18 + Node1, directorio4, guards5, builds raíz/Pages y artifact30 PASS. Delta exacto de cuatro archivos más docs propias, sin absorber dirty previo ni operar cuentas/correos/backend/dominio. UAT real, mail, DNS/SMTP, metodología y fatiga/Health siguen abiertos; sin push/publicación.
+
 ## 2026-10-01 · Revisión aprobada y entrega local
 
 `[AUNARA/codex · GPT-6.1 Sol]` — Revisión independiente **APPROVED**: typecheck, 18 archivos/143 pruebas Vitest + Node, cinco guards E2 con negativos, builds `/` y `/aunara/` y allowlist de 30 archivos pasaron. Smoke local Chrome escritorio/móvil y Safari WebKit escritorio ES/EN/login pasó; manifest/worker acotados a `/aunara/`. El Operator autorizó commit, push y publicación UAT desde el repo público existente. La entrega conserva cambios previos de producto y referencias locales fuera del commit; no declara deploy, instalación física PWA ni autenticación/sync real completos. Supabase sigue pausado y requiere decisión del Operator. Ver [estado](02-ESTADO-ACTUAL.md).

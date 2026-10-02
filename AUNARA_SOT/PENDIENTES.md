@@ -4,6 +4,8 @@ Fecha de corte: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Abiertos
 
+- `[AUNARA/codex · GPT-5]` — [Enmienda 2 de SDD-004](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) implementada y técnicamente **APPROVED**. El retorno inmediato WebKit y el evento previo al montaje pasan sin demora decisoria; delta de cuatro archivos aislable sobre HEAD. Pendientes fuera de E2: UAT real de cuenta/correo, publicación y cierre del Operator. Dominio `aunaratraining.com` informado como registrado en GoDaddy, pero DNS/HTTPS/URLs Auth/SMTP/remitente no fueron configurados ni autorizados por esta entrega.
+
 - Instalación/actualización PWA en iPhone/Android físicos e interacción con el worker legado siguen pendientes; el smoke publicado en Chrome no equivale a cierre de esos gates.
 - Supabase Repbook está pausado por límite de dos proyectos gratuitos activos. El Operator debe decidir si libera capacidad o cambia de plan; no tocar otro proyecto por cuenta de esta orden. Registro/login/sync y allowlist de callback `/aunara/` quedan bloqueados hasta reactivación.
 - Revisar privacidad y derechos de los siete archivos en `reference/` y otros documentos locales antes de cualquier commit público. Por defecto permanecen fuera.

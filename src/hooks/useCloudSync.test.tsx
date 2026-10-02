@@ -1,9 +1,10 @@
 // @vitest-environment jsdom
 
 import { act, renderHook, waitFor } from "@testing-library/react";
+import { StrictMode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRepbookSnapshot } from "../lib/cloudSnapshot";
-import type { supabaseClient } from "../lib/supabaseClient";
+import { passwordRecoverySignalFor, type supabaseClient } from "../lib/supabaseClient";
 
 const { signUp, signInWithPassword, signOut, verifyOtp, resend, resetPasswordForEmail, updateUser, invoke } = vi.hoisted(() => ({
   signUp: vi.fn(),
@@ -60,7 +61,103 @@ const snapshot = createRepbookSnapshot({
   checkIns: [],
 });
 
+describe("verified recovery around mount", () => {
+  function fixture() {
+    const listeners = new Set<(event: any, session: any) => void>();
+    const user = { id: "recovery-fixture", email: "recovery@example.invalid", user_metadata: {} };
+    const client = {
+      ...testClient,
+      auth: {
+        ...testClient.auth,
+        getSession: vi.fn().mockResolvedValue({ data: { session: { user } }, error: null }),
+        onAuthStateChange: vi.fn((callback) => {
+          listeners.add(callback);
+          return { data: { subscription: { unsubscribe: () => listeners.delete(callback) } } };
+        }),
+      },
+    } as unknown as NonNullable<typeof supabaseClient>;
+    const signal = passwordRecoverySignalFor(client);
+    const emit = (event: string, session: any = { user }) => {
+      for (const listener of listeners) listener(event, session);
+    };
+    const mount = (strict = false) => renderHook(() => useCloudSync({
+      snapshot, onRemoteSnapshot: vi.fn(), client,
+    }), strict ? { wrapper: StrictMode } : undefined);
+    return { client, user, signal, emit, mount };
+  }
+
+  it.each([0, 200])("consumes pre-mount recovery with %sms bootstrap, including StrictMode", async (latency) => {
+    const f = fixture();
+    f.client.auth.getSession = vi.fn().mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ data: { session: { user: f.user } }, error: null }), latency)));
+    f.emit("PASSWORD_RECOVERY");
+    const hook = f.mount(true);
+    await waitFor(() => expect(hook.result.current.passwordRecoveryState).toBe("ready"));
+    expect(hook.result.current.existingAccountEmail).toBe(f.user.email);
+    hook.unmount();
+    const remount = f.mount();
+    await waitFor(() => expect(f.client.auth.getSession).toHaveBeenCalled());
+    expect(remount.result.current.passwordRecoveryState).toBeNull();
+  });
+
+  it.each([0, 200])("accepts post-mount recovery at %sms, not ordinary initialization", async (latency) => {
+    const f = fixture(), hook = f.mount(true);
+    await waitFor(() => expect(f.client.auth.getSession).toHaveBeenCalled());
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, latency));
+      f.emit("PASSWORD_RECOVERY");
+    });
+    expect(hook.result.current.passwordRecoveryState).toBe("ready");
+    act(() => f.emit("PASSWORD_RECOVERY"));
+    expect(f.signal.consume(f.user)).toBeNull();
+    await act(async () => { await hook.result.current.updatePassword("synthetic-password-123"); });
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+    // A completed flow must not suppress a later legitimate recovery for this user.
+    act(() => f.emit("PASSWORD_RECOVERY"));
+    expect(hook.result.current.passwordRecoveryState).toBe("ready");
+  });
+
+  it("does not let a stale null bootstrap overwrite a newer verified event", async () => {
+    const f = fixture();
+    let release!: (value: any) => void;
+    f.client.auth.getSession = vi.fn().mockReturnValue(new Promise(resolve => { release = resolve; }));
+    const hook = f.mount();
+    act(() => f.emit("PASSWORD_RECOVERY"));
+    await act(async () => release({ data: { session: null }, error: null }));
+    expect(hook.result.current.passwordRecoveryState).toBe("ready");
+    expect(hook.result.current.email).toBe(f.user.email);
+    act(() => f.emit("SIGNED_IN", { user: { ...f.user, id: "different-user" } }));
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+    expect(hook.result.current.existingAccountEmail).toBeNull();
+  });
+
+  it.each(["INITIAL_SESSION", "SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"])("ordinary %s never activates recovery", async (event) => {
+    const f = fixture();
+    f.emit(event);
+    const hook = f.mount();
+    await act(async () => {});
+    act(() => f.emit(event));
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+  });
+
+  it("rejects invalid, expired, changed-user and signed-out returns", async () => {
+    const f = fixture();
+    f.emit("PASSWORD_RECOVERY");
+    f.client.auth.getSession = vi.fn().mockResolvedValue({ data: { session: null }, error: { code: "otp_expired" } });
+    const hook = f.mount();
+    await act(async () => {});
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+    act(() => f.emit("PASSWORD_RECOVERY", null));
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+    act(() => f.emit("PASSWORD_RECOVERY"));
+    expect(hook.result.current.passwordRecoveryState).toBe("ready");
+    act(() => f.emit("SIGNED_OUT", null));
+    expect(hook.result.current.passwordRecoveryState).toBeNull();
+  });
+});
+
 beforeEach(() => {
+  passwordRecoverySignalFor(testClient).clear();
   vi.clearAllMocks();
   authStateHandler = undefined;
   signUp.mockResolvedValue({

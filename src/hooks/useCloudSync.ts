@@ -16,7 +16,7 @@ import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
 import { tr } from "../lib/i18n";
 import { publicBaseUrl } from "../lib/publicBase";
 import { LEGAL_VERSION } from "../lib/privacy";
-import { cloudConfigured, supabaseClient } from "../lib/supabaseClient";
+import { cloudConfigured, passwordRecoverySignalFor, supabaseClient } from "../lib/supabaseClient";
 import type { HealthDataConsentStatus } from "../types";
 
 interface UseCloudSyncOptions {
@@ -68,6 +68,7 @@ export function useCloudSync({
   const [pendingVerification, setPendingVerification] = useState<PendingVerification | null>(null);
   const [existingAccountEmail, setExistingAccountEmail] = useState<string | null>(null);
   const [passwordRecoveryState, setPasswordRecoveryState] = useState<"requested" | "ready" | null>(null);
+  const recoveryUserId = useRef<string | null>(null);
   const latestSnapshot = useRef(snapshot);
   const onRemoteSnapshotRef = useRef(onRemoteSnapshot);
   const onSignedOutRef = useRef(onSignedOut);
@@ -82,18 +83,37 @@ export function useCloudSync({
   useEffect(() => {
     if (!client) return;
     let active = true;
+    let authEventSeen = false;
+    const recoverySignal = passwordRecoverySignalFor(client);
+    const acceptRecovery = (nextUser: User | null) => {
+      const identity = recoverySignal.consume(nextUser);
+      if (!identity) return;
+      recoveryUserId.current = identity.id;
+      setExistingAccountEmail(identity.email ?? null);
+      setPasswordRecoveryState("ready");
+      setMessage(undefined);
+    };
 
-    client.auth.getSession().then(({ data }) => {
-      if (active) setUser(data.session?.user ?? null);
+    client.auth.getSession().then(({ data, error }) => {
+      // A slower bootstrap must not overwrite a newer verified auth event.
+      if (!active || authEventSeen) return;
+      if (error) recoverySignal.clear();
+      const nextUser = data.session?.user ?? null;
+      setUser(nextUser);
+      acceptRecovery(nextUser);
     });
     const { data: listener } = client.auth.onAuthStateChange((event, session) => {
       if (!active) return;
-      setUser(session?.user ?? null);
-      if (event === "PASSWORD_RECOVERY") {
-        setExistingAccountEmail(session?.user.email ?? null);
-        setPasswordRecoveryState("ready");
-        setMessage(undefined);
+      authEventSeen = true;
+      const nextUser = session?.user ?? null;
+      recoverySignal.observe(event, nextUser);
+      setUser(nextUser);
+      if (event === "SIGNED_OUT" || (recoveryUserId.current && recoveryUserId.current !== nextUser?.id)) {
+        recoveryUserId.current = null;
+        setExistingAccountEmail(null);
+        setPasswordRecoveryState(null);
       }
+      acceptRecovery(nextUser);
     });
 
     return () => {
@@ -373,6 +393,8 @@ export function useCloudSync({
     setExistingAccountEmail(null);
     setPasswordRecoveryState(null);
     setStatus("synced");
+    recoveryUserId.current = null;
+    passwordRecoverySignalFor(client).clear();
     setMessage(tr(
       language,
       "Password updated. Your session is now active.",
@@ -401,6 +423,8 @@ export function useCloudSync({
     setExistingAccountEmail(null);
     setPasswordRecoveryState(null);
     setMessage(tr(language, "Signed in. Loading your Aunara data…", "Sesión iniciada. Estamos cargando tus datos de Aunara…"));
+    recoveryUserId.current = null;
+    passwordRecoverySignalFor(client).clear();
   }, [client]);
 
   const signOut = useCallback(async () => {
@@ -415,6 +439,8 @@ export function useCloudSync({
     setExistingAccountEmail(null);
     setPasswordRecoveryState(null);
     onSignedOutRef.current?.();
+    recoveryUserId.current = null;
+    passwordRecoverySignalFor(client).clear();
   }, [client]);
 
   const recordHealthConsent = useCallback(async (
