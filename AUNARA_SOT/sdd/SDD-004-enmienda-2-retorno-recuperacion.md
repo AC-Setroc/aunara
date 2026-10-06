@@ -1,6 +1,6 @@
 # SDD-004 — Enmienda 2: retorno de recuperación sin carrera de montaje
 
-Estado: **Implementada; revisión técnica independiente APPROVED; entrega local aislada**. Fecha: 2026-10-02.
+Estado: **Implementada; revisión técnica independiente APPROVED; publicada por orden del Operator**. Actualización: 2026-10-06.
 Origen: `[AUNARA/codex · GPT-5]`. Enmienda de `SDD-004-uat-perfil-y-rutinas.md`, documento local previo no incluido en el commit aislado de E2.
 
 Esta enmienda nace de la revisión independiente rechazada por CA-03. Durante la propuesta, `src/hooks/useCloudSync.ts` y `src/lib/supabaseClient.ts` permanecieron **NO-TOCAR**; la aprobación registrada abajo permite únicamente la excepción acotada de esta allowlist.
@@ -129,3 +129,7 @@ La causa confirmada fue la entrega del evento Auth verificado antes de que la UI
 Revisión independiente **APPROVED**: 281 pruebas en 23 archivos + Node1, tipos, directorio4, guards6, builds raíz/Pages y artifact31 PASS. UI compilada: matriz96/96, orden natural32/32, evento forzado antes del montaje32/32 y regresión cercana16/16 en Chromium/WebKit, ES/EN, 1440/390 y raíz/Pages. Los negativos sin buffer y con consumo anticipado quedaron rojos y la restauración71/71 verde. Recibo `/private/tmp/aunara-sdd004-e2-independent-review.md`.
 
 Verificación adicional del commit aislado sobre HEAD `086e5c4`: typecheck, 159 pruebas en 18 archivos + Node1, directorio4, guards5, builds raíz/Pages y artifact30 PASS. Esta cuenta menor es esperada: excluye deliberadamente los tests y cambios previos aún sucios. UAT real de cuenta/correo, dominio `aunaratraining.com`, DNS/HTTPS, URLs Auth, SMTP/remitente, metodología y fatiga/Health permanecen abiertos y fuera de esta entrega. El dominio fue informado como registrado en GoDaddy por el Operator; este trabajo no lo registró ni configuró.
+
+## 12. Publicación autorizada — 2026-10-06
+
+`[AUNARA/codex · GPT-5]` — Operator: «Publicá y conectá. La validación de recepción de correos la hacemos más adelante. Estoy resolviendo eso.» Se publicó únicamente el commit revisado `86f5451613964e7e455118db160a0f7e543e5221` a `main` del repo existente, desde un clon temporal limpio y tras pull; ningún dirty previo fue incluido. [Actions 37539918673](https://github.com/AC-Setroc/aunara/actions/runs/37539918673) completó SUCCESS. [Pages actual](https://ac-setroc.github.io/aunara/) devolvió HTTP200 tras el despliegue. La revisión de navegador publicada se registra en la SOT al terminar; HTTP200 solo no constituye UAT de cuenta. Correos reales aplazados expresamente. La conexión del dominio es el frente separado SDD-005, sin cambios DNS/SMTP/Auth realizados aquí.

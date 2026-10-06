@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-06 · E2 publicada; dominio propuesto y operación manual pendiente
+
+`[AUNARA/codex · GPT-5]` — Por orden «Publicá y conectá» se publicó solo E2 `86f5451` a main: [Actions 37539918673](https://github.com/AC-Setroc/aunara/actions/runs/37539918673) SUCCESS, HTTP200 y smoke publicado Chromium/WebKit ES/EN 1440/390 8/8 PASS. No se publicaron los cambios previos de SDD-002/003/004. SDD-005 queda En revisión: apex, www, base raíz, HTTPS, propiedad TXT y Auth reversible; no se cambiaron DNS/Pages/Auth/SMTP. Operator no pudo iniciar sesión en GoDaddy desde Codex y pidió instrucciones para su navegador. Correos reales diferidos expresamente; ningún registro de correo intervenido.
+
 ## 2026-10-02 · SDD-004 E2 aprobada técnicamente; delivery local aislado
 
 `[AUNARA/codex · GPT-5]` — El evento Auth verificado podía preceder al montaje de UI en WebKit inmediato; E2 conserva identidad mínima efímera hasta consumo, sin sesión/token/URL ni persistencia. Revisión independiente APPROVED: 281 pruebas/23 + Node1, tipos/directorio/guards/builds, UI 96/96, orden natural 32/32, premount 32/32 y regresión 16/16. Árbol HEAD+solo E2: typecheck, 159 pruebas/18 + Node1, directorio4, guards5, builds raíz/Pages y artifact30 PASS. Delta exacto de cuatro archivos más docs propias, sin absorber dirty previo ni operar cuentas/correos/backend/dominio. UAT real, mail, DNS/SMTP, metodología y fatiga/Health siguen abiertos; sin push/publicación.

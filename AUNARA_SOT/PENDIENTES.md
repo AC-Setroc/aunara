@@ -4,7 +4,9 @@ Fecha de corte: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Abiertos
 
-- `[AUNARA/codex · GPT-5]` — [Enmienda 2 de SDD-004](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) implementada y técnicamente **APPROVED**. El retorno inmediato WebKit y el evento previo al montaje pasan sin demora decisoria; delta de cuatro archivos aislable sobre HEAD. Pendientes fuera de E2: UAT real de cuenta/correo, publicación y cierre del Operator. Dominio `aunaratraining.com` informado como registrado en GoDaddy, pero DNS/HTTPS/URLs Auth/SMTP/remitente no fueron configurados ni autorizados por esta entrega.
+- `[AUNARA/codex · GPT-5]` — [SDD-005 de dominio](sdd/SDD-005-dominio-aunaratraining.md) **En revisión del Operator**. Define apex `https://aunaratraining.com/`, `www`→apex mediante Pages, base raíz, propiedad TXT, HTTPS y Auth reversible sin tocar correo. Requiere aprobación explícita, accesos Operator a GitHub/GoDaddy/Supabase, inventario autenticado de zona y revisión antes del corte web. Operator solicita pasos para su navegador por dificultad de login en Codex; recepción de emails/SMTP/remitente y PWA física siguen fuera.
+
+- `[AUNARA/codex · GPT-5]` — [Enmienda 2 de SDD-004](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) técnicamente **APPROVED** y publicada por orden del Operator el 2026-10-06 (`86f5451`, Actions 37539918673 SUCCESS; smoke público 8/8 PASS). Pendientes fuera de E2: UAT real de cuenta, recepción de correos expresamente diferida y cierre del Operator. Dominio `aunaratraining.com`: conexión aún no aplicada, propuesta en SDD-005; no se configuraron DNS/HTTPS/URLs Auth/SMTP/remitente.
 
 - Instalación/actualización PWA en iPhone/Android físicos e interacción con el worker legado siguen pendientes; el smoke publicado en Chrome no equivale a cierre de esos gates.
 - Supabase Repbook está pausado por límite de dos proyectos gratuitos activos. El Operator debe decidir si libera capacidad o cambia de plan; no tocar otro proyecto por cuenta de esta orden. Registro/login/sync y allowlist de callback `/aunara/` quedan bloqueados hasta reactivación.
