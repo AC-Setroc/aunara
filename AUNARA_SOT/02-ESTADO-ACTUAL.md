@@ -4,9 +4,9 @@ Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Verificado
 
-### SDD-005 — preparación local APPROVED; corte externo pendiente
+### SDD-005 — dominio publicado; DNS/HTTPS/smoke APPROVED, Auth/PWA pendientes
 
-- `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) aprobado e implementado solo como preparación local aislada sobre `ef82f9a`: revisión independiente **APPROVED prepublicación**, 160 pruebas/18 + Node, tipos, directorio4, guards26, builds raíz/rollback y artifacts30; matriz Chromium/WebKit96/96 y negativos PASS. GitHub autenticado confirma Verified y custom domain existente, pero DNS sigue WebsiteBuilder con `www` al apex y HTTPS no habilitable. Faltan redirect Auth nuevo, corte DNS, deploy, TLS/Enforce HTTPS y smoke publicado. Cero correo/usuarios/operaciones remotas; dirty previo fuera de entrega. Las menciones históricas al bloqueo Repbook no describen el proyecto Aunara activo de esta fase.
+- `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) publicado desde `1c709a3`; [Actions 37636074747](https://github.com/AC-Setroc/aunara/actions/runs/37636074747) verify/deploy SUCCESS. Apex usa los cuatro A Pages, `www` apunta a GitHub y el TXT de propiedad se preservó. Pages muestra DNS check successful y Enforce HTTPS activo; HTTP apex, HTTPS `www` y Pages `/aunara/` redirigen 301 al apex HTTPS, que responde 200 con certificado válido. Revisión publicada **APPROVED acotada**, Chromium/WebKit ES/EN 1440/390 8/8 y assets raíz HTTP 200. Cierre global parcial: redirect apex Auth solo confirmado verbalmente, Site URL sin reinspección, auth/correo reales y PWA física/offline WebKit pendientes. Dirty previo no se publicó.
 
 ### SDD-004 E2 — retorno rápido publicado; correo real diferido
 

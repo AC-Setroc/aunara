@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-07 · 🟡 SDD-005 publicado; web canónica aprobada, Auth/PWA pendientes
+
+`[AUNARA/codex · GPT-5]` — `1c709a3` publicado a `main`; Actions 37636074747 verify/deploy SUCCESS. DNS quedó en cuatro A Pages, `www` a GitHub y TXT de propiedad preservado. Pages muestra DNS check successful y Enforce HTTPS activo; HTTP apex, HTTPS `www` y Pages `/aunara/` redirigen al apex HTTPS con certificado válido. Revisión independiente del publicado: 8/8 Chromium/WebKit 1440/390 ES/EN y recursos raíz HTTP 200. No se publicó dirty canónico ni se tocó correo. Cierre global parcial: redirect apex Auth confirmado solo verbalmente; falta captura/Site URL, auth real y PWA física/offline WebKit.
+
 ## 2026-10-06 · 🟡 SDD-005 preparación local APPROVED; DNS/Auth/TLS pendientes
 
 `[AUNARA/codex · GPT-5]` — Delta aislado de cinco archivos técnicos y diez documentales sobre `ef82f9a`, sin dirty previo ni correo/usuarios. Revisión independiente **APPROVED solo prepublicación**: typecheck, 160 pruebas/18 + Node, directorio4, guards26, builds raíz/rollback y artifact30 PASS; UI Chromium/WebKit96/96 y negativos PASS. Propiedad/custom domain ya existen, pero DNS continúa WebsiteBuilder, Auth no incluye apex y HTTPS sigue no disponible. No hubo push, deploy ni operación externa; corte DNS/Auth/TLS y smoke publicado permanecen pendientes.

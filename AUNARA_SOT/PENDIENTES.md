@@ -4,7 +4,7 @@ Fecha de corte: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Abiertos
 
-- `[AUNARA/codex · GPT-5]` — [SDD-005 de dominio](sdd/SDD-005-dominio-aunaratraining.md): preparación local aislada **APPROVED prepublicación**; cinco archivos técnicos y diez documentales, builds raíz/rollback, guards/negativos y matriz96/96 verificados. Pendientes externos: añadir apex exacto a Auth conservando ambos redirects, corte web coordinado, push/deploy autorizado, cuatro A Pages, `www` correcto, DNS/TLS/Enforce HTTPS, Site URL final y smoke publicado. Operator opera GoDaddy/Supabase en su navegador; correo, PWA física y offline WebKit real siguen fuera.
+- `[AUNARA/codex · GPT-5]` — [SDD-005 de dominio](sdd/SDD-005-dominio-aunaratraining.md) publicado: `1c709a3`, Actions 37636074747 SUCCESS, cuatro A Pages/`www`/TXT preservado, certificado y Enforce HTTPS activos, redirecciones canónicas y smoke Chromium/WebKit8/8 PASS. Pendiente para cierre global: capturar/reinspeccionar Supabase URL Configuration, confirmar ambos redirects previos más apex y cambiar Site URL a `https://aunaratraining.com/` si aún apunta a Pages. Auth/correo reales, PWA física y offline WebKit real continúan fuera; no se repite el corte DNS ya cerrado.
 
 - `[AUNARA/codex · GPT-5]` — [Enmienda 2 de SDD-004](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) técnicamente **APPROVED** y publicada por orden del Operator el 2026-10-06 (`86f5451`, Actions 37539918673 SUCCESS; smoke público 8/8 PASS). Pendientes fuera de E2: UAT real de cuenta, recepción de correos expresamente diferida y cierre del Operator. Dominio `aunaratraining.com`: conexión aún no aplicada, propuesta en SDD-005; no se configuraron DNS/HTTPS/URLs Auth/SMTP/remitente.
 
