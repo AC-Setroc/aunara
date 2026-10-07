@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-06 · 🟡 SDD-005 preparación local APPROVED; DNS/Auth/TLS pendientes
+
+`[AUNARA/codex · GPT-5]` — Delta aislado de cinco archivos técnicos y diez documentales sobre `ef82f9a`, sin dirty previo ni correo/usuarios. Revisión independiente **APPROVED solo prepublicación**: typecheck, 160 pruebas/18 + Node, directorio4, guards26, builds raíz/rollback y artifact30 PASS; UI Chromium/WebKit96/96 y negativos PASS. Propiedad/custom domain ya existen, pero DNS continúa WebsiteBuilder, Auth no incluye apex y HTTPS sigue no disponible. No hubo push, deploy ni operación externa; corte DNS/Auth/TLS y smoke publicado permanecen pendientes.
+
 ## 2026-10-06 · E2 publicada; dominio propuesto y operación manual pendiente
 
 `[AUNARA/codex · GPT-5]` — Por orden «Publicá y conectá» se publicó solo E2 `86f5451` a main: [Actions 37539918673](https://github.com/AC-Setroc/aunara/actions/runs/37539918673) SUCCESS, HTTP200 y smoke publicado Chromium/WebKit ES/EN 1440/390 8/8 PASS. No se publicaron los cambios previos de SDD-002/003/004. SDD-005 queda En revisión: apex, www, base raíz, HTTPS, propiedad TXT y Auth reversible; no se cambiaron DNS/Pages/Auth/SMTP. Operator no pudo iniciar sesión en GoDaddy desde Codex y pidió instrucciones para su navegador. Correos reales diferidos expresamente; ningún registro de correo intervenido.

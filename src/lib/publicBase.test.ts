@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { publicBaseUrl } from "./publicBase";
 
 describe("publicBaseUrl", () => {
+  it("keeps canonical-domain email callbacks at the root", () => {
+    expect(publicBaseUrl("/", "https://aunaratraining.com"))
+      .toBe("https://aunaratraining.com/");
+  });
   it("keeps local root deployment working", () => {
     expect(publicBaseUrl("/", "http://localhost:5173")).toBe("http://localhost:5173/");
   });

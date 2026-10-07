@@ -4,9 +4,9 @@ Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Verificado
 
-### SDD-005 — dominio canónico especificado; conexión espera aprobación
+### SDD-005 — preparación local APPROVED; corte externo pendiente
 
-- `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) propone `https://aunaratraining.com/` como apex canónico y `www` redirigido por GitHub Pages, con build raíz, verificación de propiedad antes de DNS, Auth reversible y preservación estricta de correo/dirty. Estado **En revisión del Operator**: no se cambió código, workflow, Pages, DNS, Auth, SMTP ni entorno. El Operator pidió instrucciones para operar GoDaddy desde su navegador; verificar TXT primero y no realizar el corte web antes de la preparación aprobada.
+- `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) aprobado e implementado solo como preparación local aislada sobre `ef82f9a`: revisión independiente **APPROVED prepublicación**, 160 pruebas/18 + Node, tipos, directorio4, guards26, builds raíz/rollback y artifacts30; matriz Chromium/WebKit96/96 y negativos PASS. GitHub autenticado confirma Verified y custom domain existente, pero DNS sigue WebsiteBuilder con `www` al apex y HTTPS no habilitable. Faltan redirect Auth nuevo, corte DNS, deploy, TLS/Enforce HTTPS y smoke publicado. Cero correo/usuarios/operaciones remotas; dirty previo fuera de entrega. Las menciones históricas al bloqueo Repbook no describen el proyecto Aunara activo de esta fase.
 
 ### SDD-004 E2 — retorno rápido publicado; correo real diferido
 

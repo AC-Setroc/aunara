@@ -1,5 +1,22 @@
 # Runbook — Aunara
 
+## SDD-005 — preparación del dominio, corte pendiente
+
+`[AUNARA/codex · GPT-5]` — Dominio canónico aprobado: `https://aunaratraining.com/`, mismo repo `AC-Setroc/aunara`, artifact exclusivo `dist/client/`, base `/`. Este apartado sustituye la URL/base de publicación de las secciones históricas siguientes **solo una vez verificado el corte**; no declara el dominio operativo. Snapshot inicial del Operator: ocho registros GoDaddy, una entrada administrada A `@ → WebsiteBuilder Site`, `www` al apex, seis registros no web que se preservan. GitHub muestra Verified/custom domain; Enforce HTTPS aún no disponible. Supabase Aunara dispone de configuración URL capturada por el Operator; no extrapolar el bloqueo histórico Repbook de abajo a este estado.
+
+1. Guardar fuera del repo la zona íntegra antes/después y las URLs Auth vigentes. Si cambió algún registro respecto de la captura inicial, reevaluar antes de operar; el correo se gestiona separadamente.
+2. Supabase → Authentication → URL Configuration: añadir exactamente `https://aunaratraining.com/` en Redirect URLs y conservar tanto `https://ac-setroc.github.io/aunara/` como el redirect histórico ya autorizado. Mantener Site URL anterior hasta estabilidad TLS y smoke sintético. Sin wildcard, cuentas ni emails reales.
+3. Gate local cumplido: revisión independiente **APPROVED prepublicación** de root build, regresión `/aunara/`, guards negativos y UI Chromium/WebKit ES/EN 1440/390 (96/96). Esto no valida DNS/Auth/TLS reales. Conservar SHA previo `ef82f9af20d55e101bc78e71a410306cd5f4dec8` y publicación [37540550290](https://github.com/AC-Setroc/aunara/actions/runs/37540550290).
+4. GoDaddy: editar solo el A administrado `@` a `185.199.108.153`; añadir tres A `@`: `185.199.109.153`, `185.199.110.153`, `185.199.111.153`. TTL 1 hora. Si GoDaddy impide reemplazar el destino WebsiteBuilder, parar y resolver la asociación web sin tocar otros registros.
+5. Editar solo CNAME `www` a `ac-setroc.github.io`. Conservar NS, SOA, `_domainconnect`, DMARC y TXT de verificación idénticos; ningún AAAA/wildcard/registro de correo añadido o eliminado.
+6. Coordinar el push autorizado de la versión raíz con el corte. Registrar SHA/run Actions y verificar artifact cliente. El custom domain ya está configurado; no retirarlo ni añadir archivo CNAME.
+7. Verificar cuatro A y CNAME desde dos resolvers, certificado válido y redirecciones www/HTTP al apex HTTPS. Activar Enforce HTTPS solo cuando Pages lo permita. DNS/certificado pueden tardar: no declarar aceptación mientras falte evidencia.
+8. Tras TLS/smoke estable, cambiar Site URL al apex HTTPS, conservando redirects previos. Documentar la captura posterior y comprobar callbacks sintéticos válidos/invalidos/expirados sin enviar correo.
+
+Rollback quirúrgico: restaurar build/workflow de `ef82f9a` con base `/aunara/` y exactamente la entrada web WebsiteBuilder/`www` del inventario inicial; no modificar correo, NS ni TXT de verificación. Quitar custom domain solo cuando DNS ya no apunte a Pages; restaurar Site URL previo si cambió. Conservar ambos redirects durante estabilización. No borrar cachés ni datos de usuarios.
+
+Referencias y aceptación completa: [SDD-005](sdd/SDD-005-dominio-aunaratraining.md). La recepción de correos y PWA física siguen pendientes por decisión del Operator.
+
 ## Abrir y verificar localmente
 
 1. Trabajar en `~/AI Projects/Personal/aunara` y leer [estado](02-ESTADO-ACTUAL.md) y el [README técnico](../README.md).

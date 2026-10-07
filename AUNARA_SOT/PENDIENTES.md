@@ -4,7 +4,7 @@ Fecha de corte: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Abiertos
 
-- `[AUNARA/codex · GPT-5]` — [SDD-005 de dominio](sdd/SDD-005-dominio-aunaratraining.md) **En revisión del Operator**. Define apex `https://aunaratraining.com/`, `www`→apex mediante Pages, base raíz, propiedad TXT, HTTPS y Auth reversible sin tocar correo. Requiere aprobación explícita, accesos Operator a GitHub/GoDaddy/Supabase, inventario autenticado de zona y revisión antes del corte web. Operator solicita pasos para su navegador por dificultad de login en Codex; recepción de emails/SMTP/remitente y PWA física siguen fuera.
+- `[AUNARA/codex · GPT-5]` — [SDD-005 de dominio](sdd/SDD-005-dominio-aunaratraining.md): preparación local aislada **APPROVED prepublicación**; cinco archivos técnicos y diez documentales, builds raíz/rollback, guards/negativos y matriz96/96 verificados. Pendientes externos: añadir apex exacto a Auth conservando ambos redirects, corte web coordinado, push/deploy autorizado, cuatro A Pages, `www` correcto, DNS/TLS/Enforce HTTPS, Site URL final y smoke publicado. Operator opera GoDaddy/Supabase en su navegador; correo, PWA física y offline WebKit real siguen fuera.
 
 - `[AUNARA/codex · GPT-5]` — [Enmienda 2 de SDD-004](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) técnicamente **APPROVED** y publicada por orden del Operator el 2026-10-06 (`86f5451`, Actions 37539918673 SUCCESS; smoke público 8/8 PASS). Pendientes fuera de E2: UAT real de cuenta, recepción de correos expresamente diferida y cierre del Operator. Dominio `aunaratraining.com`: conexión aún no aplicada, propuesta en SDD-005; no se configuraron DNS/HTTPS/URLs Auth/SMTP/remitente.
 

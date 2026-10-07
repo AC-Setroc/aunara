@@ -53,7 +53,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          AUNARA_BASE_PATH: /aunara/
+          AUNARA_BASE_PATH: /
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
 
@@ -61,7 +61,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: node scripts/check-pages-client.mjs
         env:
-          AUNARA_BASE_PATH: /aunara/
+          AUNARA_BASE_PATH: /
 
       - name: Upload only the Pages client
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

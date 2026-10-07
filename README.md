@@ -45,7 +45,14 @@ Project governance, current status, pending decisions, and the runbook live in [
 
 By the Operator's 2026-10-01 decision, this public `AC-Setroc/aunara` repository
 holds both source and its GitHub Pages workflow. Only `dist/client/` is uploaded
-as a Pages artifact for `https://ac-setroc.github.io/aunara/`; source and SOT
+as a Pages artifact; source and SOT
 documents are not part of that artifact. The older root-site deployment is
 historical and is not modified by this workflow. Local reference files under
 `AUNARA_SOT/reference/` have not been cleared for a public commit.
+
+SDD-005, approved on 2026-10-06, prepares the canonical URL
+`https://aunaratraining.com/` with build base `/` in this same repository.
+The domain is verified and configured in Pages; DNS, HTTPS and Auth cutover
+remain operational gates, not a claim that the domain is already serving the app.
+The former `https://ac-setroc.github.io/aunara/` base remains tested for rollback.
+See [SDD-005](AUNARA_SOT/sdd/SDD-005-dominio-aunaratraining.md).
