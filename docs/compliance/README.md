@@ -75,8 +75,8 @@ proveedor de hosting; su corrección está especificada y aprobada en
   versión 1.0» exigen una nueva versión del aviso y nueva aceptación.
 - Publicar la corrección del proveedor de hosting en el aviso en pantalla
   (SDD-002), para que lo que lee el titular coincida con este inventario, y
-  actualizar en ese momento la frase de «Cambios desde la versión 1.0» que dice
-  que el aviso todavía nombra OpenAI Sites.
+  actualizar en ese momento la frase de «Cambios desde la versión 1.0» sobre el
+  proveedor de hosting que el aviso en pantalla todavía nombra.
 - Activar en Supabase Auth la protección contra contraseñas conocidas como
   filtradas, si el plan contratado ofrece esa función.
 - Definir la estructura jurídica/comercial y actualizar al responsable real.
