@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟢 Ciclo 2 de SDD-006: WebKit instalado y mitad completada; APPROVED técnico E2+E3+E4
+
+`[AUNARA/claude · modelo no expuesto]` — El Operator permitió `playwright.download.prss.microsoft.com` en la red del entorno; se instaló WebKit 26.0 (build 2215) con sus dependencias apt y se corrieron las siete matrices completas en WebKit: 276, 84, 42, 84, 156, 52 y negativos 6/6, todo PASS. Intento 1 de WebKit dejó 5 + 1 timeouts atribuibles al harness (espera satisfecha con estado viejo antes del pintado de React; `isVisible()` instantáneo del flotante); corregido el guion, intento 2 verde y Chromium repetido con el guion final. Lente de seguridad por HTTP agregada. Veredicto del recibo pasa de NO CONCLUYENTE a **APPROVED técnico**, con caveat de un solo revisor. Hallazgo nuevo H-02 (salud sincronizada sin `granted`, preexistente) a PENDIENTES junto a H-01. Sin código en `dev`; commit integrado pendiente de confirmación del Operator.
+
 ## 2026-10-12 · 🟡 Ciclo 2 de SDD-006: Chromium verde, WebKit pendiente, NO CONCLUYENTE
 
 `[AUNARA/claude · modelo no expuesto]` — Revisión fresca E2+E3+E4 sobre `6704681` con revisor distinto, Supabase sintético y tráfico externo bloqueado. Chromium: 192 contextos de storage, 84 de arranque, 42 de Auth, 84 de resumen de privacidad, 156/156 de navegación/modal/legal y 52/52 de round-trip/flotante/footer, todos PASS; RG-01 rojo→verde 19/110 → 129/129; seis negativos red→green y cinco negativos del guard CLI rechazados; suite 348/25. Cinco ajustes de harness documentados, cero cambios de producto. WebKit no disponible en el entorno ⇒ veredicto NO CONCLUYENTE, ciclo 2 abierto; recibo con guion WebKit en [`sdd/2026-10-12-sdd006-ciclo2-revision/`](sdd/2026-10-12-sdd006-ciclo2-revision/RECIBO.md). Hallazgo H-01 (debounce de `useCloudSync` deja `syncing`), preexistente en `main`, a PENDIENTES.

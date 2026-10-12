@@ -34,8 +34,11 @@ function seed({ lang, tracks, remote = false }) {
   })();`;
 }
 async function openWorkoutText(page) {
+  // At 390 px the floating button is the entry point; give it time to paint instead of deciding on an instant isVisible()
+  // (WebKit painted it a beat later than Chromium in one context and the fallback selector does not exist on mobile).
   const mobile = page.locator("button.mobile-workout");
-  if (await mobile.isVisible()) await mobile.click(); else await page.locator("button.workout-trigger").first().click();
+  const mobileVisible = await mobile.waitFor({ state: "visible", timeout: 8000 }).then(() => true).catch(() => false);
+  if (mobileVisible) await mobile.click(); else await page.locator("button.workout-trigger").first().click();
   await page.waitForSelector(".workout-panel", { timeout: 8000 });
   await page.waitForTimeout(300);
   return (await page.locator(".workout-panel").innerText()).replace(/\s+/g, " ");

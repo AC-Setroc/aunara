@@ -1,0 +1,25 @@
+… roundtrip root es
+… roundtrip root en
+… roundtrip aunara es
+… roundtrip aunara en
+… geometry root es 320 720
+… geometry root es 390 844
+… geometry root es 390 460
+… geometry root es 1440 900
+… geometry root en 320 720
+… geometry root en 390 844
+… geometry root en 390 460
+… geometry root en 1440 900
+… geometry aunara es 320 720
+… geometry aunara es 390 844
+… geometry aunara es 390 460
+… geometry aunara es 1440 900
+… geometry aunara en 320 720
+… geometry aunara en 390 844
+… geometry aunara en 390 460
+… geometry aunara en 1440 900
+GEOMETRY/ROUNDTRIP: 48/49 PASS; FAIL: E1 round-trip aunara/en (TimeoutError: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('button.workout-trigger').first()[22m
+[2m    )
+geometry-roundtrip exit=0

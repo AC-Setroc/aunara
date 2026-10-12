@@ -19,4 +19,4 @@
 … geometry aunara en 390 460
 … geometry aunara en 1440 900
 GEOMETRY/ROUNDTRIP: 52/52 PASS
-geo exit=0
+geometry-roundtrip exit=0

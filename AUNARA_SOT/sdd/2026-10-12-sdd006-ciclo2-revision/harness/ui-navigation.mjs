@@ -121,6 +121,16 @@ for (const base of Object.keys(BASES)) for (const lang of LANGS) for (const vp o
 
     // delete modal
     const deletes = () => log.filter((l) => l.path?.includes("delete-my-account")).length;
+    const saves = () => log.filter((l) => l.method === "POST" && l.path?.includes("repbook_user_data")).length;
+    const settleSave = async (pg, before) => {
+      const deadline = Date.now() + 20000;
+      while (Date.now() < deadline) {
+        const synced = await pg.evaluate(() => document.querySelector(".sync-trigger")?.classList.contains("is-synced") ?? false);
+        if (saves() > before && synced) return;
+        await pg.waitForTimeout(100);
+      }
+      throw new Error(`save did not settle: saves ${saves()} (before ${before})`);
+    };
     await page.getByRole("button", { name: s.deleteTrigger, exact: true }).click();
     const dialog = page.locator(".account-deletion[role=dialog]");
     const open1 = await dialog.isVisible();
@@ -143,11 +153,14 @@ for (const base of Object.keys(BASES)) for (const lang of LANGS) for (const vp o
     // Each language change is a snapshot change → debounced cloud save (800 ms). Two changes inside the debounce window
     // that return to the last saved snapshot leave useCloudSync in "syncing" (pre-existing in main, see receipt H-01);
     // we wait for the first save to settle so the step measures the modal, not that race.
+    // "Settled" = a new save POST happened and the trigger reads is-synced. Waiting on the class alone is not enough:
+    // in WebKit the check can run before React commits is-syncing, which let the second change fall inside the debounce.
+    let savesBefore = saves();
     await page.locator(".language-select select").selectOption(lang === "en" ? "es" : "en");
-    await page.waitForSelector(".sync-trigger.is-synced", { state: "attached", timeout: 20000 });
+    await settleSave(page, savesBefore); savesBefore = saves();
     await page.locator(".language-select select").selectOption(lang);
     const afterLang = await dialog.count() ? await input.inputValue() : "(closed)";
-    await page.waitForSelector(".sync-trigger.is-synced", { state: "attached", timeout: 20000 });
+    await settleSave(page, savesBefore);
     await page.waitForFunction(() => !document.querySelector(".account-deletion button[disabled]:first-of-type"), null, { timeout: 20000 }).catch(() => null);
     if (await dialog.count()) { await page.getByRole("button", { name: s.cancel }).click(); }
     const closedCancel = (await dialog.count()) === 0;
