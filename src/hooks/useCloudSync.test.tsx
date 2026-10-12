@@ -355,6 +355,73 @@ describe("password account access", () => {
     await waitFor(() => expect(result.current.status).toBe("synced"));
   });
 
+  describe("sensitive health data follows the consent status (SDD-011 H-02)", () => {
+    const sensitive = { ...snapshot, healthProfile: { ...snapshot.healthProfile, healthNotes: "rodilla derecha" }, checkIns: [{ id: "ci-1", date: "2026-10-05", weightKg: 81.5, sleepHours: 7, energy: 4, stress: 2, notes: "" }] };
+    const userWith = (consent: string | undefined, id = "consent-user") => ({ id, email: account.email, user_metadata: consent === undefined ? {} : { health_data_consent: consent } });
+    const lastSaved = () => save.mock.calls[save.mock.calls.length - 1][1];
+
+    it("uploads health data and check-ins only with granted consent", async () => {
+      for (const [consent, expectsData] of [["granted", true], ["declined", false], ["revoked", false], [undefined, false]] as const) {
+        vi.clearAllMocks(); load.mockResolvedValue(null); save.mockResolvedValue(undefined);
+        const { result, unmount } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: vi.fn(), client: testClient }));
+        await waitFor(() => expect(authStateHandler).toBeDefined());
+        act(() => authStateHandler?.("SIGNED_IN", { user: userWith(consent) }));
+        await waitFor(() => expect(result.current.status).toBe("synced"));
+        expect(save).toHaveBeenCalledTimes(1);
+        const payload = lastSaved();
+        expect(payload.healthProfile.healthNotes).toBe(expectsData ? "rodilla derecha" : "");
+        expect(payload.healthProfile.heightCm).toBe(expectsData ? 180 : null);
+        expect(payload.checkIns).toHaveLength(expectsData ? 1 : 0);
+        expect(payload.healthProfile.experience).toBe("intermediate");
+        unmount();
+      }
+    });
+
+    it("keeps the device's health data when the remote arrives without consent, then cleans the server copy", async () => {
+      const remote = { ...sensitive, profileName: "Otro", healthProfile: { ...sensitive.healthProfile, healthNotes: "subido antes del fix" } };
+      load.mockResolvedValue(remote);
+      const onRemote = vi.fn();
+      const { result } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: onRemote, client: testClient }));
+      await waitFor(() => expect(authStateHandler).toBeDefined());
+      act(() => authStateHandler?.("SIGNED_IN", { user: userWith("declined") }));
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(onRemote).toHaveBeenCalledTimes(1);
+      expect(onRemote.mock.calls[0][0].profileName).toBe("Otro");
+      expect(onRemote.mock.calls[0][0].healthProfile.healthNotes).toBe("rodilla derecha");
+      expect(onRemote.mock.calls[0][0].checkIns).toHaveLength(1);
+      // The legacy server copy still carries health data: the next save must withhold it.
+      await waitFor(() => expect(save).toHaveBeenCalledTimes(1), { timeout: 2000 });
+      expect(lastSaved().healthProfile.healthNotes).toBe("");
+      expect(lastSaved().checkIns).toEqual([]);
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+    });
+
+    it("removes health data from the server when consent is revoked and restores it when granted again", async () => {
+      const { result } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: vi.fn(), client: testClient }));
+      await waitFor(() => expect(authStateHandler).toBeDefined());
+      act(() => authStateHandler?.("SIGNED_IN", { user: userWith("granted") }));
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(lastSaved().healthProfile.healthNotes).toBe("rodilla derecha");
+      const savesBefore = save.mock.calls.length;
+
+      act(() => authStateHandler?.("USER_UPDATED", { user: userWith("revoked") }));
+      await waitFor(() => expect(save.mock.calls.length).toBeGreaterThan(savesBefore), { timeout: 3000 });
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(lastSaved().healthProfile.healthNotes).toBe("");
+      expect(lastSaved().healthProfile.heightCm).toBeNull();
+      expect(lastSaved().checkIns).toEqual([]);
+      expect(lastSaved().healthProfile.experience).toBe("intermediate");
+      const savesAfterRevoke = save.mock.calls.length;
+
+      load.mockResolvedValue(lastSaved());
+      act(() => authStateHandler?.("USER_UPDATED", { user: userWith("granted") }));
+      await waitFor(() => expect(save.mock.calls.length).toBeGreaterThan(savesAfterRevoke), { timeout: 3000 });
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(lastSaved().healthProfile.healthNotes).toBe("rodilla derecha");
+      expect(lastSaved().checkIns).toHaveLength(1);
+    });
+  });
+
   it("blocks duplicate pending recovery requests without cancelling the first", async () => {
     const request = deferred<any>();
     resetPasswordForEmail.mockReturnValueOnce(request.promise);
