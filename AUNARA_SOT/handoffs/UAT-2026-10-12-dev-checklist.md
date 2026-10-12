@@ -1,0 +1,47 @@
+# UAT manual sobre `dev` — guion para Codex y el Operator
+
+2026-10-12 · `[AUNARA/claude · modelo no expuesto]` · Base: `dev` = `551152e` (código: SDD-006 E2+E3+E4 `1d4ccc9`, SDD-011 H-01 `8db846e`, H-02 `13a1264`). Todo con APPROVED técnico en Chromium y WebKit; lo que sigue es lo que ningún harness puede acreditar: cuenta, correo, Safari e iPhone reales.
+
+## 1. Entorno de prueba
+
+El Operator no ejecuta terminal. Opciones evaluadas el 2026-10-12:
+
+| Opción | Qué es | Estado |
+|---|---|---|
+| A. Mac, worktree de `dev` + `npm run dev -- --host` con `.env.local` | Entorno más fiel (Supabase real, service worker en el simulador de Xcode) | **Codex la ejecuta en la Mac**; el Operator no corre procesos que no conoce. Receta abajo. |
+| B. Vercel preview `aunara-uat.vercel.app` desde el conector de la sesión | URL https en el iPhone real; proyecto separado, automáticos apagados, `noindex`, borrado al terminar | Viable (acceso GitHub y claves verificados). **No ejecutada**: el Operator prefirió esperar a Codex. Costos si se retoma: tercero fuera del inventario de cumplimiento; agregar `https://aunara-uat.vercel.app/**` a Supabase → Authentication → URL Configuration → Redirect URLs para que vuelvan los correos. |
+| C. Artifact de claude.ai | Descartada | Origen, enrutamiento y service worker no se comportan como en Pages; falsos negativos. |
+
+Receta A (Codex, en la Mac, sin tocar la carpeta canónica ni su dirty):
+
+```bash
+cd "$HOME/AI Projects/Personal/aunara"
+git fetch origin dev
+git worktree add "$HOME/aunara-uat" dev
+cp .env.local "$HOME/aunara-uat/.env.local"
+cd "$HOME/aunara-uat" && npm ci && npm run dev -- --host
+```
+
+Simulador de Xcode: `http://localhost:5173`. iPhone real en la misma Wi‑Fi: la dirección «Network» que imprime Vite (sin https no hay service worker: instalación y offline solo en simulador o producción). Build de producción local: `AUNARA_BASE_PATH=/ npm run build && npx serve -s dist/client -l 4173`. Al terminar: `git worktree remove "$HOME/aunara-uat"`. Usa Supabase real: cuentas, correos y datos son reales; usar una cuenta de prueba.
+
+## 2. Guion (marcar PASA / FALLA / NO PROBADO con evidencia: pantalla, pasos, qué se vio)
+
+| # | Qué probar | Qué debe verse | SDD |
+|---|---|---|---|
+| 1 | Crear cuenta con correo real, recibir y confirmar; ingresar; recuperar contraseña desde el enlace del correo | Formulario de nueva contraseña aparece sin esperas al volver del enlace; sesión queda activa | 003, 004 E2 |
+| 2 | Onboarding completo; y onboarding abandonado con solo el nombre o una preferencia | «Cuenta / privacidad» lista «Perfil y preferencias» en ambos casos; vacío total no la lista | 006 E4 |
+| 3 | Menú como invitado y con sesión | Invitado sin Biblioteca/Perfil/Salir; con sesión sí; Escape cierra y el foco vuelve al disparador | 006 CA06-02/03 |
+| 4 | Modal de borrado | Solo «ELIMINAR» exacto habilita; cambiar idioma resetea el campo; Escape no borra; borrar la cuenta de prueba y verificar en Supabase que desaparece | 006 CA06-04 |
+| 5 | Salud y consentimiento | Autorizar, cargar medidas y una nota: la fila en Supabase las tiene. Revocar: fila y perfil local sin ellas, preferencias intactas. **Sin autorización: ¿la pantalla deja escribir datos de salud?** (no verificado por harness) | 011 H-02 |
+| 6 | Cambios rápidos | Cambiar idioma dos veces seguidas con el modal de borrado abierto: Cancelar sigue activo | 011 H-01 |
+| 7 | Rutina con triserie | 8 reps, fallo técnico y 20 por lado; guardar, editar, exportar JSON, recargar; botón flotante no tapa nada en iPhone | 006 E1 |
+| 8 | Aviso de almacenamiento y diálogos legales | Dicen GitHub Pages y versión 1.0; Safari privado o «Bloquear todas las cookies» muestra «No se pudo iniciar Aunara», no pantalla en blanco | 002, 006 E3 |
+| 9 | Instalar como PWA (simulador) y abrir en standalone | La sección de instalación se oculta | 006 CA06-05 |
+| 10 | Dos dispositivos o navegadores con la misma cuenta | Cambios en uno aparecen en el otro al recargar; nombre y preferencias se mantienen | 003/004 |
+
+Un FALLA no se parchea en la UAT: se registra con evidencia y vuelve a Spec como hallazgo o enmienda.
+
+## 3. Después de la UAT
+
+- Si todo PASA: el Operator emite la orden de publicación (paso 3 de la [orden](../ordenes/ORDEN-2026-10-12-retomar-sdd006.md)): merge de `dev` a `main`, Actions verify + deploy, smoke en `https://aunaratraining.com/`, y verificar que el aviso ya dice GitHub Pages.
+- Decisiones abiertas del Operator: versión legal v1.0/v1.1 (ahora con H-02 como argumento adicional), H-03, CA-07 de Auth, feedback de Danny, dependencias `latest`.
