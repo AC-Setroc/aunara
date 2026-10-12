@@ -107,6 +107,13 @@ Esta fase comienza solo después de las puertas A y B.
 | DEV-06 | Completar traducción de interfaz/ejercicios | FB-03 | Sin mezcla involuntaria de idiomas; pendientes visibles y medibles | En curso previo |
 | DEV-07 | Proteger funcionalidades existentes | FB-01, FB-02 | Biblioteca, filtros, previews, rutas y cuenta pasan regresión | Pendiente |
 | DEV-08 | Separar nutrición Simple y por Macros | Datos corporales y consentimiento | Dos niveles de detalle, cálculo transparente, persistencia y pruebas | En UAT; revisión nutricional pendiente |
+| DEV-09 | Registrar sesiones reales por serie | Puertas A y B | Plan y ejecución quedan separados; cada serie conserva carga, repeticiones/tiempo y estado | Adoptado en diseño; pendiente |
+| DEV-10 | Herramientas de sesión | DEV-09 | Precarga anterior, descanso, tiempo de trabajo, reanudación y Wake Lock con degradación segura | Adoptado en diseño; pendiente |
+| DEV-11 | Capturar esfuerzo, técnica y tolerancia | DEV-09, MET-10 | RIR/RPE opcional, técnica, dolor y omisiones quedan registrados sin inferencias silenciosas | Adoptado en diseño; pendiente de metodología |
+| DEV-12 | Progresión explicable y confirmable | DEV-09, DEV-11, Puerta B | Cada propuesta muestra evidencia y regla; nunca modifica el plan sin aceptación | Adoptado en diseño; pendiente de metodología |
+| DEV-13 | Historial y progreso multidimensional | DEV-09 | Adherencia, volumen, carga y curvas identifican sus datos de origen | Adoptado en diseño; pendiente |
+| DEV-14 | Reprogramar una fecha sin cambiar la plantilla | DEV-01, DEV-09 | Un cambio puntual es visible, reversible y no altera la semana base | Adoptado en diseño; pendiente |
+| DEV-15 | Rutinas compartibles y ejercicios propios | Cierre del UAT personal | Exportación versionada no incluye salud/historial y la importación no sobrescribe | Futuro |
 
 ### Fase 4 — UAT y salida del producto personal
 
@@ -120,6 +127,8 @@ Esta fase comienza solo después de las puertas A y B.
 | UAT-06 | Móvil | iPhone Safari/PWA y Android Chrome/PWA | Flujos críticos completos y legibles | Pendiente |
 | UAT-07 | Escritorio | Safari/Chrome en tamaños acordados | Sin regresiones funcionales | Pendiente |
 | UAT-08 | Datos y privacidad | Separación entre usuarios, exportación, revocación y borrado | Evidencia de aislamiento y eliminación | Pendiente |
+| UAT-09 | Sesión interrumpida | Serie activa, segundo plano, cierre y reapertura | No duplica ni pierde series; temporizadores y estado se recuperan con claridad | Pendiente |
+| UAT-10 | Progresión | Éxito, sesión parcial, omisión, dolor, pausa y datos insuficientes | Solo propone cuando corresponde y exige confirmación | Pendiente |
 
 ### Fase 5 — Entrenador y marca blanca (posterior)
 
@@ -162,6 +171,15 @@ Esta fase queda deliberadamente pausada hasta cerrar el UAT personal.
 | 2026-08-26 | Matriz v0.1 entregada al entrenador | Registro de revisión metodológica | Producto/metodología |
 | 2026-08-26 | Condiciones, lesiones, acondicionamiento y progreso documentados | Anexo metodológico | Producto/metodología |
 | 2026-08-27 | Nutrición Simple y por Macros implementada para UAT | Spec, cálculo transparente y pruebas | Producto/desarrollo |
+| 2026-09-18 | OpenGym evaluado y funciones útiles incorporadas al plan sin copiar código AGPL | `2026-09-18-opengym-adoption-review.md` | Producto/arquitectura |
+| 2026-09-26 | UAT de tres superficies y OG-01 a OG-06 especificados; smoke UAT-00 ejecutado | `2026-09-26-device-uat-matrix.md` y SDD vinculado en el índice | Producto/arquitectura |
+
+La [matriz UAT](./2026-09-26-device-uat-matrix.md) distingue casos del producto
+actual de capacidades futuras. UAT-00 (acceso al home público) pasa en web,
+iPhone y Android; UAT-01 a UAT-10 siguen pendientes. El [SDD](../../AUNARA_SOT/sdd/2026-09-26-device-uat-and-session-engine/SPEC.md)
+requiere aprobación explícita antes de implementar OG-01 a OG-06. La
+[matriz v0.1 entregada a Danny](../methodology/workout-rules-matrix-v0.1.md)
+permanece intacta y el feedback sigue pendiente.
 
 ## 6. Definición de “terminado” de esta etapa
 

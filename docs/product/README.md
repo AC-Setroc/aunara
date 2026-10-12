@@ -1,6 +1,6 @@
 # Producto Aunara — índice de decisiones y avance
 
-Estado del índice: 27 de agosto de 2026.
+Estado del índice: 26 de septiembre de 2026.
 
 Este directorio concentra las decisiones de producto que deben aprobarse antes
 de convertirse en cambios de la aplicación. Su propósito es mantener separados:
@@ -15,6 +15,14 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
 - [Propuesta de home y seguridad metodológica](./2026-08-25-home-and-methodological-safety-proposal.md)
 - [Plan de trabajo derivado del feedback](./2026-08-25-feedback-work-plan.md)
 - [Planes nutricionales Simple y por Macros](./2026-08-27-dual-nutrition-plans.md)
+- [Evaluación de OpenGym y decisiones de adopción](./2026-09-18-opengym-adoption-review.md)
+- [Matriz UAT web, iPhone y Android](./2026-09-26-device-uat-matrix.md)
+- [SDD de UAT y motor de sesiones](../../AUNARA_SOT/sdd/2026-09-26-device-uat-and-session-engine/SPEC.md)
+
+La [matriz metodológica v0.1 para revisión de Danny](../methodology/workout-rules-matrix-v0.1.md)
+permanece congelada; el [registro de revisión](../methodology/2026-08-26-review-status.md)
+conserva su identidad y espera feedback. La nueva especificación no la aprueba
+ni modifica reglas de entrenamiento.
 
 ## Decisiones ya fijadas
 
@@ -36,6 +44,10 @@ de convertirse en cambios de la aplicación. Su propósito es mantener separados
    revisión. No se implementarán reglas médicas mientras se espera su feedback.
 9. Nutrición ofrece un modo Simple y otro por Macros. La primera versión por
    macros usa mantenimiento estimado y no aplica déficits o superávits ocultos.
+10. De OpenGym se adoptan como dirección funcional la sesión por series, los
+    temporizadores, el esfuerzo opcional, la progresión explicable, el historial
+    y la reprogramación por fecha. Se implementarán desde cero: no se copiará
+    código AGPL dentro del repositorio de Aunara.
 
 ## Estado de repositorios
 

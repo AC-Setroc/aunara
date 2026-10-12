@@ -30,7 +30,7 @@ El repo público `AC-Setroc/aunara` contiene la fuente y el workflow; la URL obj
 
 No agregar `AUNARA_SOT/reference/` ni otros documentos con datos personales al commit público sin revisión específica. El sitio raíz anterior puede tener un worker con scope `/` que controle también `/aunara/`; verificarlo en navegador antes de UAT/corte. Confirmar redirecciones de Supabase para `/aunara/`, instalar/actualizar la PWA en dispositivos de prueba y hacer smoke real. No retirar la publicación anterior ni limpiar cachés de usuarios por este runbook. Un build local no publica por sí mismo; el push/deploy sigue siendo un gate separado del Operator.
 
-**Bloqueo actual de cuenta:** Supabase Repbook está pausado; el límite de dos proyectos gratuitos activos impide reanudarlo sin decisión del Operator. Registro, login, sincronización y configuración de la allowlist de callback no se declaran verificados ni utilizables para UAT mientras siga pausado. No pausar otros proyectos ni cambiar de plan desde este runbook.
+**Estado actual de cuenta (2026-10-01):** por autorización del Operator, `mindally-test` está pausado y el proyecto existente ahora se llama Aunara, con estado `ACTIVE_HEALTHY` y consulta `select 1` correcta. Site URL y redirect exacto de Pages `https://ac-setroc.github.io/aunara/` quedaron guardados y verificados tras recargar; el redirect anterior se conservó por compatibilidad. Confirmación, recuperación, login y sync reales requieren UAT con correos nuevos; no se enviaron correos de prueba desde esta configuración. No pausar otros proyectos ni cambiar de plan desde este runbook.
 
 ## Última publicación verificada — 2026-10-01
 
