@@ -43,7 +43,63 @@ No agregar `AUNARA_SOT/reference/` ni otros documentos con datos personales al c
 | `wip/dirty-2026-10-12` | Snapshot sin revisar del working tree de la Mac (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`). Evidencia y respaldo; no es base de trabajo ni entrega. | ninguna |
 | `archive/github-pages/main` | Build compilado histórico (ago-2026) con base `/`, historia independiente. No tocar. | ninguna |
 
-Para refrescar el snapshot: ejecutar de nuevo `bash ~/push-dirty.sh` en la Mac cambiando `BRANCH` a una fecha nueva. El script arma el commit con un índice temporal, excluye `AUNARA_SOT/reference/` y entornos, muestra el delta y pide confirmación; no modifica la rama ni el índice canónicos. Una copia del script quedó en la raíz del snapshot por accidente; no versionarla en `dev` ni `main`.
+## Snapshots del trabajo local — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Dos scripts para la Mac del Operator. Ambos arman el commit con un índice temporal (`GIT_INDEX_FILE`), excluyen `AUNARA_SOT/reference/` y entornos, muestran el delta y piden `SI` antes de pushear; no modifican rama ni índice de ningún repo. El remoto es público: revisar el preview antes de confirmar.
+
+**`~/push-dirty.sh`** (ya ejecutado el 2026-10-12 → `wip/dirty-2026-10-12`): snapshot del working tree canónico `~/AI Projects/Personal/aunara`. Para refrescarlo, cambiar `BRANCH` a una fecha nueva. Una copia quedó en la raíz del snapshot por accidente; no versionarla en `dev` ni `main`.
+
+**`~/push-candidates.sh`** (paso 1 de la [orden vigente](ordenes/ORDEN-2026-10-12-retomar-sdd006.md)): copia los recibos de `/private/tmp/aunara-*` a `~/Documents/aunara-evidencias-<fecha>/` (local, no se publica) y pushea cada candidato `/private/tmp/aunara-sdd006-*candidate*/repo` como `wip/sdd006-<e2|e3|e4>-candidate-<fecha>`. Crear el archivo con `cat > ~/push-candidates.sh <<'FIN'` … `FIN` y correrlo con `bash ~/push-candidates.sh`.
+
+```bash
+#!/usr/bin/env bash
+# Respalda los candidatos de SDD-006 que viven en /private/tmp de la Mac:
+# 1) copia recibos/evidencias a ~/Documents (local, no se publica);
+# 2) pushea el working tree de cada candidato como rama wip/ con índice temporal,
+#    sin tocar los repos candidatos ni el canónico. Repo público: revisar el preview.
+set -euo pipefail
+REMOTE="https://github.com/AC-Setroc/aunara.git"
+DATE="$(date +%Y-%m-%d)"
+EVID="$HOME/Documents/aunara-evidencias-$DATE"
+
+echo "== 1. Copia local de recibos y evidencias (sin repos, .git ni node_modules) =="
+mkdir -p "$EVID"
+rsync -a --exclude 'repo' --exclude 'node_modules' --exclude '.git' /private/tmp/aunara-* "$EVID/" 2>/dev/null || true
+echo "   copiado a $EVID: $(find "$EVID" -type f | wc -l | tr -d ' ') archivos"
+
+echo "== 2. Candidatos en /private/tmp/aunara-sdd006-*candidate*/repo =="
+found=0
+for repo in /private/tmp/aunara-sdd006-*candidate*/repo; do
+  [ -d "$repo/.git" ] || continue
+  found=1
+  name="$(basename "$(dirname "$repo")")"
+  tag="$(echo "$name" | sed -E 's/^aunara-sdd006-([a-z0-9]+)-candidate.*/\1/')"
+  BRANCH="wip/sdd006-$tag-candidate-$DATE"
+  echo; echo "-- $name  →  origin/$BRANCH"
+  (
+    cd "$repo"
+    echo "   HEAD: $(git log -1 --format='%h %s' | cut -c1-90)"
+    export GIT_INDEX_FILE; GIT_INDEX_FILE="$(mktemp)"
+    git read-tree HEAD
+    git add -A -- . ':(exclude)AUNARA_SOT/reference' ':(exclude)**/.env' ':(exclude)**/.env.*' ':(exclude,glob)**/*.local'
+    echo "   delta del working tree sobre HEAD:"; git diff --cached --stat HEAD | tail -n 3 | sed 's/^/     /'
+    echo "   binarios (debería ser solo el wordmark o nada):"; git diff --cached --numstat HEAD | awk '$1=="-" && $2=="-" {print "     " $3}'
+    TREE="$(git write-tree)"
+    COMMIT="$(git commit-tree "$TREE" -p HEAD -m "wip: snapshot candidato $tag de SDD-006 ($DATE)
+
+Working tree de $repo sobre $(git rev-parse --short HEAD). Sin revisar; evidencia y respaldo.
+
+[AUNARA/operator · snapshot manual]")"
+    rm -f "$GIT_INDEX_FILE"; unset GIT_INDEX_FILE
+    read -r -p "   ¿Pushear $tag a origin/$BRANCH? (escribí SI) " ok </dev/tty
+    [ "$ok" = "SI" ] || { echo "   omitido"; exit 0; }
+    git push "$REMOTE" "$COMMIT:refs/heads/$BRANCH"
+    echo "   OK $COMMIT"
+  ) || echo "   ERROR en $name; sigo con el siguiente"
+done
+[ "$found" = 1 ] || echo "   (no se encontró ningún candidato: avisar al agente con la ruta real)"
+echo; echo "Listo. Ramas remotas wip/:"; git -C "$HOME/AI Projects/Personal/aunara" ls-remote --heads "$REMOTE" 'wip/*'
+```
 
 ## Última publicación verificada — 2026-10-01
 

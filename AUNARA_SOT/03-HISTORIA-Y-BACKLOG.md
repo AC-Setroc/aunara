@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟡 Diagnóstico prod vs SDD; orden y handoff para retomar SDD-006
+
+`[AUNARA/claude · modelo no expuesto]` — Prod (`main` `dfffa87`, código `1c709a3`) no contiene nada de SDD-002/003/004/006: delta sin publicar +2199/−309 líneas en 40 archivos y 138 tests más que prod, verificado por marcadores (`NavigationMenu`, `StorageNotice`, wordmark, `repetitionCount`, slogan) ausentes en `main` y presentes en `wip`. Cadena de dependencias 002/003/004 → E2 → E3 → E4 con dos ciclos restantes; candidatos solo en `/private/tmp`. El Operator aprobó el plan en cinco pasos: respaldar candidatos, terminar E4 y revisión conjunta, publicar con orden nueva, Auth/Danny/versión legal en paralelo, y si E4 falla volver a Spec partiendo 002+003. Se escriben la [orden](ordenes/ORDEN-2026-10-12-retomar-sdd006.md) para Codex, el [handoff](handoffs/HANDOFF-2026-10-12.md) y el script `push-candidates.sh` en el runbook. Sin cambios a código ni `main`.
+
 ## 2026-10-12 · 🟢 SDD-010 cerrado por el Operator; Enmienda 2 aplicada
 
 `[AUNARA/claude · modelo no expuesto]` — El Operator ejecutó el paso 6 del guion en su navegador: producción muestra «Versión 1.0 / vigente desde 2026-07-29» y «OpenAI Sites», prueba de que el SDD no tocó la app. Aprobó la Enmienda 2: la viñeta de GitHub Pages del inventario deja de decir «no pasan por GitHub» y precisa que GitHub no recibe datos de cuenta ni perfil, pero sí IP y agente de usuario de cada visitante, logs no verificados. Guardas en verde. Abiertos por diseño: versión legal v1.0/v1.1 y publicación de SDD-002.

@@ -4,7 +4,7 @@ Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo 
 
 ## Abiertos
 
-- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: decidir el destino del código de `origin/wip/dirty-2026-10-12` (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`): integrarlo a `dev` como WIP explícito o dejarlo solo en `wip` hasta APPROVED de E2+E3+E4. Hoy `dev` = `main` + documentación. El snapshot es evidencia, no entrega ni base de trabajo.
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: ejecutar la [orden de retomar SDD-006](ordenes/ORDEN-2026-10-12-retomar-sdd006.md). Paso 1 (Operator): `bash ~/push-candidates.sh` en la Mac para respaldar E2/E3/E4 y los recibos. Paso 2 (Codex): E4 ciclo 2 y revisión conjunta. Pasos 3–5 según la orden.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: los candidatos E2/E3/E4 de SDD-006 viven solo en `/private/tmp` de la Mac. Decidir si se snapshotean también en `wip` (misma técnica de índice temporal) antes de seguir el ciclo 2 de E3/E4.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: [SDD-010](sdd/SDD-010-compliance-docs-aunara.md) entregado en `dev` con revisión 3/3. Cierre del Operator ejecutado en navegador (paso 6: producción aún dice OpenAI Sites, como se esperaba) y **Enmienda 2 aplicada** («GitHub no recibe datos de la cuenta ni del perfil; … recibe IP y agente de usuario»). SDD-010 cerrado salvo lo que deja fuera por diseño: versión legal y publicación de SDD-002.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: decidir, con asesoría jurídica, si rebrand + hosting + dominio son cambio material que exige v1.1 y nueva aceptación. Fuera de SDD-010 por diseño; dueño Operator. Mientras tanto el aviso publicado en la app sigue diciendo «OpenAI Sites» hasta que se publique SDD-002.
@@ -52,6 +52,7 @@ Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo 
 
 ## Cerrados
 
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: destino del código de `wip/dirty-2026-10-12` decidido por el Operator: permanece en `wip` hasta APPROVED de E2+E3+E4; no se integra a `dev` como WIP.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: `AUNARA_SOT/reference/` agregado a `.gitignore` en `dev` por orden del Operator; `git check-ignore` lo confirma y nada estaba rastreado bajo esa ruta.
 - Site URL y redirect exacto de Pages guardados por autorización del Operator el 2026-10-01 y verificados tras recargar; redirect anterior conservado por compatibilidad, sin comodines ni cambios de permisos.
 - Pausa autorizada de `mindally-test` (`INACTIVE`) y reactivación del proyecto existente, renombrado a Aunara (`ACTIVE_HEALTHY`), el 2026-10-01. Consulta `select 1` correcta; sin borrar datos ni cambiar esquema.
