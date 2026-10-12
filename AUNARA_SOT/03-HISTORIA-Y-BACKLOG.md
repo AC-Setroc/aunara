@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟢 SDD-010 implementado, revisado 3/3 y entregado en `dev`
+
+`[AUNARA/claude · modelo no expuesto]` — Aprobación del Operator (D-10-1/2/4/5 según recomendación; D-10-3 sin cambio, canal diferido al correo propio). Build en worktree aislado, un commit por documento; línea base sin/con cambio medida con `grep` y suite 160/18 + Node1 idéntica. Build detectó contradicción interna del SDD (§4.4 vs CP-01/02) y paró; el Operator eligió acotar los criterios (Enmienda 1). Review con tres lentes en contexto limpio: Correctitud y Regresión APRUEBAN; Seguridad rechazó una frase falsa sobre el texto aceptado, corregida en ciclo 2 y aprobada. Guardas rotas a propósito y restauradas. NO-TOCAR byte a byte: `LegalPanel.tsx`, `privacy.ts`, `LEGAL_VERSION`. Abiertos: cierre del Operator en navegador, Enmienda 2 propuesta, decisión de versión legal, publicación de SDD-002.
+
 ## 2026-10-12 · 🟡 SDD-010 especificado: registro de cumplimiento al día, en revisión
 
 `[AUNARA/claude · modelo no expuesto]` — Por orden del Operator se especifica [SDD-010](sdd/SDD-010-compliance-docs-aunara.md): los cinco documentos de `docs/compliance/` siguen diciendo Repbook (11 menciones), OpenAI Sites como hosting y no nombran GitHub Pages, `aunaratraining.com` ni GoDaddy; conteos reproducibles con `grep`. Alcance solo documental, NO-TOCAR sobre `LegalPanel.tsx`, `privacy.ts` y `LEGAL_VERSION`; la decisión de materialidad queda explícitamente fuera. Guardas, línea base, contraprueba y guion de revisión en §7; cinco decisiones cerradas en §9. Sin edición de compliance, código ni publicación.

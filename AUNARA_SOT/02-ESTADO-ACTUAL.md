@@ -108,7 +108,7 @@ Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/claude �
 - Los cambios documentales previos de OpenGym/UAT ya están versionados en `dev`; los SDD trasladados conservan su estado de aprobación propio.
 - La rama `dev` no dispara CI: `ci.yml` escucha `main`, `codex/**` y PRs a `main`. Ampliar el trigger es un cambio de workflow que requiere orden.
 - Los candidatos E2/E3/E4 de SDD-006 existen solo en `/private/tmp` de la Mac; no hay snapshot en git. Una pérdida de esa máquina pierde ese trabajo.
-- `docs/compliance/` sigue fechado 2026-07-29 bajo la marca Repbook y nombra OpenAI Sites como hosting. [SDD-010](sdd/SDD-010-compliance-docs-aunara.md) especifica la actualización documental (marca, GitHub Pages, dominio, GoDaddy, almacenamiento del navegador) sin tocar la app ni la versión legal; **en revisión del Operator**, D-10-1 a D-10-5 abiertas. La decisión de materialidad v1.0/v1.1 queda fuera y pendiente.
+- [SDD-010](sdd/SDD-010-compliance-docs-aunara.md) **implementado y revisado**: los cinco docs de `docs/compliance/` describen Aunara, GitHub Pages, `aunaratraining.com` y GoDaddy, con sección «Cambios desde la versión 1.0» y decisión de versión explícitamente pendiente. Panel de tres lentes con contexto limpio: Correctitud y Regresión APRUEBAN en ciclo 1; Seguridad rechazó una frase (afirmaba que el texto aceptado no cambió; `4a17378` cambió la marca en 18 líneas del aviso), corregida en ciclo 2 y APRUEBA. Entregado en `dev`. Pendiente: cierre del Operator (paso 6 del guion, abrir Privacidad en `aunaratraining.com` y ver que aún dice OpenAI Sites) y decisión sobre la Enmienda 2 propuesta («los datos personales no pasan por GitHub» es impreciso: GitHub recibe IP y agente de usuario del visitante).
 
 ## Próxima acción
 
