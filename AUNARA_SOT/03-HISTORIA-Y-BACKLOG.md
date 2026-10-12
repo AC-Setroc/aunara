@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-11 · 🟡 SDD-006 E2 aprobada; integración y revisión pendientes
+
+`[AUNARA/codex · modelo no expuesto]` — El Operator respondió «Dale» a la solicitud explícita de aprobación de la Enmienda 2 y de la separación entre entrega técnica y cierre UAT. Autorizados D-CL1–4 con exclusiones documentales por defecto. Integración temporal sobre HEAD exacto y manifest por hunk; no absorber dirty ni editar nueva funcionalidad. Revisión independiente fresca y commit local siguen pendientes; sin stage/push/deploy canónicos ni cierre real de cuentas/correo/dispositivos/metodología.
+
 ## 2026-10-06 · 🟡 SDD-005 preparación local APPROVED; DNS/Auth/TLS pendientes
 
 `[AUNARA/codex · GPT-5]` — Delta aislado de cinco archivos técnicos y diez documentales sobre `ef82f9a`, sin dirty previo ni correo/usuarios. Revisión independiente **APPROVED solo prepublicación**: typecheck, 160 pruebas/18 + Node, directorio4, guards26, builds raíz/rollback y artifact30 PASS; UI Chromium/WebKit96/96 y negativos PASS. Propiedad/custom domain ya existen, pero DNS continúa WebsiteBuilder, Auth no incluye apex y HTTPS sigue no disponible. No hubo push, deploy ni operación externa; corte DNS/Auth/TLS y smoke publicado permanecen pendientes.

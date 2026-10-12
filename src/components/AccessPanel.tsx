@@ -16,7 +16,7 @@ import {
   UserRound,
   X,
 } from "lucide-react";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import type { InstallGuide } from "../lib/install";
 import { tr } from "../lib/i18n";
 import type { HealthDataConsentStatus, LanguageCode } from "../types";
@@ -27,6 +27,7 @@ export interface CloudAccessState {
   email: string | null;
   status: "local" | "syncing" | "synced" | "error";
   message?: string;
+  authErrorKind?: "credentials";
   pendingVerification?: PendingVerification | null;
   existingAccountEmail?: string | null;
   passwordRecoveryState?: "requested" | "ready" | null;
@@ -63,6 +64,7 @@ interface AccessPanelProps {
   onVerifyAccount?: (input: VerifyAccountInput) => void;
   onResendVerification?: (email: string) => void;
   onUseExistingAccount?: () => void;
+  onClearAuthError?: () => void;
   onRequestPasswordReset?: (email: string) => void;
   onUpdatePassword?: (password: string) => void;
   onSignIn: (input: PasswordSignInInput) => void;
@@ -76,6 +78,7 @@ interface AccessPanelProps {
   onChangeHealthConsent?: (status: HealthDataConsentStatus) => void;
   onDeleteData?: () => void;
   onDeleteAccount?: () => void;
+  dataSummary?: { profile: boolean; routes: number; favorites: number; checkIns: number; health: boolean };
 }
 
 const STATUS_LABELS: Record<CloudAccessState["status"], string> = {
@@ -101,9 +104,9 @@ export function AccessPanel({
   profileName,
   installGuide,
   onCreateAccount,
-  onVerifyAccount,
   onResendVerification,
   onUseExistingAccount,
+  onClearAuthError,
   onRequestPasswordReset,
   onUpdatePassword,
   onSignIn,
@@ -117,6 +120,7 @@ export function AccessPanel({
   onChangeHealthConsent,
   onDeleteData,
   onDeleteAccount,
+  dataSummary,
 }: AccessPanelProps) {
   const [mode, setMode] = useState<AccessMode>(initialMode);
   const [name, setName] = useState(() => {
@@ -129,14 +133,47 @@ export function AccessPanel({
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
   const [acceptedLegal, setAcceptedLegal] = useState(false);
   const [healthDataConsent, setHealthDataConsent] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteSubmitted, setDeleteSubmitted] = useState(false);
+  const deletionTrigger = useRef<HTMLButtonElement>(null);
+  const deletionPanel = useRef<HTMLDivElement>(null);
+  const [emailInvalid, setEmailInvalid] = useState(false);
+  const emailInput = useRef<HTMLInputElement>(null);
+  const conflictRecovery = useRef<HTMLButtonElement>(null);
+
+  function validatedEmail(candidate = email): string | null {
+    const value = candidate.trim();
+    // Aunara accepts public domains; this is not a claim about all RFC addresses.
+    const valid = /^[^\s@]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,63}$/i.test(value);
+    setEmailInvalid(!valid);
+    if (!valid) (emailInput.current ?? conflictRecovery.current)?.focus();
+    return valid ? value : null;
+  }
+
+  function changeMode(nextMode: AccessMode) {
+    if (nextMode === mode) return;
+    setMode(nextMode);
+    setEmailInvalid(false);
+    onClearAuthError?.();
+  }
+
+  function requestRecovery(candidate = email) {
+    if (cloud.status === "syncing") return;
+    const value = validatedEmail(candidate);
+    if (value) onRequestPasswordReset?.(value);
+  }
+
+  const recoveryMessage = tr(language,
+    "Recovery request processed. This does not confirm that an email was sent or delivered. If you receive the instructions, check your inbox and spam folder. If they do not arrive, you can try again later.",
+    "Solicitud de recuperación procesada. Esto no confirma que el correo se haya enviado o entregado. Si recibís las instrucciones, revisá tu bandeja de entrada y spam. Si no llegan, podés intentar nuevamente más tarde.");
+  const accessMessage = cloud.message ?? (cloud.passwordRecoveryState === "requested" && cloud.status === "local" ? recoveryMessage : undefined);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape" && !deleteOpen) onClose();
     };
     document.body.classList.add("modal-open");
     window.addEventListener("keydown", closeOnEscape);
@@ -144,13 +181,41 @@ export function AccessPanel({
       document.body.classList.remove("modal-open");
       window.removeEventListener("keydown", closeOnEscape);
     };
-  }, [onClose]);
+  }, [onClose, deleteOpen]);
+
+  function closeDeletion() {
+    if (deleteSubmitted || cloud.status === "syncing") return;
+    setDeleteOpen(false);
+    setDeleteConfirmation("");
+    deletionTrigger.current?.focus();
+  }
+  useEffect(() => { setDeleteConfirmation(""); }, [language, deleteOpen]);
+  useEffect(() => {
+    // The existing handler retains the account on error. Release the local
+    // double-submit latch so the person can cancel or explicitly retry.
+    if (cloud.status === "error") setDeleteSubmitted(false);
+  }, [cloud.status]);
+  useEffect(() => {
+    if (!deleteOpen) return;
+    deletionPanel.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { event.preventDefault(); event.stopImmediatePropagation(); closeDeletion(); }
+      if (event.key !== "Tab") return;
+      const controls = deletionPanel.current?.querySelectorAll<HTMLElement>("button:not(:disabled), input");
+      if (!controls?.length) return;
+      const first = controls[0]; const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", handleKey, true);
+    return () => window.removeEventListener("keydown", handleKey, true);
+  }, [deleteOpen, deleteSubmitted, cloud.status]);
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const normalizedName = name.trim();
-    const normalizedEmail = email.trim();
-    if (!normalizedEmail || !password) return;
+    const normalizedEmail = validatedEmail();
+    if (!normalizedEmail || password.length < 8 || cloud.status === "syncing") return;
     if (mode === "create") {
       if (!normalizedName || !acceptedLegal) return;
       onCreateAccount({
@@ -165,22 +230,11 @@ export function AccessPanel({
     onSignIn({ email: normalizedEmail, password });
   }
 
-  function verifyAccount(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const token = verificationCode.trim();
-    if (!cloud.pendingVerification || !/^\d{6}$/.test(token)) return;
-    onVerifyAccount?.({
-      email: cloud.pendingVerification.email,
-      token,
-    });
-  }
-
   function useExistingAccount() {
     if (!cloud.existingAccountEmail) return;
     setEmail(cloud.existingAccountEmail);
     setPassword("");
     setPasswordConfirmation("");
-    setVerificationCode("");
     setMode("sign-in");
     onUseExistingAccount?.();
   }
@@ -288,30 +342,28 @@ export function AccessPanel({
               </div>
               <h4>{tr(
                 language,
-                "An account is already associated with this email.",
-                "Ya existe una cuenta asociada a este correo.",
+                "This email is already registered. Would you like to recover your password?",
+                "Este correo ya está registrado. ¿Querés recuperar tu contraseña?",
               )}</h4>
-              <p>{tr(
-                language,
-                "Are you sure this is the correct email? If so, choose how you want to continue.",
-                "¿Estás seguro de que es el correo correcto? Si es así, elegí cómo querés continuar.",
-              )}</p>
               <div className="account-conflict-actions">
                 <button type="button" onClick={useExistingAccount} disabled={cloud.status === "syncing"}>
                   {tr(language, "Sign in here", "Iniciar sesión aquí")}
                 </button>
                 <button
                   type="button"
-                  onClick={() => onRequestPasswordReset?.(cloud.existingAccountEmail!)}
+                  ref={conflictRecovery}
+                  aria-describedby={emailInvalid ? "access-email-error" : undefined}
+                  onClick={() => requestRecovery(cloud.existingAccountEmail!)}
                   disabled={cloud.status === "syncing"}
                 >
-                  {tr(language, "Recover your password here", "Recuperar tu contraseña aquí")}
+                  {tr(language, "Recover password", "Recuperar contraseña")}
                 </button>
               </div>
-              {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
+              {emailInvalid && <small id="access-email-error" className="access-message is-error" role="alert">{tr(language, "Enter a complete public email address, such as you@example.com, without spaces.", "Ingresá un correo público completo, como vos@example.com, sin espacios.")}</small>}
+              {accessMessage && <small className={`access-message is-${cloud.status}`} role="status">{accessMessage}</small>}
             </div>
           ) : cloud.pendingVerification ? (
-            <form className="access-login account-verification" onSubmit={verifyAccount}>
+            <div className="access-login account-verification">
               <div className="verification-account">
                 <span>{tr(language, "Account created for", "Cuenta creada para")}</span>
                 <strong>{cloud.pendingVerification.name}</strong>
@@ -319,28 +371,9 @@ export function AccessPanel({
               </div>
               <p>{tr(
                 language,
-                "Open the confirmation link in your email or enter its six-digit code.",
-                "Abrí el enlace de confirmación del correo o ingresá su código de seis dígitos.",
+                "Open the confirmation link in your email to confirm your account and return to Aunara.",
+                "Abrí el enlace de confirmación del correo para confirmar tu cuenta y volver a Aunara.",
               )}</p>
-              <label>
-                <span>{tr(language, "Confirmation code", "Código de confirmación")}</span>
-                <span>
-                  <Mail size={17} />
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))}
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    pattern="\d{6}"
-                    maxLength={6}
-                    aria-label={tr(language, "Six-digit confirmation code", "Código de confirmación de seis dígitos")}
-                    placeholder="000000"
-                    required
-                  />
-                </span>
-              </label>
-              <button type="submit" disabled={cloud.status === "syncing" || verificationCode.length !== 6}>{tr(language, "Confirm account", "Confirmar cuenta")}</button>
               <button
                 className="verification-resend"
                 type="button"
@@ -350,12 +383,12 @@ export function AccessPanel({
                 {tr(language, "Resend confirmation email", "Reenviar correo de confirmación")}
               </button>
               {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
-            </form>
+            </div>
           ) : (
             <form className="access-login" onSubmit={submit}>
               <div className="access-mode" role="group" aria-label={tr(language, "Account access choice", "Opciones de acceso")}>
-                <button className={mode === "create" ? "is-active" : ""} type="button" onClick={() => setMode("create")}>{tr(language, "Create account", "Crear cuenta")}</button>
-                <button className={mode === "sign-in" ? "is-active" : ""} type="button" onClick={() => setMode("sign-in")}>{tr(language, "I already have an account", "Ya tengo una cuenta")}</button>
+                <button className={mode === "create" ? "is-active" : ""} type="button" onClick={() => changeMode("create")}>{tr(language, "Create account", "Crear cuenta")}</button>
+                <button className={mode === "sign-in" ? "is-active" : ""} type="button" onClick={() => changeMode("sign-in")}>{tr(language, "I already have an account", "Ya tengo una cuenta")}</button>
               </div>
               {mode === "create" && (
                 <label>
@@ -365,8 +398,9 @@ export function AccessPanel({
               )}
               <label>
                 <span>{tr(language, "Email address", "Correo electrónico")}</span>
-                <span><Mail size={17} /><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required /></span>
+                <span><Mail size={17} /><input ref={emailInput} type="text" inputMode="email" value={email} onChange={(event) => { setEmail(event.target.value); setEmailInvalid(false); }} onInvalid={(event) => { event.preventDefault(); setEmailInvalid(true); emailInput.current?.focus(); }} placeholder="you@example.com" autoComplete="email" required aria-invalid={emailInvalid} aria-describedby={emailInvalid ? "access-email-error" : undefined} /></span>
               </label>
+              {emailInvalid && <small id="access-email-error" className="access-message is-error" role="alert">{tr(language, "Enter a complete public email address, such as you@example.com, without spaces.", "Ingresá un correo público completo, como vos@example.com, sin espacios.")}</small>}
               <label>
                 <span>{tr(language, "Password", "Contraseña")}</span>
                 <span className="password-input">
@@ -400,7 +434,7 @@ export function AccessPanel({
                     <span>{tr(language, "and confirm I read the", "y confirmo que leí la")}</span>
                     <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>.
                   </label>
-                  <label>
+                  <label className="optional-health-consent">
                     <input
                       type="checkbox"
                       checked={healthDataConsent}
@@ -425,7 +459,13 @@ export function AccessPanel({
                 </div>
               )}
               <button type="submit" disabled={cloud.status === "syncing" || (mode === "create" && !acceptedLegal)}>{mode === "create" ? tr(language, "Create my account", "Crear mi cuenta") : tr(language, "Sign in", "Ingresar")}</button>
-              {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
+              {mode === "sign-in" && <button className="verification-resend" type="button" onClick={() => requestRecovery()} disabled={cloud.status === "syncing"}>{tr(language, "Recover password", "Recuperar contraseña")}</button>}
+              {mode === "sign-in" && cloud.authErrorKind === "credentials" && cloud.status === "error" ? (
+                <small className="access-message is-error" role="alert">
+                  {tr(language, "Your email or password do not match the registered details. Try again or ", "Tu correo o contraseña no coinciden con los datos registrados. Intentá de nuevo o ")}
+                  <button className="auth-recovery-action" type="button" onClick={() => requestRecovery()}>{tr(language, "recover your password", "recuperá tu contraseña")}</button>
+                </small>
+              ) : accessMessage && <small className={`access-message is-${cloud.status}`} role="status">{accessMessage}</small>}
               <small>{mode === "create" ? tr(language, "This account will include your profile, health context, tracks, routines, favorites, and weekly check-ins.", "Esta cuenta incluirá tu perfil, contexto de salud, rutas, rutinas, favoritos y registros semanales.") : tr(language, "Use the email and password from your Aunara account.", "Usá el correo y la contraseña de tu cuenta de Aunara.")}</small>
             </form>
           )}
@@ -435,6 +475,18 @@ export function AccessPanel({
           <section className="access-section privacy-center" aria-labelledby="privacy-center-title">
             <p className="section-kicker">{tr(language, "02 / Privacy center", "02 / Centro de privacidad")}</p>
             <h3 id="privacy-center-title">{tr(language, "Your data. Your decisions.", "Tus datos. Tus decisiones.")}</h3>
+            <div className="privacy-summary" aria-label={tr(language, "Stored data summary", "Resumen de datos guardados")}>
+              <strong>{tr(language, "Stored in your own context", "Guardado en tu propio contexto")}</strong>
+              <ul>
+                {dataSummary?.profile && <li>{tr(language, "Profile and preferences", "Perfil y preferencias")}</li>}
+                {Boolean(dataSummary?.routes) && <li>{tr(language, "Routes and prescriptions", "Rutas y prescripciones")}: {dataSummary?.routes}</li>}
+                {Boolean(dataSummary?.favorites) && <li>{tr(language, "Favorites", "Favoritos")}: {dataSummary?.favorites}</li>}
+                {Boolean(dataSummary?.checkIns) && <li>{tr(language, "Weekly check-ins", "Registros semanales")}: {dataSummary?.checkIns}</li>}
+                {dataSummary?.health && cloud.healthDataConsent === "granted" && <li>{tr(language, "Authorized health context", "Contexto de salud autorizado")}</li>}
+              </ul>
+              <p>{statusLabel(language, cloud.status)}. {tr(language, "This device stores your working copy; configured account synchronization can store it in the cloud.", "Este dispositivo guarda tu copia de trabajo; la sincronización de la cuenta configurada puede guardarla en la nube.")}</p>
+              <p>{cloud.healthDataConsent === "granted" ? tr(language, "Health authorization: granted", "Autorización de salud: otorgada") : tr(language, "Health authorization: not granted", "Autorización de salud: no otorgada")}</p>
+            </div>
             <p>{tr(
               language,
               "Export or correct your information, change sensitive-data authorization, or remove stored data.",
@@ -450,8 +502,11 @@ export function AccessPanel({
               )}
               <button className="is-danger" type="button" onClick={onDeleteData}><Trash2 size={16} /> {tr(language, "Delete my stored data", "Eliminar mis datos guardados")}</button>
             </div>
-            <div className="account-deletion">
-              <strong>{tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}</strong>
+            <button ref={deletionTrigger} className="account-deletion-trigger" type="button" onClick={() => { setDeleteSubmitted(false); setDeleteOpen(true); }}>{tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}</button>
+            {deleteOpen && <div className="account-deletion-backdrop">
+            <div className="account-deletion" ref={deletionPanel} role="dialog" aria-modal="true" aria-label={tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}>
+              <h3>{tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}</h3>
+              <button type="button" onClick={closeDeletion} disabled={deleteSubmitted || cloud.status === "syncing"}>{tr(language, "Cancel", "Cancelar")}</button>
               <p>{tr(
                 language,
                 "This removes the account and its Aunara data. Type DELETE to confirm.",
@@ -466,22 +521,23 @@ export function AccessPanel({
               <button
                 className="is-danger"
                 type="button"
-                disabled={deleteConfirmation !== tr(language, "DELETE", "ELIMINAR")}
-                onClick={onDeleteAccount}
+                disabled={deleteConfirmation !== tr(language, "DELETE", "ELIMINAR") || deleteSubmitted || cloud.status === "syncing"}
+                onClick={() => {
+                  if (deleteConfirmation !== tr(language, "DELETE", "ELIMINAR") || deleteSubmitted || cloud.status === "syncing") return;
+                  setDeleteSubmitted(true);
+                  onDeleteAccount?.();
+                }}
               >
                 <Trash2 size={16} /> {tr(language, "Delete my account permanently", "Eliminar mi cuenta permanentemente")}
               </button>
-            </div>
+            </div></div>}
           </section>
         )}
 
-        <section className="access-section" aria-labelledby="install-title">
+        {installGuide !== "installed" && <section className="access-section" aria-labelledby="install-title">
           <p className="section-kicker">{tr(language, cloud.email ? "03 / Install" : "02 / Install", cloud.email ? "03 / Instalación" : "02 / Instalación")}</p>
           <h3 id="install-title">{tr(language, "One app. Both phones.", "Una app para ambos teléfonos.")}</h3>
-          {installGuide === "installed" && (
-            <div className="install-ready"><Check size={18} /> {tr(language, "Installed on this device", "Instalada en este dispositivo")}</div>
-          )}
-          {onInstall && installGuide !== "installed" && (
+          {onInstall && (
             <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Aunara now", "Instalar Aunara ahora")}</button>
           )}
           <div className="install-guides">
@@ -494,7 +550,8 @@ export function AccessPanel({
               <div><strong>iPhone</strong><p>{tr(language, "Open Aunara in Safari, tap Share, then choose “Add to Home Screen”.", "Abrí Aunara en Safari, tocá Compartir y elegí “Agregar a pantalla de inicio”.")}</p></div>
             </article>
           </div>
-        </section>
+          {installGuide === "desktop" && <p>{tr(language, "On desktop, look for an install action in your browser menu or address bar. Availability depends on the browser. If absent, keep using Aunara in this tab. Installation does not guarantee all content is available offline.", "En escritorio, buscá la opción de instalar en el menú o la barra de tu navegador. Depende del navegador. Si no aparece, podés seguir usando Aunara en esta pestaña. Instalar no garantiza que todo el contenido esté disponible sin conexión.")}</p>}
+        </section>}
 
         <p className="access-privacy">{tr(language, "Health information stays private to the signed-in account. Aunara never uses the public exercise library to expose personal data.", "Tu información de salud permanece privada en tu cuenta. Aunara nunca usa la biblioteca pública de ejercicios para exponer datos personales.")}</p>
         <div className="access-legal-links">

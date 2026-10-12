@@ -4,6 +4,10 @@ Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 
 ## Verificado
 
+### 2026-10-11 — SDD-006 E2 aprobada; consolidación aislada en curso
+
+- `[AUNARA/codex · modelo no expuesto]` — El Operator aprobó la [Enmienda 2](sdd/SDD-006-enmienda-2-consolidacion-local.md), incluidas inclusión acotada de correcciones 002/003/004/006 y separación de commit técnico local respecto del cierre global/UAT. Integrador único prepara HEAD + manifest por hunk en copia temporal. Candidato, revisión fresca y commit todavía pendientes; source e índice canónicos preservados. Sin push ni publicación; gates reales/editoriales/metodológicos continúan abiertos.
+
 ### SDD-005 — preparación local APPROVED; corte externo pendiente
 
 - `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) aprobado e implementado solo como preparación local aislada sobre `ef82f9a`: revisión independiente **APPROVED prepublicación**, 160 pruebas/18 + Node, tipos, directorio4, guards26, builds raíz/rollback y artifacts30; matriz Chromium/WebKit96/96 y negativos PASS. GitHub autenticado confirma Verified y custom domain existente, pero DNS sigue WebsiteBuilder con `www` al apex y HTTPS no habilitable. Faltan redirect Auth nuevo, corte DNS, deploy, TLS/Enforce HTTPS y smoke publicado. Cero correo/usuarios/operaciones remotas; dirty previo fuera de entrega. Las menciones históricas al bloqueo Repbook no describen el proyecto Aunara activo de esta fase.

@@ -30,6 +30,7 @@ import { adultBirthDateBounds, calculateAgeFromBirthDate, createWellnessSummary 
 import type { HealthProfile, LanguageCode, TrainingTrack, WeeklyCheckIn } from "../types";
 import { ReadinessAndLimitations } from "./ReadinessAndLimitations";
 import { trackFocusLabel } from "./TrainingTracks";
+import { GoalPreferences, profileGoals, profileSport, validTrainingPreferences } from "./OnboardingPanel";
 
 interface ProfilePanelProps {
   language?: LanguageCode;
@@ -77,6 +78,8 @@ export function ProfilePanel({
   onRequestHealthConsent,
 }: ProfilePanelProps) {
   const [tab, setTab] = useState<ProfileTab>("overview");
+  const [preferences, setPreferences] = useState<HealthProfile>({ ...healthProfile, equipmentPreference: healthProfile.equipmentPreference ?? "mixed", trainingDaysPerWeek: healthProfile.trainingDaysPerWeek ?? 3, sessionMinutes: healthProfile.sessionMinutes ?? 45 });
+  const [preferencesSaved, setPreferencesSaved] = useState(false);
   const [foodQuery, setFoodQuery] = useState("");
   const [foodResults, setFoodResults] = useState<FoodSearchResult[]>([]);
   const [foodLoading, setFoodLoading] = useState(false);
@@ -200,6 +203,25 @@ export function ProfilePanel({
               <span>{tr(language, "Profile name", "Nombre del perfil")}</span>
               <input value={name} onChange={(event) => onNameChange(event.target.value)} placeholder={tr(language, "My profile", "Mi perfil")} />
             </label>
+
+            <form className="profile-training-preferences" onSubmit={(event) => {
+              event.preventDefault();
+              if (!validTrainingPreferences(preferences)) return;
+              onHealthProfileChange({ ...healthProfile, goals: profileGoals(preferences), primaryGoal: profileGoals(preferences)[0], sport: profileSport(preferences), equipmentPreference: preferences.equipmentPreference, trainingDaysPerWeek: preferences.trainingDaysPerWeek, sessionMinutes: preferences.sessionMinutes, experience: preferences.experience });
+              setPreferencesSaved(true);
+            }}>
+              <h3>{tr(language, "Training preferences", "Preferencias de entrenamiento")}</h3>
+              <GoalPreferences language={language} profile={preferences} onChange={setPreferences} />
+              <div className="health-form-grid">
+                <label className="health-field"><span>{tr(language, "Available equipment", "Equipo disponible")}</span><select value={preferences.equipmentPreference ?? "mixed"} onChange={(event) => setPreferences({ ...preferences, equipmentPreference: event.target.value as HealthProfile["equipmentPreference"] })}><option value="mixed">{tr(language, "Mixed", "Mixto")}</option><option value="bodyweight">{tr(language, "Bodyweight only", "Solo autocarga")}</option><option value="any">{tr(language, "All equipment", "Todo el equipo")}</option></select></label>
+                <label className="health-field"><span>{tr(language, "Training experience", "Experiencia entrenando")}</span><select value={preferences.experience} onChange={(event) => setPreferences({ ...preferences, experience: event.target.value as HealthProfile["experience"] })}><option value="beginner">{tr(language, "Beginner", "Principiante")}</option><option value="intermediate">{tr(language, "Intermediate", "Intermedio")}</option><option value="advanced">{tr(language, "Advanced", "Avanzado")}</option></select></label>
+                <label className="health-field"><span>{tr(language, "Training days per week", "Días de entrenamiento por semana")}</span><input type="number" min="1" max="7" required value={preferences.trainingDaysPerWeek ?? ""} onChange={(event) => setPreferences({ ...preferences, trainingDaysPerWeek: optionalNumber(event.target.value) ?? undefined })} /></label>
+                <label className="health-field"><span>{tr(language, "Minutes per session", "Minutos por sesión")}</span><input type="number" min="15" max="180" required value={preferences.sessionMinutes ?? ""} onChange={(event) => setPreferences({ ...preferences, sessionMinutes: optionalNumber(event.target.value) ?? undefined })} /></label>
+              </div>
+              <p>{tr(language, "Saving preferences does not change your existing routes. New suggestions use the first goal; combination rules are pending review.", "Guardar preferencias no cambia tus rutas existentes. Las nuevas propuestas usan el primer objetivo; las reglas de combinación están pendientes de revisión.")}</p>
+              <button type="submit" disabled={!validTrainingPreferences(preferences)}>{tr(language, "Save training preferences", "Guardar preferencias de entrenamiento")}</button>
+              {preferencesSaved && <small role="status">{tr(language, "Preferences saved. Existing routes are unchanged.", "Preferencias guardadas. Tus rutas no cambiaron.")}</small>}
+            </form>
 
             <div className="profile-stats">
               <div><Dumbbell size={18} /><strong>{tracks.length}</strong><span>{tr(language, "training tracks", "rutas de entrenamiento")}</span></div>
