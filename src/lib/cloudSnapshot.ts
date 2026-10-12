@@ -231,6 +231,100 @@ function isWeeklyCheckIn(value: unknown): boolean {
     && typeof value.notes === "string";
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// Sensitive health data and consent (SDD-011 H-02).
+// The compliance inventory classifies birth date, body measures and composition, limitations, symptoms, allergies,
+// nutrition preferences, energy, stress and sleep as sensitive health data under a separate, revocable authorization.
+// Training preferences (goal, sport, equipment, days, minutes, experience) and the onboarding flags are not.
+// ---------------------------------------------------------------------------------------------------------------
+
+export interface SensitiveDataPolicy {
+  consentGranted: boolean;
+  defaultHealthProfile: HealthProfile;
+}
+
+const SENSITIVE_HEALTH_FIELDS = [
+  "birthDate",
+  "ageYears",
+  "metabolicSex",
+  "heightCm",
+  "currentWeightKg",
+  "targetWeightKg",
+  "waistCm",
+  "bodyFatPercent",
+  "musclePercent",
+  "visceralFatLevel",
+  "activityLevel",
+  "dietaryPattern",
+  "nutritionPlanMode",
+  "macroMealsPerDay",
+  "preferredIngredients",
+  "allergies",
+  "healthNotes",
+  "readinessScreen",
+  "limitations",
+] as const satisfies readonly (keyof HealthProfile)[];
+
+type SensitiveHealthField = (typeof SENSITIVE_HEALTH_FIELDS)[number];
+
+function sensitiveProjection(profile: HealthProfile): Partial<HealthProfile> {
+  const projection: Partial<HealthProfile> = {};
+  for (const field of SENSITIVE_HEALTH_FIELDS) {
+    if (profile[field] !== undefined) (projection as Record<SensitiveHealthField, unknown>)[field] = profile[field];
+  }
+  return projection;
+}
+
+function stableStringify(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(",")}]`;
+  if (isRecord(value)) {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function replaceSensitiveFields(profile: HealthProfile, source: HealthProfile): HealthProfile {
+  const next: Partial<HealthProfile> = { ...profile };
+  for (const field of SENSITIVE_HEALTH_FIELDS) delete next[field];
+  // Every required HealthProfile field is either non-sensitive (kept above) or sensitive and restored from `source`.
+  return { ...next, ...sensitiveProjection(source) } as HealthProfile;
+}
+
+function carriesSensitiveData(snapshot: RepbookCloudSnapshot, defaults: HealthProfile): boolean {
+  return snapshot.checkIns.length > 0
+    || stableStringify(sensitiveProjection(snapshot.healthProfile)) !== stableStringify(sensitiveProjection(defaults));
+}
+
+/** The snapshot with every sensitive health field reset to its default and no check-ins; preferences are kept. */
+export function withholdSensitiveData(snapshot: RepbookCloudSnapshot, defaults: HealthProfile): RepbookCloudSnapshot {
+  return { ...snapshot, healthProfile: replaceSensitiveFields(snapshot.healthProfile, defaults), checkIns: [] };
+}
+
+/** What may leave the device: the full snapshot only while the health-data authorization is granted. */
+export function outboundSnapshot(snapshot: RepbookCloudSnapshot, policy: SensitiveDataPolicy): RepbookCloudSnapshot {
+  return policy.consentGranted ? snapshot : withholdSensitiveData(snapshot, policy.defaultHealthProfile);
+}
+
+/**
+ * How a remote snapshot is applied on this device. Without consent the server never holds sensitive data, so the
+ * device keeps its own. With consent the remote wins, unless it carries no sensitive data while the device does:
+ * that remote was written while consent was withheld and must not erase the person's local health data.
+ */
+export function reconcileRemoteSnapshot(
+  local: RepbookCloudSnapshot,
+  remote: RepbookCloudSnapshot,
+  policy: SensitiveDataPolicy,
+): RepbookCloudSnapshot {
+  const keepLocalSensitiveData = !policy.consentGranted
+    || (!carriesSensitiveData(remote, policy.defaultHealthProfile) && carriesSensitiveData(local, policy.defaultHealthProfile));
+  if (!keepLocalSensitiveData) return remote;
+  return {
+    ...remote,
+    healthProfile: replaceSensitiveFields(remote.healthProfile, local.healthProfile),
+    checkIns: local.checkIns,
+  };
+}
+
 export function createRepbookSnapshot(_input: SnapshotInput): RepbookCloudSnapshot {
   return {
     schemaVersion: 1,

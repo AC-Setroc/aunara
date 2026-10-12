@@ -9,10 +9,14 @@ import type {
 } from "../components/AccessPanel";
 import {
   normalizeRepbookSnapshot,
+  outboundSnapshot,
+  reconcileRemoteSnapshot,
   selectBootstrapSnapshot,
   type RepbookCloudSnapshot,
+  type SensitiveDataPolicy,
 } from "../lib/cloudSnapshot";
 import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
+import { DEFAULT_HEALTH_PROFILE } from "../lib/healthProfile";
 import { tr } from "../lib/i18n";
 import { publicBaseUrl } from "../lib/publicBase";
 import { LEGAL_VERSION } from "../lib/privacy";
@@ -55,6 +59,12 @@ function consentStatusFromUser(user: User | null): HealthDataConsentStatus | nul
   return value === "granted" || value === "declined" || value === "revoked"
     ? value
     : null;
+}
+
+function sensitiveDataPolicy(user: User | null): SensitiveDataPolicy {
+  // SDD-011 H-02: sensitive health data leaves the device only while the authorization is "granted";
+  // "declined", "revoked" and an unanswered (null) authorization all withhold it.
+  return { consentGranted: consentStatusFromUser(user) === "granted", defaultHealthProfile: DEFAULT_HEALTH_PROFILE };
 }
 
 type AuthFailure = "credentials" | "confirmation" | "email" | "password" | "rate" | "expired" | "unavailable" | "legal" | "unknown";
@@ -263,16 +273,25 @@ export function useCloudSync({
       .then(async (remoteValue) => {
         if (!active) return;
         const local = latestSnapshot.current;
+        const policy = sensitiveDataPolicy(user);
         const remote = remoteValue
           ? normalizeRepbookSnapshot(remoteValue, local)
           : null;
-        const bootstrap = selectBootstrapSnapshot(local, remote);
+        const bootstrap = selectBootstrapSnapshot(local, remote && reconcileRemoteSnapshot(local, remote, policy));
 
-        lastSavedSnapshot.current = JSON.stringify(bootstrap.snapshot);
         if (bootstrap.action === "use-remote") {
           onRemoteSnapshotRef.current(bootstrap.snapshot);
+          // The server row must match what this device is allowed to send: a legacy copy written before consent was
+          // withheld is cleaned here, and sensitive data kept locally under granted consent is restored here, so the
+          // server is consistent even if the person changes nothing afterwards.
+          const payload = outboundSnapshot(bootstrap.snapshot, policy);
+          const serialized = JSON.stringify(payload);
+          if (serialized !== JSON.stringify(remote)) await store.save(user.id, payload);
+          lastSavedSnapshot.current = serialized;
         } else {
-          await store.save(user.id, bootstrap.snapshot);
+          const payload = outboundSnapshot(bootstrap.snapshot, policy);
+          lastSavedSnapshot.current = JSON.stringify(payload);
+          await store.save(user.id, payload);
         }
         if (!active) return;
         bootstrappedUserId.current = user.id;
@@ -292,7 +311,8 @@ export function useCloudSync({
   useEffect(() => {
     if (!client || !user || bootstrappedUserId.current !== user.id) return;
 
-    const serialized = JSON.stringify(snapshot);
+    const payload = outboundSnapshot(snapshot, sensitiveDataPolicy(user));
+    const serialized = JSON.stringify(payload);
     if (serialized === lastSavedSnapshot.current) {
       // The snapshot went back to what is already saved before the pending save fired: nothing to upload, and the
       // "syncing" this effect announced must not outlive the change that caused it.
@@ -307,7 +327,7 @@ export function useCloudSync({
     setStatus("syncing");
     const timer = window.setTimeout(() => {
       const store = createCloudStore(client as unknown as CloudStoreClient);
-      store.save(user.id, snapshot)
+      store.save(user.id, payload)
         .then(() => {
           lastSavedSnapshot.current = serialized;
           debouncedSavePending.current = false;

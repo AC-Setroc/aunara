@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { buildPersonalDataExport } from "./privacy";
 import type { HealthProfile, TrainingTrack, WeeklyCheckIn } from "../types";
+import { DEFAULT_HEALTH_PROFILE } from "./healthProfile";
 import {
+  outboundSnapshot,
+  reconcileRemoteSnapshot,
+  withholdSensitiveData,
   createRepbookSnapshot,
   normalizeRepbookSnapshot,
   selectBootstrapSnapshot,
@@ -230,3 +234,103 @@ describe("cloud snapshots", () => {
     });
   });
 });
+
+describe("sensitive health data and consent (SDD-011 H-02)", () => {
+  const sensitiveProfile: HealthProfile = {
+    ...DEFAULT_HEALTH_PROFILE,
+    onboardingCompleted: true,
+    primaryGoal: "endurance",
+    goals: ["general-fitness"],
+    sport: "running",
+    equipmentPreference: "bodyweight",
+    trainingDaysPerWeek: 4,
+    sessionMinutes: 30,
+    experience: "intermediate",
+    healthDataMode: "personalized",
+    birthDate: "1990-05-01",
+    ageYears: 36,
+    metabolicSex: "male",
+    heightCm: 180,
+    currentWeightKg: 82,
+    targetWeightKg: 78,
+    waistCm: 86,
+    bodyFatPercent: 18,
+    activityLevel: "very-active",
+    dietaryPattern: "vegetarian",
+    nutritionPlanMode: "macros",
+    macroMealsPerDay: 5,
+    preferredIngredients: ["lentejas"],
+    allergies: "maní",
+    healthNotes: "rodilla derecha",
+    readinessScreen: { confirmed: true, chestPain: false, dizzinessOrFainting: false, medicallySupervisedOnly: false, musculoskeletalConcern: true },
+    limitations: [{ id: "lim-1", area: "knee", side: "right", status: "recovering", restrictedMovements: ["deep-knee-flexion"], professionalGuidance: "", professionalReview: "not-reviewed" }],
+  };
+  const checkIn: WeeklyCheckIn = { id: "ci-1", date: "2026-10-05", weightKg: 81.5, sleepHours: 7, energy: 4, stress: 2, notes: "" };
+  const base = { schemaVersion: 1 as const, profileName: "Alejandro", language: "es" as const, favoriteIds: ["0514"], tracks: [] as TrainingTrack[], activeTrackId: "", tracksInitialized: true };
+  const local = { ...base, healthProfile: sensitiveProfile, checkIns: [checkIn] };
+  const policy = (consentGranted: boolean) => ({ consentGranted, defaultHealthProfile: DEFAULT_HEALTH_PROFILE });
+
+  it("withholds every sensitive field and all check-ins but keeps non-sensitive preferences and onboarding", () => {
+    const withheld = withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE);
+    expect(withheld.checkIns).toEqual([]);
+    const profile = withheld.healthProfile;
+    expect(profile.onboardingCompleted).toBe(true);
+    expect(profile.healthDataMode).toBe("personalized");
+    expect(profile.primaryGoal).toBe("endurance");
+    expect(profile.goals).toEqual(["general-fitness"]);
+    expect(profile.sport).toBe("running");
+    expect(profile.equipmentPreference).toBe("bodyweight");
+    expect(profile.trainingDaysPerWeek).toBe(4);
+    expect(profile.sessionMinutes).toBe(30);
+    expect(profile.experience).toBe("intermediate");
+    expect(profile.birthDate).toBe("");
+    expect(profile.ageYears).toBeNull();
+    expect(profile.metabolicSex).toBe("unspecified");
+    expect(profile.heightCm).toBeNull();
+    expect(profile.currentWeightKg).toBeNull();
+    expect(profile.targetWeightKg).toBeNull();
+    expect(profile.waistCm).toBeNull();
+    expect(profile).not.toHaveProperty("bodyFatPercent");
+    expect(profile).not.toHaveProperty("preferredIngredients");
+    expect(profile.activityLevel).toBe("moderate");
+    expect(profile.dietaryPattern).toBe("omnivore");
+    expect(profile.nutritionPlanMode).toBe("simple");
+    expect(profile.macroMealsPerDay).toBe(4);
+    expect(profile.allergies).toBe("");
+    expect(profile.healthNotes).toBe("");
+    expect(profile.readinessScreen).toEqual(DEFAULT_HEALTH_PROFILE.readinessScreen);
+    expect(profile.limitations).toEqual([]);
+    expect(JSON.stringify(withheld)).not.toContain("rodilla");
+    expect(JSON.stringify(withheld)).not.toContain("maní");
+    expect(local.healthProfile.healthNotes).toBe("rodilla derecha");
+  });
+
+  it("sends the full snapshot only with granted consent", () => {
+    expect(outboundSnapshot(local, policy(true))).toEqual(local);
+    expect(outboundSnapshot(local, policy(false))).toEqual(withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE));
+  });
+
+  it("keeps local sensitive data and check-ins when consent is not granted, taking the rest from the remote", () => {
+    const remote = { ...withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE), profileName: "Otro dispositivo", favoriteIds: ["0001"], healthProfile: { ...withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE).healthProfile, trainingDaysPerWeek: 5 } };
+    const reconciled = reconcileRemoteSnapshot(local, remote, policy(false));
+    expect(reconciled.profileName).toBe("Otro dispositivo");
+    expect(reconciled.favoriteIds).toEqual(["0001"]);
+    expect(reconciled.healthProfile.trainingDaysPerWeek).toBe(5);
+    expect(reconciled.healthProfile.healthNotes).toBe("rodilla derecha");
+    expect(reconciled.healthProfile.bodyFatPercent).toBe(18);
+    expect(reconciled.healthProfile.limitations).toEqual(sensitiveProfile.limitations);
+    expect(reconciled.checkIns).toEqual([checkIn]);
+  });
+
+  it("with granted consent the remote wins, except when the remote carries no sensitive data and the device does", () => {
+    const remoteWithData = { ...local, healthProfile: { ...sensitiveProfile, healthNotes: "remoto" }, checkIns: [] };
+    expect(reconcileRemoteSnapshot(local, remoteWithData, policy(true))).toEqual(remoteWithData);
+    const strippedRemote = withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE);
+    const reconciled = reconcileRemoteSnapshot(local, strippedRemote, policy(true));
+    expect(reconciled.healthProfile.healthNotes).toBe("rodilla derecha");
+    expect(reconciled.checkIns).toEqual([checkIn]);
+    const emptyDevice = { ...local, healthProfile: withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE).healthProfile, checkIns: [] };
+    expect(reconcileRemoteSnapshot(emptyDevice, strippedRemote, policy(true))).toEqual(strippedRemote);
+  });
+});
+
