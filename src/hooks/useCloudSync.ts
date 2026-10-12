@@ -161,6 +161,9 @@ export function useCloudSync({
   const onSignedOutRef = useRef(onSignedOut);
   const bootstrappedUserId = useRef<string | null>(null);
   const lastSavedSnapshot = useRef("");
+  // True while the debounced save below owns the "syncing" status: set when it schedules a save, cleared when the
+  // save settles or when the change is reverted before the timer fires (SDD-011 H-01).
+  const debouncedSavePending = useRef(false);
   const recordedConsentIds = useRef(new Set<string>());
 
   latestSnapshot.current = snapshot;
@@ -290,25 +293,36 @@ export function useCloudSync({
     if (!client || !user || bootstrappedUserId.current !== user.id) return;
 
     const serialized = JSON.stringify(snapshot);
-    if (serialized === lastSavedSnapshot.current) return;
+    if (serialized === lastSavedSnapshot.current) {
+      // The snapshot went back to what is already saved before the pending save fired: nothing to upload, and the
+      // "syncing" this effect announced must not outlive the change that caused it.
+      if (debouncedSavePending.current) {
+        debouncedSavePending.current = false;
+        setStatus("synced");
+      }
+      return;
+    }
 
+    debouncedSavePending.current = true;
     setStatus("syncing");
     const timer = window.setTimeout(() => {
       const store = createCloudStore(client as unknown as CloudStoreClient);
       store.save(user.id, snapshot)
         .then(() => {
           lastSavedSnapshot.current = serialized;
+          debouncedSavePending.current = false;
           setStatus("synced");
           setMessage(undefined);
         })
         .catch((error: unknown) => {
+          debouncedSavePending.current = false;
           setStatus("error");
           setMessage(error instanceof Error ? error.message : "Cloud sync is unavailable.");
         });
     }, 800);
 
     return () => window.clearTimeout(timer);
-  }, [client, snapshot, user]);
+  }, [client, snapshot, user, setStatus, setMessage]);
 
   const createAccount = useCallback(async ({
     name,
