@@ -25,9 +25,10 @@ cuando corresponda, una nueva aceptación.
 ## Cambios desde la versión 1.0
 
 Hechos ocurridos después de la fecha de vigencia. Ninguno modificó la versión
-jurídica ni el texto aceptado por los titulares.
+jurídica; el texto en pantalla cambió solo en la marca (fila 1) y conserva la
+versión 1.0.
 
-| Fecha | Cambio | Commit | Versión jurídica |
+| Fecha de publicación | Cambio | Commit | Versión jurídica |
 | --- | --- | --- | --- |
 | 2026-08-08 | Marca Repbook → Aunara en la aplicación y sus textos legales | `4a17378` | Sin cambio (1.0) |
 | 2026-10-01 | Hosting de la web pública: OpenAI Sites → GitHub Pages, desde el repositorio público `AC-Setroc/aunara` | `fc88568` | Sin cambio (1.0) |
