@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟡 SDD-011: H-01 construido en candidato aislado; H-02 especificado con decisiones
+
+`[AUNARA/claude · modelo no expuesto]` — Orden «Corregí vos los hallazgos». H-01: ref propio del efecto de debounce en `useCloudSync.ts`, test rojo (`expected 'syncing' to be 'synced'`) → verde, suite 349/25, typecheck, builds ambas bases allowlist 32, negativo compilado en Chromium y WebKit; candidato `96b71c8` sobre `6704681`, matrices del ciclo 2 repitiéndose sobre su build. H-02: diseño con filtro por consentimiento en el snapshot, preservación de la salud local en bootstrap y revocación = fila con defaults; decisiones D-11-1…D-11-4 al Operator. La propuesta de conservar progreso «anonimizado» para entrenar sugerencias se deja fuera con razones medibles (sin consumidor, finalidad no declarada, reidentificable con pocos usuarios, parte del progreso es sensible).
+
 ## 2026-10-12 · 🟢 Ciclo 2 de SDD-006: WebKit instalado y mitad completada; APPROVED técnico E2+E3+E4
 
 `[AUNARA/claude · modelo no expuesto]` — El Operator permitió `playwright.download.prss.microsoft.com` en la red del entorno; se instaló WebKit 26.0 (build 2215) con sus dependencias apt y se corrieron las siete matrices completas en WebKit: 276, 84, 42, 84, 156, 52 y negativos 6/6, todo PASS. Intento 1 de WebKit dejó 5 + 1 timeouts atribuibles al harness (espera satisfecha con estado viejo antes del pintado de React; `isVisible()` instantáneo del flotante); corregido el guion, intento 2 verde y Chromium repetido con el guion final. Lente de seguridad por HTTP agregada. Veredicto del recibo pasa de NO CONCLUYENTE a **APPROVED técnico**, con caveat de un solo revisor. Hallazgo nuevo H-02 (salud sincronizada sin `granted`, preexistente) a PENDIENTES junto a H-01. Sin código en `dev`; commit integrado pendiente de confirmación del Operator.
