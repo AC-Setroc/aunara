@@ -89,8 +89,8 @@ No toca dinero, arqueo ni aislamiento de datos. No requiere decisión escrita ad
 
 | ID | Criterio binario |
 |---|---|
-| CP-01 | `grep -rn 'Repbook' docs/compliance` devuelve 0, salvo líneas que citan un identificador técnico en backticks (`repbook-*`, `repbook_user_data`) con la aclaración «nombre interno heredado». |
-| CP-02 | `grep -rn 'OpenAI' docs/compliance` devuelve 0. `grep -rn 'GitHub Pages' docs/compliance` devuelve ≥ 2 (inventario y contactos). `grep -rn 'aunaratraining.com' docs/compliance` devuelve ≥ 1. `grep -rn 'GoDaddy' docs/compliance` devuelve ≥ 2 (inventario y contactos). |
+| CP-01 | Fuera de la sección «Cambios desde la versión 1.0» del README, `Repbook` aparece 0 veces en `docs/compliance/` (comando de la Enmienda 1). Dentro de esa sección puede aparecer como hecho histórico. Identificadores técnicos en backticks (`repbook-*`) se citan en minúscula con la aclaración «nombre interno heredado». |
+| CP-02 | Fuera de la sección «Cambios desde la versión 1.0», `OpenAI` aparece 0 veces (mismo comando). `grep -rn 'GitHub Pages' docs/compliance` devuelve ≥ 2 (inventario y contactos). `grep -rn 'aunaratraining.com' docs/compliance` devuelve ≥ 1. `grep -rn 'GoDaddy' docs/compliance` devuelve ≥ 2 (inventario y contactos). |
 | CP-03 | `README.md` de compliance contiene la sección «Cambios desde la versión 1.0» con las tres filas fechadas y SHA, y una línea que dice que la versión jurídica sigue en 1.0 y que la decisión de materialidad está pendiente. |
 | CP-04 | La viñeta de hosting del inventario no contiene «controla el acceso» ni ninguna afirmación de plazo, región o respaldo de GitHub/GoDaddy. |
 | CP-05 | El inventario describe almacenamiento del navegador con los tres mecanismos (claves locales, sesión Supabase, Cache API) y la frase que limita la evidencia a visita invitada. |
@@ -104,8 +104,8 @@ No existe lint de documentación en el repo y este SDD no añade código. Las gu
 
 | Guarda | Qué protege | Cómo se rompe a propósito | Qué se ve al romperla |
 |---|---|---|---|
-| `grep -rn 'Repbook' docs/compliance` | Marca vigente | En copia disposable, reinsertar «Repbook» en `media-rights.md:10` | Conteo pasa de 0 a 1 → CP-01 REJECTED |
-| `grep -rn 'OpenAI' docs/compliance` | Hosting real | Reinsertar la viñeta original de `data-processing-inventory.md:13` | Conteo 1 → CP-02 REJECTED |
+| Conteo de `Repbook` fuera de la sección histórica (comando Enmienda 1) | Marca vigente | En copia disposable, reinsertar «Repbook» en `media-rights.md:10` | Conteo pasa de 0 a 1 → CP-01 REJECTED |
+| Conteo de `OpenAI` fuera de la sección histórica (mismo comando) | Hosting real | Reinsertar la viñeta original de `data-processing-inventory.md:13` | Conteo 0 → 1 → CP-02 REJECTED |
 | `grep -rn 'controla el acceso' docs/compliance` | No prometer control de acceso inexistente | Dejar la frase original | Conteo 1 → CP-04 REJECTED |
 | `git diff --stat dev -- src public .github` | Que el SDD no toque la app | Aplicar el hunk de SDD-002 en `LegalPanel.tsx` dentro del candidato | diff no vacío → CP-06 REJECTED |
 | `grep -c 'Cambios desde la versión 1.0' docs/compliance/README.md` | Que la decisión pendiente quede escrita | Omitir la sección | 0 → CP-03 REJECTED |
@@ -114,9 +114,11 @@ No existe lint de documentación en el repo y este SDD no añade código. Las gu
 
 | Métrica | Sin el cambio (`dev` hoy) | Con el cambio (esperado) |
 |---|---:|---:|
-| `Repbook` en `docs/compliance` | 11 | 0 (+ identificadores en backticks, si se citan) |
+| `Repbook` fuera de la sección histórica | 11 | 0 |
+| `Repbook` total (incluye histórica) | 11 | 1 |
 | `Aunara` | 0 | ≥ 8 |
-| `OpenAI` | 1 | 0 |
+| `OpenAI` fuera de la sección histórica | 1 | 0 |
+| `OpenAI` total (incluye histórica) | 1 | 2 |
 | `GitHub Pages` | 0 | ≥ 2 |
 | `aunaratraining.com` | 0 | ≥ 1 |
 | `GoDaddy` | 0 | ≥ 2 |
@@ -159,6 +161,10 @@ Sesión: Review, sobre el árbol candidato en la Mac o en un clon de `dev`.
 - **D-10-3 — Responsable y canal:** confirmar que siguen siendo Alejandro Cortés Burgos y `alejandro@ac-setroc.com` (`privacy.ts:6–7`). Si cambió la estructura comercial, es cambio material y este SDD se detiene hasta nueva instrucción.
 - **D-10-4 — Versión legal:** confirmar que la decisión de materialidad (v1.0 vs v1.1 con nueva aceptación) queda fuera y se registra como pendiente con dueño «Operator + asesoría jurídica». Opciones: fuera (recomendado) / abrir SDD aparte ahora.
 - **D-10-5 — Orden respecto de SDD-002:** este SDD no depende de publicar SDD-002. Confirmar que se puede ejecutar antes. Opciones: independiente (recomendado) / esperar a SDD-002.
+
+### Enmienda 1 — alcance de CP-01/CP-02 · 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Build detectó una contradicción interna: §4.4 exige una sección «Cambios desde la versión 1.0» que nombre el rebrand y el cambio de hosting, y CP-01/CP-02 exigían cero menciones de `Repbook` y `OpenAI` en todo `docs/compliance/`. Se presentaron dos salidas: (a) acotar los criterios a texto fuera de esa sección; (b) reescribir la sección sin nombres propios. El Operator eligió **(a)**: «Dale con (a).» Las tablas de criterios, guardas y línea base quedan corregidas arriba; los documentos no cambian por esta enmienda. Comando de la guarda: `{ awk '/^## Cambios desde la versión 1.0/{skip=1;next} /^## /{skip=0} !skip' docs/compliance/README.md; cat docs/compliance/data-processing-inventory.md docs/compliance/retention-and-rights.md docs/compliance/media-rights.md docs/compliance/incident-response.md; } | grep -c -E '<patrón>'`. Línea 39 del README («todavía nombra OpenAI Sites») describe estado actual, no historia; se añade al pendiente de SDD-002 la instrucción de actualizarla al publicar.
 
 ### Aprobación — 2026-10-12
 
