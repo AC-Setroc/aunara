@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟡 SDD-010 especificado: registro de cumplimiento al día, en revisión
+
+`[AUNARA/claude · modelo no expuesto]` — Por orden del Operator se especifica [SDD-010](sdd/SDD-010-compliance-docs-aunara.md): los cinco documentos de `docs/compliance/` siguen diciendo Repbook (11 menciones), OpenAI Sites como hosting y no nombran GitHub Pages, `aunaratraining.com` ni GoDaddy; conteos reproducibles con `grep`. Alcance solo documental, NO-TOCAR sobre `LegalPanel.tsx`, `privacy.ts` y `LEGAL_VERSION`; la decisión de materialidad queda explícitamente fuera. Guardas, línea base, contraprueba y guion de revisión en §7; cinco decisiones cerradas en §9. Sin edición de compliance, código ni publicación.
+
 ## 2026-10-12 · 🟢 `AUNARA_SOT/reference/` excluido por `.gitignore` en `dev`
 
 `[AUNARA/claude · modelo no expuesto]` — Orden explícita del Operator: «agregá la línea al .gitignore y pusheá a dev». Una línea, sin archivos rastreados afectados; verificado con `git check-ignore`. Cierra el riesgo de publicar las siete referencias con un `git add -A`. Sin cambios a código, `main` ni Pages.
