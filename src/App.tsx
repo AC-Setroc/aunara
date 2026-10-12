@@ -31,7 +31,6 @@ import { WorkoutPanel } from "./components/WorkoutPanel";
 import { useCloudSync } from "./hooks/useCloudSync";
 import { useStoredState } from "./hooks/useStoredState";
 import { createRepbookSnapshot, type RepbookCloudSnapshot } from "./lib/cloudSnapshot";
-import { DEFAULT_HEALTH_PROFILE } from "./lib/healthProfile";
 import {
   adjustWorkoutPrescription,
   equipmentOptionsForBodyPart,
@@ -64,6 +63,35 @@ interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
 }
 
+const DEFAULT_HEALTH_PROFILE: HealthProfile = {
+  onboardingCompleted: false,
+  primaryGoal: "strength",
+  equipmentPreference: "mixed",
+  trainingDaysPerWeek: 3,
+  sessionMinutes: 45,
+  birthDate: "",
+  ageYears: null,
+  metabolicSex: "unspecified",
+  heightCm: null,
+  currentWeightKg: null,
+  targetWeightKg: null,
+  waistCm: null,
+  activityLevel: "moderate",
+  experience: "beginner",
+  dietaryPattern: "omnivore",
+  nutritionPlanMode: "simple",
+  macroMealsPerDay: 4,
+  allergies: "",
+  healthNotes: "",
+  readinessScreen: {
+    confirmed: false,
+    chestPain: false,
+    dizzinessOrFainting: false,
+    medicallySupervisedOnly: false,
+    musculoskeletalConcern: false,
+  },
+  limitations: [],
+};
 
 function hasProfileSummary(snapshot: RepbookCloudSnapshot): boolean {
   const profile = snapshot.healthProfile;

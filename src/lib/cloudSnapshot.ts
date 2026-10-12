@@ -5,6 +5,7 @@ import type {
   WeeklyCheckIn,
 } from "../types";
 import { GENERAL_GOALS, SPORT_FOCUSES } from "../types";
+import { stripSensitiveHealthData } from "./privacy";
 import { SPECIAL_TECHNIQUE_OPTIONS, WORKOUT_STRUCTURE_OPTIONS } from "./workoutPrescription";
 
 export interface RepbookCloudSnapshot {
@@ -233,17 +234,17 @@ function isWeeklyCheckIn(value: unknown): boolean {
 
 // ---------------------------------------------------------------------------------------------------------------
 // Sensitive health data and consent (SDD-011 H-02).
-// The compliance inventory classifies birth date, body measures and composition, limitations, symptoms, allergies,
-// nutrition preferences, energy, stress and sleep as sensitive health data under a separate, revocable authorization.
-// Training preferences (goal, sport, equipment, days, minutes, experience) and the onboarding flags are not.
+// What counts as sensitive is defined once, in privacy.ts (`stripSensitiveHealthData`), and the product already
+// applies it locally when the authorization is declined or revoked. Here the same definition decides what may leave
+// the device and how a remote snapshot is merged. The field list below only names the fields that function resets,
+// so the merge can take them from the device; a unit test pins both to each other.
 // ---------------------------------------------------------------------------------------------------------------
 
 export interface SensitiveDataPolicy {
   consentGranted: boolean;
-  defaultHealthProfile: HealthProfile;
 }
 
-const SENSITIVE_HEALTH_FIELDS = [
+export const SENSITIVE_HEALTH_FIELDS = [
   "birthDate",
   "ageYears",
   "metabolicSex",
@@ -283,44 +284,56 @@ function stableStringify(value: unknown): string {
   return JSON.stringify(value);
 }
 
-function replaceSensitiveFields(profile: HealthProfile, source: HealthProfile): HealthProfile {
-  const next: Partial<HealthProfile> = { ...profile };
-  for (const field of SENSITIVE_HEALTH_FIELDS) delete next[field];
-  // Every required HealthProfile field is either non-sensitive (kept above) or sensitive and restored from `source`.
-  return { ...next, ...sensitiveProjection(source) } as HealthProfile;
+/** Structural equality that ignores key order, for deciding whether the server row already matches a payload. */
+export function snapshotsEqual(a: RepbookCloudSnapshot, b: RepbookCloudSnapshot): boolean {
+  return stableStringify(a) === stableStringify(b);
 }
 
-function carriesSensitiveData(snapshot: RepbookCloudSnapshot, defaults: HealthProfile): boolean {
-  return snapshot.checkIns.length > 0
-    || stableStringify(sensitiveProjection(snapshot.healthProfile)) !== stableStringify(sensitiveProjection(defaults));
+function isEmptyValue(value: unknown): boolean {
+  return value === undefined || value === null || value === "" || (Array.isArray(value) && value.length === 0);
 }
 
-/** The snapshot with every sensitive health field reset to its default and no check-ins; preferences are kept. */
-export function withholdSensitiveData(snapshot: RepbookCloudSnapshot, defaults: HealthProfile): RepbookCloudSnapshot {
-  return { ...snapshot, healthProfile: replaceSensitiveFields(snapshot.healthProfile, defaults), checkIns: [] };
+/**
+ * True when any sensitive field holds a value that the privacy rule would reset, or the snapshot has check-ins.
+ * Absent, null and empty values are all "no data": rows written by older clients omit optional keys that the
+ * rule writes as null or [], and that difference must never count as data (it would let an empty remote erase a device).
+ */
+function carriesSensitiveData(snapshot: RepbookCloudSnapshot): boolean {
+  if (snapshot.checkIns.length > 0) return true;
+  const profile = snapshot.healthProfile;
+  const stripped = stripSensitiveHealthData(profile);
+  return SENSITIVE_HEALTH_FIELDS.some((field) => !isEmptyValue(profile[field]) && stableStringify(profile[field]) !== stableStringify(stripped[field]));
+}
+
+/** The snapshot as the product's own privacy rule leaves it: sensitive health fields reset, no check-ins, preferences kept. */
+export function withholdSensitiveData(snapshot: RepbookCloudSnapshot): RepbookCloudSnapshot {
+  return { ...snapshot, healthProfile: stripSensitiveHealthData(snapshot.healthProfile), checkIns: [] };
 }
 
 /** What may leave the device: the full snapshot only while the health-data authorization is granted. */
 export function outboundSnapshot(snapshot: RepbookCloudSnapshot, policy: SensitiveDataPolicy): RepbookCloudSnapshot {
-  return policy.consentGranted ? snapshot : withholdSensitiveData(snapshot, policy.defaultHealthProfile);
+  return policy.consentGranted ? snapshot : withholdSensitiveData(snapshot);
 }
 
 /**
  * How a remote snapshot is applied on this device. Without consent the server never holds sensitive data, so the
- * device keeps its own. With consent the remote wins, unless it carries no sensitive data while the device does:
- * that remote was written while consent was withheld and must not erase the person's local health data.
+ * device keeps its own. With consent the remote wins, unless it carries no sensitive data while the device does, or
+ * it would downgrade a personalized device to basic mode: such a remote was written while consent was withheld and
+ * must not erase the person's local health data nor their authorization just given.
  */
 export function reconcileRemoteSnapshot(
   local: RepbookCloudSnapshot,
   remote: RepbookCloudSnapshot,
   policy: SensitiveDataPolicy,
 ): RepbookCloudSnapshot {
+  const remoteWithoutData = !carriesSensitiveData(remote);
+  const downgradesMode = local.healthProfile.healthDataMode === "personalized" && remote.healthProfile.healthDataMode !== "personalized";
   const keepLocalSensitiveData = !policy.consentGranted
-    || (!carriesSensitiveData(remote, policy.defaultHealthProfile) && carriesSensitiveData(local, policy.defaultHealthProfile));
+    || (remoteWithoutData && (carriesSensitiveData(local) || downgradesMode));
   if (!keepLocalSensitiveData) return remote;
   return {
     ...remote,
-    healthProfile: replaceSensitiveFields(remote.healthProfile, local.healthProfile),
+    healthProfile: { ...remote.healthProfile, ...sensitiveProjection(local.healthProfile), healthDataMode: local.healthProfile.healthDataMode },
     checkIns: local.checkIns,
   };
 }

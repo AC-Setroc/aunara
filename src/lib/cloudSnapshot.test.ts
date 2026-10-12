@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildPersonalDataExport } from "./privacy";
+import { buildPersonalDataExport, stripSensitiveHealthData } from "./privacy";
 import type { HealthProfile, TrainingTrack, WeeklyCheckIn } from "../types";
-import { DEFAULT_HEALTH_PROFILE } from "./healthProfile";
 import {
+  SENSITIVE_HEALTH_FIELDS,
   outboundSnapshot,
   reconcileRemoteSnapshot,
   withholdSensitiveData,
@@ -236,8 +236,9 @@ describe("cloud snapshots", () => {
 });
 
 describe("sensitive health data and consent (SDD-011 H-02)", () => {
+  const defaults: HealthProfile = { onboardingCompleted: false, primaryGoal: "strength", equipmentPreference: "mixed", trainingDaysPerWeek: 3, sessionMinutes: 45, birthDate: "", ageYears: null, metabolicSex: "unspecified", heightCm: null, currentWeightKg: null, targetWeightKg: null, waistCm: null, activityLevel: "moderate", experience: "beginner", dietaryPattern: "omnivore", nutritionPlanMode: "simple", macroMealsPerDay: 4, allergies: "", healthNotes: "", readinessScreen: { confirmed: false, chestPain: false, dizzinessOrFainting: false, medicallySupervisedOnly: false, musculoskeletalConcern: false }, limitations: [] };
   const sensitiveProfile: HealthProfile = {
-    ...DEFAULT_HEALTH_PROFILE,
+    ...defaults,
     onboardingCompleted: true,
     primaryGoal: "endurance",
     goals: ["general-fitness"],
@@ -268,14 +269,21 @@ describe("sensitive health data and consent (SDD-011 H-02)", () => {
   const checkIn: WeeklyCheckIn = { id: "ci-1", date: "2026-10-05", weightKg: 81.5, sleepHours: 7, energy: 4, stress: 2, notes: "" };
   const base = { schemaVersion: 1 as const, profileName: "Alejandro", language: "es" as const, favoriteIds: ["0514"], tracks: [] as TrainingTrack[], activeTrackId: "", tracksInitialized: true };
   const local = { ...base, healthProfile: sensitiveProfile, checkIns: [checkIn] };
-  const policy = (consentGranted: boolean) => ({ consentGranted, defaultHealthProfile: DEFAULT_HEALTH_PROFILE });
+  const policy = (consentGranted: boolean) => ({ consentGranted });
+
+  it("names exactly the fields the product's privacy rule resets, so both definitions cannot drift apart", () => {
+    const stripped = stripSensitiveHealthData(sensitiveProfile);
+    const keys = [...new Set([...Object.keys(sensitiveProfile), ...Object.keys(stripped)])] as (keyof HealthProfile)[];
+    const changed = keys.filter((key) => String(JSON.stringify(sensitiveProfile[key])) !== String(JSON.stringify(stripped[key])));
+    expect(changed.filter((key) => key !== "healthDataMode").sort()).toEqual([...SENSITIVE_HEALTH_FIELDS].sort());
+  });
 
   it("withholds every sensitive field and all check-ins but keeps non-sensitive preferences and onboarding", () => {
-    const withheld = withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE);
+    const withheld = withholdSensitiveData(local);
     expect(withheld.checkIns).toEqual([]);
+    expect(withheld.healthProfile).toEqual(stripSensitiveHealthData(sensitiveProfile));
     const profile = withheld.healthProfile;
     expect(profile.onboardingCompleted).toBe(true);
-    expect(profile.healthDataMode).toBe("personalized");
     expect(profile.primaryGoal).toBe("endurance");
     expect(profile.goals).toEqual(["general-fitness"]);
     expect(profile.sport).toBe("running");
@@ -283,22 +291,8 @@ describe("sensitive health data and consent (SDD-011 H-02)", () => {
     expect(profile.trainingDaysPerWeek).toBe(4);
     expect(profile.sessionMinutes).toBe(30);
     expect(profile.experience).toBe("intermediate");
-    expect(profile.birthDate).toBe("");
-    expect(profile.ageYears).toBeNull();
-    expect(profile.metabolicSex).toBe("unspecified");
-    expect(profile.heightCm).toBeNull();
-    expect(profile.currentWeightKg).toBeNull();
-    expect(profile.targetWeightKg).toBeNull();
-    expect(profile.waistCm).toBeNull();
-    expect(profile).not.toHaveProperty("bodyFatPercent");
-    expect(profile).not.toHaveProperty("preferredIngredients");
-    expect(profile.activityLevel).toBe("moderate");
-    expect(profile.dietaryPattern).toBe("omnivore");
-    expect(profile.nutritionPlanMode).toBe("simple");
-    expect(profile.macroMealsPerDay).toBe(4);
-    expect(profile.allergies).toBe("");
     expect(profile.healthNotes).toBe("");
-    expect(profile.readinessScreen).toEqual(DEFAULT_HEALTH_PROFILE.readinessScreen);
+    expect(profile.heightCm).toBeNull();
     expect(profile.limitations).toEqual([]);
     expect(JSON.stringify(withheld)).not.toContain("rodilla");
     expect(JSON.stringify(withheld)).not.toContain("maní");
@@ -307,30 +301,51 @@ describe("sensitive health data and consent (SDD-011 H-02)", () => {
 
   it("sends the full snapshot only with granted consent", () => {
     expect(outboundSnapshot(local, policy(true))).toEqual(local);
-    expect(outboundSnapshot(local, policy(false))).toEqual(withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE));
+    expect(outboundSnapshot(local, policy(false))).toEqual(withholdSensitiveData(local));
   });
 
   it("keeps local sensitive data and check-ins when consent is not granted, taking the rest from the remote", () => {
-    const remote = { ...withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE), profileName: "Otro dispositivo", favoriteIds: ["0001"], healthProfile: { ...withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE).healthProfile, trainingDaysPerWeek: 5 } };
+    const remote = { ...withholdSensitiveData(local), profileName: "Otro dispositivo", favoriteIds: ["0001"], healthProfile: { ...withholdSensitiveData(local).healthProfile, trainingDaysPerWeek: 5 } };
     const reconciled = reconcileRemoteSnapshot(local, remote, policy(false));
     expect(reconciled.profileName).toBe("Otro dispositivo");
     expect(reconciled.favoriteIds).toEqual(["0001"]);
     expect(reconciled.healthProfile.trainingDaysPerWeek).toBe(5);
     expect(reconciled.healthProfile.healthNotes).toBe("rodilla derecha");
     expect(reconciled.healthProfile.bodyFatPercent).toBe(18);
+    expect(reconciled.healthProfile.healthDataMode).toBe("personalized");
     expect(reconciled.healthProfile.limitations).toEqual(sensitiveProfile.limitations);
     expect(reconciled.checkIns).toEqual([checkIn]);
+  });
+
+  it("treats absent, null and empty sensitive values as no data, so an older-client row never erases a device", () => {
+    const olderClientRow = { ...local, healthProfile: { onboardingCompleted: true, primaryGoal: "endurance", equipmentPreference: "bodyweight", trainingDaysPerWeek: 4, sessionMinutes: 30, experience: "intermediate", healthDataMode: "personalized", birthDate: "", ageYears: null, metabolicSex: "unspecified", heightCm: null, currentWeightKg: null, targetWeightKg: null, waistCm: null, activityLevel: "moderate", dietaryPattern: "omnivore", allergies: "", healthNotes: "" } as HealthProfile, checkIns: [] };
+    const reconciled = reconcileRemoteSnapshot(local, olderClientRow, policy(true));
+    expect(reconciled.healthProfile.healthNotes).toBe("rodilla derecha");
+    expect(reconciled.healthProfile.heightCm).toBe(180);
+    expect(reconciled.checkIns).toEqual([checkIn]);
+    const onlyLimitation = { ...olderClientRow, healthProfile: { ...olderClientRow.healthProfile, limitations: sensitiveProfile.limitations } };
+    expect(reconcileRemoteSnapshot(local, onlyLimitation, policy(true))).toEqual(onlyLimitation);
+  });
+
+  it("with granted consent a remote without sensitive data does not downgrade a personalized device to basic mode", () => {
+    const personalizedButEmpty = { ...local, healthProfile: { ...withholdSensitiveData(local).healthProfile, healthDataMode: "personalized" as const }, checkIns: [] };
+    const basicRemote = withholdSensitiveData(local);
+    expect(basicRemote.healthProfile.healthDataMode).toBe("basic");
+    const reconciled = reconcileRemoteSnapshot(personalizedButEmpty, basicRemote, policy(true));
+    expect(reconciled.healthProfile.healthDataMode).toBe("personalized");
+    expect(reconciled.healthProfile.healthNotes).toBe("");
+    const basicDevice = { ...personalizedButEmpty, healthProfile: { ...personalizedButEmpty.healthProfile, healthDataMode: "basic" as const } };
+    expect(reconcileRemoteSnapshot(basicDevice, basicRemote, policy(true))).toEqual(basicRemote);
   });
 
   it("with granted consent the remote wins, except when the remote carries no sensitive data and the device does", () => {
     const remoteWithData = { ...local, healthProfile: { ...sensitiveProfile, healthNotes: "remoto" }, checkIns: [] };
     expect(reconcileRemoteSnapshot(local, remoteWithData, policy(true))).toEqual(remoteWithData);
-    const strippedRemote = withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE);
+    const strippedRemote = withholdSensitiveData(local);
     const reconciled = reconcileRemoteSnapshot(local, strippedRemote, policy(true));
     expect(reconciled.healthProfile.healthNotes).toBe("rodilla derecha");
     expect(reconciled.checkIns).toEqual([checkIn]);
-    const emptyDevice = { ...local, healthProfile: withholdSensitiveData(local, DEFAULT_HEALTH_PROFILE).healthProfile, checkIns: [] };
+    const emptyDevice = { ...local, healthProfile: withholdSensitiveData(local).healthProfile, checkIns: [] };
     expect(reconcileRemoteSnapshot(emptyDevice, strippedRemote, policy(true))).toEqual(strippedRemote);
   });
 });
-

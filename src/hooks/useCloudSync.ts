@@ -12,11 +12,11 @@ import {
   outboundSnapshot,
   reconcileRemoteSnapshot,
   selectBootstrapSnapshot,
+  snapshotsEqual,
   type RepbookCloudSnapshot,
   type SensitiveDataPolicy,
 } from "../lib/cloudSnapshot";
 import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
-import { DEFAULT_HEALTH_PROFILE } from "../lib/healthProfile";
 import { tr } from "../lib/i18n";
 import { publicBaseUrl } from "../lib/publicBase";
 import { LEGAL_VERSION } from "../lib/privacy";
@@ -64,7 +64,7 @@ function consentStatusFromUser(user: User | null): HealthDataConsentStatus | nul
 function sensitiveDataPolicy(user: User | null): SensitiveDataPolicy {
   // SDD-011 H-02: sensitive health data leaves the device only while the authorization is "granted";
   // "declined", "revoked" and an unanswered (null) authorization all withhold it.
-  return { consentGranted: consentStatusFromUser(user) === "granted", defaultHealthProfile: DEFAULT_HEALTH_PROFILE };
+  return { consentGranted: consentStatusFromUser(user) === "granted" };
 }
 
 type AuthFailure = "credentials" | "confirmation" | "email" | "password" | "rate" | "expired" | "unavailable" | "legal" | "unknown";
@@ -279,14 +279,14 @@ export function useCloudSync({
           : null;
         const bootstrap = selectBootstrapSnapshot(local, remote && reconcileRemoteSnapshot(local, remote, policy));
 
-        if (bootstrap.action === "use-remote") {
+        if (bootstrap.action === "use-remote" && remote) {
           onRemoteSnapshotRef.current(bootstrap.snapshot);
           // The server row must match what this device is allowed to send: a legacy copy written before consent was
           // withheld is cleaned here, and sensitive data kept locally under granted consent is restored here, so the
           // server is consistent even if the person changes nothing afterwards.
           const payload = outboundSnapshot(bootstrap.snapshot, policy);
           const serialized = JSON.stringify(payload);
-          if (serialized !== JSON.stringify(remote)) await store.save(user.id, payload);
+          if (!snapshotsEqual(payload, remote)) await store.save(user.id, payload);
           lastSavedSnapshot.current = serialized;
         } else {
           const payload = outboundSnapshot(bootstrap.snapshot, policy);
