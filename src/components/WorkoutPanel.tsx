@@ -17,11 +17,15 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { exerciseDisplayName, exerciseMovementRestrictions, filterExercises, findExerciseAlternatives, titleCase, WEEKDAYS } from "../lib/exercises";
+import { exerciseDisplayName, exerciseMovementRestrictions, exerciseTaxonomyLabel, isExerciseNamePending, filterExercises, findExerciseAlternatives, WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import {
   createSpecialPrescription,
+  isFreeLegacySetPlan,
+  isValidManualPrescription,
   localizedOptionLabel,
+  repetitionCountSuffix,
+  workTargetLabel,
   SPECIAL_TECHNIQUE_OPTIONS,
   techniqueLabel,
   WORKOUT_STRUCTURE_OPTIONS,
@@ -39,6 +43,7 @@ import type {
   WorkoutItem,
   WorkoutStructureType,
   WorkoutTechniqueBlock,
+  WorkTargetType,
 } from "../types";
 
 export type WorkoutPanelMode = "view" | "edit" | "training";
@@ -55,7 +60,7 @@ interface WorkoutPanelProps {
   onUpdateItem?: (itemId: string, changes: Partial<WorkoutItem>) => void;
   onSetDayLabel?: (day: Weekday, label: string) => void;
   onAddExercise?: (exerciseId: string, day: Weekday) => void;
-  onAddStructure?: (type: WorkoutStructureType, exerciseIds: string[], day: Weekday) => void;
+  onAddStructure?: (type: WorkoutStructureType, exerciseIds: string[], day: Weekday, prescriptions?: Partial<WorkoutItem>[]) => void;
   onLogLoad?: (itemId: string) => void;
   onRemove: (exerciseId: string) => void;
   onSwap: (exerciseId: string, replacementId: string) => void;
@@ -136,7 +141,7 @@ export function WorkoutPanel({
     routeDays.includes(calendarDay) ? calendarDay : routeDays[0],
   );
   const dayLabel = (day: Weekday) => tr(language, ...DAY_LABELS[day]);
-  const visibleItems = mode === "training"
+  const visibleItems = mode === "training" || mode === "edit"
     ? orderedItems.filter((item) => (item.day ?? "monday") === trainingDay)
     : orderedItems;
 
@@ -167,6 +172,12 @@ export function WorkoutPanel({
           <X size={20} />
         </button>
       </div>
+
+      {mode === "edit" && <section className="training-session-day" aria-label={tr(language, "Editing day", "Día en edición")}>
+        <strong>{dayLabel(trainingDay)}</strong>
+        <div className="compact-day-picker">{routeDays.map((day) => <button key={day} type="button" aria-pressed={day === trainingDay} className={day === trainingDay ? "is-active" : ""} onClick={() => setTrainingDay(day)}>{dayLabel(day)}</button>)}</div>
+        <label>{tr(language, "Day focus", "Enfoque del día")}<input value={track.dayLabels?.[trainingDay] ?? ""} onChange={(event) => onSetDayLabel?.(trainingDay, event.target.value)} /></label>
+      </section>}
 
       {items.length > 0 && (
         <div className="workout-mode-actions">
@@ -291,7 +302,7 @@ export function WorkoutPanel({
                   language={language}
                   exercises={exercises}
                   equipmentPreference={track.equipment}
-                  routeDays={routeDays}
+                  routeDays={[trainingDay]}
                   restrictedMovements={restrictedMovements}
                   onAddExercise={onAddExercise}
                   onAddStructure={onAddStructure}
@@ -347,22 +358,6 @@ export function WorkoutPanel({
             </>
           )}
 
-          {mode === "edit" && (
-            <div className="workout-day-labels">
-              {routeDays.map((day) => (
-                <label key={day}>
-                  <span>{dayLabel(day)}</span>
-                  <input
-                    aria-label={`${tr(language, "Day focus", "Enfoque del día")} ${dayLabel(day)}`}
-                    value={track.dayLabels?.[day] ?? ""}
-                    placeholder={tr(language, "e.g. Lower body", "ej. Tren inferior")}
-                    onChange={(event) => onSetDayLabel?.(day, event.target.value)}
-                  />
-                </label>
-              ))}
-            </div>
-          )}
-
           {mode === "training" && visibleItems.length === 0 ? (
             <div className="empty-training-day">
               <Dumbbell size={24} />
@@ -391,9 +386,10 @@ export function WorkoutPanel({
                       )}
                       <span className="workout-day-tag">{dayLabel(item.day ?? "monday")}{track.dayLabels?.[item.day ?? "monday"] ? ` · ${track.dayLabels[item.day ?? "monday"]}` : ""}</span>
                       <h3>{exerciseName}</h3>
-                      <p>{titleCase(exercise.target)}</p>
+                      <p>{exerciseTaxonomyLabel(exercise.target, language)}</p>
+                      {isExerciseNamePending(exercise, language) && <small className="translation-pending">Nombre en inglés · traducción pendiente</small>}
 
-                      {mode === "view" && (
+                      {mode !== "edit" && (
                         <div className="workout-plan-summary">
                           <span>{tr(language, "Plan", "Plan")}</span>
                           <strong>{workoutPlanLabel(item, language)}</strong>
@@ -417,7 +413,7 @@ export function WorkoutPanel({
                             type="button"
                             onClick={() => onUpdateItem?.(itemId, {
                               prescriptionMode: "special",
-                              specialPrescription: item.specialPrescription ?? createSpecialPrescription("rest-pause"),
+                              specialPrescription: item.specialPrescription ?? prescriptionWithCount("rest-pause", item.repetitionCount),
                             })}
                           >
                             {tr(language, "Special configuration", "Configuración especial")}
@@ -432,20 +428,14 @@ export function WorkoutPanel({
                             <select
                               aria-label={`${tr(language, "Training day for", "Día de entrenamiento para")} ${exerciseName}`}
                               value={item.day ?? routeDays[0]}
-                              onChange={(event) => onUpdateItem?.(itemId, { day: event.target.value as Weekday })}
+                              onChange={(event) => {
+                                if (item.structure && item.structure.size > 1 && !window.confirm(tr(language, "Move this entire group to the selected day? All members keep their history.", "¿Mover este grupo completo al día elegido? Todos sus miembros conservan su historial."))) return;
+                                onUpdateItem?.(itemId, { day: event.target.value as Weekday });
+                              }}
                             >
                               {routeDays.map((day) => <option key={day} value={day}>{dayLabel(day)}</option>)}
                             </select>
                           </label>
-                          <div className="workout-prescription-readout">
-                            <span>{tr(language, "Set plan", "Plan de series")}</span>
-                            <output
-                              aria-label={`${tr(language, "Set plan for", "Plan de series para")} ${exerciseName}`}
-                            >{workoutPlanLabel(item, language)}</output>
-                            <small>{item.prescriptionMode === "special"
-                              ? tr(language, "The sequence is configured below.", "La secuencia se configura abajo.")
-                              : tr(language, "Adjust it with the controls below.", "Ajustalo con los controles inferiores.")}</small>
-                          </div>
                           <label>
                             <span>{tr(language, "Reference load (kg)", "Carga de referencia (kg)")}</span>
                             <input
@@ -470,6 +460,8 @@ export function WorkoutPanel({
                           </label>
                         </div>
                       )}
+
+                      {mode === "edit" && (item.originalSetPlan || isFreeLegacySetPlan(item.setPlan)) && <small className="original-plan-note">{tr(language, "Original plan note", "Nota original del plan")}: {item.originalSetPlan ?? item.setPlan}</small>}
 
                       {mode === "edit" && item.prescriptionMode === "special" && (
                         <SpecialTechniqueEditor
@@ -539,6 +531,13 @@ export function WorkoutPanel({
                             onDecrease={() => onUpdate(itemId, "sets", -1)}
                             onIncrease={() => onUpdate(itemId, "sets", 1)}
                           />
+                          <label>
+                            {tr(language, "Repetition count", "Conteo de repeticiones")}
+                            <select aria-label={`${tr(language, "Repetition count for", "Conteo de repeticiones para")} ${exerciseName}`} value={item.repetitionCount ?? "total"} onChange={(event) => onUpdateItem?.(itemId, { repetitionCount: event.target.value as WorkoutItem["repetitionCount"] })}>
+                              <option value="total">{tr(language, "Total", "Total")}</option>
+                              <option value="per-side">{tr(language, "Per side", "Por lado")}</option>
+                            </select>
+                          </label>
                           <span className="times">×</span>
                           <Stepper
                             language={language}
@@ -586,8 +585,8 @@ export function WorkoutPanel({
                                 setReplacingId(null);
                               }}
                             >
-                              <strong>{titleCase(alternative.name)}</strong>
-                              <small>{titleCase(alternative.equipment)}</small>
+                              <strong>{exerciseDisplayName(alternative, language)}</strong>
+                              <small>{exerciseTaxonomyLabel(alternative.equipment, language)}</small>
                             </button>
                           )) : <p>{tr(language, "No close alternative found in this equipment set.", "No encontramos una alternativa cercana con este equipo.")}</p>}
                         </div>
@@ -597,7 +596,10 @@ export function WorkoutPanel({
                       <button
                         className="remove-button"
                         type="button"
-                        onClick={() => onRemove(itemId)}
+                        onClick={() => {
+                          if (item.structure && item.structure.size > 1 && !window.confirm(tr(language, "Remove this member and dissolve its group? The other members keep their IDs and history as single sets.", "¿Quitar este miembro y desarmar su grupo? Los demás conservan sus IDs e historial como monoserie."))) return;
+                          onRemove(itemId);
+                        }}
                         aria-label={`${tr(language, "Remove", "Quitar")} ${exercise.name}`}
                       >
                         <Trash2 size={16} />
@@ -614,7 +616,7 @@ export function WorkoutPanel({
               language={language}
               exercises={exercises}
               equipmentPreference={track.equipment}
-              routeDays={routeDays}
+              routeDays={[trainingDay]}
               restrictedMovements={restrictedMovements}
               onAddExercise={onAddExercise}
               onAddStructure={onAddStructure}
@@ -638,7 +640,7 @@ interface ExerciseAdderProps {
   routeDays: Weekday[];
   restrictedMovements?: MovementRestriction[];
   onAddExercise?: (exerciseId: string, day: Weekday) => void;
-  onAddStructure?: (type: WorkoutStructureType, exerciseIds: string[], day: Weekday) => void;
+  onAddStructure?: (type: WorkoutStructureType, exerciseIds: string[], day: Weekday, prescriptions?: Partial<WorkoutItem>[]) => void;
   onOpenExercise: (exercise: Exercise) => void;
 }
 
@@ -652,15 +654,17 @@ function ExerciseAdder({
   onAddStructure,
   onOpenExercise,
 }: ExerciseAdderProps) {
-  const [structureType, setStructureType] = useState<WorkoutStructureType | null>(null);
-  const [queries, setQueries] = useState<string[]>([]);
-  const [selectedExercises, setSelectedExercises] = useState<Array<Exercise | null>>([]);
+  const [structureType, setStructureType] = useState<WorkoutStructureType>("single");
+  const [step, setStep] = useState(0);
+  const [prescriptions, setPrescriptions] = useState<Partial<WorkoutItem>[]>([{ sets: 3, reps: 10, prescriptionMode: "standard" }]);
+  const [queries, setQueries] = useState<string[]>([""]);
+  const [selectedExercises, setSelectedExercises] = useState<Array<Exercise | null>>([null]);
   const [activeSlot, setActiveSlot] = useState(0);
   const [visibleCount, setVisibleCount] = useState(40);
   const [selectedDay, setSelectedDay] = useState<Weekday>(routeDays[0] ?? "monday");
   const dayLabel = (day: Weekday) => tr(language, ...DAY_LABELS[day]);
   const structureOption = WORKOUT_STRUCTURE_OPTIONS.find((option) => option.value === structureType);
-  const slotCount = structureType ? workoutStructureSlotCount(structureType) : 0;
+  const slotCount = selectedExercises.length;
   const activeQuery = queries[activeSlot] ?? "";
   const selectedIds = new Set(selectedExercises.flatMap((exercise, index) => (
     exercise && index !== activeSlot ? [exercise.id] : []
@@ -679,13 +683,24 @@ function ExerciseAdder({
   )) : [];
 
   useEffect(() => setVisibleCount(40), [activeQuery, activeSlot, structureType]);
+  useEffect(() => setSelectedDay(routeDays[0] ?? "monday"), [routeDays[0]]);
 
   function chooseStructure(type: WorkoutStructureType) {
-    const count = workoutStructureSlotCount(type);
+    if (workoutStructureSlotCount(type) !== selectedExercises.length) return;
     setStructureType(type);
-    setQueries(Array.from({ length: count }, () => ""));
-    setSelectedExercises(Array.from({ length: count }, () => null));
-    setActiveSlot(0);
+    setStep(4);
+  }
+
+  function updatePrescription(index: number, changes: Partial<WorkoutItem>) {
+    setPrescriptions((current) => current.map((value, slot) => slot === index ? { ...value, ...changes } : value));
+  }
+  function changeTarget(index: number, target: WorkTargetType) {
+    const current = prescriptions[index];
+    updatePrescription(index, target === "reps" ? { prescriptionMode: "standard" } : {
+      prescriptionMode: "special",
+      specialPrescription: { technique: "custom", rounds: current.sets ?? 3, restBetweenRoundsSeconds: 0,
+        blocks: [{ id: `member-${index}-target`, type: "work", target, ...(target === "time" ? { value: current.reps ?? 10 } : {}), loadType: "same" }] },
+    });
   }
 
   function chooseExercise(exercise: Exercise, index: number) {
@@ -701,43 +716,80 @@ function ExerciseAdder({
     setActiveSlot(index);
   }
 
+  function removeMember(index: number) {
+    if (selectedExercises.length <= 1 || index < 0 || index >= selectedExercises.length) return;
+    setSelectedExercises((current) => current.filter((_, slot) => slot !== index));
+    setQueries((current) => current.filter((_, slot) => slot !== index));
+    setPrescriptions((current) => current.filter((_, slot) => slot !== index));
+    setActiveSlot((current) => Math.min(current > index ? current - 1 : current, selectedExercises.length - 2));
+  }
+
   function addSelectedStructure() {
-    if (!structureType || selectedExercises.some((exercise) => !exercise)) return;
+    if (!structureType || selectedExercises.some((exercise) => !exercise) || workoutStructureSlotCount(structureType) !== selectedExercises.length || !prescriptions.every(isValidManualPrescription)) return;
     const exerciseIds = selectedExercises.flatMap((exercise) => exercise ? [exercise.id] : []);
-    if (onAddStructure) onAddStructure(structureType, exerciseIds, selectedDay);
-    else exerciseIds.forEach((exerciseId) => onAddExercise?.(exerciseId, selectedDay));
-    setStructureType(null);
-    setQueries([]);
-    setSelectedExercises([]);
+    if (!onAddStructure) return; // A handler unable to retain targets must not silently discard them.
+    onAddStructure(structureType, exerciseIds, selectedDay, prescriptions);
+    setStructureType("single");
+    setQueries([""]);
+    setSelectedExercises([null]);
+    setPrescriptions([{ sets: 3, reps: 10, prescriptionMode: "standard" }]);
+    setStep(0);
   }
 
   return (
     <section className="manual-exercise-adder" aria-label={tr(language, "Add exercises", "Agregar ejercicios")}>
-      {!structureType ? (
+      <div className="manual-adder-heading"><strong>{dayLabel(selectedDay)}</strong><span>{tr(language, "Day → exercise → sets → structure → technique", "Día → ejercicio → series → estructura → técnica")}</span></div>
+      {step === 0 && <button type="button" onClick={() => setStep(1)}>{tr(language, "Choose exercises for this day", "Elegir ejercicios para este día")}</button>}
+      {step === 2 && <div className="member-prescriptions">
+        <button type="button" onClick={() => setStep(1)}>{tr(language, "Back", "Volver")}</button>
+        {selectedExercises.map((exercise, index) => {
+          const name = exercise ? exerciseDisplayName(exercise, language) : String(index + 1);
+          const prescription = prescriptions[index];
+          const block = prescription.specialPrescription?.blocks.find((block) => block.type === "work");
+          const target = prescription.prescriptionMode === "special" && block?.type === "work" ? block.target : "reps";
+          return <fieldset key={index} className="special-round-settings"><legend>{name}</legend>
+            <label>{tr(language, "Sets", "Series")}<input aria-label={selectedExercises.length === 1 ? tr(language, "Sets", "Series") : `${tr(language, "Sets for", "Series para")} ${name}`} type="number" min="1" max="12" value={prescription.sets} onChange={(event) => updatePrescription(index, { sets: Number(event.target.value), ...(prescription.specialPrescription ? { specialPrescription: { ...prescription.specialPrescription, rounds: Number(event.target.value) } } : {}) })} /></label>
+            <label>{tr(language, "Target", "Objetivo")}<select aria-label={`${tr(language, "Target for", "Objetivo para")} ${name}`} value={target} onChange={(event) => changeTarget(index, event.target.value as WorkTargetType)}>
+              <option value="reps">{tr(language, "Exact repetitions", "Repeticiones exactas")}</option><option value="technical-failure">{tr(language, "Technical failure", "Fallo técnico")}</option><option value="time">{tr(language, "Time", "Tiempo")}</option><option value="amrap">AMRAP</option>
+            </select></label>
+            {(target === "reps" || target === "time") && <label>{target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")}<input aria-label={selectedExercises.length === 1 ? (target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")) : `${target === "time" ? tr(language, "Seconds for", "Segundos para") : tr(language, "Repetitions for", "Repeticiones para")} ${name}`} type="number" min="1" max={target === "reps" ? 100 : undefined} value={target === "time" ? block?.value : prescription.reps} onChange={(event) => updatePrescription(index, target === "time" && prescription.specialPrescription ? { specialPrescription: { ...prescription.specialPrescription, blocks: prescription.specialPrescription.blocks.map((value) => value.type === "work" ? { ...value, value: Number(event.target.value) } : value) } } : { reps: Number(event.target.value) })} /></label>}
+            {target === "reps" && <label>{tr(language, "Repetition count", "Conteo de repeticiones")}<select aria-label={`${tr(language, "Repetition count for", "Conteo de repeticiones para")} ${name}`} value={prescription.repetitionCount ?? "total"} onChange={(event) => updatePrescription(index, { repetitionCount: event.target.value as WorkoutItem["repetitionCount"] })}><option value="total">{tr(language, "Total", "Total")}</option><option value="per-side">{tr(language, "Per side", "Por lado")}</option></select></label>}
+          </fieldset>;
+        })}
+        <button type="button" disabled={!prescriptions.every(isValidManualPrescription)} onClick={() => setStep(3)}>{tr(language, "Choose local structure", "Elegir estructura local")}</button>
+      </div>}
+      {step === 3 ? (
         <div className="structure-choice">
+          <button type="button" onClick={() => setStep(2)}>{tr(language, "Back", "Volver")}</button>
           <div>
             <span>{tr(language, "Add to the routine", "Agregar a la rutina")}</span>
             <strong>{tr(language, "Choose a training structure", "Elegí una estructura de trabajo")}</strong>
           </div>
           <div className="structure-choice-grid">
             {WORKOUT_STRUCTURE_OPTIONS.map((option) => (
-              <button key={option.value} type="button" onClick={() => chooseStructure(option.value)}>
+              <button key={option.value} type="button" disabled={workoutStructureSlotCount(option.value) !== selectedExercises.length} onClick={() => chooseStructure(option.value)}>
                 {localizedOptionLabel(option, language)}
               </button>
             ))}
           </div>
+          <p>{tr(language, "Choose a structure matching the number of selected exercises. Go back to add or remove exercises; their prescriptions are retained.", "Elegí una estructura que coincida con la cantidad de ejercicios. Volvé para agregar o quitar ejercicios; sus prescripciones se conservan.")}</p>
         </div>
-      ) : (
+      ) : step === 1 || step === 4 ? (
         <>
           <div className="structure-builder-heading">
-            <button type="button" onClick={() => setStructureType(null)}>
-              <ChevronLeft size={16} /> {tr(language, "Structures", "Estructuras")}
+            <button type="button" onClick={() => setStep(Math.max(0, step === 4 ? 3 : step - 1))}>
+              <ChevronLeft size={16} /> {tr(language, "Back", "Volver")}
             </button>
             <div>
               <span>{tr(language, "Building", "Armando")}</span>
               <strong>{structureOption ? localizedOptionLabel(structureOption, language) : structureType}</strong>
             </div>
           </div>
+
+          {step === 1 && <button type="button" disabled={selectedExercises.length >= 4 || selectedExercises.some((exercise) => !exercise)} onClick={() => {
+            setSelectedExercises((current) => [...current, null]); setQueries((current) => [...current, ""]);
+            setPrescriptions((current) => [...current, { sets: 3, reps: 10, prescriptionMode: "standard" }]); setActiveSlot(selectedExercises.length);
+          }}>{tr(language, "Add another exercise", "Agregar otro ejercicio")}</button>}
 
           <div className="manual-adder-heading">
             <div>
@@ -764,6 +816,7 @@ function ExerciseAdder({
               const selectedExercise = selectedExercises[index];
               return (
                 <section className={`structure-slot ${activeSlot === index ? "is-active" : ""}`} key={index}>
+                  {step === 1 && selectedExercises.length > 1 && <button type="button" aria-label={`${tr(language, "Remove exercise", "Quitar ejercicio")} ${index + 1}`} onClick={() => removeMember(index)}><Trash2 size={16} /> {tr(language, "Remove", "Quitar")}</button>}
                   <label className="manual-exercise-search">
                     <span>{String(index + 1).padStart(2, "0")}</span>
                     <Search size={17} />
@@ -812,7 +865,8 @@ function ExerciseAdder({
                     >
                       <span>
                         <strong>{exerciseName}</strong>
-                        <small>{titleCase(exercise.target)} · {titleCase(exercise.category)} · {titleCase(exercise.equipment)}</small>
+                        <small>{exerciseTaxonomyLabel(exercise.target, language)} · {exerciseTaxonomyLabel(exercise.category, language)} · {exerciseTaxonomyLabel(exercise.equipment, language)}</small>
+                        {isExerciseNamePending(exercise, language) && <small className="translation-pending">Nombre en inglés · traducción pendiente</small>}
                       </span>
                       <Play size={14} aria-hidden="true" />
                     </button>
@@ -837,16 +891,21 @@ function ExerciseAdder({
             </div>
           )}
 
+          {step === 4 && selectedExercises.map((exercise, index) => <fieldset key={index}>
+            <legend>{exercise ? exerciseDisplayName(exercise, language) : index + 1}</legend>
+            <label className="goal-preferences"><span>{tr(language, "Use a special technique", "Usar técnica especial")}</span><input type="checkbox" checked={prescriptions[index].prescriptionMode === "special"} onChange={(event) => updatePrescription(index, { prescriptionMode: event.target.checked ? "special" : "standard", ...(event.target.checked && !prescriptions[index].specialPrescription ? { specialPrescription: { technique: "custom", rounds: prescriptions[index].sets ?? 3, restBetweenRoundsSeconds: 0, blocks: [{ id: `member-${index}-target`, type: "work", target: "reps", value: prescriptions[index].reps, ...(prescriptions[index].repetitionCount !== undefined ? { repetitionCount: prescriptions[index].repetitionCount } : {}), loadType: "same" }] } } : {}) })} /></label>
+            {prescriptions[index].prescriptionMode === "special" && <SpecialTechniqueEditor language={language} prescription={prescriptions[index].specialPrescription!} onChange={(specialPrescription) => updatePrescription(index, { specialPrescription })} />}
+          </fieldset>)}
           <button
             className="structure-add-submit"
             type="button"
-            disabled={selectedExercises.some((exercise) => !exercise)}
-            onClick={addSelectedStructure}
+            disabled={selectedExercises.some((exercise) => !exercise) || !prescriptions.every(isValidManualPrescription)}
+            onClick={() => step === 1 ? setStep(2) : addSelectedStructure()}
           >
-            <Plus size={16} /> {tr(language, "Add", "Agregar")} {structureOption ? localizedOptionLabel(structureOption, language).toLocaleLowerCase() : structureType}
+            <Plus size={16} /> {step === 1 ? tr(language, "Configure sets and repetitions", "Configurar series y repeticiones") : `${tr(language, "Add", "Agregar")} ${structureOption ? localizedOptionLabel(structureOption, language).toLocaleLowerCase() : structureType}`}
           </button>
         </>
-      )}
+      ) : null}
     </section>
   );
 }
@@ -858,9 +917,14 @@ function workoutStructureLabel(type: WorkoutStructureType, language: LanguageCod
 
 function workoutPlanLabel(item: WorkoutItem, language: LanguageCode): string {
   if (item.prescriptionMode === "special" && item.specialPrescription) {
-    return `${item.specialPrescription.rounds} × ${techniqueLabel(item.specialPrescription.technique, language)}`;
+    return `${item.specialPrescription.rounds} × ${techniqueLabel(item.specialPrescription.technique, language)} · ${item.specialPrescription.blocks.map((block) => block.type === "work" ? workTargetLabel(block, language) : `${block.seconds}s`).join(" → ")}`;
   }
-  return `${item.sets} × ${item.reps}`;
+  return `${item.sets} × ${item.reps}${repetitionCountSuffix(item.repetitionCount, language)}`;
+}
+
+function prescriptionWithCount(technique: SpecialTechniqueKind, count: WorkoutItem["repetitionCount"]): SpecialWorkoutPrescription {
+  const next = createSpecialPrescription(technique);
+  return count === undefined ? next : { ...next, blocks: next.blocks.map((block) => block.type === "work" ? { ...block, repetitionCount: count } : block) };
 }
 
 function nextBlockId(type: WorkoutTechniqueBlock["type"]): string {
@@ -928,7 +992,16 @@ function SpecialTechniqueEditor({ language, prescription, onChange }: SpecialTec
             className={prescription.technique === option.value ? "is-active" : ""}
             type="button"
             aria-pressed={prescription.technique === option.value}
-            onClick={() => onChange(createSpecialPrescription(option.value as SpecialTechniqueKind))}
+            onClick={() => {
+              const workBlocks = prescription.blocks.filter((block) => block.type === "work");
+              let workIndex = 0;
+              const next = createSpecialPrescription(option.value as SpecialTechniqueKind);
+              onChange({ ...next, blocks: next.blocks.map((block) => {
+                if (block.type !== "work") return block;
+                const count = workBlocks[workIndex++]?.repetitionCount;
+                return count === undefined ? block : { ...block, repetitionCount: count };
+              }) });
+            }}
           >
             <strong>{localizedOptionLabel(option, language)}</strong>
             <span>{language === "es" ? option.description?.[1] : option.description?.[0]}</span>
@@ -999,6 +1072,7 @@ function SpecialTechniqueEditor({ language, prescription, onChange }: SpecialTec
                     <input type="number" min={1} value={block.value ?? 1} onChange={(event) => updateBlock(index, { value: Math.max(1, Number(event.target.value) || 1) })} />
                   </label>
                 )}
+                {block.target === "reps" && <label><span>{tr(language, "Repetition count", "Conteo de repeticiones")}</span><select aria-label={`${tr(language, "Repetition count for block", "Conteo de repeticiones del bloque")} ${index + 1}`} value={block.repetitionCount ?? "total"} onChange={(event) => updateBlock(index, { repetitionCount: event.target.value as typeof block.repetitionCount })}><option value="total">{tr(language, "Total", "Total")}</option><option value="per-side">{tr(language, "Per side", "Por lado")}</option></select></label>}
                 <label>
                   <span>{tr(language, "Load", "Carga")}</span>
                   <select value={block.loadType} onChange={(event) => updateBlock(index, { loadType: event.target.value as typeof block.loadType })}>

@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟡 E4 aprobada; reparación mínima y revisión completa pendientes
+
+`[AUNARA/codex · modelo no expuesto]` — «Sí» del Operator aprueba D-E4-1 después de presentar alcance exacto. Se inicia desarrollo único en nueva copia aislada, App+AppFlows.test+AccessPanel.test, sin cambiar renderer ni guardar/exportar datos. TDD/repro válido y revisión independente posterior completa; es ciclo2 de3, no reinicio de contador. Fuente/índice canónicos intactos, documentación owned main. Sin commit/push/deploy ni cuentas/correos reales; UAT/global pendientes separados.
+
 ## 2026-10-06 · 🟡 SDD-005 preparación local APPROVED; DNS/Auth/TLS pendientes
 
 `[AUNARA/codex · GPT-5]` — Delta aislado de cinco archivos técnicos y diez documentales sobre `ef82f9a`, sin dirty previo ni correo/usuarios. Revisión independiente **APPROVED solo prepublicación**: typecheck, 160 pruebas/18 + Node, directorio4, guards26, builds raíz/rollback y artifact30 PASS; UI Chromium/WebKit96/96 y negativos PASS. Propiedad/custom domain ya existen, pero DNS continúa WebsiteBuilder, Auth no incluye apex y HTTPS sigue no disponible. No hubo push, deploy ni operación externa; corte DNS/Auth/TLS y smoke publicado permanecen pendientes.

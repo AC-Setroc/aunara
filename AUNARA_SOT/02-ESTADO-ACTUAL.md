@@ -1,8 +1,12 @@
 # Estado actual — Aunara
 
-Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
+Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`.
 
 ## Verificado
+
+### 2026-10-12 — E4 aprobada; desarrollo acotado en curso
+
+- `[AUNARA/codex · modelo no expuesto]` — El Operator aprobó D-E4-1 con «Sí». Nuevo candidato desde E3 congelado; solo App y dos tests para el indicador de nombre/preferencias parciales significativos. Renderer, bootstrap, almacenamiento, export y autenticación intactos. Es el ciclo2 del límite3 vigente; revisión completa aún pendiente, sin commit/push/publicación ni UAT real.
 
 ### SDD-005 — preparación local APPROVED; corte externo pendiente
 

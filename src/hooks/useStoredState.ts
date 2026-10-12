@@ -11,7 +11,11 @@ export function useStoredState<T>(key: string, initialValue: T) {
   });
 
   useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    try {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      // Keep the current visit's React state when persistence is unavailable.
+    }
   }, [key, value]);
 
   return [value, setValue] as const;

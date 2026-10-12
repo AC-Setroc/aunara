@@ -11,7 +11,7 @@ import {
   UserRound,
   X,
 } from "lucide-react";
-import { useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import {
   AccessPanel,
   type AccessMode,
@@ -22,7 +22,9 @@ import { ExerciseDetail } from "./components/ExerciseDetail";
 import { ConsentGate } from "./components/ConsentGate";
 import { InitialRoutineProposal } from "./components/InitialRoutineProposal";
 import { LegalPanel, type LegalDocument } from "./components/LegalPanel";
-import { OnboardingPanel } from "./components/OnboardingPanel";
+import { StorageNotice } from "./components/StorageNotice";
+import { NavigationMenu } from "./components/NavigationMenu";
+import { OnboardingPanel, profileGoals } from "./components/OnboardingPanel";
 import { ProfilePanel } from "./components/ProfilePanel";
 import { TrainingTracks, type NewTrackInput } from "./components/TrainingTracks";
 import { WorkoutPanel } from "./components/WorkoutPanel";
@@ -32,19 +34,22 @@ import { createRepbookSnapshot, type RepbookCloudSnapshot } from "./lib/cloudSna
 import {
   adjustWorkoutPrescription,
   equipmentOptionsForBodyPart,
+  exerciseTaxonomyLabel,
+  isExerciseNamePending,
   filterExercises,
   generateAdaptiveTrackWorkout,
   isEquipmentFreeExercise,
   logWorkoutLoad,
   removeTrainingTrack,
+  removeWorkoutItem,
   replaceTrackWorkout,
-  titleCase,
   uniqueSorted,
   updateWorkoutItem,
   WEEKDAYS,
 } from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
+import { isValidManualPrescription, workoutStructureSlotCount } from "./lib/workoutPrescription";
 import { buildPersonalDataExport, stripSensitiveHealthData } from "./lib/privacy";
 import { addWeeklyCheckIn, assessExerciseReadiness, buildRoutineAnalysis } from "./lib/wellness";
 import type { EquipmentPreference, Exercise, HealthDataConsentStatus, HealthProfile, LanguageCode, TrainingTrack, Weekday, WeeklyCheckIn, WorkoutItem, WorkoutStructure, WorkoutStructureType } from "./types";
@@ -87,9 +92,25 @@ const DEFAULT_HEALTH_PROFILE: HealthProfile = {
   },
   limitations: [],
 };
+
+function hasProfileSummary(snapshot: RepbookCloudSnapshot): boolean {
+  const profile = snapshot.healthProfile;
+  const name = snapshot.profileName.trim();
+  // Presence is content-based, not a claim about writing history or remote sync.
+  // Omitted optional preferences are equivalent to the initial App defaults.
+  return profile.onboardingCompleted === true
+    || (name !== "" && name !== "Mi perfil")
+    || (profile.primaryGoal ?? DEFAULT_HEALTH_PROFILE.primaryGoal) !== DEFAULT_HEALTH_PROFILE.primaryGoal
+    || (profile.goals?.length ?? 0) > 0
+    || profile.sport != null
+    || (profile.equipmentPreference ?? DEFAULT_HEALTH_PROFILE.equipmentPreference) !== DEFAULT_HEALTH_PROFILE.equipmentPreference
+    || (profile.trainingDaysPerWeek ?? DEFAULT_HEALTH_PROFILE.trainingDaysPerWeek) !== DEFAULT_HEALTH_PROFILE.trainingDaysPerWeek
+    || (profile.sessionMinutes ?? DEFAULT_HEALTH_PROFILE.sessionMinutes) !== DEFAULT_HEALTH_PROFILE.sessionMinutes
+    || (profile.experience ?? DEFAULT_HEALTH_PROFILE.experience) !== DEFAULT_HEALTH_PROFILE.experience;
+}
 const LANGUAGE_OPTIONS: { code: LanguageCode; label: string }[] = [
-  { code: "es", label: "Español" },
-  { code: "en", label: "English" },
+  { code: "es", label: "ES" },
+  { code: "en", label: "EN" },
 ];
 
 function App() {
@@ -111,6 +132,7 @@ function App() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(false);
   const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null);
+  const legalTriggerRef = useRef<HTMLElement | null>(null);
   const [initialProposal, setInitialProposal] = useState<TrainingTrack | null>(null);
   const [trackProposal, setTrackProposal] = useState<TrainingTrack | null>(null);
   const [accessMode, setAccessMode] = useState<AccessMode>("create");
@@ -211,6 +233,20 @@ function App() {
     && Boolean(cloud.email)
     && healthProfile.onboardingCompleted !== true;
   const canUseTraining = hasAppAccess && !onboardingRequired && !consentRequired;
+  const previousEmail = useRef(cloud.email);
+  useEffect(() => {
+    if (previousEmail.current !== cloud.email) {
+      // A recovery callback can supply the new session and recovery readiness
+      // together. Its password form has priority over the normal home landing.
+      setAccessOpen(cloud.passwordRecoveryState === "ready");
+      setProfileOpen(false);
+      setWorkoutOpen(false);
+      setSelectedExercise(null);
+      setAssignmentExercise(null);
+      setAppSection("home");
+      previousEmail.current = cloud.email;
+    }
+  }, [cloud.email, cloud.passwordRecoveryState]);
 
   useEffect(() => {
     if (language !== "en" && language !== "es") {
@@ -307,7 +343,8 @@ function App() {
       return;
     }
 
-    const primaryFocus = healthProfile.primaryGoal ?? "strength";
+    const primaryFocus = profileGoals(healthProfile)[0];
+    if (!primaryFocus) return;
     const initialTrack = {
       id: `initial-${primaryFocus}`,
       name: tr(language, "My first route", "Mi primera ruta"),
@@ -334,7 +371,7 @@ function App() {
       workout: generated.workout,
       adaptations: generated.adaptations,
     });
-  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.initialRoutineDecision, healthProfile.limitations, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
+  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.goals, healthProfile.initialRoutineDecision, healthProfile.limitations, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
 
   useEffect(() => {
     if (tracks.length && !tracks.some((track) => track.id === activeTrackId)) {
@@ -400,17 +437,17 @@ function App() {
     );
   }
 
-  function appendWorkoutStructure(type: WorkoutStructureType, exerciseIds: string[], day: Weekday) {
-    if (!activeTrack || !exerciseIds.length) return;
+  function appendWorkoutStructure(type: WorkoutStructureType, exerciseIds: string[], day: Weekday, prescriptions: Partial<WorkoutItem>[] = []) {
+    if (!activeTrack || exerciseIds.length !== workoutStructureSlotCount(type) || prescriptions.length !== exerciseIds.length || !prescriptions.every(isValidManualPrescription)) return;
     const structureId = typeof crypto.randomUUID === "function"
       ? crypto.randomUUID()
       : `structure-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    const additions = exerciseIds.map((exerciseId, position) => buildWorkoutItem(exerciseId, day, {
+    const additions = exerciseIds.map((exerciseId, position) => ({ ...buildWorkoutItem(exerciseId, day, {
       id: structureId,
       type,
       position,
       size: exerciseIds.length,
-    }));
+    }), ...prescriptions[position], setPlan: `${prescriptions[position]?.sets ?? 3} × ${prescriptions[position]?.reps ?? 10}` }));
     updateActiveWorkout((current) => [...current, ...additions]);
   }
 
@@ -421,7 +458,7 @@ function App() {
 
   function removeExerciseFromTrack(trackId: string, itemId: string) {
     setTracks((current) => current.map((track) => track.id === trackId
-      ? { ...track, workout: track.workout.filter((item) => (item.id ?? item.exerciseId) !== itemId) }
+      ? { ...track, workout: removeWorkoutItem(track.workout, itemId) }
       : track));
   }
 
@@ -616,12 +653,24 @@ function App() {
   }
 
   return (
-    <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`}>
+    <div className={`app-shell ${hasAppAccess ? "" : "is-guest"}`} onClickCapture={(event) => {
+      // Safari may activate a button without focusing it; remember legal openers.
+      if (!legalDocument && event.target instanceof Element) {
+        legalTriggerRef.current = event.target.closest<HTMLElement>("button, a");
+      }
+    }}>
       <header className="site-header">
-        <a className="brand" href="#top" onClick={() => setAppSection("home")} aria-label={tr(language, "Aunara home", "Inicio de Aunara")}>
-          <img className="brand-lockup" src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" />
-          <img className="brand-symbol" src={`${import.meta.env.BASE_URL}brand/aunara-symbol.svg`} alt="" aria-hidden="true" />
-        </a>
+        <NavigationMenu language={language} entries={[
+          { label: tr(language, "Home / routes", "Inicio / rutas"), action: () => setAppSection("home") },
+          ...(canUseTraining ? [
+            { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), action: () => setAppSection("library") },
+            { label: tr(language, "Profile", "Perfil"), action: () => setProfileOpen(true) },
+          ] : []),
+          { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), action: () => openAccess("sign-in") },
+          { label: tr(language, "Language / settings", "Idioma / configuración"), action: () => document.querySelector<HTMLSelectElement>(".language-select select")?.focus() },
+          ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => openAccess("sign-in") }] : []),
+          ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), action: () => { void cloud.signOut(); } }] : []),
+        ]} />
 
         {hasAppAccess ? (
           <nav aria-label={tr(language, "App controls", "Controles de la app")}>
@@ -675,6 +724,8 @@ function App() {
           </nav>
         )}
       </header>
+
+      <StorageNotice language={language} onLearnMore={() => setLegalDocument("cookies")} />
 
       <main id="top">
         {appSection === "home" && <section className="hero" aria-labelledby="hero-title">
@@ -759,7 +810,7 @@ function App() {
                 <span className="sr-only">{tr(language, "Body part", "Parte del cuerpo")}</span>
                 <select value={bodyPart} onChange={(event) => setBodyPart(event.target.value)}>
                   <option value="">{tr(language, "All body parts", "Todas las partes del cuerpo")}</option>
-                  {bodyParts.map((part) => <option key={part} value={part}>{titleCase(part)}</option>)}
+                  {bodyParts.map((part) => <option key={part} value={part}>{exerciseTaxonomyLabel(part, language)}</option>)}
                 </select>
               </label>
               <label>
@@ -767,7 +818,7 @@ function App() {
                 <span className="sr-only">{tr(language, "Equipment", "Equipo")}</span>
                 <select value={equipment} onChange={(event) => setEquipment(event.target.value)}>
                   <option value="">{tr(language, "All equipment", "Todo el equipo")}</option>
-                  {equipmentOptions.map((item) => <option key={item} value={item}>{titleCase(item)}</option>)}
+                  {equipmentOptions.map((item) => <option key={item} value={item}>{exerciseTaxonomyLabel(item, language)}</option>)}
                 </select>
               </label>
               <button
@@ -782,6 +833,11 @@ function App() {
             </div>
           </div>
 
+          {language === "es" && exercises.some((exercise) => isExerciseNamePending(exercise, language)) && <details className="translation-review-list">
+            <summary>{exercises.filter((exercise) => isExerciseNamePending(exercise, language)).length} nombres con traducción pendiente · lista de revisión</summary>
+            <p>Se muestra el nombre inglés original. La biblioteca no tiene cobertura editorial completa en español.</p>
+            <ol>{exercises.filter((exercise) => isExerciseNamePending(exercise, language)).map((exercise) => <li key={exercise.id}>#{exercise.id} · {exercise.name}</li>)}</ol>
+          </details>}
           {loadingError ? (
             <div className="status-card error">
               <h3>{tr(language, "Library unavailable", "Biblioteca no disponible")}</h3><p>{loadingError}</p>
@@ -887,10 +943,15 @@ function App() {
       )}
 
       <footer>
-        <div className="footer-brand"><img src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" /><span>{tr(language, "Train for what you want to be able to do.", "Entrená para poder.")}</span></div>
+        <div className="footer-brand"><img src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" /><span>{tr(language, "Your purpose leads the way.", "Tu propósito marca el camino.")}</span></div>
         <div className="footer-legal">
           <button type="button" onClick={() => setLegalDocument("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
           <button type="button" onClick={() => setLegalDocument("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
+          <button type="button" onClick={() => setLegalDocument("cookies")}>{tr(language, "Cookies and storage", "Cookies y almacenamiento")}</button>
+        </div>
+        <div className="footer-development-credit">
+          <span>{tr(language, "Developed by", "Desarrollado por")}</span>
+          <img src={`${import.meta.env.BASE_URL}brand/ac-setroc-wordmark.png`} alt="AC Setroc" width="2464" height="671" />
         </div>
         {canUseTraining && <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>}
       </footer>
@@ -943,7 +1004,7 @@ function App() {
             onAddExercise={(exerciseId, day) => appendWorkoutExercise(exerciseId, true, day)}
             onAddStructure={appendWorkoutStructure}
             onLogLoad={logCurrentWorkoutLoad}
-            onRemove={(itemId) => updateActiveWorkout((current) => current.filter((item) => (item.id ?? item.exerciseId) !== itemId))}
+            onRemove={(itemId) => updateActiveWorkout((current) => removeWorkoutItem(current, itemId))}
             onSwap={swapWorkoutExercise}
             onClear={() => updateActiveWorkout(() => [])}
             onGenerate={() => generateRoutine(activeTrack.id)}
@@ -990,6 +1051,7 @@ function App() {
           cloud={cloud}
           profileName={profileName}
           installGuide={installGuide}
+          dataSummary={{ profile: hasProfileSummary(cloudSnapshot), routes: tracks.length, favorites: favoriteIds.length, checkIns: checkIns.length, health: healthProfile.healthDataMode === "personalized" }}
           onCreateAccount={(input) => {
             setProfileName(input.name);
             void cloud.createAccount(input);
@@ -997,6 +1059,7 @@ function App() {
           onVerifyAccount={(input) => void cloud.verifyAccount(input)}
           onResendVerification={(email) => void cloud.resendVerification(email)}
           onUseExistingAccount={cloud.clearExistingAccount}
+          onClearAuthError={cloud.clearAuthError}
           onRequestPasswordReset={(email) => void cloud.requestPasswordReset(email)}
           onUpdatePassword={(password) => void cloud.updatePassword(password)}
           onSignIn={(input) => void cloud.signIn(input)}
@@ -1011,7 +1074,6 @@ function App() {
           onDeleteData={() => void cloud.deleteStoredData()}
           onDeleteAccount={() => {
             void cloud.deleteAccount();
-            setAccessOpen(false);
           }}
           onInstall={installPrompt ? () => {
             installPrompt.prompt().finally(() => setInstallPrompt(null));
@@ -1025,6 +1087,7 @@ function App() {
         <LegalPanel
           language={language}
           document={legalDocument}
+          returnFocusTo={legalTriggerRef.current}
           onClose={() => setLegalDocument(null)}
         />
       )}

@@ -4,6 +4,8 @@ import type {
   TrainingTrack,
   WeeklyCheckIn,
 } from "../types";
+import { GENERAL_GOALS, SPORT_FOCUSES } from "../types";
+import { SPECIAL_TECHNIQUE_OPTIONS, WORKOUT_STRUCTURE_OPTIONS } from "./workoutPrescription";
 
 export interface RepbookCloudSnapshot {
   schemaVersion: 1;
@@ -63,6 +65,23 @@ function isNullableNumber(value: unknown): value is number | null {
   return value === null || (typeof value === "number" && Number.isFinite(value));
 }
 
+function isSpecialPrescription(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  return isEnumValue(value.technique, SPECIAL_TECHNIQUE_OPTIONS.map((option) => option.value))
+    && typeof value.rounds === "number" && Number.isInteger(value.rounds) && value.rounds >= 1
+    && typeof value.restBetweenRoundsSeconds === "number" && Number.isFinite(value.restBetweenRoundsSeconds) && value.restBetweenRoundsSeconds >= 0
+    && Array.isArray(value.blocks) && value.blocks.length > 0 && value.blocks.every((block) => {
+      if (!isRecord(block) || typeof block.id !== "string") return false;
+      if (block.type === "rest") return typeof block.seconds === "number" && Number.isFinite(block.seconds) && block.seconds >= 0;
+      return block.type === "work" && isEnumValue(block.target, ["reps", "technical-failure", "amrap", "time"])
+        && (block.repetitionCount === undefined || isEnumValue(block.repetitionCount, ["total", "per-side"]))
+        && isEnumValue(block.loadType, ["reference-percent", "same", "kg", "bodyweight"])
+        && (block.value === undefined || (typeof block.value === "number" && Number.isFinite(block.value) && block.value >= 0))
+        && (block.loadValue === undefined || (typeof block.loadValue === "number" && Number.isFinite(block.loadValue) && block.loadValue >= 0))
+        && (block.tempo === undefined || typeof block.tempo === "string") && (block.note === undefined || typeof block.note === "string");
+    });
+}
+
 function isWorkoutItem(value: unknown): boolean {
   if (!isRecord(value)) return false;
   return typeof value.exerciseId === "string"
@@ -70,9 +89,17 @@ function isWorkoutItem(value: unknown): boolean {
     && Number.isFinite(value.sets)
     && typeof value.reps === "number"
     && Number.isFinite(value.reps)
+    && (value.repetitionCount === undefined || isEnumValue(value.repetitionCount, ["total", "per-side"]))
     && (value.id === undefined || typeof value.id === "string")
     && (value.day === undefined || ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"].includes(value.day as string))
     && (value.setPlan === undefined || typeof value.setPlan === "string")
+    && (value.originalSetPlan === undefined || typeof value.originalSetPlan === "string")
+    && (value.prescriptionMode === undefined || isEnumValue(value.prescriptionMode, ["standard", "special"]))
+    && (value.specialPrescription === undefined || isSpecialPrescription(value.specialPrescription))
+    && (value.structure === undefined || (isRecord(value.structure) && typeof value.structure.id === "string"
+      && isEnumValue(value.structure.type, WORKOUT_STRUCTURE_OPTIONS.map((option) => option.value))
+      && typeof value.structure.position === "number" && Number.isInteger(value.structure.position) && value.structure.position >= 0
+      && typeof value.structure.size === "number" && Number.isInteger(value.structure.size) && value.structure.size >= 1 && value.structure.position < value.structure.size))
     && (value.loadKg === undefined || isNullableNumber(value.loadKg))
     && (value.loadNote === undefined || typeof value.loadNote === "string")
     && (value.notes === undefined || typeof value.notes === "string")
@@ -149,6 +176,16 @@ function isHealthProfile(value: unknown): boolean {
   const validBirthDate = value.birthDate === undefined
     || (typeof value.birthDate === "string" && (value.birthDate === "" || /^\d{4}-\d{2}-\d{2}$/.test(value.birthDate)));
   return validBirthDate
+    && (value.goals === undefined || (Array.isArray(value.goals)
+      && value.goals.length >= 1 && value.goals.length <= 3
+      && new Set(value.goals).size === value.goals.length
+      && value.goals.every((goal) => isEnumValue(goal, GENERAL_GOALS))))
+    && (value.sport === undefined || value.sport === null || isEnumValue(value.sport, SPORT_FOCUSES))
+    && (value.equipmentPreference === undefined || isEnumValue(value.equipmentPreference, EQUIPMENT_PREFERENCES))
+    && (value.trainingDaysPerWeek === undefined || (typeof value.trainingDaysPerWeek === "number"
+      && Number.isInteger(value.trainingDaysPerWeek) && value.trainingDaysPerWeek >= 1 && value.trainingDaysPerWeek <= 7))
+    && (value.sessionMinutes === undefined || (typeof value.sessionMinutes === "number"
+      && Number.isFinite(value.sessionMinutes) && value.sessionMinutes >= 15 && value.sessionMinutes <= 180))
     && (value.healthDataMode === undefined || ["personalized", "basic"].includes(value.healthDataMode as string))
     && (value.initialRoutineDecision === undefined || ["accepted", "rejected"].includes(value.initialRoutineDecision as string))
     && isNullableNumber(value.ageYears)

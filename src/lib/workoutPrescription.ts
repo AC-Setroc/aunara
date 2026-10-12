@@ -5,12 +5,49 @@ import type {
   WorkoutStructureType,
   WorkoutTechniqueBlock,
   WorkoutWorkBlock,
+  WorkoutItem,
 } from "../types";
 
 export interface LocalizedOption<T extends string> {
   value: T;
   label: [string, string];
   description?: [string, string];
+}
+
+// Recognize only the exact numeric compatibility summary; never parse free text.
+export function isFreeLegacySetPlan(value: string | undefined): boolean {
+  return Boolean(value && !/^\d+\s*×\s*\d+$/.test(value));
+}
+
+export function isValidManualPrescription(item: Partial<WorkoutItem>): boolean {
+  if (!isValidRepetitionCount(item.repetitionCount)) return false;
+  if (!Number.isInteger(item.sets) || (item.sets ?? 0) < 1 || (item.sets ?? 0) > 12) return false;
+  if (item.prescriptionMode !== "special") return Number.isInteger(item.reps) && (item.reps ?? 0) >= 1 && (item.reps ?? 0) <= 100;
+  const prescription = item.specialPrescription;
+  return Boolean(prescription && Number.isInteger(prescription.rounds) && prescription.rounds >= 1 && prescription.rounds <= 12
+    && Number.isFinite(prescription.restBetweenRoundsSeconds) && prescription.restBetweenRoundsSeconds >= 0
+    && prescription.blocks.some((block) => block.type === "work")
+    && prescription.blocks.every((block) => block.type === "rest"
+      ? Number.isFinite(block.seconds) && block.seconds >= 0
+      : ["reps", "technical-failure", "amrap", "time"].includes(block.target)
+        && isValidRepetitionCount(block.repetitionCount)
+        && ((block.target !== "reps" && block.target !== "time") || (Number.isInteger(block.value) && (block.value ?? 0) > 0))
+        && (block.loadValue === undefined || Number.isFinite(block.loadValue) && block.loadValue >= 0)));
+}
+
+export function isValidRepetitionCount(value: unknown): boolean {
+  return value === undefined || value === "total" || value === "per-side";
+}
+
+export function repetitionCountSuffix(value: WorkoutItem["repetitionCount"], language: LanguageCode): string {
+  return value === "per-side" ? (language === "es" ? " por lado" : " per side") : "";
+}
+
+export function workTargetLabel(block: WorkoutWorkBlock, language: LanguageCode): string {
+  if (block.target === "reps") return `${block.value ?? "—"}${repetitionCountSuffix(block.repetitionCount, language)}`;
+  if (block.target === "time") return `${block.value ?? "—"}s`;
+  if (block.target === "technical-failure") return language === "es" ? "Fallo técnico" : "Technical failure";
+  return "AMRAP";
 }
 
 export const WORKOUT_STRUCTURE_OPTIONS: LocalizedOption<WorkoutStructureType>[] = [
