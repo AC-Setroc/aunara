@@ -33,9 +33,9 @@ Antes de cualquier ciclo nuevo, el Operator ejecuta en su Mac el script `push-ca
 
 Si el Operator no puede ejecutarlo, el agente lo hace **solo con autorización explícita** y con la misma técnica de índice temporal; nunca `git add .` sobre el canónico ni swaps de árbol.
 
-### Paso 2 — Terminar E4 y la revisión conjunta (ciclo 2 de 3) — **REVISIÓN APPROVED 2026-10-12 (Chromium + WebKit); falta el commit integrado**
+### Paso 2 — Terminar E4 y la revisión conjunta (ciclo 2 de 3) — **HECHO 2026-10-12: APPROVED (Chromium + WebKit) y commit integrado `1d4ccc9` en `dev`**
 
-Estado `[AUNARA/claude · modelo no expuesto]`: Build de E4 ya estaba cerrado en `6704681` (allowlist exacta verificada). Revisión conjunta completa en Chromium y WebKit por revisor distinto del constructor: **APPROVED técnico**, cero cambios de producto. Recibo, harness y resultados en [`sdd/2026-10-12-sdd006-ciclo2-revision/`](../sdd/2026-10-12-sdd006-ciclo2-revision/RECIBO.md). Lo que falta de este paso: delivery (hashes/manifest/árbol) y el único commit integrado E2+E3+E4 en `dev`, que se ejecuta con confirmación del Operator. Hallazgos H-01 y H-02 anotados en PENDIENTES, fuera de 006.
+Estado `[AUNARA/claude · modelo no expuesto]`: Build de E4 ya estaba cerrado en `6704681` (allowlist exacta verificada). Revisión conjunta completa en Chromium y WebKit por revisor distinto del constructor: **APPROVED técnico**, cero cambios de producto. Recibo, harness y resultados en [`sdd/2026-10-12-sdd006-ciclo2-revision/`](../sdd/2026-10-12-sdd006-ciclo2-revision/RECIBO.md). Delivery ejecutado por «Dale con el commit integrado»: `1d4ccc9` en `dev`, árbol técnico = `6704681` hash a hash, checks verdes. Hallazgos H-01/H-02 se corrigen en [SDD-011](../sdd/SDD-011-sync-estado-y-consentimiento-salud.md) (candidatos sobre `6704681`, entran a `dev` tras APPROVED). El paso 3 sigue requiriendo orden nueva.
 
 
 - Build únicamente en el candidato E4 derivado de E3 congelado, allowlist exacta de E4 §2: `src/App.tsx`, `src/components/AppFlows.test.tsx`, `src/components/AccessPanel.test.tsx`. Nada más.

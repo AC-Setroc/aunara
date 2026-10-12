@@ -1,6 +1,6 @@
 # SDD-011 — Sincronización: estado `syncing` atascado (H-01) y datos de salud sin consentimiento (H-02)
 
-2026-10-12 · v0.1 · Estado: **H-01 construido en candidato aislado y en revisión; H-02 especificado, decisiones D-11-1…D-11-4 pendientes del Operator**.
+2026-10-12 · v0.2 · Estado: **D-11-1…D-11-4 aprobadas por el Operator («aprobadas D-11-1 a D-11-4»); H-01 y H-02 construidos en candidatos aislados (`96b71c8`, `0fd2743`), unitarios y negativos verdes, matrices de regresión en curso; sin commit en `dev` hasta APPROVED**.
 Origen: `[AUNARA/claude · modelo no expuesto]`. Orden del Operator: «Corregí vos los hallazgos» (2026-10-12), sobre los hallazgos H-01 y H-02 del [recibo del ciclo 2 de SDD-006](2026-10-12-sdd006-ciclo2-revision/RECIBO.md).
 Base: candidato E4 `6704681` (E2+E3+E4, APPROVED técnico). Los dos hallazgos existen idénticos en `main` `1c709a3`; se corrigen sobre el candidato para que entren a `dev` con la integración de 006 y no generen conflictos con los 189 hunks que E2 ya cambió en `useCloudSync.ts`.
 
@@ -21,14 +21,15 @@ Resultado buscado: (H-01) el estado de sincronización siempre vuelve a reposo; 
 | `src/hooks/useCloudSync.ts` | Un `useRef` propio del efecto de guardado con debounce y la restauración de `synced` en el retorno temprano cuando ese efecto había puesto `syncing`. Nada más. |
 | `src/hooks/useCloudSync.test.tsx` | Un test nuevo, aditivo: A → B → A dentro de los 800 ms vuelve a `synced` sin guardado extra; un cambio no revertido sigue guardando una vez. |
 
-### H-02 — allowlist propuesta (efectiva solo tras D-11-1…D-11-4)
+### H-02 — allowlist (aprobada con D-11-1…D-11-4; forma final tras Build, ver Enmienda 1)
 
-| Archivo exacto | Cambio permitido |
+| Archivo exacto | Cambio |
 |---|---|
-| `src/App.tsx` | El `cloudSnapshot` que se sincroniza lleva `healthProfile` real solo si `cloud.healthDataConsent === "granted"`; en otro caso lleva `DEFAULT_HEALTH_PROFILE`. El `healthProfile` local, el export y la UI no cambian. |
-| `src/hooks/useCloudSync.ts` | Al aplicar un snapshot remoto (`use-remote`), si el consentimiento no es `granted`, conservar el `healthProfile` local en vez del remoto. Al pasar a `revoked`/`declined`, forzar un guardado inmediato (no debounce) del snapshot sin salud. |
-| `src/lib/cloudSnapshot.ts` | Solo si hace falta un helper puro `withoutHealthProfile(snapshot, defaults)` para no duplicar lógica. Sin cambios de validación ni de esquema. |
-| Tests de los tres archivos | Aditivos. |
+| `src/lib/cloudSnapshot.ts` | Política de datos sensibles: `withholdSensitiveData` (reutiliza `stripSensitiveHealthData` de `privacy.ts` y vacía `checkIns`), `outboundSnapshot` (qué sale del dispositivo según consentimiento), `reconcileRemoteSnapshot` (qué baja), `snapshotsEqual` (igualdad estructural) y la lista `SENSITIVE_HEALTH_FIELDS` pineada por test a la función de `privacy.ts`. Sin cambios de validación ni de esquema. |
+| `src/hooks/useCloudSync.ts` | El bootstrap reconcilia el remoto con la política y deja el servidor consistente de inmediato; el guardado con debounce envía solo el snapshot permitido. |
+| `src/lib/cloudSnapshot.test.ts`, `src/hooks/useCloudSync.test.tsx` | Aditivos: 5 + 3 tests. |
+
+`src/App.tsx` **no cambia**: la propuesta inicial de filtrar en App era circular (el snapshot se calcula antes de que el hook conozca el consentimiento) y la regla de qué es sensible ya existía en `privacy.ts`. `privacy.ts` no se toca.
 
 ### NO-TOCAR
 
@@ -51,13 +52,13 @@ Resultado buscado: (H-01) el estado de sincronización siempre vuelve a reposo; 
 
 Un `useRef<boolean>` `debouncedSavePending` que solo este efecto escribe: `true` al programar el guardado, `false` cuando el guardado resuelve o falla. En el retorno temprano (`serialized === lastSavedSnapshot.current`), si el ref está en `true`, se restaura `synced` y se limpia el ref. Así el `syncing` de otras operaciones (borrado, consentimiento, auth) no se toca: el efecto solo deshace el `syncing` que él mismo anunció. Limitación conocida: si otra operación pone `syncing` dentro de la ventana de 800 ms y el cambio se revierte, el estado vuelve a `synced` antes de que esa operación termine; esas operaciones vuelven a fijar su propio estado al completar y el modal de borrado conserva su latch `deleteSubmitted`.
 
-### H-02 (propuesto)
+### H-02 (construido en `wip/sdd011-h02-candidate-2026-10-12` = `0fd2743`, sobre H-01)
 
-1. **Qué viaja.** `cloudSnapshot` lleva `healthProfile` real solo con consentimiento `granted`. Con `declined`, `revoked` o `null`, lleva `DEFAULT_HEALTH_PROFILE`. El esquema no cambia (el validador exige `healthProfile`), así que ningún cliente viejo se rompe.
-2. **Qué baja.** Al aplicar un snapshot remoto, si el consentimiento no es `granted`, se conserva el `healthProfile` local. Con consentimiento `granted`, el remoto manda, como hoy. Esto evita la pérdida de datos del punto anterior y mantiene local-first para la salud.
-3. **Revocar = borrar en el servidor.** Al pasar de `granted` a `revoked`, se guarda de inmediato el snapshot sin salud: como hay una sola fila por usuario, eso elimina los datos de salud del servidor sin función nueva. La copia local de la persona no se toca.
-4. **Check-ins.** Como `sleepHours`, `energy` y `stress` son sensibles según el inventario, los check-ins siguen la misma regla que el perfil de salud: sin `granted` no viajan. Decisión D-11-2 porque cambia lo que hoy se sincroniza.
-5. **Consentimiento `null`** (cuentas que nunca respondieron): se trata como no otorgado. Hoy esas cuentas suben salud; con el cambio dejan de hacerlo y, en el primer guardado, la salud remota pasa a defaults. Decisión D-11-1.
+1. **Qué viaja.** Con consentimiento `granted`, el snapshot completo. Con `declined`, `revoked` o `null`, el snapshot pasa por la **misma regla que el producto ya aplica localmente** al revocar (`stripSensitiveHealthData`, `privacy.ts`): fecha de nacimiento, edad, sexo metabólico, medidas y composición, nivel de actividad, patrón y plan nutricional, ingredientes, alergias, notas de salud, cuestionario de aptitud y limitaciones vuelven a su valor vacío, `healthDataMode` queda `basic`, y `checkIns` viaja vacío. Las preferencias no sensibles (objetivo, metas, deporte, equipo, días, minutos, experiencia) y `onboardingCompleted` **sí** viajan: si no, un usuario sin consentimiento perdería la sincronización de preferencias y repetiría el onboarding en otro dispositivo. El esquema no cambia.
+2. **Qué baja.** Sin consentimiento, el dispositivo conserva sus campos sensibles y check-ins y toma del remoto todo lo demás. Con consentimiento, el remoto manda, salvo dos casos en que fue escrito sin autorización y no debe pisar al dispositivo: trae cero datos sensibles mientras el dispositivo los tiene, o degradaría un dispositivo `personalized` a `basic`. «Cero datos sensibles» normaliza vacíos: ausente, `null`, `""` y `[]` cuentan igual, porque las filas de clientes anteriores omiten claves opcionales que la regla escribe como `null` o `[]`, y esa diferencia no puede valer como «datos» (Build lo encontró como pérdida de datos real en el probe compilado y lo cerró con test).
+3. **Servidor consistente en el arranque.** Tras aplicar el remoto, si lo que este dispositivo puede enviar difiere estructuralmente de la fila (comparación sin orden de claves), se guarda ahí mismo. Eso limpia una copia legacy con salud subida antes del arreglo aunque la persona no cambie nada, restaura la salud al servidor cuando un dispositivo con datos vuelve a tener autorización, y normaliza una sola vez las filas con forma vieja.
+4. **Revocar.** El producto **ya** vacía la salud sensible local y los check-ins al revocar o declinar (`App.changeHealthConsent`, presente en `main`); este SDD no lo cambia. Con H-02 el servidor sigue al dispositivo: el cambio de consentimiento dispara el guardado del snapshot permitido dentro de la ventana de debounce (≤ 2 s medidos), y como hay una sola fila por usuario eso elimina la salud del servidor sin función nueva. Volver a autorizar reactiva el modo `personalized`; no hay datos locales que restaurar salvo que otro dispositivo los conserve (caso cubierto en el punto 2).
+5. **Check-ins** siguen la misma regla que el perfil de salud (D-11-2). **Consentimiento `null`** se trata como no otorgado (D-11-1).
 
 ## 5. Alternativas descartadas
 
@@ -68,7 +69,8 @@ Un `useRef<boolean>` `debouncedSavePending` que solo este efecto escribe: `true`
 ## 6. Riesgo sobre lo que hoy funciona
 
 - H-01: cambio de 10 líneas en un efecto; riesgo de restaurar `synced` encima del `syncing` de otra operación dentro de 800 ms (§4). Mitigado por los estados finales propios de cada operación y verificado por las matrices de Auth, privacidad, navegación y round-trip en ambos motores.
-- H-02: cambia qué datos viajan y qué datos bajan. Riesgo de regresión en bootstrap multi-dispositivo (A con salud y consentimiento, B sin consentimiento) y en el export (que debe seguir mostrando la salud local). Por eso la matriz de §7 incluye los cuatro cruces de consentimiento × dispositivo y el export antes/después.
+- H-02: cambia qué datos viajan y qué datos bajan. Riesgo de regresión en bootstrap multi-dispositivo y en el export. Por eso §7 cubre los cuatro estados de consentimiento, fila legacy con salud, fila sin salud con forma nueva y vieja, revocación y re-autorización, segundo dispositivo con datos, y el export antes/después.
+- Preexistente y **fuera de este SDD** (anotado para Spec, H-03): el hook vuelve a hacer bootstrap ante cualquier cambio del objeto `user` (consentimiento, refresco de token) y el remoto gana; un cambio local hecho justo antes puede ser pisado. H-02 protege la salud y el modo, no el resto del snapshot.
 
 ## 7. Verificación: criterios falsables
 
@@ -86,11 +88,11 @@ Un `useRef<boolean>` `debouncedSavePending` que solo este efecto escribe: `true`
 
 | ID | Criterio binario |
 |---|---|
-| S11-06 | Con consentimiento `declined`, `revoked` o `null`, el cuerpo de cada `POST repbook_user_data` tiene `healthProfile` igual a defaults y `checkIns: []`; con `granted`, lleva los valores reales. Medido con el proxy sintético, ambos motores. |
-| S11-07 | Con consentimiento no otorgado y remoto con salud en defaults, tras recargar la salud local sigue intacta (export idéntico salvo timestamp). Con `granted`, el remoto manda como hoy. |
-| S11-08 | Pasar de `granted` a `revoked` produce un POST inmediato con salud en defaults y `checkIns: []`; el GET siguiente devuelve esa fila; el export local conserva la salud. |
+| S11-06 | Con consentimiento `declined`, `revoked` o `null`, el cuerpo de cada `POST repbook_user_data` tiene los campos sensibles de `stripSensitiveHealthData` en su valor vacío, `healthDataMode: "basic"` y `checkIns: []`, y conserva preferencias no sensibles y `onboardingCompleted`; con `granted`, lleva los valores reales. Con fila legacy con salud y consentimiento no otorgado, el arranque produce un POST limpio y el export local conserva la salud. Medido con el proxy sintético con estado, ambos motores. |
+| S11-07 | Consentimiento no otorgado y remoto sin salud (forma nueva): recarga conserva la salud local y produce **cero** guardados. Forma vieja (sin claves opcionales): exactamente **un** guardado de normalización en el primer arranque y cero tras recargar. Con `granted` y remoto con datos, el remoto manda. |
+| S11-08 | `granted` → revocar en el centro de privacidad: la fila remota queda sin datos sensibles con preferencias intactas y `healthDataMode: "basic"`, y el dispositivo también (regla preexistente del producto). Volver a autorizar deja la fila con `personalized` e igual al dispositivo. Segundo dispositivo con datos, `granted`, frente a una fila sin salud: conserva sus datos y restaura la fila. |
 | S11-09 | Resumen de privacidad (E4) y UI de salud no cambian de comportamiento para el mismo consentimiento (RG-01…06 verdes). |
-| S11-10 | Negativos: quitar el filtro de consentimiento ⇒ S11-06 rojo; quitar la preservación local ⇒ S11-07 rojo; ambos en copia disposable, restaurados. |
+| S11-10 | Negativos en copia disposable, uno por vez, restaurados: sin filtro de consentimiento; sin preservación local; sin limpieza del servidor en bootstrap; sin normalización de vacíos; sin protección del modo. Cada uno pone en rojo al menos un test; control verde. |
 
 Regla de siempre: tráfico externo bloqueado, datos sintéticos, WebKit obligatorio, cero cambios de producto para ocultar un rojo.
 
@@ -108,10 +110,20 @@ Regla de siempre: tráfico externo bloqueado, datos sintéticos, WebKit obligato
 - **D-11-3 — Revocación:** borrar la salud del servidor sobrescribiendo la fila con defaults (sin función nueva, sin tocar rutas ni favoritos). Recomendado. Nota: Supabase conserva respaldos del proyecto según su plan; el borrado lógico en la fila no borra respaldos, igual que hoy el borrado de cuenta. Es un hecho del proveedor a declarar en `retention-and-rights.md`, no algo que este SDD resuelva.
 - **D-11-4 — Estadísticas desvinculadas para «entrenar» sugerencias:** fuera de este SDD por §5. Si el Operator insiste, abrir SDD propio condicionado a: motor consumidor existente, política v1.1 con la finalidad declarada y aceptada, agregación con umbral mínimo y sin fechas/medidas crudas, opt-in. Recomendación: diferir hasta SDD-007.
 
+### Enmienda 1 — decisiones de Build sobre H-02 · 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Cuatro desvíos respecto del §4 propuesto, todos a favor de menos código y menos pérdida de datos, sin tocar las decisiones D-11-1…D-11-4: (1) la regla de qué es sensible no se duplica: se reutiliza `stripSensitiveHealthData` de `privacy.ts`, que el producto ya aplica localmente; (2) se retienen solo los campos sensibles, no el `healthProfile` entero, para no romper la sincronización de preferencias ni el onboarding en otro dispositivo; (3) «la copia local no se toca» era falso: el producto ya la vacía al revocar desde `main`; el criterio S11-08 se corrigió a lo que el producto hace; (4) dos protecciones adicionales descubiertas por el probe compilado (fila de cliente viejo con claves ausentes que valía como «datos» y pisaba al dispositivo; modo `personalized` degradado al re-autorizar), ambas con test y negativo. `App.tsx` queda fuera del delta.
+
 ## 10. Definición de terminado
 
 H-01: S11-01…S11-05 verdes en ambos motores con evidencia versionada; integrado a `dev` junto con 006 cuando el Operator confirme. H-02: D-11-1…D-11-4 decididas, S11-06…S11-10 verdes, revisión completa, commit en `dev`. Ninguno publica nada por sí mismo; UAT real y cierre siguen siendo del Operator.
 
-## 11. Recibo H-01
+## 11. Recibos
 
-Pendiente: se completa cuando terminen las matrices sobre el build del candidato `96b71c8` en Chromium y WebKit.
+### H-01 (`96b71c8`)
+
+Unitario: test rojo sobre `6704681` (`expected 'syncing' to be 'synced'`) → verde; suite 349/25; typecheck. Compilado (`harness/h01-negative.mjs`, ambos motores): build E4 `stuck=is-syncing`, candidato `stuck=is-synced`, un POST por cambio no revertido. Matrices del ciclo 2 sobre el build del candidato: en curso; se completan abajo.
+
+### H-02 (`0fd2743`)
+
+Unitario: 5 tests nuevos en `cloudSnapshot.test.ts` y 3 en `useCloudSync.test.tsx`, rojos sobre H-01 (`expected 'rodilla derecha' to be ''`, `withholdSensitiveData is not a function`) → verdes; suite 359/25; typecheck; builds `/` y `/aunara/` allowlist 32; guards 27/27. Negativos S11-10: N1 sin filtro ⇒ 3 rojos; N2 sin preservación ⇒ 5 rojos; N3 sin limpieza en bootstrap ⇒ 1 rojo; N4 sin normalización de vacíos ⇒ 1 rojo; N5 sin protección del modo ⇒ 1 rojo; worktree restaurado, control 96/96. Compilado (`harness/h02-consent-probe.mjs`, Supabase sintético con estado, `resultados/h02/`): **9/9 en Chromium y 9/9 en WebKit** (S11-06 × 4 estados + legacy, S11-07, S11-07b, S11-08, S11-08b). Matrices del ciclo 2 sobre el build del candidato: pendientes de correr tras H-01.

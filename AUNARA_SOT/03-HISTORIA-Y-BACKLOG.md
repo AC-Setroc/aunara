@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟢 SDD-006 integrado en `dev`; SDD-011 H-01 y H-02 construidos con D-11 aprobadas
+
+`[AUNARA/claude · modelo no expuesto]` — «Dale con el commit integrado y aprobadas D-11-1 a D-11-4». Delivery de 006: `1d4ccc9` en `dev`, árbol técnico igual a `6704681` (43 archivos), typecheck, 348/25 + Node 1, guards 27/27, builds ambas bases allowlist 32, CI verde; sin publicación. SDD-011: H-01 `96b71c8` y H-02 `0fd2743` en candidatos aislados. Build de H-02 corrigió la spec con evidencia (Enmienda 1): reutiliza la regla de privacidad existente, retiene solo campos sensibles, reconoce que el producto ya vacía la salud local al revocar, y cierra dos pérdidas de datos halladas por el probe compilado (fila de cliente viejo valía como «datos»; modo personalizado degradado al re-autorizar). Unitarios 359/25, cinco negativos rojos, probe 9/9 en ambos motores. Hallazgo H-03 (re-bootstrap por cambio de `user`) a PENDIENTES.
+
 ## 2026-10-12 · 🟡 SDD-011: H-01 construido en candidato aislado; H-02 especificado con decisiones
 
 `[AUNARA/claude · modelo no expuesto]` — Orden «Corregí vos los hallazgos». H-01: ref propio del efecto de debounce en `useCloudSync.ts`, test rojo (`expected 'syncing' to be 'synced'`) → verde, suite 349/25, typecheck, builds ambas bases allowlist 32, negativo compilado en Chromium y WebKit; candidato `96b71c8` sobre `6704681`, matrices del ciclo 2 repitiéndose sobre su build. H-02: diseño con filtro por consentimiento en el snapshot, preservación de la salud local en bootstrap y revocación = fila con defaults; decisiones D-11-1…D-11-4 al Operator. La propuesta de conservar progreso «anonimizado» para entrenar sugerencias se deja fuera con razones medibles (sin consumidor, finalidad no declarada, reidentificable con pocos usuarios, parte del progreso es sensible).

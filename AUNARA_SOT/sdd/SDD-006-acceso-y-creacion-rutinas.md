@@ -6,7 +6,7 @@ Orden: entrega 1 de [006–009](SDD-006-009-plan-entregas.md). El Operator aprob
 
 Actualización 2026-10-12 `[AUNARA/claude · modelo no expuesto]`: [E4](SDD-006-enmienda-4-resumen-datos-guardados.md) está aprobada (D-E4-1, «Sí») y en desarrollo aislado; el encabezado anterior la describía como propuesta pendiente. El dirty local con v1 + E1 y las correcciones 002/003/004 quedó snapshoteado en `origin/wip/dirty-2026-10-12` (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`); los candidatos E2/E3/E4 de `/private/tmp` no están en git. Esta spec se versiona en `dev` sin cambiar su estado de aprobación.
 
-Actualización 2026-10-12 (tarde) `[AUNARA/claude · modelo no expuesto]`: candidatos E2/E3/E4 respaldados en `wip/sdd006-*-candidate-2026-10-12`. Revisión conjunta ciclo 2 corrida completa en Chromium y WebKit ⇒ **APPROVED técnico** de `6704681`; commit integrado en `dev` pendiente de confirmación del Operator, publicación con orden nueva. Recibo en [`2026-10-12-sdd006-ciclo2-revision/`](2026-10-12-sdd006-ciclo2-revision/RECIBO.md).
+Actualización 2026-10-12 (tarde) `[AUNARA/claude · modelo no expuesto]`: candidatos E2/E3/E4 respaldados en `wip/sdd006-*-candidate-2026-10-12`. Revisión conjunta ciclo 2 corrida completa en Chromium y WebKit ⇒ **APPROVED técnico** de `6704681`; **integrado en `dev` como `1d4ccc9`** por orden del Operator; publicación con orden nueva. Recibo en [`2026-10-12-sdd006-ciclo2-revision/`](2026-10-12-sdd006-ciclo2-revision/RECIBO.md).
 
 ## 1. El problema, en el idioma del Operator
 

@@ -58,7 +58,13 @@ export function syntheticSession(user = syntheticUser()) {
   return { access_token: "synthetic-access-token", token_type: "bearer", expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600, refresh_token: "synthetic-refresh-token", user };
 }
 
-export async function installSyntheticSupabase(context, { userDelayMs = 0, userStatus = 200, remoteRow = null, log = [] } = {}) {
+/**
+ * Synthetic Supabase. `remoteRow` is what GET /rest/v1/repbook_user_data returns. With `stateful: true` the fake keeps the
+ * last POSTed row (so a later GET or a reload sees what the app saved) and PUT /auth/v1/user merges user_metadata, which
+ * is what supabase-js calls for updateUser (consent changes). `state.user` / `state.remoteRow` expose the current values.
+ */
+export async function installSyntheticSupabase(context, { userDelayMs = 0, userStatus = 200, remoteRow = null, log = [], stateful = false, user = syntheticUser(), state = {} } = {}) {
+  state.remoteRow = remoteRow; state.user = user; state.saves = [];
   await context.route("**/*", async (route) => {
     const url = new URL(route.request().url());
     if (url.hostname === "127.0.0.1") return route.continue();
@@ -69,15 +75,26 @@ export async function installSyntheticSupabase(context, { userDelayMs = 0, userS
     if (method === "OPTIONS") return route.fulfill({ status: 204, headers: { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "*" } });
     if (path === "/auth/v1/user" && method === "GET") {
       if (userDelayMs) await new Promise((r) => setTimeout(r, userDelayMs));
-      return userStatus === 200 ? json(200, syntheticUser()) : json(userStatus, { message: "invalid token", code: userStatus });
+      return userStatus === 200 ? json(200, state.user) : json(userStatus, { message: "invalid token", code: userStatus });
     }
-    if (path === "/auth/v1/token") return json(200, syntheticSession());
+    if (path === "/auth/v1/user" && method === "PUT") {
+      const body = JSON.parse(route.request().postData() ?? "{}");
+      state.user = { ...state.user, user_metadata: { ...state.user.user_metadata, ...(body.data ?? {}) }, updated_at: new Date().toISOString() };
+      return json(200, state.user);
+    }
+    if (path === "/auth/v1/token") return json(200, syntheticSession(state.user));
     if (path === "/auth/v1/logout") return json(204, {});
     if (path === "/auth/v1/recover") return json(200, {});
     if (path === "/auth/v1/signup") return json(200, { user: syntheticUser(), session: syntheticSession() });
     if (path.startsWith("/rest/v1/repbook_user_data")) {
-      if (method === "GET") return json(200, remoteRow ? [remoteRow] : []);
-      return json(201, remoteRow ? [remoteRow] : []);
+      if (method === "GET") return json(200, state.remoteRow ? [state.remoteRow] : []);
+      if (method === "POST" || method === "PATCH") {
+        const body = JSON.parse(route.request().postData() ?? "null");
+        const row = Array.isArray(body) ? body[0] : body;
+        state.saves.push(row);
+        if (stateful && row) state.remoteRow = row;
+      }
+      return json(201, state.remoteRow ? [state.remoteRow] : []);
     }
     if (path.startsWith("/rest/v1/repbook_consent_events")) return json(201, []);
     if (path.startsWith("/functions/v1/")) return json(200, {});
