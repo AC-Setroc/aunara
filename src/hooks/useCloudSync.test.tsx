@@ -331,6 +331,30 @@ describe("password account access", () => {
     expect(result.current.status).toBe("error");
   });
 
+  it("returns to synced when a change is reverted inside the debounce window, without an extra save", async () => {
+    // SDD-011 H-01: snapshot A → B → A within 800 ms used to leave status stuck in "syncing" with no save scheduled.
+    const { result, rerender } = hook("es");
+    await waitFor(() => expect(authStateHandler).toBeDefined());
+    act(() => authStateHandler?.("SIGNED_IN", { user: { id: "debounce-user", email: account.email } }));
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    const savesAfterBootstrap = save.mock.calls.length;
+
+    rerender({ locale: "en" });
+    expect(result.current.status).toBe("syncing");
+    rerender({ locale: "es" });
+    expect(result.current.status).toBe("synced");
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    expect(save.mock.calls.length).toBe(savesAfterBootstrap);
+    expect(result.current.status).toBe("synced");
+
+    // A change that is not reverted still saves once and ends synced.
+    rerender({ locale: "en" });
+    expect(result.current.status).toBe("syncing");
+    await waitFor(() => expect(save.mock.calls.length).toBe(savesAfterBootstrap + 1), { timeout: 2000 });
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+  });
+
   it("blocks duplicate pending recovery requests without cancelling the first", async () => {
     const request = deferred<any>();
     resetPasswordForEmail.mockReturnValueOnce(request.promise);
