@@ -7,7 +7,7 @@ visuales. Su aviso separado indica que las miniaturas y animaciones pertenecen
 a Gym Visual, se distribuyen a 180×180 con atribución y fueron incorporadas al
 repositorio con permiso escrito del titular.
 
-Repbook conserva la atribución visible:
+Aunara conserva la atribución visible:
 
 > © Gym Visual — https://gymvisual.com/
 
@@ -16,7 +16,7 @@ Repbook conserva la atribución visible:
 Los términos públicos de Gym Visual indican que el material sigue protegido y
 que no puede redistribuirse o ponerse a disposición de terceros sin
 consentimiento escrito separado. El permiso concedido al repositorio fuente no
-equivale automáticamente a una licencia independiente para Repbook.
+equivale automáticamente a una licencia independiente para Aunara.
 
 ## Decisión para esta etapa
 
@@ -24,7 +24,7 @@ equivale automáticamente a una licencia independiente para Repbook.
 - No presentar la atribución como si fuera una licencia.
 - No lanzar comercialmente, incluir en tiendas, habilitar marca blanca ni
   distribuir los archivos visuales a clientes hasta:
-  1. obtener autorización/licencia propia por escrito para Repbook; o
+  1. obtener autorización/licencia propia por escrito para Aunara; o
   2. reemplazar los medios por material propio o con licencia compatible.
 - Conservar evidencia escrita de la opción elegida y sus límites de uso,
   resolución, territorio, plazo, canales y sublicencia.
