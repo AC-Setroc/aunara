@@ -19,13 +19,15 @@ Esta orden no sustituye la aprobación de ningún SDD ni amplía alcances. Fija 
 | `main` | Código publicado en `https://aunaratraining.com/`: `1c709a3` + docs `dfffa87`. | Única rama que despliega. Push solo por orden explícita. |
 | `dev` | `main` + toda la SOT, SDD-002 a 010 y docs de producto. Sin código nuevo. | Integración documental y, tras APPROVED, de código. |
 | `wip/dirty-2026-10-12` | Snapshot `e4baf5f` del working tree de la Mac: SDD-002/003/004 + 006 v1 + E1, 40 archivos de fuente/tests. Verificado en entorno limpio: typecheck, 298 Vitest/24 + Node1, guards 27/27, build raíz allowlist 31. | Evidencia y respaldo. No es base de trabajo ni entrega. |
-| `wip/sdd006-e2-candidate-*`, `wip/sdd006-e3-candidate-*`, `wip/sdd006-e4-candidate-*` | Snapshots de los candidatos de `/private/tmp`, si el Operator ejecutó el script del runbook (§Snapshots). Comprobar con `git ls-remote --heads origin 'wip/*'`. | Evidencia y respaldo. |
+| `wip/sdd006-e2-candidate-2026-10-12` (`19dcb4f`), `wip/sdd006-e3-candidate-2026-10-12` (`85e4415`), `wip/sdd006-e4-candidate-2026-10-12` (`6704681`) | Snapshots de los candidatos de `/private/tmp`, pusheados por el Operator el 2026-10-12. Los tres parten de `1c709a3`, un commit cada uno. E3 y E4 incluyen `src/main.tsx` y `src/main.test.tsx`; E4 = E3 + `App.tsx` + dos tests + spec E4. Verificados en entorno limpio: E3 309 Vitest/25; E4 typecheck, 348/25 + Node1, guards 27/27, build raíz 32 assets, allowlist 32. | Evidencia y respaldo. Si `/private/tmp` desaparece, Build de E4 se reconstruye desde `6704681`. |
 | `/private/tmp/aunara-sdd006-*` en la Mac | Candidatos E2 (`…e2-candidate.EZJxlS/repo`), E3 (`…e3-candidate.DKIck1/repo`), E4 y todos los recibos de revisión. | Fuente de trabajo de Build/Review de 006 **mientras exista**. Se pierde con un reinicio. |
 | `archive/github-pages/main` | Build compilado histórico de agosto. | No tocar. |
 
 ## 3. Orden de trabajo
 
-### Paso 1 — Snapshot de los candidatos (Operator, diez minutos, riesgo cero)
+### Paso 1 — Snapshot de los candidatos (Operator, diez minutos, riesgo cero) — **HECHO 2026-10-12**
+
+Ejecutado por el Operator; ramas `19dcb4f`, `85e4415`, `6704681` en el remoto y recibos copiados a `~/Documents/aunara-evidencias-2026-10-12/` en la Mac. Auditoría en entorno limpio: sin referencias privadas, `.env*`, tokens ni capturas; solo correos `@example.com` de fixtures. El texto siguiente se conserva como procedimiento para repetirlo.
 
 Antes de cualquier ciclo nuevo, el Operator ejecuta en su Mac el script `push-candidates.sh` del runbook (§Snapshots del trabajo local). Pushea cada candidato de `/private/tmp` como rama `wip/sdd006-<e2|e3|e4>-candidate-<fecha>` sin tocar los repos candidatos, y copia los recibos a `~/Documents/aunara-evidencias-<fecha>/`. Si el script no encuentra el candidato E4, el agente debe pedir al Operator la ruta exacta y registrarla en SDD-006 E4.
 

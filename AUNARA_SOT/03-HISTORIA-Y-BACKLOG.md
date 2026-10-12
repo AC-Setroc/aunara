@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟢 Paso 1 de la orden: candidatos E2/E3/E4 respaldados en `wip`
+
+`[AUNARA/claude · modelo no expuesto]` — El Operator corrió `push-candidates.sh` en su Mac: tres ramas `wip/sdd006-<e2|e3|e4>-candidate-2026-10-12` (`19dcb4f`, `85e4415`, `6704681`), padre `1c709a3`, y recibos copiados a `~/Documents/aunara-evidencias-2026-10-12/`. Auditoría sin privados ni secretos. Verificación fresca: E3 309/25; E4 typecheck, 348/25 + Node1, guards 27/27, build raíz 32 assets con chunk `App-*` separado, allowlist 32. El trabajo de once días ya no depende de `/private/tmp`. Siguiente: paso 2 de la orden, E4 ciclo 2 y revisión conjunta.
+
 ## 2026-10-12 · 🟡 Diagnóstico prod vs SDD; orden y handoff para retomar SDD-006
 
 `[AUNARA/claude · modelo no expuesto]` — Prod (`main` `dfffa87`, código `1c709a3`) no contiene nada de SDD-002/003/004/006: delta sin publicar +2199/−309 líneas en 40 archivos y 138 tests más que prod, verificado por marcadores (`NavigationMenu`, `StorageNotice`, wordmark, `repetitionCount`, slogan) ausentes en `main` y presentes en `wip`. Cadena de dependencias 002/003/004 → E2 → E3 → E4 con dos ciclos restantes; candidatos solo en `/private/tmp`. El Operator aprobó el plan en cinco pasos: respaldar candidatos, terminar E4 y revisión conjunta, publicar con orden nueva, Auth/Danny/versión legal en paralelo, y si E4 falla volver a Spec partiendo 002+003. Se escriben la [orden](ordenes/ORDEN-2026-10-12-retomar-sdd006.md) para Codex, el [handoff](handoffs/HANDOFF-2026-10-12.md) y el script `push-candidates.sh` en el runbook. Sin cambios a código ni `main`.
