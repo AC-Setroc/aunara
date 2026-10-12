@@ -1,6 +1,6 @@
 # SDD-010 — Registro de cumplimiento al día: marca, hosting y dominio
 
-2026-10-12 · v0.1 · Estado: **Aprobado por el Operator; implementado en worktree aislado, revisión independiente pendiente**.
+2026-10-12 · v0.1 · Estado: **Entregado en `dev`; revisión 3/3 APPROVED; cierre del Operator en navegador registrado; Enmienda 2 aplicada**.
 Origen: `[AUNARA/claude · modelo no expuesto]`.
 Casa canónica: `/Users/alejandro/AI Projects/Personal/aunara`. Rama de trabajo documental: `dev`.
 
@@ -57,7 +57,7 @@ Búsqueda negativa: `grep -rn -E 'analytics\|gtag\|pixel\|document\.cookie' src 
 ## 4. Diseño
 
 1. **Marca.** Reemplazar «Repbook» por «Aunara» en los cinco documentos. Donde el término nombre identificadores técnicos (`repbook_user_data`, claves `repbook-*`) se conserva literal y se aclara que es nombre interno heredado, no marca visible.
-2. **Hosting.** En el inventario, sustituir la viñeta de OpenAI Sites por: «GitHub Pages entrega los archivos estáticos de la aplicación desde el repositorio público `AC-Setroc/aunara`; el sitio es público y no aplica control de acceso. Los datos personales no pasan por GitHub: viajan del navegador a Supabase.» Añadir: «El dominio `aunaratraining.com` está registrado en GoDaddy, que presta solo la zona DNS; la aplicación no le envía datos personales.» No afirmar plazos de logs ni respaldos de GitHub o GoDaddy.
+2. **Hosting.** En el inventario, sustituir la viñeta de OpenAI Sites por: «GitHub Pages entrega los archivos estáticos de la aplicación desde el repositorio público `AC-Setroc/aunara`; el sitio es público y no aplica control de acceso. GitHub no recibe datos de la cuenta ni del perfil: esos viajan del navegador a Supabase. Como todo servidor web, GitHub Pages recibe la dirección IP y el agente de usuario de cada visitante; sus logs y plazos de retención no fueron verificados.» (redacción de la Enmienda 2) Añadir: «El dominio `aunaratraining.com` está registrado en GoDaddy, que presta solo la zona DNS; la aplicación no le envía datos personales.» No afirmar plazos de logs ni respaldos de GitHub o GoDaddy.
 3. **Almacenamiento del navegador.** Añadir al inventario una viñeta con lo observado en SDD-002: claves locales de preferencias/estado, sesión de Supabase y Cache API del service worker; cero cookies observadas en visita invitada; sesión autenticada aún no inventariada. Es descripción, no promesa.
 4. **Estado y cambios.** En `README.md`, fecha de estado 2026-10-12 y sección «Cambios desde la versión 1.0» con tres filas: rebrand (2026-08-08, `4a17378`), hosting GitHub Pages (2026-10-01, `fc88568`), dominio `aunaratraining.com` (2026-10-07, `1c709a3`). Cada fila dice qué cambió y que la versión jurídica no se modificó. Cierra con el pendiente: «Decidir, con asesoría jurídica, si estos cambios son materiales en los términos del propio registro (§Responsable) y exigen v1.1 y nueva aceptación. Hasta entonces el texto en la app sigue en v1.0 y la corrección de hosting en pantalla depende de SDD-002.»
 5. **Contactos e incidentes.** Nombrar GitHub y GoDaddy donde hoy dice «proveedor de hosting». Nada más cambia en el procedimiento.
@@ -177,6 +177,14 @@ Sesión: Review, sobre el árbol candidato en la Mac o en un clon de `dev`.
 ### Recibo de Review, ciclo 1, y rework — 2026-10-12
 
 `[AUNARA/claude · modelo no expuesto]` — Panel de tres lentes con contexto limpio sobre `813d542`: Correctitud **APRUEBA** (CP-01 a CP-08 con comando literal; paso 6 del guion NO CONCLUYENTE por falta de red al dominio desde el entorno de revisión; proxy: `LegalPanel.tsx` idéntico a `dev` y aún dice «OpenAI Sites»); Regresión **APRUEBA** (suite 160/18 + Node1 igual a la base, NO-TOCAR byte a byte, seis archivos exactos, compromisos intactos salvo marca/proveedor); Seguridad y datos **RECHAZA** por una frase: «ni el texto aceptado por los titulares» era falsa, `4a17378` cambió 18 líneas del aviso en pantalla, y prejuzgaba D-10-4. Rework ciclo 2: la frase pasa a «el texto en pantalla cambió solo en la marca (fila 1) y conserva la versión 1.0»; columna «Fecha» pasa a «Fecha de publicación» (el commit `1c709a3` es del 06, la publicación del 07); contactos de incidentes escriben «GitHub Pages» literal para que CP-02 cuente inventario y contactos; §10 y allowlist del README actualizados. Observación sobre el objetivo, elevada al Operator como posible Enmienda 2: «los datos personales no pasan por GitHub» (§4.2) es impreciso, GitHub recibe IP y agente de usuario del visitante como cualquier servidor web; no se cambia sin aprobación.
+
+### Enmienda 2 — precisión sobre GitHub Pages · 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Las dos pasadas de la lente de Seguridad marcaron que «los datos personales no pasan por GitHub» (§4.2) es impreciso: como cualquier servidor web, GitHub Pages recibe IP y agente de usuario del visitante, y la IP puede ser dato personal según criterio jurídico. El Operator aprobó: «Dale con la Enmienda 2.» Cambio de una viñeta en `data-processing-inventory.md` y de la frase correspondiente en §4.2; no afirma plazos ni auditoría de logs. Guardas CP-01/02/04 re-ejecutadas en verde.
+
+### Cierre del Operator — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Guion §7 paso 6 ejecutado por el Operator en su navegador sobre `https://aunaratraining.com/`: la Política de privacidad publicada muestra «Versión 1.0 / vigente desde 2026-07-29» y, en «Proveedores y tratamiento internacional», «La aplicación web pública se entrega mediante OpenAI Sites». Es el resultado esperado: SDD-010 no publicó nada en la app; la corrección de ese párrafo sigue siendo de SDD-002. Captura conservada fuera del repo.
 
 ## 10. Definición de terminado
 

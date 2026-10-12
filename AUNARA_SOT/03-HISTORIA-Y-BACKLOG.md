@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟢 SDD-010 cerrado por el Operator; Enmienda 2 aplicada
+
+`[AUNARA/claude · modelo no expuesto]` — El Operator ejecutó el paso 6 del guion en su navegador: producción muestra «Versión 1.0 / vigente desde 2026-07-29» y «OpenAI Sites», prueba de que el SDD no tocó la app. Aprobó la Enmienda 2: la viñeta de GitHub Pages del inventario deja de decir «no pasan por GitHub» y precisa que GitHub no recibe datos de cuenta ni perfil, pero sí IP y agente de usuario de cada visitante, logs no verificados. Guardas en verde. Abiertos por diseño: versión legal v1.0/v1.1 y publicación de SDD-002.
+
 ## 2026-10-12 · 🟢 SDD-010 implementado, revisado 3/3 y entregado en `dev`
 
 `[AUNARA/claude · modelo no expuesto]` — Aprobación del Operator (D-10-1/2/4/5 según recomendación; D-10-3 sin cambio, canal diferido al correo propio). Build en worktree aislado, un commit por documento; línea base sin/con cambio medida con `grep` y suite 160/18 + Node1 idéntica. Build detectó contradicción interna del SDD (§4.4 vs CP-01/02) y paró; el Operator eligió acotar los criterios (Enmienda 1). Review con tres lentes en contexto limpio: Correctitud y Regresión APRUEBAN; Seguridad rechazó una frase falsa sobre el texto aceptado, corregida en ciclo 2 y aprobada. Guardas rotas a propósito y restauradas. NO-TOCAR byte a byte: `LegalPanel.tsx`, `privacy.ts`, `LEGAL_VERSION`. Abiertos: cierre del Operator en navegador, Enmienda 2 propuesta, decisión de versión legal, publicación de SDD-002.

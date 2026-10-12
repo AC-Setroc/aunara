@@ -12,8 +12,10 @@
 
 - GitHub Pages entrega los archivos estáticos de la aplicación web desde el
   repositorio público `AC-Setroc/aunara`. El sitio es público; no existe control
-  de acceso en el hosting. Los datos personales no pasan por GitHub: viajan del
-  navegador a Supabase. Plazos de logs y respaldos de GitHub no verificados.
+  de acceso en el hosting. GitHub no recibe datos de la cuenta ni del perfil:
+  esos viajan del navegador a Supabase. Como todo servidor web, GitHub Pages
+  recibe la dirección IP y el agente de usuario de cada visitante; sus logs y
+  plazos de retención no fueron verificados.
 - El dominio `aunaratraining.com` está registrado en GoDaddy, que presta la zona
   DNS. La aplicación no le envía datos personales por diseño; sus registros de
   resolución DNS no fueron auditados.
