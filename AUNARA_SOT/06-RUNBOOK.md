@@ -26,11 +26,24 @@ Referencias y aceptación completa: [SDD-005](sdd/SDD-005-dominio-aunaratraining
 
 ## Pages desde el mismo repo — gates
 
-El repo público `AC-Setroc/aunara` contiene la fuente y el workflow; la URL objetivo de Pages es `https://ac-setroc.github.io/aunara/`. Consultar [ADR 0003](../docs/architecture/0003-pages-from-aunara-repository.md). Antes de publicar, confirmar que las variables cliente publicables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` están configuradas en Actions, sin mostrar sus valores. El build de release usa `AUNARA_BASE_PATH=/aunara/`; `node scripts/check-pages-client.mjs` valida `dist/client/` y crea el fallback `404.html`. El workflow solo sube ese directorio; `dist/server/`, `dist/.openai/`, fuente, SOT y referencias locales quedan fuera del artifact.
+El repo público `AC-Setroc/aunara` contiene la fuente y el workflow. La URL canónica es `https://aunaratraining.com/` desde el 2026-10-07 ([SDD-005](sdd/SDD-005-dominio-aunaratraining.md)); `https://ac-setroc.github.io/aunara/` redirige 301 al apex y se conserva como rollback. Consultar [ADR 0003](../docs/architecture/0003-pages-from-aunara-repository.md). Antes de publicar, confirmar que las variables cliente publicables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` están configuradas en Actions, sin mostrar sus valores. El build de release usa `AUNARA_BASE_PATH=/` desde `1c709a3`; el build de rollback usa `AUNARA_BASE_PATH=/aunara/`. `node scripts/check-pages-client.mjs` valida `dist/client/` y crea el fallback `404.html`. El workflow solo sube ese directorio; `dist/server/`, `dist/.openai/`, fuente, SOT y referencias locales quedan fuera del artifact.
 
 No agregar `AUNARA_SOT/reference/` ni otros documentos con datos personales al commit público sin revisión específica. El sitio raíz anterior puede tener un worker con scope `/` que controle también `/aunara/`; verificarlo en navegador antes de UAT/corte. Confirmar redirecciones de Supabase para `/aunara/`, instalar/actualizar la PWA en dispositivos de prueba y hacer smoke real. No retirar la publicación anterior ni limpiar cachés de usuarios por este runbook. Un build local no publica por sí mismo; el push/deploy sigue siendo un gate separado del Operator.
 
 **Estado actual de cuenta (2026-10-01):** por autorización del Operator, `mindally-test` está pausado y el proyecto existente ahora se llama Aunara, con estado `ACTIVE_HEALTHY` y consulta `select 1` correcta. Site URL y redirect exacto de Pages `https://ac-setroc.github.io/aunara/` quedaron guardados y verificados tras recargar; el redirect anterior se conservó por compatibilidad. Confirmación, recuperación, login y sync reales requieren UAT con correos nuevos; no se enviaron correos de prueba desde esta configuración. No pausar otros proyectos ni cambiar de plan desde este runbook.
+
+## Ramas — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Inventario de ramas remotas y su autoridad:
+
+| Rama | Uso | CI |
+|---|---|---|
+| `main` | Única rama que publica a Pages. Push solo por orden explícita del Operator. | verify + deploy |
+| `dev` | Integración documental y, cuando el Operator lo decida, de código aprobado. Base: `main` + SOT/SDD/docs del snapshot. | ninguna |
+| `wip/dirty-2026-10-12` | Snapshot sin revisar del working tree de la Mac (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`). Evidencia y respaldo; no es base de trabajo ni entrega. | ninguna |
+| `archive/github-pages/main` | Build compilado histórico (ago-2026) con base `/`, historia independiente. No tocar. | ninguna |
+
+Para refrescar el snapshot: ejecutar de nuevo `bash ~/push-dirty.sh` en la Mac cambiando `BRANCH` a una fecha nueva. El script arma el commit con un índice temporal, excluye `AUNARA_SOT/reference/` y entornos, muestra el delta y pide confirmación; no modifica la rama ni el índice canónicos. Una copia del script quedó en la raíz del snapshot por accidente; no versionarla en `dev` ni `main`.
 
 ## Última publicación verificada — 2026-10-01
 

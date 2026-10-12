@@ -1,8 +1,15 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`.
+Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo no expuesto]`, sobre las entradas previas de `[AUNARA/codex · modelo no expuesto]`.
 
 ## Verificado
+
+### 2026-10-12 — Dirty local versionado en `wip`; SOT y SDD en `dev`
+
+- `[AUNARA/claude · modelo no expuesto]` — El Operator publicó desde su Mac el working tree completo, menos `AUNARA_SOT/reference/` y entornos, como commit `e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884` en `origin/wip/dirty-2026-10-12`, padre `1c709a3`. Son 66 archivos: 40 de fuente/tests, el wordmark PNG, dos scripts de guard y 23 documentos. Auditado en este entorno: sin referencias privadas, `.env*`, tokens ni capturas. Verificación fresca sobre ese snapshot: typecheck, 298 Vitest/24 + Node1, directorio OK, guards 27/27, build raíz y allowlist 31 PASS. El snapshot **no** contiene cambios en `src/main.tsx` ni `src/main.test.tsx`: los candidatos E2/E3/E4 de SDD-006 siguen únicamente en `/private/tmp` de la Mac, fuera de git.
+- Rama `dev` creada desde `main` (`dfffa87`) con solo la documentación del snapshot: SOT, SDD-002/003/004 y enmiendas, SDD-006 con E2/E3/E4, plan 006–009, borradores 007–009 y `docs/product/`. El código dirty **no** se integra a `dev`: E2 y E3 están REJECTED y E4 en curso; el commit técnico exige APPROVED. `main`, Pages, Auth y producción no cambian.
+- Verificado también en este entorno sobre `main`: typecheck, 160 Vitest/18 + Node1, guards 26/26, build raíz y allowlist 30 PASS; Actions runs 9 y 10 SUCCESS vía API. Supabase: proyecto `Aunara` `ACTIVE_HEALTHY` según conector, coherente con el LOG del 2026-10-01. El dominio en vivo no es verificable desde este sandbox por política de red; la evidencia del 2026-10-07 se conserva tal cual.
+- Se corrigieron pasajes documentales desactualizados que seguían declarando `/aunara/` como objetivo vigente o la implementación de Pages como pendiente: runbook, índice de producto, ADR 0003 e índice SOT. Encabezados de SDD-006 y del plan 006–009 reciben una línea de actualización; no se reescriben entradas previas.
 
 ### 2026-10-12 — E4 aprobada; desarrollo acotado en curso
 
@@ -97,8 +104,12 @@ Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/codex ·
 - Instalación/actualización PWA en dispositivos físicos e interacción con el worker antiguo siguen pendientes; el smoke publicado en Chrome no declara ese cierre.
 - Las referencias y su inventario permanecen locales, fuera de cualquier commit público hasta revisión específica de privacidad y derechos.
 - UAT real de confirmación de cuenta, recuperación, login y sync pendiente; configurar las URLs no equivale a validar esos flujos completos.
-- Los cambios documentales previos de OpenGym/UAT siguen fuera del alcance de entrega; los SDD trasladados conservan su aprobación pendiente.
+- Los cambios documentales previos de OpenGym/UAT ya están versionados en `dev`; los SDD trasladados conservan su estado de aprobación propio.
+- `AUNARA_SOT/reference/` no figura en `.gitignore`: su exclusión del repo público depende de disciplina manual. Cambio de una línea propuesto, pendiente de orden del Operator.
+- La rama `dev` no dispara CI: `ci.yml` escucha `main`, `codex/**` y PRs a `main`. Ampliar el trigger es un cambio de workflow que requiere orden.
+- Los candidatos E2/E3/E4 de SDD-006 existen solo en `/private/tmp` de la Mac; no hay snapshot en git. Una pérdida de esa máquina pierde ese trabajo.
+- `docs/compliance/` sigue fechado 2026-07-29 bajo la marca Repbook, con política y términos v1.0; el rebrand a Aunara no fue revisado jurídicamente.
 
 ## Próxima acción
 
-Completar UAT real autorizado de SDD-002/003 en la vista local: confirmación, ingreso, recuperación/retorno, sync e inventario autenticado/entrenamiento. Después del gate independiente y autorización de publicación, repetir UAT de cuenta en Pages y completar PWA física/interacción con el worker legado. Ninguna capacidad nueva de OpenGym/UAT se presenta aquí como aprobada o implementada.
+Decidir si el código de `origin/wip/dirty-2026-10-12` se integra a `dev` como WIP explícito o permanece solo en `wip` hasta APPROVED de E2+E3+E4, y ordenar la línea de `.gitignore` para `AUNARA_SOT/reference/`. Después, completar UAT real autorizado de SDD-002/003 en la vista local: confirmación, ingreso, recuperación/retorno, sync e inventario autenticado/entrenamiento. Después del gate independiente y autorización de publicación, repetir UAT de cuenta en Pages y completar PWA física/interacción con el worker legado. Ninguna capacidad nueva de OpenGym/UAT se presenta aquí como aprobada o implementada.

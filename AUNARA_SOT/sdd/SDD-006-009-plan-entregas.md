@@ -3,6 +3,8 @@
 2026-10-10 · Estado: **SDD-006 PASS técnico local; entrega aislada pendiente; siguientes entregas en borrador**
 Origen: [Aunara/Codex · modelo no expuesto en este agente]
 
+Actualización 2026-10-12 `[AUNARA/claude · modelo no expuesto]`: estado real de 006 posterior a este plan: E2 REJECTED (CL-07), E3 ciclo 1 REJECTED (CA06-03), E4 aprobada y en desarrollo; quedan dos ciclos del límite aprobado. Ver [SDD-006](SDD-006-acceso-y-creacion-rutinas.md) y sus enmiendas. 007–009 siguen en borrador.
+
 ## Orden y dependencias
 
 | Entrega | Resultado | Estado actual | Gate antes de código |

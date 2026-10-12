@@ -1,9 +1,14 @@
 # Pendientes — Aunara
 
-Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`.
+Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo no expuesto]`, sobre las entradas previas de `[AUNARA/codex · modelo no expuesto]`.
 
 ## Abiertos
 
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: decidir el destino del código de `origin/wip/dirty-2026-10-12` (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`): integrarlo a `dev` como WIP explícito o dejarlo solo en `wip` hasta APPROVED de E2+E3+E4. Hoy `dev` = `main` + documentación. El snapshot es evidencia, no entrega ni base de trabajo.
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: agregar `AUNARA_SOT/reference/` a `.gitignore`. Una línea; sin ella un `git add -A` publica las siete referencias con datos personales en el repo público.
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: los candidatos E2/E3/E4 de SDD-006 viven solo en `/private/tmp` de la Mac. Decidir si se snapshotean también en `wip` (misma técnica de índice temporal) antes de seguir el ciclo 2 de E3/E4.
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: `docs/compliance/` describe Repbook al 2026-07-29 y legal v1.0; revisar si el rebrand y el cambio de hosting/dominio son cambio material que exige nueva versión. Fuera del alcance documental de esta sesión; no se tocaron textos legales.
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: `package.json` declara casi todas las dependencias como `latest`. CI y `npm ci` quedan fijados por el lockfile, pero un `npm install` limpio en otra máquina puede subir versiones mayores. Decidir si se fijan versiones.
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-12: E4 aprobada, supera solo el pedido de aprobación anterior. Pendientes desarrollo acotado, TDD/repro válido, revisión conjunta E2/E3/E4 con todas las matrices/negativos restantes, documentación y commit local solo tras APPROVED. Sin publicación ni cambio de contratos de datos; ciclo2 de3.
 
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-12: aprobar/ajustar D-E4-1 de [E4](sdd/SDD-006-enmienda-4-resumen-datos-guardados.md). Propuesta exacta App+AppFlows.test+AccessPanel.test; únicamente indicador de nombre/preferencias parciales desde snapshot significativo, sin tocar renderer/legacy/export/hooks/bootstrap. Repro válido8/8 sin legacy/enum inválido mantiene gate; no se cambia código antes de aprobación. No commit ni publicación; completar matrices/negativos restantes después.
