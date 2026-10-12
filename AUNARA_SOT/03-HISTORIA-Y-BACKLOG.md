@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟡 Ciclo 2 de SDD-006: Chromium verde, WebKit pendiente, NO CONCLUYENTE
+
+`[AUNARA/claude · modelo no expuesto]` — Revisión fresca E2+E3+E4 sobre `6704681` con revisor distinto, Supabase sintético y tráfico externo bloqueado. Chromium: 192 contextos de storage, 84 de arranque, 42 de Auth, 84 de resumen de privacidad, 156/156 de navegación/modal/legal y 52/52 de round-trip/flotante/footer, todos PASS; RG-01 rojo→verde 19/110 → 129/129; seis negativos red→green y cinco negativos del guard CLI rechazados; suite 348/25. Cinco ajustes de harness documentados, cero cambios de producto. WebKit no disponible en el entorno ⇒ veredicto NO CONCLUYENTE, ciclo 2 abierto; recibo con guion WebKit en [`sdd/2026-10-12-sdd006-ciclo2-revision/`](sdd/2026-10-12-sdd006-ciclo2-revision/RECIBO.md). Hallazgo H-01 (debounce de `useCloudSync` deja `syncing`), preexistente en `main`, a PENDIENTES.
+
 ## 2026-10-12 · 🟢 Paso 1 de la orden: candidatos E2/E3/E4 respaldados en `wip`
 
 `[AUNARA/claude · modelo no expuesto]` — El Operator corrió `push-candidates.sh` en su Mac: tres ramas `wip/sdd006-<e2|e3|e4>-candidate-2026-10-12` (`19dcb4f`, `85e4415`, `6704681`), padre `1c709a3`, y recibos copiados a `~/Documents/aunara-evidencias-2026-10-12/`. Auditoría sin privados ni secretos. Verificación fresca: E3 309/25; E4 typecheck, 348/25 + Node1, guards 27/27, build raíz 32 assets con chunk `App-*` separado, allowlist 32. El trabajo de once días ya no depende de `/private/tmp`. Siguiente: paso 2 de la orden, E4 ciclo 2 y revisión conjunta.

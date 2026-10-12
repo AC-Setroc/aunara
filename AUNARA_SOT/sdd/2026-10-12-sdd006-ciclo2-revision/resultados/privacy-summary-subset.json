@@ -1,0 +1,65 @@
+{
+  "summary": "12/12 PASS",
+  "rows": [
+    {
+      "name": "RG-03 completado sin nombre ni prefs root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad root/es",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas root/es",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad root/en",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas root/en",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad aunara/es",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas aunara/es",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad aunara/en",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas aunara/en",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    }
+  ]
+}

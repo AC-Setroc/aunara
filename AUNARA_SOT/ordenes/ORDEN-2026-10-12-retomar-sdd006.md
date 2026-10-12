@@ -33,7 +33,10 @@ Antes de cualquier ciclo nuevo, el Operator ejecuta en su Mac el script `push-ca
 
 Si el Operator no puede ejecutarlo, el agente lo hace **solo con autorización explícita** y con la misma técnica de índice temporal; nunca `git add .` sobre el canónico ni swaps de árbol.
 
-### Paso 2 — Terminar E4 y la revisión conjunta (ciclo 2 de 3)
+### Paso 2 — Terminar E4 y la revisión conjunta (ciclo 2 de 3) — **EN CURSO 2026-10-12: Chromium verde, falta WebKit**
+
+Estado `[AUNARA/claude · modelo no expuesto]`: Build de E4 ya estaba cerrado en `6704681` (allowlist exacta verificada). La revisión conjunta se corrió completa en Chromium con revisor distinto y quedó verde; WebKit no existe en el entorno de revisión, así que el veredicto es **NO CONCLUYENTE** y el ciclo 2 **no se consume**. Recibo, harness y resultados en [`sdd/2026-10-12-sdd006-ciclo2-revision/`](../sdd/2026-10-12-sdd006-ciclo2-revision/RECIBO.md). Lo que falta de este paso: correr la mitad WebKit en la Mac con el guion del recibo; con todo verde, APPROVED y commit único en `dev`. Hallazgo H-01 anotado en PENDIENTES, fuera de 006.
+
 
 - Build únicamente en el candidato E4 derivado de E3 congelado, allowlist exacta de E4 §2: `src/App.tsx`, `src/components/AppFlows.test.tsx`, `src/components/AccessPanel.test.tsx`. Nada más.
 - Review completa fresca E2 + E3 + E4 con revisor distinto: CL-01 a CL-09, AR-01 a AR-08, RG-01 a RG-08, matrices y negativos pendientes listados en E3 §7 y E4 §7. No heredar PASS parciales. WebKit obligatorio.

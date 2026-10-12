@@ -1,0 +1,37 @@
+=== RG-01 ROJO: tests E4 (AppFlows.test + AccessPanel.test) sobre App.tsx de E3 (85e4415) ===
+     × lists a valid partial name with onboarding false ('en') 462ms
+     × lists a valid partial name with onboarding undefined ('en') 190ms
+     × lists a valid partial name with onboarding false ('es') 212ms
+     × lists a valid partial name with onboarding undefined ('es') 205ms
+     × lists 'primaryGoal' alone with onboarding false 193ms
+     × lists 'primaryGoal' alone with onboarding undefined 187ms
+     × lists 'goals including initial goal' alone with onboarding false 96ms
+     × lists 'goals including initial goal' alone with onboarding undefined 168ms
+     × lists 'sport' alone with onboarding false 174ms
+     × lists 'sport' alone with onboarding undefined 153ms
+     × lists 'equipmentPreference' alone with onboarding false 100ms
+     × lists 'equipmentPreference' alone with onboarding undefined 112ms
+     × lists 'trainingDaysPerWeek' alone with onboarding false 80ms
+     × lists 'trainingDaysPerWeek' alone with onboarding undefined 86ms
+     × lists 'sessionMinutes' alone with onboarding false 65ms
+     × lists 'sessionMinutes' alone with onboarding undefined 69ms
+     × lists 'experience' alone with onboarding false 109ms
+     × lists 'experience' alone with onboarding undefined 98ms
+     × keeps exported snapshot bytes and collection counts unchanged across summary open/close 93ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  1 failed | 1 passed (2)
+      Tests  19 failed | 110 passed (129)
+=== restaurar App.tsx de E4 (6704681) ===
+8dc3b2eef8c2336b
+8dc3b2eef8c2336b
+=== RG-01 VERDE: mismos tests sobre App.tsx de E4 ===
+ Test Files  2 passed (2)
+      Tests  129 passed (129)
+=== suite completa E4 ===
+ Test Files  25 passed (25)
+      Tests  348 passed (348)
+   Duration  21.90s (transform 3.99s, setup 0ms, import 10.62s, tests 29.43s, environment 17.82s)
+=== typecheck ===
+> tsc -b --pretty false
+
+RG01_DONE
