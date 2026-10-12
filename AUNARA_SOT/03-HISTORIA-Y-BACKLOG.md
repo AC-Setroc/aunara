@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-11 · 🟡 E3 aprobada e iniciada; revisión y entrega pendientes
+
+`[AUNARA/codex · modelo no expuesto]` — «Dale» responde a aprobación de conducta y alcance de E3; D-E3-1–4 aprobadas, incluido bloqueo honesto sin App/Auth si get-only rechaza carga y excepción exacta CL-07. Desarrollo único sobre copia aislada desde E2, solo main/test; frontend existente y cliente/hooks/config/deps/datos intactos. TDD y UI compilada ambos motores/idiomas/bases/móvil-escritorio, revisión completa futura sin heredar PASS anteriores. Sin commit/push/deploy ni cuentas/correos reales; cierre UAT reservado al Operator.
+
 ## 2026-10-06 · 🟡 SDD-005 preparación local APPROVED; DNS/Auth/TLS pendientes
 
 `[AUNARA/codex · GPT-5]` — Delta aislado de cinco archivos técnicos y diez documentales sobre `ef82f9a`, sin dirty previo ni correo/usuarios. Revisión independiente **APPROVED solo prepublicación**: typecheck, 160 pruebas/18 + Node, directorio4, guards26, builds raíz/rollback y artifact30 PASS; UI Chromium/WebKit96/96 y negativos PASS. Propiedad/custom domain ya existen, pero DNS continúa WebsiteBuilder, Auth no incluye apex y HTTPS sigue no disponible. No hubo push, deploy ni operación externa; corte DNS/Auth/TLS y smoke publicado permanecen pendientes.

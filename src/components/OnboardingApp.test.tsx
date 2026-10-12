@@ -58,14 +58,14 @@ describe("mandatory starting profile", () => {
 
     expect(screen.getByRole("dialog", { name: "Conocé tu punto de partida" })).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Rutas de entrenamiento" })).toBeNull();
-    expect(screen.getByRole("option", { name: "Pérdida de peso" })).toBeTruthy();
+    expect(screen.getByRole("checkbox", { name: "Pérdida de peso" })).toBeTruthy();
     expect(screen.getByRole("option", { name: /Actividad moderada.*3–5 días/ })).toBeTruthy();
 
     const birthDate = `${new Date().getFullYear() - 36}-01-01`;
     fireEvent.change(screen.getByLabelText("Fecha de nacimiento"), { target: { value: birthDate } });
     fireEvent.change(screen.getByLabelText("Estatura en centímetros"), { target: { value: "180" } });
     fireEvent.change(screen.getByLabelText("Peso actual en kilogramos"), { target: { value: "82" } });
-    fireEvent.change(screen.getByLabelText("Objetivo principal"), { target: { value: "strength" } });
+    expect((screen.getByRole("checkbox", { name: "Fuerza" }) as HTMLInputElement).checked).toBe(true);
     fireEvent.change(screen.getByLabelText("Días de entrenamiento por semana"), { target: { value: "3" } });
     fireEvent.change(screen.getByLabelText("Minutos por sesión"), { target: { value: "45" } });
     fireEvent.click(screen.getByRole("checkbox", { name: /Revisé estas respuestas/ }));

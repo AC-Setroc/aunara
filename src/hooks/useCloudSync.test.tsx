@@ -17,6 +17,11 @@ const { signUp, signInWithPassword, signOut, verifyOtp, resend, resetPasswordFor
   invoke: vi.fn(),
 }));
 
+const { load, save } = vi.hoisted(() => ({ load: vi.fn(), save: vi.fn() }));
+vi.mock("../lib/cloudStore", () => ({
+  createCloudStore: () => ({ load, save, recordConsent: vi.fn().mockResolvedValue(undefined) }),
+}));
+
 let authStateHandler: ((event: string, session: any) => void) | undefined;
 
 import { useCloudSync } from "./useCloudSync";
@@ -160,6 +165,8 @@ beforeEach(() => {
   passwordRecoverySignalFor(testClient).clear();
   vi.clearAllMocks();
   authStateHandler = undefined;
+  load.mockResolvedValue(null);
+  save.mockResolvedValue(undefined);
   signUp.mockResolvedValue({
     data: {
       session: null,
@@ -183,6 +190,214 @@ beforeEach(() => {
 });
 
 describe("password account access", () => {
+  const account = { name: "Test guest", email: "Guest+tag@sub.example.com", password: "MiXeD-Password", acceptedLegal: true, healthDataConsent: false };
+  function hook(language: "es" | "en" = "es") {
+    return renderHook(({ locale }) => useCloudSync({ snapshot: { ...snapshot, language: locale }, onRemoteSnapshot: vi.fn(), client: testClient }), { initialProps: { locale: language } });
+  }
+  function deferred<T>() {
+    let resolve!: (value: T) => void;
+    const promise = new Promise<T>((done) => { resolve = done; });
+    return { promise, resolve };
+  }
+
+  it("clears only auth errors and translates visible errors when language changes", async () => {
+    signInWithPassword.mockResolvedValueOnce({ error: { code: "invalid_credentials", message: "Raw server error" } });
+    const { result, rerender } = hook();
+    await act(() => result.current.signIn(account));
+    expect(result.current.message).toBe("Tu correo o contraseña no coinciden con los datos registrados. Intentá de nuevo o recuperá tu contraseña");
+    expect(result.current.authErrorKind).toBe("credentials");
+    rerender({ locale: "en" });
+    expect(result.current.message).toBe("Your email or password do not match the registered details. Try again or recover your password");
+    expect(result.current.authErrorKind).toBe("credentials");
+    act(() => result.current.clearAuthError());
+    expect(result.current.message).toBeUndefined();
+    expect(result.current.authErrorKind).toBeUndefined();
+    expect(result.current.status).toBe("local");
+  });
+
+  it.each(["createAccount", "signIn"] as const)("does not revive a late %s error or strand pending state", async (action) => {
+    const request = deferred<any>();
+    (action === "createAccount" ? signUp : signInWithPassword).mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current[action](account); });
+    expect(result.current.status).toBe("syncing");
+    act(() => result.current.clearAuthError());
+    expect(result.current.status).toBe("syncing");
+    await act(async () => { request.resolve({ error: { code: "invalid_credentials", message: "old" }, data: {} }); await pending; });
+    expect(result.current.message).toBeUndefined();
+    expect(result.current.status).toBe("local");
+  });
+
+  it.each(["createAccount", "verifyAccount", "resendVerification", "requestPasswordReset", "updatePassword"] as const)("does not expose a login action for credentials from %s", async (action) => {
+    const fn = { createAccount: signUp, verifyAccount: verifyOtp, resendVerification: resend, requestPasswordReset: resetPasswordForEmail, updatePassword: updateUser }[action];
+    fn.mockResolvedValueOnce({ data: {}, error: { code: "invalid_credentials" } });
+    const { result } = hook();
+    await act(async () => {
+      if (action === "createAccount") await result.current.createAccount(account);
+      else if (action === "verifyAccount") await result.current.verifyAccount({ email: account.email, token: "123456" });
+      else await result.current[action](action === "updatePassword" ? account.password : account.email);
+    });
+    expect(result.current.status).toBe("error");
+    expect(result.current.authErrorKind).toBeUndefined();
+  });
+
+  it.each(["es", "en"] as const)("keeps a legitimate signup conflict after neutral recovery (%s)", async (language) => {
+    signUp.mockResolvedValueOnce({ data: { session: null, user: { identities: [] } }, error: null });
+    const { result } = hook(language);
+    await act(() => result.current.createAccount(account));
+    expect(result.current.existingAccountEmail).toBe(account.email);
+    expect(resetPasswordForEmail).not.toHaveBeenCalled();
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(result.current.existingAccountEmail).toBe(account.email);
+    expect(result.current.message).toBe(language === "es"
+      ? "Solicitud de recuperación procesada. Esto no confirma que el correo se haya enviado o entregado. Si recibís las instrucciones, revisá tu bandeja de entrada y spam. Si no llegan, podés intentar nuevamente más tarde."
+      : "Recovery request processed. This does not confirm that an email was sent or delivered. If you receive the instructions, check your inbox and spam folder. If they do not arrive, you can try again later.");
+    expect(signInWithPassword).not.toHaveBeenCalled();
+    expect(signUp).toHaveBeenCalledOnce();
+  });
+
+  it("translates only recovery feedback and preserves a subsequent legitimate local success", async () => {
+    const { result, rerender } = hook("es");
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(result.current.message).toContain("Solicitud de recuperación procesada.");
+    rerender({ locale: "en" });
+    expect(result.current.message).toContain("Recovery request processed.");
+    rerender({ locale: "es" });
+    expect(result.current.message).toContain("Solicitud de recuperación procesada.");
+    await act(() => result.current.resendVerification(account.email));
+    const success = result.current.message;
+    expect(success).toContain("Si la cuenta está pendiente");
+    expect(result.current.passwordRecoveryState).toBe("requested");
+    rerender({ locale: "en" });
+    expect(result.current.message).toBe(success);
+  });
+
+  it("does not let an older error replace a newer auth success", async () => {
+    const request = deferred<any>();
+    signInWithPassword.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.signIn(account); });
+    act(() => result.current.clearAuthError());
+    await act(() => result.current.requestPasswordReset(account.email));
+    const current = result.current.message;
+    await act(async () => { request.resolve({ error: { code: "invalid_credentials" } }); await pending; });
+    expect(result.current.message).toBe(current);
+    expect(result.current.passwordRecoveryState).toBe("requested");
+    expect(result.current.status).toBe("local");
+  });
+
+  it("preserves an old legitimate success, pending verification and recovery", async () => {
+    const request = deferred<any>();
+    signUp.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.createAccount(account); });
+    act(() => result.current.clearAuthError());
+    await act(async () => { request.resolve({ data: { session: null, user: { identities: [{}] } }, error: null }); await pending; });
+    const message = result.current.message;
+    act(() => result.current.clearAuthError());
+    expect(result.current.pendingVerification).toEqual({ name: account.name, email: account.email });
+    expect(result.current.message).toBe(message);
+    await act(() => result.current.requestPasswordReset(account.email));
+    const recovery = result.current.message;
+    act(() => result.current.clearAuthError());
+    expect(result.current.message).toBe(recovery);
+    expect(result.current.passwordRecoveryState).toBe("requested");
+    expect(result.current.message).not.toMatch(/sent you|Te enviamos/);
+  });
+
+  it("preserves sync errors, sync pending state, session and remote data", async () => {
+    const remote = vi.fn();
+    const request = deferred<any>();
+    load.mockReturnValueOnce(request.promise);
+    const { result } = renderHook(() => useCloudSync({ snapshot, onRemoteSnapshot: remote, client: testClient }));
+    await waitFor(() => expect(authStateHandler).toBeDefined());
+    act(() => authStateHandler?.("SIGNED_IN", { user: { id: "test-user", email: account.email } }));
+    act(() => result.current.clearAuthError());
+    expect(result.current.status).toBe("syncing");
+    await act(async () => { request.resolve(snapshot); });
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    const calls = remote.mock.calls.length;
+    act(() => result.current.clearAuthError());
+    expect(result.current.email).toBe(account.email);
+    expect(remote.mock.calls.length).toBe(calls);
+    load.mockRejectedValueOnce(new Error("sync-original-error"));
+    act(() => authStateHandler?.("SIGNED_IN", { user: { id: "other-user", email: account.email } }));
+    await waitFor(() => expect(result.current.message).toBe("sync-original-error"));
+    act(() => result.current.clearAuthError());
+    expect(result.current.message).toBe("sync-original-error");
+    expect(result.current.status).toBe("error");
+  });
+
+  it("blocks duplicate pending recovery requests without cancelling the first", async () => {
+    const request = deferred<any>();
+    resetPasswordForEmail.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.requestPasswordReset(account.email); });
+    await act(() => result.current.requestPasswordReset(account.email));
+    act(() => result.current.clearAuthError());
+    expect(resetPasswordForEmail).toHaveBeenCalledOnce();
+    await act(async () => { request.resolve({ error: null }); await pending; });
+    expect(result.current.passwordRecoveryState).toBe("requested");
+  });
+
+  it("releases recovery pending after a rejected transport promise with safe feedback", async () => {
+    resetPasswordForEmail.mockRejectedValueOnce(new Error("RAW TRANSPORT DETAILS"));
+    const { result } = hook();
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(result.current.status).toBe("error");
+    expect(result.current.message).not.toContain("RAW");
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(resetPasswordForEmail).toHaveBeenCalledTimes(2);
+    expect(result.current.passwordRecoveryState).toBe("requested");
+  });
+
+  it("does not discard a legitimate old sign-in session after clearing an auth generation", async () => {
+    const request = deferred<any>();
+    signInWithPassword.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    await act(async () => { await Promise.resolve(); });
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.signIn(account); });
+    act(() => result.current.clearAuthError());
+    await act(async () => {
+      authStateHandler?.("SIGNED_IN", { user: { id: "legitimate-user", email: account.email } });
+      request.resolve({ error: null });
+      await pending;
+    });
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    expect(result.current.email).toBe(account.email);
+    expect(signOut).not.toHaveBeenCalled();
+  });
+
+  const actions = ["createAccount", "signIn", "verifyAccount", "resendVerification", "requestPasswordReset", "updatePassword"] as const;
+  it.each(actions.flatMap((action) => (["es", "en"] as const).flatMap((language) => [true, false].map((known) => ({ action, language, known })))))("uses safe $language copy for $action (known=$known)", async ({ action, language, known }) => {
+    const fn = { createAccount: signUp, signIn: signInWithPassword, verifyAccount: verifyOtp, resendVerification: resend, requestPasswordReset: resetPasswordForEmail, updatePassword: updateUser }[action];
+    fn.mockResolvedValueOnce({ data: {}, error: { code: known ? "over_email_send_rate_limit" : "internal_weird", message: "SENSITIVE RAW ERROR" } });
+    const { result } = hook(language);
+    await act(async () => {
+      if (action === "createAccount" || action === "signIn") await result.current[action](account);
+      else if (action === "verifyAccount") await result.current.verifyAccount({ email: account.email, token: "123456" });
+      else await result.current[action](action === "updatePassword" ? account.password : account.email);
+    });
+    expect(result.current.status).toBe("error");
+    expect(result.current.message).not.toContain("SENSITIVE RAW");
+    expect(result.current.message).toContain(known ? (language === "es" ? "demasiados intentos" : "Too many attempts") : (language === "es" ? "No pudimos" : "We could not"));
+  });
+
+  it("uses the current language for an error that completes after a language change", async () => {
+    const request = deferred<any>();
+    signInWithPassword.mockReturnValueOnce(request.promise);
+    const { result, rerender } = hook("en");
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.signIn(account); });
+    rerender({ locale: "es" });
+    await act(async () => { request.resolve({ error: { code: "email_not_confirmed" } }); await pending; });
+    expect(result.current.message).toBe("Confirmá tu correo antes de ingresar.");
+  });
   it("creates an account with password and profile name metadata", async () => {
     const { result } = renderHook(() => useCloudSync({
       snapshot,
@@ -299,7 +514,8 @@ describe("password account access", () => {
       { redirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).href },
     );
     expect((result.current as any).passwordRecoveryState).toBe("requested");
-    expect(result.current.message).toContain("recuperar");
+    expect(result.current.existingAccountEmail).toBeNull();
+    expect(result.current.message).toBe("Solicitud de recuperación procesada. Esto no confirma que el correo se haya enviado o entregado. Si recibís las instrucciones, revisá tu bandeja de entrada y spam. Si no llegan, podés intentar nuevamente más tarde.");
   });
 
   it("accepts a new password after returning from the recovery email", async () => {

@@ -1,8 +1,12 @@
 # Pendientes — Aunara
 
-Fecha de corte: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
+Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`.
 
 ## Abiertos
+
+- `[AUNARA/codex · modelo no expuesto]` — 2026-10-12: main/test E3 ya implementados en copia aislada y congelados. Completar revisión independiente E2/E3, matrices runtime restantes y veredicto conjunto; después documentación de entrega y commit local solo si APPROVED. El pedido de implementación del ítem anterior queda superado por este estado, no se repite desarrollo. UAT/global/push/publicación aún separados.
+
+- `[AUNARA/codex · modelo no expuesto]` — 2026-10-11: E3 aprobada. Pendientes implementación main/test aislados, pruebas cold load y recuperación/SDK, revisión fresca completa E2/E3 y auditoría/negativos aún abiertos, documentación y commit local tras APPROVED. No nuevas funcionalidades ni publicación; UAT/global siguen separados.
 
 - `[AUNARA/codex · GPT-5]` — [SDD-005 de dominio](sdd/SDD-005-dominio-aunaratraining.md): preparación local aislada **APPROVED prepublicación**; cinco archivos técnicos y diez documentales, builds raíz/rollback, guards/negativos y matriz96/96 verificados. Pendientes externos: añadir apex exacto a Auth conservando ambos redirects, corte web coordinado, push/deploy autorizado, cuatro A Pages, `www` correcto, DNS/TLS/Enforce HTTPS, Site URL final y smoke publicado. Operator opera GoDaddy/Supabase en su navegador; correo, PWA física y offline WebKit real siguen fuera.
 

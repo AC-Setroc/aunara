@@ -31,7 +31,7 @@ describe("signed-out home", () => {
   it("shows only public navigation and hides personal training content", () => {
     render(<App />);
 
-    expect(screen.getByRole("link", { name: "Inicio de Aunara" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Navegación de Aunara" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Inicio" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Ingresar" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Sign up" })).toBeNull();
@@ -46,8 +46,8 @@ describe("signed-out home", () => {
     render(<App />);
 
     expect((screen.getByLabelText("Idioma") as HTMLSelectElement).value).toBe("es");
-    expect(screen.getByRole("option", { name: "Español" })).toBeTruthy();
-    expect(screen.getByRole("option", { name: "English" })).toBeTruthy();
+    expect(screen.getByRole("option", { name: "ES" })).toBeTruthy();
+    expect(screen.getByRole("option", { name: "EN" })).toBeTruthy();
     expect(screen.getAllByRole("option")).toHaveLength(2);
     expect(screen.getByRole("heading", { name: /Un cuerpo preparado.*para todo lo que te importa/i })).toBeTruthy();
   });

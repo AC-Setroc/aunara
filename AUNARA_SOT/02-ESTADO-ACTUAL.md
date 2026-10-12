@@ -1,8 +1,16 @@
 # Estado actual — Aunara
 
-Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
+Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`.
 
 ## Verificado
+
+### 2026-10-12 — E3 implementado en candidato; revisión completa en curso
+
+- `[AUNARA/codex · modelo no expuesto]` — Desarrollo main/test cerrado en candidato aislado; el estado de implementación pendiente de la entrada anterior es histórico. La revisión independiente retomada tras interrupción verifica fuente congelada, sin nuevo delta de producto. Auditoría semántica/documental y matrices runtime tienen evidencias parciales; aún no APPROVED conjunto ni commit local. Canonical source/index preservados; publicación, UAT real y cierre global pendientes separados.
+
+### 2026-10-11 — Enmienda 3 aprobada; implementación y revisión pendientes
+
+- `[AUNARA/codex · modelo no expuesto]` — «Dale» aprueba D-E3-1–4 de [E3](sdd/SDD-006-enmienda-3-arranque-almacenamiento.md): bloqueo get-only explicado (sin App/Auth), excepción CL-07 acotada, entrada/test aislados, delta de chunks medido y hasta tres ciclos acotados con revisión completa E2/E3. Integrador único crea nuevo candidato desde E2 congelado; código/índice canónicos preservados. No aceptación técnica todavía, sin commit/push/publicación ni UAT real.
 
 ### SDD-005 — preparación local APPROVED; corte externo pendiente
 

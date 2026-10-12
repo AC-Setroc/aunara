@@ -10,6 +10,7 @@ import type {
 } from "../types";
 import spanishExerciseNames from "../../public/data/exercise-directory/name-overrides.es.json";
 import spanishTaxonomy from "../../public/data/exercise-directory/taxonomy.es.json";
+import { isFreeLegacySetPlan } from "./workoutPrescription";
 
 export const DATASET_COMMIT = "7455efae41b330c265e7cd4b78dfa848e7ce5ebd";
 const MEDIA_ROOT = `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/${DATASET_COMMIT}`;
@@ -76,6 +77,14 @@ export function exerciseDisplayName(exercise: Exercise, language: LanguageCode):
     return spanishName;
   }
   return titleCase(exercise.name);
+}
+
+export function isExerciseNamePending(exercise: Exercise, language: LanguageCode): boolean {
+  return language === "es" && !spanishExerciseNames[exercise.name as keyof typeof spanishExerciseNames];
+}
+
+export function exerciseTaxonomyLabel(value: string, language: LanguageCode): string {
+  return language === "es" ? translatedTaxonomy(value) : titleCase(value);
 }
 
 export function filterExercises(
@@ -392,7 +401,22 @@ export function updateWorkoutItem(
   itemId: string,
   changes: Partial<WorkoutItem>,
 ): WorkoutItem[] {
-  return workout.map((item) => matchesWorkoutItem(item, itemId) ? { ...item, ...changes } : item);
+  const target = workout.find((item) => matchesWorkoutItem(item, itemId));
+  return workout.map((item) => {
+    if (changes.day && target?.structure && target.structure.size > 1 && item.structure?.id === target.structure.id) return { ...item, day: changes.day };
+    return matchesWorkoutItem(item, itemId) ? { ...item, ...changes } : item;
+  });
+}
+
+export function removeWorkoutItem(workout: WorkoutItem[], itemId: string): WorkoutItem[] {
+  const target = workout.find((item) => matchesWorkoutItem(item, itemId));
+  return workout.filter((item) => !matchesWorkoutItem(item, itemId)).map((item) => {
+    if (target?.structure && target.structure.size > 1 && item.structure?.id === target.structure.id) {
+      const { structure: _structure, ...single } = item;
+      return single;
+    }
+    return item;
+  });
 }
 
 export function adjustWorkoutPrescription(
@@ -407,7 +431,8 @@ export function adjustWorkoutPrescription(
     const nextValue = Math.min(maximum, Math.max(1, item[field] + delta));
     const sets = field === "sets" ? nextValue : item.sets;
     const reps = field === "reps" ? nextValue : item.reps;
-    return { ...item, [field]: nextValue, setPlan: `${sets} × ${reps}` };
+    // Preserve original text verbatim before updating the compatible summary.
+    return { ...item, [field]: nextValue, ...(isFreeLegacySetPlan(item.setPlan) && !item.originalSetPlan ? { originalSetPlan: item.setPlan } : {}), setPlan: `${sets} × ${reps}` };
   });
 }
 

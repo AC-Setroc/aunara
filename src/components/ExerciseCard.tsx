@@ -1,5 +1,5 @@
 import { Check, Heart, Plus } from "lucide-react";
-import { exerciseDisplayName, mediaUrl, titleCase } from "../lib/exercises";
+import { exerciseDisplayName, exerciseTaxonomyLabel, isExerciseNamePending, mediaUrl } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { Exercise, LanguageCode } from "../types";
 
@@ -27,7 +27,7 @@ export function ExerciseCard({
     <article className="exercise-card">
       <button className="card-visual" type="button" onClick={onOpen} aria-label={`${tr(language, "Open", "Abrir")} ${displayName}`}>
         <img src={mediaUrl(exercise.image)} alt="" loading="lazy" />
-        <span className="body-tag">{titleCase(exercise.body_part)}</span>
+        <span className="body-tag">{exerciseTaxonomyLabel(exercise.body_part, language)}</span>
         <span className="card-number" aria-hidden="true">#{exercise.id}</span>
       </button>
 
@@ -35,7 +35,8 @@ export function ExerciseCard({
         <button className="card-title" type="button" onClick={onOpen}>
           {displayName}
         </button>
-        <p>{titleCase(exercise.target)} · {titleCase(exercise.equipment)}</p>
+        {isExerciseNamePending(exercise, language) && <small className="translation-pending">Nombre en inglés · traducción pendiente</small>}
+        <p>{exerciseTaxonomyLabel(exercise.target, language)} · {exerciseTaxonomyLabel(exercise.equipment, language)}</p>
       </div>
 
       <div className="card-actions">

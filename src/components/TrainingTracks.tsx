@@ -158,7 +158,7 @@ export function TrainingTracks({
 
         <button className="new-track-card" type="button" onClick={() => setCreatorOpen(true)}>
           <Plus size={24} />
-          <strong>{tr(language, "Add another track", "Agregar otra ruta")}</strong>
+          <strong>{tr(language, "Add route", "Agregar ruta")}</strong>
           <span>{tr(language, "Goal or sport", "Meta o deporte")}</span>
         </button>
       </div>
