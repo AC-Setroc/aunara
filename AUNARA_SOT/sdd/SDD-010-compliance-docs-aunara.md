@@ -18,7 +18,7 @@ Resultado buscado: que `docs/compliance/` describa el sistema real a la fecha, c
 
 | Archivo exacto | Cambio permitido |
 |---|---|
-| `docs/compliance/README.md` | Título y menciones de marca a Aunara; fecha de estado del registro; sección nueva «Cambios desde la versión 1.0» que enumere rebrand, hosting y dominio como hechos con fecha y deje la decisión de versión como pendiente explícito; pendientes actualizados (contratos del proveedor de hosting ahora nombrado). |
+| `docs/compliance/README.md` | Título y menciones de marca a Aunara; fecha de estado del registro; sección nueva «Cambios desde la versión 1.0» que enumere rebrand, hosting y dominio como hechos con fecha y deje la decisión de versión como pendiente explícito; pendientes actualizados (contratos del proveedor de hosting ahora nombrado); nota del canal de privacidad con actualización diferida según D-10-3. |
 | `docs/compliance/data-processing-inventory.md` | Fila/viñeta de hosting: GitHub Pages en lugar de OpenAI Sites, sin afirmar control de acceso; dominio `aunaratraining.com` con GoDaddy como registrador/DNS; menciones de marca; almacenamiento del navegador (claves `repbook-*`, sesión Supabase, Cache API) según inventario observado en SDD-002. |
 | `docs/compliance/retention-and-rights.md` | Menciones de marca únicamente. Plazos, canal y acciones intactos. |
 | `docs/compliance/media-rights.md` | Menciones de marca únicamente. Decisión y fuentes intactas. |
@@ -174,9 +174,13 @@ Sesión: Review, sobre el árbol candidato en la Mac o en un clon de `dev`.
 
 `[AUNARA/claude · modelo no expuesto]` — Worktree `build/sdd-010` sobre `dev` `449ea9a`. Cinco documentos editados, un commit por archivo. Línea base sin cambios: Repbook 11, Aunara 0, OpenAI 1, GitHub Pages 0, `aunaratraining.com` 0, GoDaddy 0, «controla el acceso» 1; `npm test` 160/18 + Node1. Con cambios: ver recibo de verificación en la bitácora de entrega; hashes de `LegalPanel.tsx`, `privacy.ts`, `DATASET_NOTICE.md` y `README.md` raíz iguales a la base. Guardas rotas a propósito en copia disposable y restauradas. Sin push; revisión independiente pendiente.
 
+### Recibo de Review, ciclo 1, y rework — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Panel de tres lentes con contexto limpio sobre `813d542`: Correctitud **APRUEBA** (CP-01 a CP-08 con comando literal; paso 6 del guion NO CONCLUYENTE por falta de red al dominio desde el entorno de revisión; proxy: `LegalPanel.tsx` idéntico a `dev` y aún dice «OpenAI Sites»); Regresión **APRUEBA** (suite 160/18 + Node1 igual a la base, NO-TOCAR byte a byte, seis archivos exactos, compromisos intactos salvo marca/proveedor); Seguridad y datos **RECHAZA** por una frase: «ni el texto aceptado por los titulares» era falsa, `4a17378` cambió 18 líneas del aviso en pantalla, y prejuzgaba D-10-4. Rework ciclo 2: la frase pasa a «el texto en pantalla cambió solo en la marca (fila 1) y conserva la versión 1.0»; columna «Fecha» pasa a «Fecha de publicación» (el commit `1c709a3` es del 06, la publicación del 07); contactos de incidentes escriben «GitHub Pages» literal para que CP-02 cuente inventario y contactos; §10 y allowlist del README actualizados. Observación sobre el objetivo, elevada al Operator como posible Enmienda 2: «los datos personales no pasan por GitHub» (§4.2) es impreciso, GitHub recibe IP y agente de usuario del visitante como cualquier servidor web; no se cambia sin aprobación.
+
 ## 10. Definición de terminado
 
-**Especificación:** lista cuando refleja estado medido, allowlist, NO-TOCAR, criterios binarios y decisiones cerradas, y queda en revisión del Operator. Hoy está en ese punto; no hay implementación.
+**Especificación:** lista cuando refleja estado medido, allowlist, NO-TOCAR, criterios binarios y decisiones cerradas, y queda en revisión del Operator. Aprobada el 2026-10-12; implementación en worktree aislado, ver recibos abajo.
 
 **Entrega documental:** D-10-1 a D-10-5 resueltas; CP-01 a CP-08 verdes con evidencia de Review; guardas rojas al romperlas y verdes restauradas; contraprueba y guion cumplidos; commit en `dev` con hunks propios de SOT.
 
