@@ -1,6 +1,6 @@
 # SDD-010 — Registro de cumplimiento al día: marca, hosting y dominio
 
-2026-10-12 · v0.1 · Estado: **En revisión del Operator; no implementado**.
+2026-10-12 · v0.1 · Estado: **Aprobado por el Operator; implementado en worktree aislado, revisión independiente pendiente**.
 Origen: `[AUNARA/claude · modelo no expuesto]`.
 Casa canónica: `/Users/alejandro/AI Projects/Personal/aunara`. Rama de trabajo documental: `dev`.
 
@@ -159,6 +159,14 @@ Sesión: Review, sobre el árbol candidato en la Mac o en un clon de `dev`.
 - **D-10-3 — Responsable y canal:** confirmar que siguen siendo Alejandro Cortés Burgos y `alejandro@ac-setroc.com` (`privacy.ts:6–7`). Si cambió la estructura comercial, es cambio material y este SDD se detiene hasta nueva instrucción.
 - **D-10-4 — Versión legal:** confirmar que la decisión de materialidad (v1.0 vs v1.1 con nueva aceptación) queda fuera y se registra como pendiente con dueño «Operator + asesoría jurídica». Opciones: fuera (recomendado) / abrir SDD aparte ahora.
 - **D-10-5 — Orden respecto de SDD-002:** este SDD no depende de publicar SDD-002. Confirmar que se puede ejecutar antes. Opciones: independiente (recomendado) / esperar a SDD-002.
+
+### Aprobación — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — El Operator respondió: «3. Por ahora es así. Cuando el correo propio esté activo, se actualiza. El resto aprobado.» Quedan cerradas: D-10-1 aprobar completo; D-10-2 «Aunara»; D-10-3 responsable y canal sin cambio, con actualización diferida al correo del dominio propio; D-10-4 versión legal fuera; D-10-5 independiente de SDD-002.
+
+### Recibo de Build — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Worktree `build/sdd-010` sobre `dev` `449ea9a`. Cinco documentos editados, un commit por archivo. Línea base sin cambios: Repbook 11, Aunara 0, OpenAI 1, GitHub Pages 0, `aunaratraining.com` 0, GoDaddy 0, «controla el acceso» 1; `npm test` 160/18 + Node1. Con cambios: ver recibo de verificación en la bitácora de entrega; hashes de `LegalPanel.tsx`, `privacy.ts`, `DATASET_NOTICE.md` y `README.md` raíz iguales a la base. Guardas rotas a propósito en copia disposable y restauradas. Sin push; revisión independiente pendiente.
 
 ## 10. Definición de terminado
 
