@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟢 `AUNARA_SOT/reference/` excluido por `.gitignore` en `dev`
+
+`[AUNARA/claude · modelo no expuesto]` — Orden explícita del Operator: «agregá la línea al .gitignore y pusheá a dev». Una línea, sin archivos rastreados afectados; verificado con `git check-ignore`. Cierra el riesgo de publicar las siete referencias con un `git add -A`. Sin cambios a código, `main` ni Pages.
+
 ## 2026-10-12 · 🟡 Dirty local versionado en `wip`; SOT y SDD 002–009 llegan al repo en `dev`
 
 `[AUNARA/claude · modelo no expuesto]` — Revisión integral de repo y SOT: estado técnico de `main` reproducido (160/18 + Node1, guards 26, build raíz, allowlist 30) y Actions 9/10 SUCCESS por API. Detectado un mes de SDD y código sin versionar, pasajes obsoletos (Supabase «pausado» en la versión commiteada, `/aunara/` como objetivo, ADR 0003 «pendiente») y `reference/` fuera de `.gitignore`. El Operator publicó el snapshot `e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884` en `origin/wip/dirty-2026-10-12` con un script de índice temporal que no toca su rama ni su índice; auditoría sin privados; verificación fresca 298/24 + Node1, guards 27, build raíz y allowlist 31 PASS. `dev` creada desde `main` con solo documentación: SOT, 16 SDD/enmiendas/borradores y `docs/product/`. El código queda en `wip` por los gates E2/E3/E4; los candidatos E2/E3/E4 no están en git. Correcciones documentales propias en runbook, índice de producto, ADR 0003, índice SOT y encabezados de SDD-006/plan. Sin cambios a `main`, Pages, Auth, código ni dependencias.

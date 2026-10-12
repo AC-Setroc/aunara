@@ -5,7 +5,6 @@ Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo 
 ## Abiertos
 
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: decidir el destino del código de `origin/wip/dirty-2026-10-12` (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`): integrarlo a `dev` como WIP explícito o dejarlo solo en `wip` hasta APPROVED de E2+E3+E4. Hoy `dev` = `main` + documentación. El snapshot es evidencia, no entrega ni base de trabajo.
-- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: agregar `AUNARA_SOT/reference/` a `.gitignore`. Una línea; sin ella un `git add -A` publica las siete referencias con datos personales en el repo público.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: los candidatos E2/E3/E4 de SDD-006 viven solo en `/private/tmp` de la Mac. Decidir si se snapshotean también en `wip` (misma técnica de índice temporal) antes de seguir el ciclo 2 de E3/E4.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: `docs/compliance/` describe Repbook al 2026-07-29 y legal v1.0; revisar si el rebrand y el cambio de hosting/dominio son cambio material que exige nueva versión. Fuera del alcance documental de esta sesión; no se tocaron textos legales.
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: `package.json` declara casi todas las dependencias como `latest`. CI y `npm ci` quedan fijados por el lockfile, pero un `npm install` limpio en otra máquina puede subir versiones mayores. Decidir si se fijan versiones.
@@ -52,6 +51,7 @@ Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo 
 
 ## Cerrados
 
+- `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: `AUNARA_SOT/reference/` agregado a `.gitignore` en `dev` por orden del Operator; `git check-ignore` lo confirma y nada estaba rastreado bajo esa ruta.
 - Site URL y redirect exacto de Pages guardados por autorización del Operator el 2026-10-01 y verificados tras recargar; redirect anterior conservado por compatibilidad, sin comodines ni cambios de permisos.
 - Pausa autorizada de `mindally-test` (`INACTIVE`) y reactivación del proyecto existente, renombrado a Aunara (`ACTIVE_HEALTHY`), el 2026-10-01. Consulta `select 1` correcta; sin borrar datos ni cambiar esquema.
 - Revisión independiente de migración y Enmienda 2: **APPROVED** el 2026-10-01; automatizados, artifact y smoke local Chrome/WebKit pasaron.
