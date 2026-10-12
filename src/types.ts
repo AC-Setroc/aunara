@@ -33,8 +33,10 @@ export interface WorkoutItem {
   exerciseId: string;
   sets: number;
   reps: number;
+  repetitionCount?: RepetitionCount;
   day?: Weekday;
   setPlan?: string;
+  originalSetPlan?: string;
   prescriptionMode?: WorkoutPrescriptionMode;
   specialPrescription?: SpecialWorkoutPrescription;
   structure?: WorkoutStructure;
@@ -45,6 +47,8 @@ export interface WorkoutItem {
 }
 
 export type WorkoutPrescriptionMode = "standard" | "special";
+// Absent in legacy routines means total; reading does not materialize a default.
+export type RepetitionCount = "total" | "per-side";
 
 export type WorkoutStructureType =
   | "single"
@@ -87,6 +91,7 @@ export interface WorkoutWorkBlock {
   type: "work";
   target: WorkTargetType;
   value?: number;
+  repetitionCount?: RepetitionCount;
   loadType: WorkLoadType;
   loadValue?: number;
   tempo?: string;
@@ -143,6 +148,10 @@ export type TrackFocus =
   | "soccer";
 
 export type EquipmentPreference = "any" | "mixed" | "bodyweight";
+export const GENERAL_GOALS = ["strength", "weight-loss", "muscle-gain", "general-fitness", "endurance", "mobility"] as const;
+export type GeneralGoal = typeof GENERAL_GOALS[number];
+export const SPORT_FOCUSES = ["beach-volleyball", "running", "cycling", "mountain-biking", "swimming", "tennis-padel", "soccer"] as const;
+export type SportFocus = typeof SPORT_FOCUSES[number];
 export type TrackCreationMode = "suggested" | "manual";
 export type MovementRestriction =
   | "impact"
@@ -218,6 +227,8 @@ export interface HealthProfile {
   healthDataMode?: "personalized" | "basic";
   initialRoutineDecision?: "accepted" | "rejected";
   primaryGoal?: TrackFocus;
+  goals?: GeneralGoal[];
+  sport?: SportFocus | null;
   equipmentPreference?: EquipmentPreference;
   trainingDaysPerWeek?: number;
   sessionMinutes?: number;

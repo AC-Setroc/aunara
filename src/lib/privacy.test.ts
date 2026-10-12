@@ -46,6 +46,16 @@ const sensitiveProfile = {
 };
 
 describe("privacy controls", () => {
+  it("retains additive goals and sport after health revocation and export", () => {
+    const profile = { ...sensitiveProfile, goals: ["strength", "mobility"] as const, sport: "swimming" as const };
+    const stripped = stripSensitiveHealthData({ ...profile, goals: [...profile.goals] });
+    expect(stripped.goals).toEqual(["strength", "mobility"]);
+    expect(stripped.sport).toBe("swimming");
+    expect(stripped.healthNotes).toBe("");
+    expect(stripped.currentWeightKg).toBeNull();
+    const snapshot = createRepbookSnapshot({ profileName: "Fixture", language: "es", favoriteIds: [], tracks: [], activeTrackId: "", healthProfile: stripped, checkIns: [] });
+    expect(buildPersonalDataExport({ snapshot, email: "fixture@example.invalid", consentStatus: "revoked" }).data.healthProfile).toEqual(stripped);
+  });
   it("removes sensitive health data while preserving basic routine preferences", () => {
     expect(stripSensitiveHealthData(sensitiveProfile)).toMatchObject({
       onboardingCompleted: true,
