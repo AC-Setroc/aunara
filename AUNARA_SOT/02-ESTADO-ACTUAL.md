@@ -1,16 +1,86 @@
 # Estado actual — Aunara
 
-Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
+Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`.
 
 ## Verificado
 
-### SDD-005 — preparación local APPROVED; corte externo pendiente
+### 2026-10-12 — E4 aprobada; desarrollo acotado en curso
 
-- `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) aprobado e implementado solo como preparación local aislada sobre `ef82f9a`: revisión independiente **APPROVED prepublicación**, 160 pruebas/18 + Node, tipos, directorio4, guards26, builds raíz/rollback y artifacts30; matriz Chromium/WebKit96/96 y negativos PASS. GitHub autenticado confirma Verified y custom domain existente, pero DNS sigue WebsiteBuilder con `www` al apex y HTTPS no habilitable. Faltan redirect Auth nuevo, corte DNS, deploy, TLS/Enforce HTTPS y smoke publicado. Cero correo/usuarios/operaciones remotas; dirty previo fuera de entrega. Las menciones históricas al bloqueo Repbook no describen el proyecto Aunara activo de esta fase.
+- `[AUNARA/codex · modelo no expuesto]` — El Operator aprobó D-E4-1 con «Sí». Nuevo candidato desde E3 congelado; solo App y dos tests para el indicador de nombre/preferencias parciales significativos. Renderer, bootstrap, almacenamiento, export y autenticación intactos. Es el ciclo2 del límite3 vigente; revisión completa aún pendiente, sin commit/push/publicación ni UAT real.
+
+### 2026-10-12 — E4 propuesta mínima lista; gate de aprobación pendiente
+
+- `[AUNARA/codex · modelo no expuesto]` — [Enmienda 4](sdd/SDD-006-enmienda-4-resumen-datos-guardados.md) preparada: solo App y dos tests para reconocer nombre/preferencias significativos del snapshot aunque onboarding incompleto; renderer/legacy/export/almacenamiento/bootstrap intactos. Revalidación independiente8/8 usa snapshot válido, sin enum inválido ni legacy; bootstrap y export reales sintéticos demuestran omisión. No implementación E4 ni aprobación de scope todavía. Revisión completa E2/E3/E4 seguirá necesaria dentro de dos ciclos restantes; sin commit/publicación y UAT real separada.
+
+### 2026-10-12 — Arranque E3 verificado parcialmente; entrega rechazada por resumen de datos
+
+- `[AUNARA/codex · modelo no expuesto]` — Revisión conjunta REJECTED: perfil/preferencias guardados se omiten del resumen de privacidad cuando onboarding incompleto,8/8 UI Chromium/WebKit ES/EN y ambas bases. El perfil parcial basta para el fallo; no se atribuye ownership de legacy local ni se lo agrega a export. Arranque192+controlE2configurado192, startup48 y otras matrices particulares pasan; auditoría41/175+2E3/12docs/27links completa. Pendientes runtime/negativos restantes explícitos, no aprobación global. Reparación de resumen fuera de E3main/test: propuesta de ampliación documental en preparación, sin código nuevo. Canonical source58/index/HEAD preservados; sin commit/push/publicación. [Recibo E3](sdd/SDD-006-enmienda-3-arranque-almacenamiento.md).
+
+### 2026-10-12 — E3 desarrollo cerrado; revisión retomada tras interrupción
+
+- `[AUNARA/codex · modelo no expuesto]` — El Operator pidió retomar y terminar. Candidato `/private/tmp/aunara-sdd006-e3-candidate.DKIck1/repo` conserva hashes main/test del manifest (comprobación fresca sin diferencias); índice canónico vacío. Desarrollo previo cerrado309/25+Node1 y prueba cold64, sin aprobación independiente aún. La interrupción por límite de uso no fue un rechazo de producto ni un ciclo adicional de desarrollo. Se retoman el revisor runtime y su auditor semántico existentes, sin nuevos cambios de fuente. Gate de entrega local pendiente; sin commit/push/publicación/UAT real.
+
+### 2026-10-11 — Enmienda 3 aprobada; implementación y revisión pendientes
+
+- `[AUNARA/codex · modelo no expuesto]` — «Dale» aprueba D-E3-1–4 de [E3](sdd/SDD-006-enmienda-3-arranque-almacenamiento.md): bloqueo get-only explicado (sin App/Auth), excepción CL-07 acotada, entrada/test aislados, delta de chunks medido y hasta tres ciclos acotados con revisión completa E2/E3. Integrador único crea nuevo candidato desde E2 congelado; código/índice canónicos preservados. No aceptación técnica todavía, sin commit/push/publicación ni UAT real.
+
+### 2026-10-11 — Enmienda 3 de arranque preparada; aprobación pendiente
+
+- `[AUNARA/codex · modelo no expuesto]` — El Operator autorizó preparar la [Enmienda 3](sdd/SDD-006-enmienda-3-arranque-almacenamiento.md), no implementar. Propuesta: frontera dinámica en entrada + test nuevo, sin tocar cliente/hooks/deps/config. Decisión pendiente explícita: get-only que rechaza carga muestra bloqueo explicado ES/EN y recarga real, no App/Auth disponible ni continuidad pública/local nueva. Control normal/set-only/both conserva comportamiento; excepción acotada CL-07 requiere aprobación. Revisión completa fresca E2/E3 y pendientes de auditoría/negativos continúan obligatorios. Código/índice intactos; sin commit/push/publicación.
+
+### 2026-10-11 — Consolidación SDD-006 E2 REJECTED; fallo de arranque confirmado
+
+- `[AUNARA/codex · modelo no expuesto]` — Candidato aislado41 archivos/175 hunks creado sobre HEAD,58 hashes E1 iguales; revisión fresca rechaza CL-07: lectura de almacenamiento denegada con escritura permitida provoca pantalla vacía antes de React, Chromium/WebKit y raíz/rollback. Causa top-level del SDK de autenticación; no se afirma regresión respecto de HEAD, que no se probó en runtime. Resolverlo requiere nueva frontera aprobada, no permiso implícito de E2. PASS particulares298/24+Node1, tipos/builds/guards27 y matrices UI; conteo histórico302 incluía4 tests de una copia ignorada. Auditoría y matrices restantes no completas, no aceptación global. Source/índice canónicos preservados; sin stage/commit/push/publicación. Detalles y recibos en [Enmienda 2](sdd/SDD-006-enmienda-2-consolidacion-local.md).
+
+### 2026-10-11 — SDD-006 E2 aprobada; consolidación aislada en curso
+
+- `[AUNARA/codex · modelo no expuesto]` — El Operator aprobó la [Enmienda 2](sdd/SDD-006-enmienda-2-consolidacion-local.md), incluidas inclusión acotada de correcciones 002/003/004/006 y separación de commit técnico local respecto del cierre global/UAT. Integrador único prepara HEAD + manifest por hunk en copia temporal. Candidato, revisión fresca y commit todavía pendientes; source e índice canónicos preservados. Sin push ni publicación; gates reales/editoriales/metodológicos continúan abiertos.
+
+### 2026-10-10 — SDD-006 + E1 PASS técnico local; entrega bloqueada
+
+- `[AUNARA/codex · modelo no expuesto]` — Continuidad puntual terminada: acceso móvil sin superposición y conteo total/por lado implementados. Revisión independiente PASS acotado: 302 Vitest/25 + Node1, tipos/directorio4, builds raíz/rollback+allowlist31, guards20; E1 compilado8/8 con creación/edición/export/recarga y preservación legacy/notas/historial/otros días, float24/24 y120 geometrías en Chromium/WebKit ES/EN320/390/1440. Main inspeccionó escritorio y móvil finales. No defectos restantes en casos verificados; CI3 visual superado. Entrega aislada no demostrada:13 conflictos de aplicación y11 tras alternativa tres vías sobre HEAD; no se construyó árbol parcial ni se absorbió dirty previo. Requiere decisión de baseline/integración, no más autorización para los dos ajustes ya completados. Sin staging/commit/push/publicación. UAT física/correo/backend y cierre humano siguen separados; SDD-007–009 borradores. Ver [recibo SDD-006](sdd/SDD-006-acceso-y-creacion-rutinas.md).
+
+### 2026-10-10 — continuidad puntual y Enmienda1 aprobadas
+
+- `[AUNARA/codex · modelo no expuesto]` — El Operator aprobó corregir únicamente la superposición móvil y agregar conteo explícito total/por lado. Se retoma una iteración adicional acotada con integrador único y revisión independiente posterior, sin aprobar publicación ni cambios de backend. La revisión CI3 anterior permanece histórica; no se marca superada hasta verificar. Preservación legacy, round-trip/export e aislamiento del dirty previo son gates de entrega.
+
+### 2026-10-10 — SDD-006 local; CI3 REJECTED, sin publicación
+
+- `[AUNARA/codex · GPT-5]` — Navegación/logo/hamburguesa, acceso, privacidad, slogan y editor por miembro implementados localmente. Revisión independiente CI3 rechaza CA06-06: flotante tapa tarjeta inicial a390/320 en Chromium/WebKit. Tope de tres ciclos cumplido: corrección adicional espera decisión del Operator. PASS particulares: 293 Vitest/25 + Node1, tipos/directorio4, UI24/24, recuperación rápida compilada24/24, ingreso/salida4/4, instalación20/20, builds raíz/rollback y allowlist31 por build, guards20/20. CA06-08 bloqueado por Enmienda1 «por lado» pendiente. Round-trip/export mixto completo y aislamiento construible no verificados; UAT física/correo siguen separados. NO-TOCAR preservado respecto de frontera. Trabajo sin commit, push ni publicación; detalles en [SDD-006](sdd/SDD-006-acceso-y-creacion-rutinas.md).
+
+### 2026-10-10 — SDD-006 aprobado; desarrollo local en curso
+
+- `[AUNARA/codex · GPT-5]` — El Operator aprobó [SDD-006](sdd/SDD-006-acceso-y-creacion-rutinas.md) y «Your purpose leads the way.» con «Dale. Arrancá.». Se inició desarrollo acotado de navegación/acceso y creación de rutinas; revisión independiente y entrega todavía pendientes. Frontera previa preservada en copia/hashes locales, index vacío. Baseline: 282 pruebas Vitest/23 archivos + Node1 PASS; primer intento bloqueado por permiso de caché, retry normal con permiso estrecho PASS. Sin publicación, backend, correo ni cuentas reales. SDD-007–009 permanecen borradores.
+
+### 2026-10-10 — especificación de entregas UAT; implementación no iniciada
+
+- `[AUNARA/codex · GPT-5]` — El Operator eligió «Tu propósito marca el camino.» y confirmó logo y hamburguesa como dos accesos al mismo menú. Se prepara el [plan SDD-006–009](sdd/SDD-006-009-plan-entregas.md): acceso/creación de rutinas → ejecución/seguimiento → nutrición/recursos propios → entrenador por invitación. SDD-006 queda En revisión del Operator; SDD-007–009 son borradores sujetos a rebaseline y decisiones específicas. No se interpreta «creá los specs y arrancamos» como aprobación de un alcance aún no presentado. La base local conserva cambios de SDD-002/003/004 no publicados; no se absorben ni se declaran cerrados. No se modificaron código, datos, permisos, correo ni producción.
+
+### SDD-005 — dominio publicado; DNS/HTTPS/smoke APPROVED, Auth/PWA pendientes
+
+- `[AUNARA/codex · GPT-5]` — [SDD-005](sdd/SDD-005-dominio-aunaratraining.md) publicado desde `1c709a3`; [Actions 37636074747](https://github.com/AC-Setroc/aunara/actions/runs/37636074747) verify/deploy SUCCESS. Apex usa los cuatro A Pages, `www` apunta a GitHub y el TXT de propiedad se preservó. Pages muestra DNS check successful y Enforce HTTPS activo; HTTP apex, HTTPS `www` y Pages `/aunara/` redirigen 301 al apex HTTPS, que responde 200 con certificado válido. Revisión publicada **APPROVED acotada**, Chromium/WebKit ES/EN 1440/390 8/8 y assets raíz HTTP 200. Cierre global parcial: redirect apex Auth solo confirmado verbalmente, Site URL sin reinspección, auth/correo reales y PWA física/offline WebKit pendientes. Dirty previo no se publicó.
 
 ### SDD-004 E2 — retorno rápido publicado; correo real diferido
 
 - `[AUNARA/codex · GPT-5]` — [Enmienda 2](sdd/SDD-004-enmienda-2-retorno-recuperacion.md) implementada y revisión independiente **APPROVED**: el evento Auth verificado puede preceder al montaje de UI en WebKit y ahora se conserva como identidad mínima efímera hasta consumirlo, sin sesión/token/URL ni persistencia. Pasaron 281 pruebas/23 + Node1, tipos/directorio/guards/builds, matriz compilada 96/96, orden natural 32/32, premount 32/32 y regresión auth 16/16. El árbol aislado HEAD+solo E2 pasó typecheck, 159 pruebas/18 + Node1, directorio4, guards5, builds raíz/Pages y artifact30. El Operator autorizó publicación el 2026-10-06: SHA `86f5451` a `main`, [Actions 37539918673](https://github.com/AC-Setroc/aunara/actions/runs/37539918673) SUCCESS y smoke publicado Chromium/WebKit ES/EN 1440/390 8/8 PASS; acceso público sin envío de correo ni cuentas reales. Esto supera únicamente CA03 técnico rápido; recepción real diferida, dominio/DNS/SMTP, metodología, fatiga/Health y dirty previo siguen abiertos.
+
+### UAT ampliada 2026-10-02 — implementación local; cierre bloqueado por retorno rápido de recuperación
+
+- `[AUNARA/codex · GPT-5]` — [SDD-004](sdd/SDD-004-uat-perfil-y-rutinas.md) + E1 implementados localmente: footer vertical/crédito horizontal, ES/EN, consentimiento integrado, confirmación por enlace, objetivos1–3/deporte separado, preferencias editables y propuesta/editor por día. Revisión independiente REJECTED solo por CA03 rápido WebKit: falla con respuesta inmediata tanto frontera como actual, pasa con200ms; preexistencia demostrada, causa exacta aún no confirmada. Resto PASS:261 pruebas/22 + Node1, tipos/directorio/guards/builds/artifact31, UI footer24/editor16/perfil-agenda80; acceso16 solo con demora explícita, no sustituye caso fallido. Fuente y NO-TOCAR auditados; requiere enmienda aprobada para intervenir hook/cliente. Dominio `aunaratraining.com` en GoDaddy informado por el Operator, sin DNS/SMTP. Ausencia autoritativa, metodología nueva y fatiga/Health siguen separados; SDD-002/003/UAT real abiertos. Sin commit/push/publicación.
+
+### UAT 2026-10-02 — implementadas localmente; cierre bloqueado
+
+- `[AUNARA/codex · GPT-5]` — El Operator aprobó [armonía del pie](sdd/SDD-002-enmienda-2-armonia-footer.md) y [recuperación contextual](sdd/SDD-003-enmienda-1-recuperacion-contextual.md) el 2026-10-02, con «Entrená para la vida que querés vivir.» / «Train for the life you want to live.». Implementadas localmente; 238 pruebas + preparador, tipos, builds y guardas PASS. Revisión independiente REJECTED por matriz WebKit compilada incompleta: Tab omite todos los botones por navegación nativa; Option-Tab llega al control. No defecto de producto confirmado, no cambio de app/sistema para forzar aprobación. Pie inspeccionado computador/móvil; cierre global/UAT real abiertos. Preview compilado HTTP200 `http://127.0.0.1:4196/aunara/`, solo esta Mac. Sin commit/publicación ni cuentas/correos reales.
+- Diagnóstico read-only previo: en el proyecto que usa la vista local, la consulta agregada del correo de prueba del Operator encontró cero cuentas en esa consulta. Logs de la ventana consultada de 24 horas muestran una recuperación HTTP200 y cuatro errores de credenciales; no hay evidencia de entrega de correo. El falso estado de cuenta existente tras recuperación fue corregido localmente; no demuestra recepción real del correo.
+- La ausencia actual de cuenta es consistente con la recuperación aceptada sin envío según el handler oficial de Supabase; no demuestra por sí sola el estado histórico exacto ni configura/valida SMTP. Sin altas, borrados, nuevos correos, secretos ni cambios de proveedor.
+
+### SDD-002 / SDD-003 — trabajo local, no publicado
+
+- `[AUNARA/codex · GPT-5]` — El Operator aprobó SDD-002, su Enmienda 1 de almacenamiento y SDD-003 de acceso el 2026-10-01, en orden almacenamiento → acceso. Aviso, modales y crédito AC Setroc están implementados localmente; su revisión no declara todavía cierre global.
+- La revisión previa verificó 160 pruebas + Node, guards, builds y UI Chromium/WebKit escritorio/móvil ES/EN; detectó blanco con almacenamiento totalmente denegado. La enmienda autoriza corregir únicamente la escritura compartida y repetir la revisión. Acceso seguirá con validación, limpieza de errores y recuperación voluntaria visible.
+- No hay commit final ni publicación de estos cambios. Auth real, inventario autenticado y UAT de entrenamiento requieren sesión/entorno autorizados; no se enviaron correos ni se usaron credenciales de capturas. Ver [Enmienda 1](sdd/SDD-002-enmienda-1-almacenamiento-y-cierre.md) y [SDD-003](sdd/SDD-003-acceso-y-recuperacion.md).
+- Almacenamiento: revisión técnica independiente PASS, con 167 pruebas + Node, 4 directorio, 4 guards, builds/allowlist y 32 combinaciones UI en ambos motores, tamaños, idiomas, bases y guardado normal/denegado. Baseline aislado reprodujo el blanco y el mismo HEAD con solo la protección quedó operativo. Cierre global todavía pendiente por cobertura real; frontera congelada para continuar SDD-003 sin mezclar entregas.
+- Acceso SDD-003: revisión técnica independiente PASS en seis archivos, con 221 Vitest + 11 Node, tipos, builds raíz/Pages, allowlist31 y guardas negativas. UI Chromium/WebKit móvil/escritorio ES/EN: 8/8 PASS con auth simulado y tráfico externo bloqueado. Cierre global REJECTED solo por UAT real pendiente; sin commit ni publicación. Preview local verificado HTTP200 y ambos motores: `http://127.0.0.1:4193/aunara/` (solo en esta Mac).
 
 - El working tree del repo fuente está en la ruta canónica de Personal. HEAD inicial `d3da8c0`, rama `codex/aunara-rebrand` y cambios documentales previos preservados. El remoto canónico confirmado por el Operator es `AC-Setroc/aunara`.
 - Siete referencias se integraron en `reference/` sin alterar bytes. Los SDD previos mantienen su estado pendiente de aprobación; no son cambios de producto implementados.
@@ -19,14 +89,16 @@ Fecha: 2026-10-01. Origen: `[AUNARA/codex · GPT-6.1 Sol]`.
 - Revisión independiente **APPROVED** el 2026-10-01: typecheck, 143 pruebas Vitest + Node, cinco guards E2 (incluidas pruebas negativas) y builds `/` y `/aunara/` pasaron. Chrome escritorio/móvil y Safari WebKit escritorio verificaron ES/EN/login bajo `/aunara/`; no se detectaron errores de consola ni desbordamiento en Chrome. Manifest y worker usan scope `/aunara/`, no `/`. Se revisaron 28 enlaces SOT/README sin roturas.
 - El Operator autorizó el commit, push y publicación UAT en el repo público existente. Las variables cliente publicables de Supabase están configuradas en Actions; sus valores no se incorporan a documentación.
 - Publicación autorizada del commit fuente `fc885680ca354210e3a5d36c6c3ab605d51ccac5` a `main`: [Actions run 36910796612](https://github.com/AC-Setroc/aunara/actions/runs/36910796612), jobs verify y deploy SUCCESS. [Sitio publicado](https://ac-setroc.github.io/aunara/) y `data/exercises.json` devolvieron HTTP 200. Smoke Chrome publicado ES→EN→ES y apertura/cierre de login PASS, sin errores ni advertencias de consola; manifest `start_url`/`scope` relativos resuelven a `/aunara/`. Esto valida acceso e interfaz pública, no autenticación real.
+- Cambio operativo autorizado el 2026-10-01: `mindally-test` quedó `INACTIVE`; el proyecto existente `mrkqtajrzrhsdbfomkpz` se reactivó y renombró de Repbook a Aunara. Estado confirmado `ACTIVE_HEALTHY` y consulta `select 1` correcta, sin cambios de esquema ni datos.
+- URLs Auth autorizadas y guardadas el 2026-10-01: Site URL y redirect exacto `https://ac-setroc.github.io/aunara/`. El redirect anterior se conservó por compatibilidad. Persistencia comprobada tras recargar el dashboard; no se enviaron correos de prueba ni se crearon usuarios.
 
 ## Pendiente de verificación/cierre
 
 - Instalación/actualización PWA en dispositivos físicos e interacción con el worker antiguo siguen pendientes; el smoke publicado en Chrome no declara ese cierre.
-- Las referencias y su inventario permanecen locales, fuera de cualquier commit público hasta revisión específica de privacidad y derechos. Supabase debe permitir la nueva URL de callback antes de UAT de cuenta.
-- Supabase del proyecto Repbook está pausado. El intento de reanudarlo mostró el límite de dos proyectos gratuitos activos de la organización; registro, login y sync quedan bloqueados hasta que el Operator decida cómo habilitarlo. La allowlist de redirección `/aunara/` tampoco se pudo configurar mientras está pausado.
+- Las referencias y su inventario permanecen locales, fuera de cualquier commit público hasta revisión específica de privacidad y derechos.
+- UAT real de confirmación de cuenta, recuperación, login y sync pendiente; configurar las URLs no equivale a validar esos flujos completos.
 - Los cambios documentales previos de OpenGym/UAT siguen fuera del alcance de entrega; los SDD trasladados conservan su aprobación pendiente.
 
 ## Próxima acción
 
-El Operator debe decidir cómo reactivar Supabase para habilitar callbacks y UAT de cuenta; después, completar PWA física e interacción con el worker legado. Ninguna capacidad nueva de OpenGym/UAT se presenta aquí como aprobada o implementada.
+Completar UAT real autorizado de SDD-002/003 en la vista local: confirmación, ingreso, recuperación/retorno, sync e inventario autenticado/entrenamiento. Después del gate independiente y autorización de publicación, repetir UAT de cuenta en Pages y completar PWA física/interacción con el worker legado. Ninguna capacidad nueva de OpenGym/UAT se presenta aquí como aprobada o implementada.

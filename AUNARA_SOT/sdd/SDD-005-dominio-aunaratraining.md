@@ -1,6 +1,6 @@
 # SDD-005 — Dominio canónico `aunaratraining.com`
 
-Estado: **Preparación local implementada y revisión independiente APPROVED; corte externo pendiente**. Fecha: 2026-10-06.
+Estado: **Publicado; DNS/HTTPS/smoke APPROVED, cierre global parcial por Auth y PWA física**. Fecha: 2026-10-07.
 Origen: `[AUNARA/codex · GPT-5]`.
 
 Aprobación explícita del Operator el 2026-10-06: «Dale con SDD-005». Esta aprobación habilita el alcance y orden de ejecución definidos abajo; no elimina el preflight bloqueante ni amplía la allowlist.
@@ -124,3 +124,11 @@ Decisión recibida: **SDD-005 aprobado**, con `https://aunaratraining.com/` como
 La preparación local quedó limitada a los cinco archivos técnicos y diez documentales de la allowlist sobre HEAD `ef82f9a`. Revisión independiente: **APPROVED exclusivamente para preparación local/prepublicación**, sin hallazgos bloqueantes. Pasaron typecheck, 160 pruebas en 18 archivos + preparador Node, directorio4, guards artifact/SW26, builds raíz y rollback `/aunara/` con artifacts cliente de 30 archivos, negativos de guard/snapshot y `git diff --check`. La matriz compilada pasó 96/96 en Chromium/WebKit, raíz/proyecto, ES/EN y 1440/390, incluidos recovery inmediato/200 ms, signin/signup e inválido/expirado. Los cinco hashes técnicos coinciden con `/private/tmp/aunara-sdd005-review-hashes.json`.
 
 Este APPROVED no cierra SDD-005 global: no hubo push, deploy, cambio DNS/Auth/Pages/TLS, correo ni cuenta real. DNS continúa en WebsiteBuilder con `www` al apex; faltan redirect Auth exacto, corte coordinado, certificado/Enforce HTTPS y smoke publicado. PWA física y offline WebKit real permanecen pendientes; la simulación verificó scope/fallback sin atribuir el límite de navegación offline de Playwright a producto.
+
+## 12. Publicación y evidencia externa — 2026-10-07
+
+El commit `1c709a3f6d09b940a01e39eb55a2a49b74de712f` fue publicado por push no forzado a `main`; [Actions 37636074747](https://github.com/AC-Setroc/aunara/actions/runs/37636074747) terminó SUCCESS en `verify` y `deploy`. DNS público en Cloudflare y Google resolvió los cuatro A oficiales de Pages; `www` apunta a GitHub y el TXT de propiedad continúa presente, sin registrar su valor. La captura externa `/private/tmp/aunara-sdd005-https-active.jpg` —no versionada— muestra DNS check successful y Enforce HTTPS activo. A las 14:26 UTC, HTTP apex redirigió 301 a HTTPS apex y HTTPS `www` redirigió 301 al mismo apex; HTTPS apex respondió 200 con certificado válido. A las 14:27 UTC, `https://ac-setroc.github.io/aunara/` redirigió 301 al apex canónico.
+
+Revisión publicada `/private/tmp/aunara-sdd005-published-review.md`: **APPROVED para el smoke publicado acotado del apex**, 8/8 en Chromium/WebKit × 1440/390 × ES/EN. Index, JS, CSS, manifest, worker, datasets y logo respondieron 200; sin 404, errores JS, overflow ni mezcla del dirty canónico. Manifest/SW estáticos y assets raíz pasaron, pero el runtime offline real fue bloqueado deliberadamente por aislamiento.
+
+Aceptación global queda parcial: el Operator confirmó verbalmente que añadió el redirect apex en Supabase, pero falta captura/inspección de la configuración y cambiar Site URL a `https://aunaratraining.com/` si aún conserva Pages, manteniendo los redirects existentes. No hubo auth real, cuentas ni correo. PWA física y offline WebKit real siguen pendientes. Por ello CA-01–05 y CA-08–09 cuentan con evidencia suficiente del corte publicado; CA-06 conserva el límite físico/runtime y CA-07 no se cierra sin evidencia Auth.
