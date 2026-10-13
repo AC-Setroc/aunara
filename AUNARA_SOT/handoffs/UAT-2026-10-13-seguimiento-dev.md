@@ -11,3 +11,9 @@
 Operator reportó haber agregado Redirect URLs para localhost/127.0.0.1 y luego el origen LAN. No hubo inspección independiente del dashboard en esta iteración. No modificar Auth/SMTP/DNS por este reporte ni inferir la causa del destino desde una URL abreviada.
 
 Dos capturas originales adjuntas al chat, no copiadas al repo público. No contienen evidencia de cierre del punto 1. Ningún cambio de aplicación, publicación, datos o cuenta. Próximo: aclarar dispositivo/origen usado al registrarse y destino al confirmar; seguir el guion por pasos con evidencia. Cualquier FALLA vuelve a Spec.
+
+## Actualización posterior — confirmación Mac y acceso LAN
+
+- Operator aclara: enlace abierto en **Mac, dev**. Sesión quedó iniciada y pantalla lista para ingresar datos del usuario. Confirmación/retorno Mac: **PASA reportado por Operator**. Punto 1 aún parcial: recuperación no probada; iPhone no probado.
+- iPhone reporta que no encuentra servidor aun estando en la misma red. Diagnóstico de lectura: node PID 22318 escucha `*:5173`; interfaz Wi-Fi en0 ahora tiene `192.168.80.26`, distinta de la IP entregada anteriormente `192.168.68.101`. Localhost y nueva IP responden HTTP 200 desde Mac (comprobación con permiso de red). No demuestra acceso desde iPhone ni identifica por qué cambió la IP.
+- Nuevo enlace a probar en iPhone: `http://192.168.80.26:5173/`. Operator debe agregar este origen a Redirect URLs antes de probar retorno de correos desde LAN. No se cambió firewall, VPN, router ni Supabase. Conectividad del iPhone pendiente de confirmar por Operator.
