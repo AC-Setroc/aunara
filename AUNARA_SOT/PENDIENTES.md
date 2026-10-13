@@ -4,6 +4,8 @@ Fecha de corte: 2026-10-12. Origen de actualización: `[AUNARA/claude · modelo 
 
 ## Abiertos
 
+- `[AUNARA/codex · modelo no expuesto]` — 2026-10-13: UAT **NO APROBADA**, [UAT13-01–22](handoffs/UAT-2026-10-13-resultados-operator.md). Prioridad: origen dev/prod tras correo, preferencias/persistencia y acceso al menú/cuenta/privacidad/logout; luego contraste/footer y propuesta/editor. No causa raíz atribuida ni correcciones autorizadas. Checker de cuentas, SMTP de marca, dosis metodológica y ejecución SDD-007 separados. Registro documental autorizado para push a dev, nunca a main.
+
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-12: entorno UAT Mac iniciado en copia aislada de dev `1f6a99e`; canónico dirty intacto. Ejecutar los diez escenarios del guion con cuenta de prueba, confirmar acceso iPhone por LAN y Safari real. HTTP LAN no prueba PWA/offline. [Recibo](handoffs/UAT-2026-10-12-mac-arranque.md). Sin publicación; registro documental solo local.
 
 - `[AUNARA/claude · modelo no expuesto]` — 2026-10-12: [SDD-011](sdd/SDD-011-sync-estado-y-consentimiento-salud.md) por orden «Corregí vos los hallazgos». D-11-1…D-11-4 **aprobadas**; H-01 y H-02 **APPROVED técnico** (Chromium + WebKit, seis matrices cada uno) e **integrados en `dev`** (`8db846e`, `13a1264`). Queda: UAT manual del Operator sobre `dev` (incluye verificar si la UI permite capturar salud sin autorización) y publicación solo con orden nueva. Evidencia en [`sdd/2026-10-12-sdd011-revision/`](sdd/2026-10-12-sdd011-revision/README.md).

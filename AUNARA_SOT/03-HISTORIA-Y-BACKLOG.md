@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-13 · 🟡 UAT humana no aprobada: feedback completo registrado, entorno mixto pendiente de confirmar
+
+`[AUNARA/codex · modelo no expuesto]` — Operator entregó observaciones y 13 capturas; se registran 22 ítems, alcance/decisiones diferidas, prioridades y handoff en [resultados](handoffs/UAT-2026-10-13-resultados-operator.md). Confirmación recibida; callbacks llevan a producción, sin prueba de retorno local. Lectura fresca de dev confirma menú/credit/footer/historial y agrupación por día; contraste con capturas exige identificar origen, no desestimar fallos. Capturas con datos personales excluidas del repo público. Sin cambios de aplicación ni publicación; orden explícita de subir contexto a dev.
+
 ## 2026-10-12 · 🟡 UAT de dev levantada en Mac; pruebas del Operator pendientes
 
 `[AUNARA/codex · modelo no expuesto]` — Por «Dale», remoto y handoff contrastados; dev coincide, main contiene documentación posterior sin código nuevo. Canónico dirty preservado. Copia aislada con dependencias existentes, Vite localhost/LAN y pantalla inicial visible en navegador integrado (Chrome DevTools no disponible). No cuentas, correos, código, push ni publicación. [Recibo](handoffs/UAT-2026-10-12-mac-arranque.md). Falta ejecutar el guion manual; no se declara cierre de UAT.

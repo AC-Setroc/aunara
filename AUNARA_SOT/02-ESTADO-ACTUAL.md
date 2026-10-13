@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/claude �
 
 ## Verificado
 
+### 2026-10-13 — UAT del Operator NO APROBADA; 22 hallazgos/consultas registrados
+
+`[AUNARA/codex · modelo no expuesto]` — [Resultados y clasificación](handoffs/UAT-2026-10-13-resultados-operator.md). Confirmación recibida reportada; enlaces de confirmación/recuperación llevaron a prod. Entorno por paso pendiente: algunas capturas muestran presentación anterior frente a dev. Persistencia, navegación, acceso, footer y editor requieren reproducción; otros pedidos son cambios o entregas diferidas. Ningún fix ni publicación. Capturas personales fuera del repo público. Aprobación técnica previa no cierra UAT humana.
+
 ### 2026-10-12 — UAT local iniciada en Mac; comprobaciones reales pendientes
 
 `[AUNARA/codex · modelo no expuesto]` — Dev remoto `1f6a99e` confirmado. Carpeta canónica anterior dirty preservada; copia aislada sirviendo en localhost:5173 y LAN. Pantalla inicial comprobada en navegador integrado, sin cuentas ni correos. Main remoto `dfffa87` añade únicamente evidencia documental sobre aplicación `1c709a3`. Sin publicación. [Recibo local](handoffs/UAT-2026-10-12-mac-arranque.md); los diez escenarios manuales siguen pendientes.
