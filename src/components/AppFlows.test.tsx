@@ -32,6 +32,11 @@ vi.mock("../hooks/useCloudSync", () => ({
 
 import App from "../App";
 
+function openLogin() {
+  fireEvent.click(screen.getByRole("button", { name: /Open navigation|Abrir navegación/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Login \/ create account|Ingresar \/ crear cuenta/ }));
+}
+
 describe("stored profile summary", () => {
   // Valid legacy-compatible profile with omitted optional preferences/defaults.
   const emptyProfile: HealthProfile = {
@@ -113,7 +118,7 @@ describe("stored profile summary", () => {
     localStorage.setItem("repbook-profile-name", JSON.stringify("Synthetic athlete"));
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     const { container } = render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Login" }));
+    openLogin();
     expect(container.querySelector(".privacy-summary")).toBeNull();
     expect(screen.queryByText("Export my data")).toBeNull();
   });
@@ -277,7 +282,7 @@ describe("storage notice and footer integration", () => {
     accessMock.overrides = { email: null };
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     const { rerender } = render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Login" }));
+    openLogin();
     expect(screen.getByRole("dialog", { name: "Access Aunara anywhere" })).toBeTruthy();
     accessMock.overrides = { email: "synthetic@example.com" };
     rerender(<App />);
@@ -289,7 +294,7 @@ describe("storage notice and footer integration", () => {
     accessMock.overrides = { email: null, status: "error", message: "Simulated auth error" };
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: vi.fn().mockResolvedValue([exercise]) }));
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Login" }));
+    openLogin();
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     expect(accessMock.clearAuthError).toHaveBeenCalledOnce();
     const input = screen.getByLabelText("Email address");
@@ -329,8 +334,10 @@ describe("storage notice and footer integration", () => {
       expect(screen.getByRole("dialog", { name: "Cookies y almacenamiento" })).toBeTruthy();
       fireEvent.keyDown(window, { key: "Escape" });
       expect(window.document.activeElement).toBe(opener);
+      fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
       fireEvent.change(screen.getByLabelText("Idioma"), { target: { value: "en" } });
       expect((screen.getByLabelText("Language") as HTMLSelectElement).value).toBe("en");
+      fireEvent.keyDown(window, { key: "Escape" });
       expect(screen.getByRole("button", { name: "Cookies and storage" })).toBeTruthy();
       expect(screen.getByAltText("AC Setroc")).toBeTruthy();
       expect(clear).not.toHaveBeenCalled();
@@ -338,6 +345,7 @@ describe("storage notice and footer integration", () => {
       first.unmount();
       render(<App />);
       expect(screen.getByRole("button", { name: "Entendido" })).toBeTruthy();
+      fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
       expect((screen.getByLabelText("Idioma") as HTMLSelectElement).value).toBe("es");
     } finally {
       cleanup();

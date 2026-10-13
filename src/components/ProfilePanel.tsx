@@ -45,11 +45,16 @@ interface ProfilePanelProps {
   onAddCheckIn: (checkIn: WeeklyCheckIn) => void;
   onOpenTrack: (trackId: string) => void;
   onClose: () => void;
+  onSignOut?: () => void;
   healthDataConsent?: boolean;
   onRequestHealthConsent?: () => void;
 }
 
 type ProfileTab = "overview" | "body" | "checkin";
+
+function preferencesFrom(healthProfile: HealthProfile): HealthProfile {
+  return { ...healthProfile, equipmentPreference: healthProfile.equipmentPreference ?? "mixed", trainingDaysPerWeek: healthProfile.trainingDaysPerWeek ?? 3, sessionMinutes: healthProfile.sessionMinutes ?? 45 };
+}
 
 function optionalNumber(value: string): number | null {
   if (!value.trim()) return null;
@@ -74,12 +79,15 @@ export function ProfilePanel({
   onAddCheckIn,
   onOpenTrack,
   onClose,
+  onSignOut,
   healthDataConsent = true,
   onRequestHealthConsent,
 }: ProfilePanelProps) {
   const [tab, setTab] = useState<ProfileTab>("overview");
-  const [preferences, setPreferences] = useState<HealthProfile>({ ...healthProfile, equipmentPreference: healthProfile.equipmentPreference ?? "mixed", trainingDaysPerWeek: healthProfile.trainingDaysPerWeek ?? 3, sessionMinutes: healthProfile.sessionMinutes ?? 45 });
-  const [preferencesSaved, setPreferencesSaved] = useState(false);
+  const [preferences, setPreferences] = useState<HealthProfile>(() => preferencesFrom(healthProfile));
+  // The stored profile is the single source of truth (SDD-012 / UAT13-22): any outside change replaces the local
+  // copy, which only exists so an out-of-range value can stay on screen without being persisted.
+  useEffect(() => { setPreferences(preferencesFrom(healthProfile)); }, [healthProfile]);
   const [foodQuery, setFoodQuery] = useState("");
   const [foodResults, setFoodResults] = useState<FoodSearchResult[]>([]);
   const [foodLoading, setFoodLoading] = useState(false);
@@ -120,6 +128,12 @@ export function ProfilePanel({
 
   function updateHealth<Key extends keyof HealthProfile>(key: Key, value: HealthProfile[Key]) {
     onHealthProfileChange({ ...healthProfile, [key]: value });
+  }
+
+  function applyPreferences(next: HealthProfile) {
+    setPreferences(next);
+    if (!validTrainingPreferences(next)) return;
+    onHealthProfileChange({ ...healthProfile, goals: profileGoals(next), primaryGoal: profileGoals(next)[0], sport: profileSport(next), equipmentPreference: next.equipmentPreference, trainingDaysPerWeek: next.trainingDaysPerWeek, sessionMinutes: next.sessionMinutes, experience: next.experience });
   }
 
   function togglePreferredIngredient(ingredientId: string, checked: boolean) {
@@ -204,24 +218,18 @@ export function ProfilePanel({
               <input value={name} onChange={(event) => onNameChange(event.target.value)} placeholder={tr(language, "My profile", "Mi perfil")} />
             </label>
 
-            <form className="profile-training-preferences" onSubmit={(event) => {
-              event.preventDefault();
-              if (!validTrainingPreferences(preferences)) return;
-              onHealthProfileChange({ ...healthProfile, goals: profileGoals(preferences), primaryGoal: profileGoals(preferences)[0], sport: profileSport(preferences), equipmentPreference: preferences.equipmentPreference, trainingDaysPerWeek: preferences.trainingDaysPerWeek, sessionMinutes: preferences.sessionMinutes, experience: preferences.experience });
-              setPreferencesSaved(true);
-            }}>
+            <div className="profile-training-preferences">
               <h3>{tr(language, "Training preferences", "Preferencias de entrenamiento")}</h3>
               <GoalPreferences language={language} profile={preferences} onChange={setPreferences} />
               <div className="health-form-grid">
-                <label className="health-field"><span>{tr(language, "Available equipment", "Equipo disponible")}</span><select value={preferences.equipmentPreference ?? "mixed"} onChange={(event) => setPreferences({ ...preferences, equipmentPreference: event.target.value as HealthProfile["equipmentPreference"] })}><option value="mixed">{tr(language, "Mixed", "Mixto")}</option><option value="bodyweight">{tr(language, "Bodyweight only", "Solo autocarga")}</option><option value="any">{tr(language, "All equipment", "Todo el equipo")}</option></select></label>
-                <label className="health-field"><span>{tr(language, "Training experience", "Experiencia entrenando")}</span><select value={preferences.experience} onChange={(event) => setPreferences({ ...preferences, experience: event.target.value as HealthProfile["experience"] })}><option value="beginner">{tr(language, "Beginner", "Principiante")}</option><option value="intermediate">{tr(language, "Intermediate", "Intermedio")}</option><option value="advanced">{tr(language, "Advanced", "Avanzado")}</option></select></label>
-                <label className="health-field"><span>{tr(language, "Training days per week", "Días de entrenamiento por semana")}</span><input type="number" min="1" max="7" required value={preferences.trainingDaysPerWeek ?? ""} onChange={(event) => setPreferences({ ...preferences, trainingDaysPerWeek: optionalNumber(event.target.value) ?? undefined })} /></label>
-                <label className="health-field"><span>{tr(language, "Minutes per session", "Minutos por sesión")}</span><input type="number" min="15" max="180" required value={preferences.sessionMinutes ?? ""} onChange={(event) => setPreferences({ ...preferences, sessionMinutes: optionalNumber(event.target.value) ?? undefined })} /></label>
+                <label className="health-field"><span>{tr(language, "Available equipment", "Equipo disponible")}</span><select value={preferences.equipmentPreference ?? "mixed"} onChange={(event) => applyPreferences({ ...preferences, equipmentPreference: event.target.value as HealthProfile["equipmentPreference"] })}><option value="mixed">{tr(language, "Mixed", "Mixto")}</option><option value="bodyweight">{tr(language, "Bodyweight only", "Solo autocarga")}</option><option value="any">{tr(language, "All equipment", "Todo el equipo")}</option></select></label>
+                <label className="health-field"><span>{tr(language, "Training experience", "Experiencia entrenando")}</span><select value={preferences.experience} onChange={(event) => applyPreferences({ ...preferences, experience: event.target.value as HealthProfile["experience"] })}><option value="beginner">{tr(language, "Beginner", "Principiante")}</option><option value="intermediate">{tr(language, "Intermediate", "Intermedio")}</option><option value="advanced">{tr(language, "Advanced", "Avanzado")}</option></select></label>
+                <label className="health-field"><span>{tr(language, "Training days per week", "Días de entrenamiento por semana")}</span><input type="number" min="1" max="7" required value={preferences.trainingDaysPerWeek ?? ""} onChange={(event) => applyPreferences({ ...preferences, trainingDaysPerWeek: optionalNumber(event.target.value) ?? undefined })} /></label>
+                <label className="health-field"><span>{tr(language, "Minutes per session", "Minutos por sesión")}</span><input type="number" min="15" max="180" required value={preferences.sessionMinutes ?? ""} onChange={(event) => applyPreferences({ ...preferences, sessionMinutes: optionalNumber(event.target.value) ?? undefined })} /></label>
               </div>
-              <p>{tr(language, "Saving preferences does not change your existing routes. New suggestions use the first goal; combination rules are pending review.", "Guardar preferencias no cambia tus rutas existentes. Las nuevas propuestas usan el primer objetivo; las reglas de combinación están pendientes de revisión.")}</p>
-              <button type="submit" disabled={!validTrainingPreferences(preferences)}>{tr(language, "Save training preferences", "Guardar preferencias de entrenamiento")}</button>
-              {preferencesSaved && <small role="status">{tr(language, "Preferences saved. Existing routes are unchanged.", "Preferencias guardadas. Tus rutas no cambiaron.")}</small>}
-            </form>
+              <p>{tr(language, "Changes are saved as you make them and do not change your existing routes. New suggestions use the first goal; combination rules are pending review.", "Los cambios se guardan al instante y no cambian tus rutas existentes. Las nuevas propuestas usan el primer objetivo; las reglas de combinación están pendientes de revisión.")}</p>
+              {!validTrainingPreferences(preferences) && <small role="status">{tr(language, "Choose at least one goal, between 1 and 7 days and between 15 and 180 minutes: values outside those ranges are not saved.", "Elegí al menos un objetivo, entre 1 y 7 días y entre 15 y 180 minutos: los valores fuera de rango no se guardan.")}</small>}
+            </div>
 
             <div className="profile-stats">
               <div><Dumbbell size={18} /><strong>{tracks.length}</strong><span>{tr(language, "training tracks", "rutas de entrenamiento")}</span></div>
@@ -304,14 +312,6 @@ export function ProfilePanel({
                   <option value="very-active">{tr(language, "Very active · 6–7 active days or physical work", "Muy activo/a · 6–7 días activos o trabajo físico")}</option>
                 </select>
                 <small>{tr(language, "Include work, walking, sport and training.", "Incluí trabajo, caminatas, deporte y entrenamiento.")}</small>
-              </label>
-              <label className="health-field">
-                <span>{tr(language, "Training experience", "Experiencia entrenando")}</span>
-                <select value={healthProfile.experience} onChange={(event) => updateHealth("experience", event.target.value as HealthProfile["experience"])}>
-                  <option value="beginner">{tr(language, "Beginner", "Principiante")}</option>
-                  <option value="intermediate">{tr(language, "Intermediate", "Intermedio")}</option>
-                  <option value="advanced">{tr(language, "Advanced", "Avanzado")}</option>
-                </select>
               </label>
             </div>
 
@@ -703,7 +703,10 @@ export function ProfilePanel({
           </div>
         )}
 
-        <button className="profile-done" type="button" onClick={onClose}>{tr(language, "Done", "Listo")}</button>
+        <div className="profile-actions">
+          {onSignOut && <button className="profile-signout" type="button" onClick={() => { onClose(); onSignOut(); }}>{tr(language, "Sign out", "Salir")}</button>}
+          <button className="profile-done" type="button" onClick={onClose}>{tr(language, "Done", "Listo")}</button>
+        </div>
       </aside>
     </div>
   );
