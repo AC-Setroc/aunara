@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-13 · 🟡 UAT dev: rechazo visual de menú; confirmación no cerrada
+
+`[AUNARA/codex · modelo no expuesto]` — Operator entrega dos capturas de menú y consentimiento: rechaza menú, recuadro opcional persiste (fuera de SDD-012, D-12-4 abierto). Reporta correo con retorno localhost; falta dispositivo/estado posterior. [Registro](handoffs/UAT-2026-10-13-seguimiento-dev.md). Código intacto, ningún parche ni publicación; aprobación técnica no equivale a aceptación humana.
+
 ## 2026-10-13 · 🟢 SDD-012 aprobado técnicamente e integrado en `dev`: menú, cabecera, Salir en perfil, UAT13-22 y UAT13-06
 
 `[AUNARA/claude · modelo no expuesto]` — Por orden del Operator se reprodujeron UAT13-22 y 17 y el menú roto de la captura, y se corrigió lo que era defecto: panel del menú por portal (la cabecera con `backdrop-filter` lo atrapaba), hamburguesa a la derecha con idioma e Ingresar dentro del menú, «Salir» en el perfil, un solo control de experiencia con preferencias al instante y botón de reenvío legible. Candidato aislado `wip/sdd012-candidate-2026-10-13`; S12 70/70 en Chromium y WebKit sobre ambas bases, negativos rojos con control verde y seis matrices del ciclo 2 verdes por motor. Integrado como `d381e52`; `main` sin cambios. UAT13-17 y la alineación visual quedan como decisiones D-12-2/D-12-4. Antes de repetir la UAT: allowlist de redirección de Supabase. [SDD-012](sdd/SDD-012-uat13-menu-perfil-acceso.md) · [evidencia](sdd/2026-10-13-sdd012-revision/README.md).
