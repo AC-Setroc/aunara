@@ -43,6 +43,7 @@ No agregar `AUNARA_SOT/reference/` ni otros documentos con datos personales al c
 | `wip/dirty-2026-10-12` | Snapshot sin revisar del working tree de la Mac (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`). Evidencia y respaldo; no es base de trabajo ni entrega. | ninguna |
 | `wip/sdd006-e2-candidate-2026-10-12` (`19dcb4f`), `wip/sdd006-e3-candidate-2026-10-12` (`85e4415`), `wip/sdd006-e4-candidate-2026-10-12` (`6704681`) | Candidatos E2/E3/E4 de SDD-006 sobre `1c709a3`. E4 = revisión ciclo 2 APPROVED técnico (Chromium + WebKit). Evidencia y respaldo; la integración a `dev` es un commit aparte por orden. | ninguna |
 | `wip/sdd011-h01-candidate-2026-10-12` (`96b71c8`), `wip/sdd011-h02-candidate-2026-10-12` (`0fd2743`) | Candidatos H-01/H-02 de SDD-011 sobre `6704681`. APPROVED e integrados en `dev` (`8db846e`, `13a1264`). Evidencia y respaldo. | ninguna |
+| `wip/sdd012-candidate-2026-10-13` (`1e7fa15`) | Candidato de SDD-012 sobre `bfb97a1` (menú por portal, cabecera, Salir en perfil, UAT13-22/06). APPROVED técnico e integrado en `dev` (`d381e52`). Evidencia y respaldo. | ninguna |
 | `archive/github-pages/main` | Build compilado histórico (ago-2026) con base `/`, historia independiente. No tocar. | ninguna |
 
 ## Snapshots del trabajo local — 2026-10-12

@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-13 · 🟢 SDD-012 aprobado técnicamente e integrado en `dev`: menú, cabecera, Salir en perfil, UAT13-22 y UAT13-06
+
+`[AUNARA/claude · modelo no expuesto]` — Por orden del Operator se reprodujeron UAT13-22 y 17 y el menú roto de la captura, y se corrigió lo que era defecto: panel del menú por portal (la cabecera con `backdrop-filter` lo atrapaba), hamburguesa a la derecha con idioma e Ingresar dentro del menú, «Salir» en el perfil, un solo control de experiencia con preferencias al instante y botón de reenvío legible. Candidato aislado `wip/sdd012-candidate-2026-10-13`; S12 70/70 en Chromium y WebKit sobre ambas bases, negativos rojos con control verde y seis matrices del ciclo 2 verdes por motor. Integrado como `d381e52`; `main` sin cambios. UAT13-17 y la alineación visual quedan como decisiones D-12-2/D-12-4. Antes de repetir la UAT: allowlist de redirección de Supabase. [SDD-012](sdd/SDD-012-uat13-menu-perfil-acceso.md) · [evidencia](sdd/2026-10-13-sdd012-revision/README.md).
+
 ## 2026-10-13 · 🟡 UAT humana no aprobada: feedback completo registrado, entorno mixto pendiente de confirmar
 
 `[AUNARA/codex · modelo no expuesto]` — Operator entregó observaciones y 13 capturas; se registran 22 ítems, alcance/decisiones diferidas, prioridades y handoff en [resultados](handoffs/UAT-2026-10-13-resultados-operator.md). Confirmación recibida; callbacks llevan a producción, sin prueba de retorno local. Lectura fresca de dev confirma menú/credit/footer/historial y agrupación por día; contraste con capturas exige identificar origen, no desestimar fallos. Capturas con datos personales excluidas del repo público. Sin cambios de aplicación ni publicación; orden explícita de subir contexto a dev.

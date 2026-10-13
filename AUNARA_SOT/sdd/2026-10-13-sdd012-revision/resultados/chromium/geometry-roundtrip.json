@@ -1,0 +1,265 @@
+{
+  "summary": "52/52 PASS",
+  "rows": [
+    {
+      "name": "E1 render triserie root/es",
+      "pass": true,
+      "detail": "RUTA DE META · 2× POR SEMANA TRISERIE FIXTURE Iniciar entrenamiento de hoy Editar rutina 3 movimientos 9 series de trabajo 01 TRISERIE · 1/3LUNES BARBELL INCLINE BENCH PRESS Pectorales Nombre en inglés · traducción pendi"
+    },
+    {
+      "name": "E1 export conserva targets independientes/notas/historial root/es",
+      "pass": true,
+      "detail": "[[\"0047\",3,8,\"-\",\"-\"],[\"0662\",3,0,\"-\",\"technical-failure\"],[\"0630\",3,20,\"per-side\",\"-\"]]"
+    },
+    {
+      "name": "E1 recarga conserva root/es",
+      "pass": true,
+      "detail": "RUTA DE META · 2× POR SEMANA TRISERIE FIXTURE Iniciar entrenamiento de hoy Editar rutina 3 movimientos 9 series de traba"
+    },
+    {
+      "name": "E1 consola root/es",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CL-06 enum inválido remoto rechazado sin pérdida root/es",
+      "pass": true,
+      "detail": "name=Triserie fixture rc=per-side errors=0"
+    },
+    {
+      "name": "E1 render triserie root/en",
+      "pass": true,
+      "detail": "GOAL TRACK · 2× WEEKLY TRISERIE FIXTURE Start today’s workout Edit routine 3 movements 9 working sets 01 TRI-SET · 1/3MONDAY BARBELL INCLINE BENCH PRESS Pectorals PLAN 3 × 8 View demo & steps 02 TRI-SET · 2/3MONDAY PUSH-"
+    },
+    {
+      "name": "E1 export conserva targets independientes/notas/historial root/en",
+      "pass": true,
+      "detail": "[[\"0047\",3,8,\"-\",\"-\"],[\"0662\",3,0,\"-\",\"technical-failure\"],[\"0630\",3,20,\"per-side\",\"-\"]]"
+    },
+    {
+      "name": "E1 recarga conserva root/en",
+      "pass": true,
+      "detail": "GOAL TRACK · 2× WEEKLY TRISERIE FIXTURE Start today’s workout Edit routine 3 movements 9 working sets 01 TRI-SET · 1/3MO"
+    },
+    {
+      "name": "E1 consola root/en",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CL-06 enum inválido remoto rechazado sin pérdida root/en",
+      "pass": true,
+      "detail": "name=Triserie fixture rc=per-side errors=0"
+    },
+    {
+      "name": "E1 render triserie aunara/es",
+      "pass": true,
+      "detail": "RUTA DE META · 2× POR SEMANA TRISERIE FIXTURE Iniciar entrenamiento de hoy Editar rutina 3 movimientos 9 series de trabajo 01 TRISERIE · 1/3LUNES BARBELL INCLINE BENCH PRESS Pectorales Nombre en inglés · traducción pendi"
+    },
+    {
+      "name": "E1 export conserva targets independientes/notas/historial aunara/es",
+      "pass": true,
+      "detail": "[[\"0047\",3,8,\"-\",\"-\"],[\"0662\",3,0,\"-\",\"technical-failure\"],[\"0630\",3,20,\"per-side\",\"-\"]]"
+    },
+    {
+      "name": "E1 recarga conserva aunara/es",
+      "pass": true,
+      "detail": "RUTA DE META · 2× POR SEMANA TRISERIE FIXTURE Iniciar entrenamiento de hoy Editar rutina 3 movimientos 9 series de traba"
+    },
+    {
+      "name": "E1 consola aunara/es",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CL-06 enum inválido remoto rechazado sin pérdida aunara/es",
+      "pass": true,
+      "detail": "name=Triserie fixture rc=per-side errors=0"
+    },
+    {
+      "name": "E1 render triserie aunara/en",
+      "pass": true,
+      "detail": "GOAL TRACK · 2× WEEKLY TRISERIE FIXTURE Start today’s workout Edit routine 3 movements 9 working sets 01 TRI-SET · 1/3MONDAY BARBELL INCLINE BENCH PRESS Pectorals PLAN 3 × 8 View demo & steps 02 TRI-SET · 2/3MONDAY PUSH-"
+    },
+    {
+      "name": "E1 export conserva targets independientes/notas/historial aunara/en",
+      "pass": true,
+      "detail": "[[\"0047\",3,8,\"-\",\"-\"],[\"0662\",3,0,\"-\",\"technical-failure\"],[\"0630\",3,20,\"per-side\",\"-\"]]"
+    },
+    {
+      "name": "E1 recarga conserva aunara/en",
+      "pass": true,
+      "detail": "GOAL TRACK · 2× WEEKLY TRISERIE FIXTURE Start today’s workout Edit routine 3 movements 9 working sets 01 TRI-SET · 1/3MO"
+    },
+    {
+      "name": "E1 consola aunara/en",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CL-06 enum inválido remoto rechazado sin pérdida aunara/en",
+      "pass": true,
+      "detail": "name=Triserie fixture rc=per-side errors=0"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/es/320x720",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/es/390x844",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/es/390x460",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/es/1440x900",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[fa"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/en/320x720",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/en/390x844",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/en/390x460",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow root/en/1440x900",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[fa"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/es/320x720",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/es/390x844",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/es/390x460",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/es/1440x900",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[fa"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/en/320x720",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/en/390x844",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/en/390x460",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"true/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"true/true\",\"ov\":[],\"badge\":[false,"
+    },
+    {
+      "name": "CA06-06 flotante/badge/overflow aunara/en/1440x900",
+      "pass": true,
+      "detail": "[{\"p\":\"start\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"middle\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[false,true],\"of\":false},{\"p\":\"end\",\"fab\":\"false/false\",\"ov\":[],\"badge\":[fa"
+    },
+    {
+      "name": "F2 footer root/es/375",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/es/1049",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/es/1050",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/es/1051",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/en/375",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/en/1049",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/en/1050",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer root/en/1051",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/es/375",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/es/1049",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/es/1050",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/es/1051",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"110.1\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/en/375",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/en/1049",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/en/1050",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    },
+    {
+      "name": "F2 footer aunara/en/1051",
+      "pass": true,
+      "detail": "{\"brandOffset\":\"0.6\",\"credOffset\":\"102.4\",\"credHorizontal\":true,\"imgRatio\":\"3.67\",\"overflow\":false,\"clipped\":false,\"visible\":true}"
+    }
+  ]
+}

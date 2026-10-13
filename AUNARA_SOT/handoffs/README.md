@@ -5,3 +5,4 @@ Guardar aquí `HANDOFF-<YYYY-MM-DD>.md` cuando una sesión entregue trabajo a ot
 Handoffs registrados:
 
 - [HANDOFF-2026-10-12](HANDOFF-2026-10-12.md) — revisión integral, SOT a `dev`, snapshot `wip`, SDD-010 cerrado, plan para SDD-006.
+- [HANDOFF-2026-10-13](HANDOFF-2026-10-13.md) — UAT13 triada, SDD-012 (menú, cabecera, Salir en perfil, UAT13-22/06) APPROVED e integrado en `dev`; re-verificación §2b pendiente del Operator.

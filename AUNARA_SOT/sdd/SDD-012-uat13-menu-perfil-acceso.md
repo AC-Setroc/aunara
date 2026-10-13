@@ -1,6 +1,6 @@
 # SDD-012 — UAT13: menú de navegación, cabecera, perfil y reenvío de confirmación
 
-2026-10-13 · v0.1 · Estado: **especificado por orden del Operator («reproducí 22 y 17 y corregí lo que se debe corregir» + tres pedidos sobre el menú); Build en candidato aislado**.
+2026-10-13 · v0.2 · Estado: **APPROVED técnico (Chromium + WebKit) e integrado en `dev` como `d381e52`; UAT del Operator y publicación pendientes** (v0.1: especificado por orden del Operator «reproducí 22 y 17 y corregí lo que se debe corregir» + tres pedidos sobre el menú).
 Origen: `[AUNARA/claude · modelo no expuesto]`. Base: `dev` `bfb97a1` (SDD-006 + SDD-011 integrados). Insumos: [resultados UAT13 del Operator](../handoffs/UAT-2026-10-13-resultados-operator.md) y [reproducciones sobre `dev`](2026-10-13-uat13-reproducciones/README.md).
 
 ## 1. El problema, en el idioma del Operator
@@ -84,3 +84,21 @@ Origen: `[AUNARA/claude · modelo no expuesto]`. Base: `dev` `bfb97a1` (SDD-006 
 ## 10. Definición de terminado
 
 S12-01…S12-08 verdes con evidencia versionada en `2026-10-13-sdd012-revision/`, commit en `dev`, SOT al día. UAT del Operator y publicación siguen siendo decisiones suyas.
+
+## 11. Recibo y veredicto — 2026-10-13
+
+Candidato `1e7fa15` en `wip/sdd012-candidate-2026-10-13`, sobre `bfb97a1`; ocho archivos, todos dentro de la allowlist del §2; NO-TOCAR intacto (`git diff --stat bfb97a1 1e7fa15` solo lista `App.tsx`, `NavigationMenu.tsx`, `ProfilePanel.tsx`, `styles.css` y cuatro tests).
+
+**Unitario.** Tests nuevos o ajustados por criterio: `NavigationMenu.test.tsx` (panel en portal fuera de la cabecera, hamburguesa última, `panelContent` dentro del panel), `ProfilePanel.test.tsx` (cambio aplicado al instante, valor inválido no persiste y muestra aviso, un solo control de experiencia, resincronización externa, «Salir» solo con sesión), `GuestApp.test.tsx` (barra sin Ingresar ni idioma; acceso por el menú), `AppFlows.test.tsx` (acceso e idioma por el menú). Suite 363/25; typecheck; guards 28/28 (`check-pages-client` + `sw-scope` 27, `prepare-sites-dist` 1; con el directorio bilingüe, 31/31); builds `/` y `/aunara/` con allowlist 32.
+
+**Compilado.** `harness/sdd012-checks.mjs` mide S12-01…S12-06 por geometría y estilos computados (70 aserciones por corrida: logo y hamburguesa × invitado/sesión × ES/EN × 1440/390, orden de la barra, contenido del panel, Salir con `POST /auth/v1/logout`, experiencia persistida y días=0 rechazado, contraste del reenvío). Resultado **70/70 en Chromium y en WebKit, bases `/` y `/aunara/`** (`2026-10-13-sdd012-revision/resultados/sdd012-<motor>-<build>.json`).
+
+**Negativos (S12-08)**, `resultados/sdd012-negatives.log`, uno por vez en copia disposable y restaurados (0 sucios): N1 sin portal ⇒ unitario 1 rojo y compilado 54/70 con `inHeader:true, y:-117`; N2 preferencias como borrador ⇒ 3 rojos unitarios; N3 sin color en reenviar ⇒ compilado 68/70 con contraste 1. Control sobre el candidato: 70/70.
+
+**Matrices del ciclo 2 (S12-07)** sobre el build del candidato, `resultados/<motor>/`: Chromium y WebKit, cada uno storage 276/276, startup 84/84, Auth 42/42, privacidad 84/84, navegación/modal/legal 156/156, round-trip/flotante/footer 52/52. El harness se ajustó solo donde cambió la estructura: `lib.mjs` suma `setLanguageViaMenu` porque el selector vive en el panel, y los bloques de invitado de `ui-navigation` y `privacy-summary` abren el acceso por la hamburguesa y la entrada «Ingresar / crear cuenta» en lugar del botón de la barra.
+
+S12-01…S12-08 **PASS**. Veredicto: **APPROVED técnico**. Caveat de método: Build y Review por el mismo agente, por orden directa del Operator; la evidencia es ejecutable y queda versionada para un panel posterior. Qué no prueba: Safari real ni iPhone (el WebKit es Playwright en Linux), la UAT humana, y D-12-1 sigue siendo un supuesto hasta que el Operator vea la barra.
+
+### Entrega — 2026-10-13
+
+`dev` recibe `d381e52` (cherry-pick de `1e7fa15` sobre `4d634a2`; árbol técnico idéntico al candidato salvo una línea en blanco final de `NavigationMenu.test.tsx`, eliminada porque `git diff --check` la marcaba). Verificado sobre `dev`: typecheck; Vitest 363/25 + Node 1; guards 27/27 + directorio 4/4; builds `/` y `/aunara/` con allowlist 32 (`AUNARA_BASE_PATH` correspondiente en el guard); `git diff --check` limpio. `main` sigue en `dfffa87` (aplicación publicada `1c709a3`): publicación solo con orden nueva. Antes de repetir la UAT en `dev`, la allowlist de redirección de Supabase necesita `http://localhost:5173/**` y el origen LAN (UAT13-21, CA-07); sin eso los correos siguen llevando a producción.

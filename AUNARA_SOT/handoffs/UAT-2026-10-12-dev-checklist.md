@@ -41,6 +41,20 @@ Simulador de Xcode: `http://localhost:5173`. iPhone real en la misma Wi‑Fi: la
 
 Un FALLA no se parchea en la UAT: se registra con evidencia y vuelve a Spec como hallazgo o enmienda.
 
+## 2b. Re-verificación tras SDD-012 (2026-10-13, `dev` ≥ `d381e52`)
+
+Prerrequisito: Supabase → Authentication → URL Configuration → Redirect URLs incluye `http://localhost:5173/**` y el origen LAN que imprime Vite; si no, los enlaces de los correos siguen llevando a producción (UAT13-21) y las capturas mezclan entornos. Verificar que la pantalla dice `dev` por el slogan y el crédito del footer antes de cada punto.
+
+| # | Qué probar | Qué debe verse | Decisión que confirma |
+|---|---|---|---|
+| 11 | Tocar el logo y la hamburguesa, invitado y con sesión, iPhone y escritorio | El menú se abre como panel completo, en columna, dentro de la pantalla; la hamburguesa está a la derecha de la barra | S12-01/02 |
+| 12 | Barra superior | Sin selector de idioma ni botón Ingresar; dentro del menú hay selector de idioma (cambia ES/EN sin cerrar el menú) e «Ingresar / crear cuenta» o «Cuenta / privacidad» | D-12-1 |
+| 13 | Perfil con sesión | Botón «Salir» junto a «Listo»; al pulsarlo cierra el perfil y cierra la sesión. Como invitado no aparece | S12-04 |
+| 14 | Perfil → Preferencias de entrenamiento | Un solo control «Experiencia entrenando»; cambiarlo y pulsar «Listo» lo conserva al reabrir y tras recargar; «Cuerpo y salud» no tiene otro; no existe «Guardar preferencias» | D-12-3, UAT13-22 |
+| 15 | Cuenta pendiente de confirmación | «Reenviar correo de confirmación» se lee sin pasar el mouse | UAT13-06 |
+
+Un FALLA vuelve a Spec como hallazgo, igual que en §2.
+
 ## 3. Después de la UAT
 
 - Si todo PASA: el Operator emite la orden de publicación (paso 3 de la [orden](../ordenes/ORDEN-2026-10-12-retomar-sdd006.md)): merge de `dev` a `main`, Actions verify + deploy, smoke en `https://aunaratraining.com/`, y verificar que el aviso ya dice GitHub Pages.
