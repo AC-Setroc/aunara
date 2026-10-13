@@ -52,6 +52,9 @@ Prerrequisito: Supabase → Authentication → URL Configuration → Redirect UR
 | 13 | Perfil con sesión | Botón «Salir» junto a «Listo»; al pulsarlo cierra el perfil y cierra la sesión. Como invitado no aparece | S12-04 |
 | 14 | Perfil → Preferencias de entrenamiento | Un solo control «Experiencia entrenando»; cambiarlo y pulsar «Listo» lo conserva al reabrir y tras recargar; «Cuerpo y salud» no tiene otro; no existe «Guardar preferencias» | D-12-3, UAT13-22 |
 | 15 | Cuenta pendiente de confirmación | «Reenviar correo de confirmación» se lee sin pasar el mouse | UAT13-06 |
+| 16 | Footer con sesión iniciada, ES/EN | Muestra «Desarrollado por» con el wordmark; «Privacidad» y «Términos» se leen con y sin hover | UAT13-13/15 (las capturas del 13 eran de producción) |
+| 17 | Menú → «Cuenta / privacidad» con sesión | Lista «Perfil y preferencias», permite exportar y tiene «Eliminar cuenta» con el modal de confirmación | UAT13-14/16 |
+| 18 | Editor de rutina, un ejercicio con triserie | Un solo bloque de series por ejercicio; no aparece «Plan de series» repetido como texto fijo | UAT13-19 (la captura era de producción) |
 
 Un FALLA vuelve a Spec como hallazgo, igual que en §2.
 
