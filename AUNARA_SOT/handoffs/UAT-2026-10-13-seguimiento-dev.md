@@ -17,3 +17,10 @@ Dos capturas originales adjuntas al chat, no copiadas al repo público. No conti
 - Operator aclara: enlace abierto en **Mac, dev**. Sesión quedó iniciada y pantalla lista para ingresar datos del usuario. Confirmación/retorno Mac: **PASA reportado por Operator**. Punto 1 aún parcial: recuperación no probada; iPhone no probado.
 - iPhone reporta que no encuentra servidor aun estando en la misma red. Diagnóstico de lectura: node PID 22318 escucha `*:5173`; interfaz Wi-Fi en0 ahora tiene `192.168.80.26`, distinta de la IP entregada anteriormente `192.168.68.101`. Localhost y nueva IP responden HTTP 200 desde Mac (comprobación con permiso de red). No demuestra acceso desde iPhone ni identifica por qué cambió la IP.
 - Nuevo enlace a probar en iPhone: `http://192.168.80.26:5173/`. Operator debe agregar este origen a Redirect URLs antes de probar retorno de correos desde LAN. No se cambió firewall, VPN, router ni Supabase. Conectividad del iPhone pendiente de confirmar por Operator.
+
+## Actualización posterior — iPhone accesible, recuperación vuelve a producción
+
+- Operator confirma acceso iPhone con la nueva IP: **PASA reportado**. La nota anterior de conectividad pendiente queda superada, no borrada.
+- Enlace de recuperación termina en prod: **FALLA de retorno UAT a dev**, punto 1 abierto. No se afirma que haya fallado el cambio de contraseña ni se cierra recuperación.
+- Lectura fresca de `useCloudSync.ts:477–478`: reset solicita redirectTo mediante `publicBaseUrl(BASE_URL, window.location.origin)`. Con origen LAN actual y base raíz, el destino solicitado debe ser `http://192.168.80.26:5173/`. Esto es evidencia de código, no captura de request ni verificación del dashboard.
+- Falta aclarar si se abrió un correo nuevo solicitado desde la IP nueva después de guardar su allowlist, o uno previo. Revisar origen de solicitud, hora del correo y URL autorizada sin exponer tokens/enlace completo. No atribuir automáticamente causa a SMTP o código; sin cambio de Auth ni parche.
