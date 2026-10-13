@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-12 · 🟡 UAT de dev levantada en Mac; pruebas del Operator pendientes
+
+`[AUNARA/codex · modelo no expuesto]` — Por «Dale», remoto y handoff contrastados; dev coincide, main contiene documentación posterior sin código nuevo. Canónico dirty preservado. Copia aislada con dependencias existentes, Vite localhost/LAN y pantalla inicial visible en navegador integrado (Chrome DevTools no disponible). No cuentas, correos, código, push ni publicación. [Recibo](handoffs/UAT-2026-10-12-mac-arranque.md). Falta ejecutar el guion manual; no se declara cierre de UAT.
+
 ## 2026-10-12 · 🟢 SDD-011 H-01 y H-02 APPROVED en ambos motores e integrados en `dev`
 
 `[AUNARA/claude · modelo no expuesto]` — Seis matrices del ciclo 2 sobre el build de cada candidato, Chromium y WebKit, todas verdes (storage 276, startup 84, Auth 42, privacidad 84, navegación 156, geometría 52); probes compilados H-01 (negativo) y H-02 (consentimiento 9/9) verdes. `dev` recibe `8db846e` (H-01) y `13a1264` (H-02, árbol = `0fd2743`); verificado sobre `dev`: typecheck, 359/25 + Node 28, guards 28/28, builds ambas bases allowlist 32. Caveat: Build y Review por el mismo agente por orden del Operator. Sin publicación.

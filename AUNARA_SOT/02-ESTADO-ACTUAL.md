@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-12. Origen de actualización: `[AUNARA/claude �
 
 ## Verificado
 
+### 2026-10-12 — UAT local iniciada en Mac; comprobaciones reales pendientes
+
+`[AUNARA/codex · modelo no expuesto]` — Dev remoto `1f6a99e` confirmado. Carpeta canónica anterior dirty preservada; copia aislada sirviendo en localhost:5173 y LAN. Pantalla inicial comprobada en navegador integrado, sin cuentas ni correos. Main remoto `dfffa87` añade únicamente evidencia documental sobre aplicación `1c709a3`. Sin publicación. [Recibo local](handoffs/UAT-2026-10-12-mac-arranque.md); los diez escenarios manuales siguen pendientes.
+
 ### 2026-10-12 — SDD-006 E2+E3+E4 integrado en `dev` (`1d4ccc9`); SDD-011 H-01 y H-02 APPROVED e integrados (`8db846e`, `13a1264`)
 
 - `[AUNARA/claude · modelo no expuesto]` — Por «Dale con el commit integrado» del Operator: un commit en `dev` con el árbol técnico de `6704681` hash a hash (43 archivos: 10 nuevos, 33 modificados; SOT y docs siguen siendo los de `dev`). Verificado sobre ese árbol: typecheck, 348/25 + Node 1, guards 27/27, builds `/` y `/aunara/` con allowlist 32, `git diff --check`. CI del PR #1 verde. **No publica**: `main` sigue en `1c709a3`; el paso 3 de la orden requiere orden nueva.
