@@ -1,6 +1,8 @@
 # SDD-013 — Menú lateral, identidad móvil y detalles de consentimiento/footer
 
-2026-10-13 · v0.1 · Estado: **En revisión del Operator; NO IMPLEMENTAR**.
+2026-10-13 · v0.1 · Estado: **Aprobado por el Operator el 2026-10-14; implementación autorizada, sin publicación**.
+
+Aprobación explícita: «Sí» ante la pregunta de aprobar SDD-013 con menú lateral, cabecera solo marca/hamburguesa, accesos conservados, opcional sin recuadro y footer alineado. D-13-1/2/3 resueltas a favor del alcance recomendado. D-13-4/5 siguen pendientes, fuera de implementación visual. Se conservan abajo las formulaciones de propuesta como historia del diseño; no hay autorización de push/deploy.
 Origen: `[AUNARA/codex · modelo no expuesto]`. Base técnica: `dev` `41fa9d9`; inspección del worktree aislado `/private/tmp/aunara-uat-20261013-dev` en `de6f165` (diferencias contra base exclusivamente documentales). Regla: Operator SDD Workflow y metodología Personal, máximo tres ciclos, revisión independiente fresca antes de entrega.
 
 ## 1. El problema, en el idioma del Operator
