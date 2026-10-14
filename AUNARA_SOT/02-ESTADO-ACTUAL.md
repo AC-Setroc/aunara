@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-13. Origen de actualización: `[AUNARA/claude �
 
 ## Verificado
 
+### 2026-10-13 — Dirección visual A elegida; SDD-013 en revisión, sin implementación
+
+`[AUNARA/codex · modelo no expuesto]` — Operator eligió panel lateral tras maqueta móvil/escritorio. Referencia preservada en [propuesta](sdd/2026-10-13-sdd013-propuesta/README.md). [SDD-013](sdd/SDD-013-menu-lateral-identidad.md) acota presentación, wordmark móvil, opcional sin recuadro y footer; el alcance exacto requiere aprobación. UAT iPhone diferida por Operator. Retorno de recuperación LAN→prod continúa FALLA sin causa raíz confirmada; confirmación Mac y conectividad iPhone PASA reportados. No código ni publicación.
+
 ### 2026-10-13 — Seguimiento UAT dev: menú rechazado visualmente, opcional pendiente, retorno por aclarar
 
 `[AUNARA/codex · modelo no expuesto]` — Operator rechaza menú actual; no hay aceptación humana de SDD-012. Reitera quitar recuadro opcional (D-12-4 pendiente). Correo recibido con destino localhost reportado; dispositivo y resultado de confirmación pendientes, punto 1 no aprobado. [Seguimiento](handoffs/UAT-2026-10-13-seguimiento-dev.md). Sin parche ni publicación.

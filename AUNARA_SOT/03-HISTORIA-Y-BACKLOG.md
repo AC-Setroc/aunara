@@ -2,6 +2,14 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-14 · 🟡 SDD-013 documental terminado; aprobación de alcance pendiente
+
+`[AUNARA/codex · modelo no expuesto]` — Retomado tras interrupción: leído estado fresco, conservada elección A y finalizadas diez secciones del SDD con referencia HTML portable. Revisadas fronteras, gates distintos de acceso, enlaces internos y diff documental sin errores de whitespace. Solo documentación/prototipo separado, ningún archivo de aplicación cambiado. Commit local; no push/deploy. Próximo: Operator aprueba SDD-013, incluida barra solo marca/hamburguesa y conservación de todos los accesos en menú. Recuperación LAN→prod sigue fuera y UAT iPhone diferida.
+
+## 2026-10-13 · 🟡 Dirección A elegida; alcance SDD-013 pendiente de aprobación
+
+`[AUNARA/codex · modelo no expuesto]` — Maqueta aislada desktop/móvil mostró A lateral y B amplia; Operator eligió A. Wordmark móvil visible, destinos agrupados, idioma compacto, opcional sin recuadro y footer centrado/credit horizontal. HTML fuente preservado sin datos personales; no se incorpora a app. [SDD-013](sdd/SDD-013-menu-lateral-identidad.md) sujeto a aprobación explícita antes de desarrollo/revisión independiente. Registro UAT actualizado: confirmación Mac y acceso iPhone PASA reportados; recuperación iPhone vuelve a prod, FALLA; menú rechazado visualmente. UAT iPhone diferida por pedido, no cerrada. Sin código, Auth, push ni publicación.
+
 ## 2026-10-13 · 🟡 UAT dev: rechazo visual de menú; confirmación no cerrada
 
 `[AUNARA/codex · modelo no expuesto]` — Operator entrega dos capturas de menú y consentimiento: rechaza menú, recuadro opcional persiste (fuera de SDD-012, D-12-4 abierto). Reporta correo con retorno localhost; falta dispositivo/estado posterior. [Registro](handoffs/UAT-2026-10-13-seguimiento-dev.md). Código intacto, ningún parche ni publicación; aprobación técnica no equivale a aceptación humana.
