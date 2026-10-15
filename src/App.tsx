@@ -4,10 +4,13 @@ import {
   Cloud,
   Dumbbell,
   Heart,
+  CircleHelp,
   House,
   Languages,
+  LogOut,
   Search,
   SlidersHorizontal,
+  ShieldCheck,
   UserRound,
   X,
 } from "lucide-react";
@@ -661,55 +664,29 @@ function App() {
     }}>
       <header className="site-header">
         <NavigationMenu language={language} entries={[
-          { label: tr(language, "Home / routes", "Inicio / rutas"), action: () => setAppSection("home") },
-          ...(canUseTraining ? [
-            { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), action: () => setAppSection("library") },
-            { label: tr(language, "Profile", "Perfil"), action: () => setProfileOpen(true) },
+          { label: tr(language, "Home / routes", "Inicio / rutas"), icon: <House size={20} aria-hidden="true" />, active: appSection === "home", action: () => setAppSection("home") },
+          ...(!hasAppAccess ? [{ label: tr(language, "Home", "Inicio"), href: "#top", icon: <House size={20} aria-hidden="true" />, action: () => {} }] : []),
+          ...((canUseTraining || (hasAppAccess && !onboardingRequired)) ? [
+            { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), icon: <BookOpen size={20} aria-hidden="true" />, active: appSection === "library", action: () => setAppSection("library") },
+            { label: tr(language, "Profile", "Perfil"), ariaLabel: tr(language, "Open profile", "Abrir perfil"), icon: <UserRound size={20} aria-hidden="true" />, action: () => setProfileOpen(true) },
           ] : []),
-          { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), action: () => openAccess("sign-in") },
-          ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => openAccess("sign-in") }] : []),
-          ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), action: () => { void cloud.signOut(); } }] : []),
+          ...(hasAppAccess && !onboardingRequired ? [{
+            label: activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy"),
+            icon: <Dumbbell size={20} aria-hidden="true" />, className: "workout-trigger", detail: <strong>{workout.length}</strong>,
+            action: () => { setWorkoutPanelMode("view"); setWorkoutOpen(true); },
+          }] : []),
+          ...(hasAppAccess ? [{ label: cloud.email ? tr(language, "Synced", "Sincronizado") : tr(language, "Account", "Cuenta"),
+            ariaLabel: tr(language, "Open account and synchronization", "Abrir cuenta y sincronización"),
+            icon: <Cloud size={20} aria-hidden="true" />, group: "account" as const, action: () => openAccess("create") }] : []),
+          { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), icon: <ShieldCheck size={20} aria-hidden="true" />, group: "account", action: () => openAccess("sign-in") },
+          ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), icon: <CircleHelp size={20} aria-hidden="true" />, group: "settings" as const, action: () => openAccess("sign-in") }] : []),
+          ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), icon: <LogOut size={20} aria-hidden="true" />, group: "exit" as const, action: () => { void cloud.signOut(); } }] : []),
         ]}
-        controls={<>
-
-            {hasAppAccess ? (
-              <nav aria-label={tr(language, "App controls", "Controles de la app")}>
-                <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => openAccess("create")} aria-label={tr(language, "Open account and synchronization", "Abrir cuenta y sincronización")}>
-                  <Cloud size={17} />
-                  <span>{cloud.email ? tr(language, "Synced", "Sincronizado") : tr(language, "Account", "Cuenta")}</span>
-                </button>
-                {!onboardingRequired && <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label={tr(language, "Open profile", "Abrir perfil")}>
-                  <UserRound size={17} />
-                  <span>{profileName.trim() || tr(language, "My profile", "Mi perfil")}</span>
-                </button>}
-                {!onboardingRequired && <div className="section-navigation" aria-label={tr(language, "Main sections", "Secciones principales")}>
-                  <button className={appSection === "home" ? "is-active" : ""} type="button" onClick={() => setAppSection("home")}>
-                    <House size={16} /> {tr(language, "Home", "Inicio")}
-                  </button>
-                  <button className={appSection === "library" ? "is-active" : ""} type="button" onClick={() => setAppSection("library")}>
-                    <BookOpen size={16} /> {tr(language, "Exercises", "Ejercicios")}
-                  </button>
-                </div>}
-                {!onboardingRequired && <button className="workout-trigger" type="button" onClick={() => {
-                  setWorkoutPanelMode("view");
-                  setWorkoutOpen(true);
-                }}>
-                  <Dumbbell size={18} />
-                  <span>{activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")}</span>
-                  <strong>{workout.length}</strong>
-                </button>}
-              </nav>
-            ) : (
-              <nav className="guest-nav" aria-label={tr(language, "Public controls", "Controles públicos")}>
-                <a className="guest-home-link" href="#top">{tr(language, "Home", "Inicio")}</a>
-              </nav>
-            )}
-        </>}
         panelContent={
           <label className="language-select">
             <Languages size={16} />
-            <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
-            <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
+            <span>{tr(language, "Language", "Idioma")}</span>
+            <select tabIndex={0} value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
               {LANGUAGE_OPTIONS.map((option) => (
                 <option key={option.code} value={option.code}>{option.label}</option>
               ))}

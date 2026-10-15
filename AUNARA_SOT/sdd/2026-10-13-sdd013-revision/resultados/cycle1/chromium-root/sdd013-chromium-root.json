@@ -1,0 +1,127 @@
+{
+  "engine": "chromium",
+  "base": "/",
+  "summary": "18/24 PASS; FAIL: S13-03 localized select guest-es-1440 (); matrix block guest-es-1440 (TimeoutError: locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Idioma', { exact: true })\u001b[22m\n); S13-03 localized select guest-es-390 (); matrix block guest-es-390 (TimeoutError: locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Idioma', { exact: true })\u001b[22m\n); S13-03 localized select guest-es-320 (); matrix block guest-es-320 (Error: locator.selectOption: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for getByLabel('Idioma', { exact: true })\u001b[22m\n)",
+  "rows": [
+    {
+      "name": "S13-02 header guest-es-1440",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"burger\":{\"x\":1338.40625,\"y\":18.484375,\"w\":44,\"h\":44,\"right\":1382.40625},\"img\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-1440",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "matrix block guest-es-1440",
+      "pass": false,
+      "detail": "TimeoutError: locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Idioma', { exact: true })\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header guest-es-390",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":10,\"y\":12.5,\"w\":168,\"h\":44,\"right\":178},\"burger\":{\"x\":336,\"y\":12.5,\"w\":44,\"h\":44,\"right\":380},\"img\":{\"x\":10,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":178},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":844,\"bottom\":844,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-390",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "matrix block guest-es-390",
+      "pass": false,
+      "detail": "TimeoutError: locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Idioma', { exact: true })\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header guest-es-320",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":10,\"y\":12.5,\"w\":168,\"h\":44,\"right\":178},\"burger\":{\"x\":266,\"y\":12.5,\"w\":44,\"h\":44,\"right\":310},\"img\":{\"x\":10,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":178},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":844,\"bottom\":844,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-320",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "matrix block guest-es-320",
+      "pass": false,
+      "detail": "Error: locator.selectOption: Target page, context or browser has been closed\nCall log:\n\u001b[2m  - waiting for getByLabel('Idioma', { exact: true })\u001b[22m\n"
+    }
+  ]
+}

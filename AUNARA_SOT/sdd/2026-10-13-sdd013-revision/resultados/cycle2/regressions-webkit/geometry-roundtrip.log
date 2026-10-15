@@ -1,0 +1,25 @@
+… roundtrip root es
+… roundtrip root en
+… roundtrip aunara es
+… roundtrip aunara en
+… geometry root es 320 720
+… geometry root es 390 844
+… geometry root es 390 460
+… geometry root es 1440 900
+… geometry root en 320 720
+… geometry root en 390 844
+… geometry root en 390 460
+… geometry root en 1440 900
+… geometry aunara es 320 720
+… geometry aunara es 390 844
+… geometry aunara es 390 460
+… geometry aunara es 1440 900
+… geometry aunara en 320 720
+… geometry aunara en 390 844
+… geometry aunara en 390 460
+… geometry aunara en 1440 900
+GEOMETRY/ROUNDTRIP: 52/52 PASS
+
+(node:96741) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/private/tmp/aunara-sdd013-runtime.lDUUmv/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)

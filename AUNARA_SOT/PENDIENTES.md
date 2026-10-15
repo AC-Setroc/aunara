@@ -1,8 +1,14 @@
 # Pendientes — Aunara
 
-Fecha de corte: 2026-10-13. Origen de actualización: `[AUNARA/claude · modelo no expuesto]`, sobre las entradas previas de `[AUNARA/codex · modelo no expuesto]`.
+Fecha de corte: 2026-10-15. Origen de actualización: `[AUNARA/codex · gpt-6.1-sol]`; las entradas anteriores se preservan como antecedentes.
 
 ## Abiertos
+
+- `[AUNARA/codex · gpt-6.1-sol]` — 2026-10-15: **SDD-013 APPROVED técnico, cierre del Operator pendiente**. [Revisión final](sdd/2026-10-13-sdd013-revision/review-cycle2.md) y [entrega](sdd/2026-10-13-sdd013-revision/delivery-receipt.md). D-13-1/2/3 aprobadas el 14Oct e implementadas en candidato aislado; se supera únicamente el pedido anterior de aprobar alcance/preparar visual. Decidir integración y actualización del entorno mediante orden nueva; UAT iPhone/Safari real sigue diferida, no PASS. D-13-4 recuperación LAN→prod permanece FALLA sin causa raíz confirmada; no tocar Auth/SMTP/infra. Aceptación visual del menú/wordmark/opcional/footer pendiente; dos filas Inicio conservan rutas y ancla distintas, observación UX para Operator. Sin push/publicación.
+
+- `[AUNARA/codex · gpt-6.1-sol]` — 2026-10-15: **cuatro pruebas antiguas dependientes del día, abiertas fuera de alcance SDD-013**. Reproducción real 14Oct en baseline `549b100` y candidato: edición de rutina AppFlows espera Jump Squat del lunes; tres aserciones WorkoutPanel esperan slots/selección de lunes. Baseline real359 PASS/4 FAIL. Suite normal con fecha real permanece roja, sin reparación. Comparación lunes controlada: baseline363/363 + Sites1/1; freeze final367/367 (25 archivos) + Sites1/1. Operator aprobó **«Aprobar excepción acotada»** D-13-6 el 15Oct solo para esa comparación, no para declarar verde la suite real ni omitir otro rojo. [Main checks](sdd/2026-10-13-sdd013-revision/main-checks.md); corrección separada con su alcance/aprobación propios.
+
+**Antecedentes del 13Oct, parcialmente superados:** `[AUNARA/codex · gpt-6.1-sol]` — No vuelven a requerirse aprobación de SDD-013 ni diseño del recuadro/footer ya implementado técnicamente. Siguen pendientes UAT humana, recuperación y demás entregas separadas. Confirmación Mac y conectividad iPhone PASA reportadas en seguimiento no equivalen a recuperación ni UAT visual aprobadas.
 
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-13: aprobar alcance de [SDD-013](sdd/SDD-013-menu-lateral-identidad.md), con dirección A elegida. Decisión explícita de barra autenticada solo marca/hamburguesa preservando accesos mediante menú; no tomar maqueta como permiso de cambios funcionales. UAT móvil pendiente tras correcciones por orden. Recuperación LAN→prod diagnosticada aparte, sin Auth/infra autorizado. Evidencia en [seguimiento](handoffs/UAT-2026-10-13-seguimiento-dev.md).
 

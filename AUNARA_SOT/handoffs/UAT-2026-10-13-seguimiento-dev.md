@@ -35,3 +35,11 @@ Dos capturas originales adjuntas al chat, no copiadas al repo público. No conti
 ## Decisión visual del Operator
 
 El Operator autorizó maqueta separada y eligió **A, panel lateral**. Referencia fuente preservada en [propuesta visual](../sdd/2026-10-13-sdd013-propuesta/README.md). Cabecera con wordmark móvil, menú desde borde derecho y opcional sin recuadro; propuesta B descartada. Preparar SDD-013 acotado y esperar aprobación explícita del alcance antes de implementar. Elección no aprueba CTA/hero/copy ficticios ni cambios Auth. UAT iPhone continúa diferida hasta correcciones; recuperación permanece abierta.
+
+## Actualización de entrega — 2026-10-15
+
+`[AUNARA/codex · gpt-6.1-sol]` — SDD-013 v0.1 aprobado el 14Oct e implementado en candidato aislado `/private/tmp/aunara-sdd013-candidate` sobre `549b100`. [Revisión independiente ciclo2 APPROVED técnico](../sdd/2026-10-13-sdd013-revision/review-cycle2.md) y [recibo de entrega](../sdd/2026-10-13-sdd013-revision/delivery-receipt.md): cuatro matrices393/393, Chromium/WebKit y ambas bases,96 superficies visuales; regresiones y N1–N4 rojo/restaurado verde completos. Ocho fuentes/tests entregados idénticos al manifest revisado; no se actualizó el entorno UAT abierto ni el canónico dirty.
+
+La propuesta/preparación visual indicada arriba queda superada como siguiente paso, no se borra el rechazo humano anterior. Menú desde borde derecho, wordmark móvil, consentimiento sin recuadro y footer tienen aceptación técnica, **no UAT humana**. La suite367/25 + Sites1 solo es verde con lunes controlado bajo D-13-6 aprobada expresamente el 15Oct; los cuatro fallos antiguos de fecha real siguen sin corregir, separados de este alcance.
+
+Siguiente: Operator revisa entrega y autoriza por separado integración/actualización del entorno antes de retomar UAT iPhone/Safari real. Recuperación LAN→prod sigue FALLA sin causa raíz confirmada; ningún cambio Auth/Supabase/SMTP/DNS ni envío de correo. Dos filas Inicio son acciones rutas/ancla preservadas, observación UX sin autofix. Un commit local enfocado; sin push, merge, deploy ni cierre del Operator.

@@ -37,6 +37,10 @@ function openLogin() {
   fireEvent.click(screen.getByRole("button", { name: /Login \/ create account|Ingresar \/ crear cuenta/ }));
 }
 
+function openNavigation() {
+  fireEvent.click(screen.getByRole("button", { name: /Open navigation|Abrir navegación/ }));
+}
+
 describe("stored profile summary", () => {
   // Valid legacy-compatible profile with omitted optional preferences/defaults.
   const emptyProfile: HealthProfile = {
@@ -53,6 +57,7 @@ describe("stored profile summary", () => {
     localStorage.setItem("repbook-language", JSON.stringify(language));
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     const view = render(<App />);
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: language === "en"
       ? "Open account and synchronization" : "Abrir cuenta y sincronización" }));
     return { ...view, snapshot, summary: view.container.querySelector(".privacy-summary")! };
@@ -99,6 +104,7 @@ describe("stored profile summary", () => {
     localStorage.setItem("repbook-health-profile", JSON.stringify({ ...emptyProfile, goals: [] }));
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     const { container } = render(<App />);
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
     expect(container.querySelectorAll(".privacy-summary li")).toHaveLength(0);
   });
@@ -148,6 +154,7 @@ describe("stored profile summary", () => {
       ]);
       fireEvent.click(screen.getByRole("button", { name: "Export my data" }));
       fireEvent.click(screen.getByRole("button", { name: "Close access panel" }));
+      openNavigation();
       fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
       fireEvent.click(screen.getByRole("button", { name: "Export my data" }));
       expect(exports).toHaveLength(2);
@@ -169,6 +176,7 @@ describe("stored profile summary", () => {
       accessMock.options!.onSignedOut();
     } };
     // Execute the existing hook callback contract; SDK identity isolation is checked in compiled UI separately.
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
     fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
     expect(container.querySelector(".privacy-summary")).toBeNull();
@@ -178,10 +186,12 @@ describe("stored profile summary", () => {
     const empty = createRepbookSnapshot({ profileName: "Mi perfil", language: "en", healthProfile: emptyProfile,
       tracks: [], activeTrackId: "", favoriteIds: [], checkIns: [], tracksInitialized: false });
     expect(normalizeRepbookSnapshot(empty, { ...empty })).toBe(empty);
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Abrir cuenta y sincronización" }));
     // Remote data is applied through the actual App callback, not by reseeding rendered local state.
     fireEvent.click(screen.getByRole("button", { name: "Cerrar acceso" }));
     act(() => accessMock.options!.onRemoteSnapshot(empty));
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
     expect(container.querySelectorAll(".privacy-summary li")).toHaveLength(0);
     expect(container.querySelector(".privacy-summary")?.textContent).not.toContain("Synthetic A");
@@ -276,7 +286,8 @@ describe("storage notice and footer integration", () => {
     expect(screen.getByText("synthetic-recovery@example.com")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Done" }));
     expect(screen.queryByRole("dialog", { name: "Access Aunara anywhere" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Home" }).classList.contains("is-active")).toBe(true);
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Home / routes" }).classList.contains("is-active")).toBe(true);
   });
   it("returns a completed profile to home after a simulated sign-in without opening profile", () => {
     accessMock.overrides = { email: null };
@@ -288,7 +299,8 @@ describe("storage notice and footer integration", () => {
     rerender(<App />);
     expect(screen.queryByRole("dialog", { name: "Access Aunara anywhere" })).toBeNull();
     expect(screen.queryByRole("dialog", { name: "My profile" })).toBeNull();
-    expect(screen.getByRole("button", { name: "Home" }).classList.contains("is-active")).toBe(true);
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Home / routes" }).classList.contains("is-active")).toBe(true);
   });
   it("connects auth-error cleanup and explicit recovery without disturbing the guest legal flow", async () => {
     accessMock.overrides = { email: null, status: "error", message: "Simulated auth error" };
@@ -388,7 +400,8 @@ describe("storage notice and footer integration", () => {
       expect(screen.queryByRole("dialog")).toBeNull();
       expect(window.document.activeElement).toBe(opener);
     }
-    await screen.findByRole("button", { name: language === "es" ? "Ejercicios" : "Exercises" });
+    openNavigation();
+    await screen.findByRole("button", { name: language === "es" ? "Biblioteca de ejercicios" : "Exercise library" });
   });
 });
 
@@ -1136,12 +1149,29 @@ describe("routine exercise controls", () => {
 });
 
 describe("profile access", () => {
-  it("opens account and phone installation guidance from the header", () => {
+  it("moves training/account access into the drawer and retains the header gates without health consent", () => {
+    accessMock.overrides = { healthDataConsent: "declined" };
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    render(<App />);
+    expect(document.querySelector(".shared-navigation")!.children).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: "Open profile" })).toBeNull();
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Open profile" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Exercise library" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Open account and synchronization" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Account / privacy" })).toBeTruthy();
+    fireEvent.click(document.querySelector(".navigation-panel .workout-trigger")!);
+    expect(screen.queryByRole("dialog", { name: "Navigation" })).toBeNull();
+    // The existing consent gate still controls whether the destination can render.
+    expect(screen.getByRole("button", { name: "Open navigation" }).getAttribute("aria-expanded")).toBe("false");
+  });
+  it("opens account and phone installation guidance from the shared header menu", () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     render(<App />);
 
     expect(screen.queryByRole("button", { name: "Android installation instructions" })).toBeNull();
     expect(screen.queryByRole("button", { name: "iPhone installation instructions" })).toBeNull();
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
 
     expect(screen.getByRole("dialog", { name: "Access Aunara anywhere" })).toBeTruthy();
@@ -1149,10 +1179,11 @@ describe("profile access", () => {
     expect(screen.getByText("iPhone")).toBeTruthy();
   });
 
-  it("opens a visible profile summary from the header", () => {
+  it("opens a visible profile summary from the shared header menu", () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     render(<App />);
 
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open profile" }));
 
     expect(screen.getByRole("dialog", { name: "My profile" })).toBeTruthy();
@@ -1343,7 +1374,8 @@ describe("profile access", () => {
     }));
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Exercises" }));
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: "Exercise library" }));
     await screen.findByRole("heading", { name: "Exercise library" });
     fireEvent.change(screen.getByLabelText("Body part"), { target: { value: "upper legs" } });
 

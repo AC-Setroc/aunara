@@ -416,7 +416,7 @@ export function AccessPanel({
                 </span>
               </label>
               {mode === "create" && (
-                <div className="legal-consents">
+                <div className="legal-consents create-account-consents">
                   <label>
                     <input
                       type="checkbox"

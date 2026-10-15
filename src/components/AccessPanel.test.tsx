@@ -377,6 +377,11 @@ describe("access and installation panel", () => {
     fireEvent.change(screen.getByLabelText("Name"), { target: { value: "Alejandro" } });
     fireEvent.change(screen.getByLabelText("Email address"), { target: { value: "alejandro@example.com" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "strong-pass-123" } });
+    const optional = screen.getByRole("checkbox", { name: /I authorize Aunara to use sensitive health data/ }) as HTMLInputElement;
+    expect(optional.required).toBe(false);
+    expect(optional.checked).toBe(false);
+    expect(optional.closest(".create-account-consents")).toBeTruthy();
+    expect((screen.getByRole("button", { name: "Create my account" }) as HTMLButtonElement).disabled).toBe(true);
     fireEvent.click(screen.getByRole("checkbox", { name: /I accept the Terms of use/ }));
     fireEvent.click(screen.getByRole("checkbox", { name: /I authorize Aunara to use sensitive health data/ }));
     fireEvent.click(screen.getByRole("button", { name: "Create my account" }));

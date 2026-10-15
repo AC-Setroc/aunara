@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-15 · 🟡 SDD-013 implementado y APPROVED técnico; UAT/cierre humano pendientes
+
+`[AUNARA/codex · gpt-6.1-sol]` — Entrega independiente del menú lateral, wordmark móvil, opcional sin recuadro y footer en candidato aislado sobre `549b100`; ocho fuentes/tests iguales por SHA256 al manifest de [revisión final ciclo2](sdd/2026-10-13-sdd013-revision/review-cycle2.md). Cuatro matrices393/393 (12 casos cada una), 96 superficies visuales, seis regresiones276/84/42/84/156/52 por motor,16 negativos/restaurados, tipos/directorio4/guards27/artifact32 por base PASS. Unitarios367/25 + Sites1 y baseline363 + Sites1 **con lunes controlado**, bajo D-13-6 explícitamente aprobada el 15Oct; cuatro fallos antiguos con fecha real continúan rojos y abiertos aparte. [Recibo de entrega](sdd/2026-10-13-sdd013-revision/delivery-receipt.md). Documentación vigente actualizada sin reescribir historia, NO-TOCAR intacto y un commit local enfocado. Canónico dirty y UAT abierta no modificados, sin integración a dev, push ni deploy. Operator conserva cierre/UAT iPhone-Safari; recuperación LAN→prod pendiente sin causa confirmada.
+
 ## 2026-10-14 · 🟡 SDD-013 documental terminado; aprobación de alcance pendiente
 
 `[AUNARA/codex · modelo no expuesto]` — Retomado tras interrupción: leído estado fresco, conservada elección A y finalizadas diez secciones del SDD con referencia HTML portable. Revisadas fronteras, gates distintos de acceso, enlaces internos y diff documental sin errores de whitespace. Solo documentación/prototipo separado, ningún archivo de aplicación cambiado. Commit local; no push/deploy. Próximo: Operator aprueba SDD-013, incluida barra solo marca/hamburguesa y conservación de todos los accesos en menú. Recuperación LAN→prod sigue fuera y UAT iPhone diferida.

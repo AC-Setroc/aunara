@@ -1,0 +1,135 @@
+{
+  "scratch": "/private/tmp/aunara-s13-negatives-ezvKEw",
+  "rows": [
+    {
+      "id": "N1",
+      "phase": "red",
+      "pass": true,
+      "guard": "S13-01",
+      "summary": "31/33 PASS; FAIL: S13-01 Navegación de Aunara guest-es-390 ({\"x\":16,\"y\":195,\"w\":358,\"h\":454,\"bottom\":649,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}); S13-01 Abrir navegación guest-es-390 ({\"x\":16,\"y\":195,\"w\":358,\"h\":454,\"bottom\":649,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"})",
+      "failed": [
+        {
+          "name": "S13-01 Navegación de Aunara guest-es-390",
+          "pass": false,
+          "detail": "{\"x\":16,\"y\":195,\"w\":358,\"h\":454,\"bottom\":649,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+        },
+        {
+          "name": "S13-01 Abrir navegación guest-es-390",
+          "pass": false,
+          "detail": "{\"x\":16,\"y\":195,\"w\":358,\"h\":454,\"bottom\":649,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+        }
+      ],
+      "originalHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395"
+    },
+    {
+      "id": "N1",
+      "phase": "restored",
+      "pass": true,
+      "guard": "S13-01",
+      "summary": "33/33 PASS",
+      "failed": [],
+      "restoredHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395",
+      "originalHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395"
+    },
+    {
+      "id": "N2",
+      "phase": "red",
+      "pass": true,
+      "guard": "S13-04",
+      "summary": "30/34 PASS; FAIL: S13-04 Tab includes select Navegación de Aunara guest-es-1440 ({\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"}]}); S13-04 Shift+Tab includes select Navegación de Aunara guest-es-1440 ({\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}); S13-04 Tab includes select Abrir navegación guest-es-1440 ({\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"}]}); S13-04 Shift+Tab includes select Abrir navegación guest-es-1440 ({\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]})",
+      "failed": [
+        {
+          "name": "S13-04 Tab includes select Navegación de Aunara guest-es-1440",
+          "pass": false,
+          "detail": "{\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"}]}"
+        },
+        {
+          "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-1440",
+          "pass": false,
+          "detail": "{\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+        },
+        {
+          "name": "S13-04 Tab includes select Abrir navegación guest-es-1440",
+          "pass": false,
+          "detail": "{\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"}]}"
+        },
+        {
+          "name": "S13-04 Shift+Tab includes select Abrir navegación guest-es-1440",
+          "pass": false,
+          "detail": "{\"contained\":true,\"selectSeen\":false,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+        }
+      ],
+      "originalHash": "5f892ee5839260e4c162398447edcd9709091e28f736aa6ed5b314470bd7efeb"
+    },
+    {
+      "id": "N2",
+      "phase": "restored",
+      "pass": true,
+      "guard": "S13-04",
+      "summary": "34/34 PASS",
+      "failed": [],
+      "restoredHash": "5f892ee5839260e4c162398447edcd9709091e28f736aa6ed5b314470bd7efeb",
+      "originalHash": "5f892ee5839260e4c162398447edcd9709091e28f736aa6ed5b314470bd7efeb"
+    },
+    {
+      "id": "N3",
+      "phase": "red",
+      "pass": true,
+      "guard": "S13-05",
+      "summary": "31/34 PASS; FAIL: S13-05 visual normal guest-es-1440 ({\"border\":1,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}); S13-05 visual hover guest-es-1440 ({\"border\":1,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}); S13-05 visual focus guest-es-1440 ({\"border\":1,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2})",
+      "failed": [
+        {
+          "name": "S13-05 visual normal guest-es-1440",
+          "pass": false,
+          "detail": "{\"border\":1,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+        },
+        {
+          "name": "S13-05 visual hover guest-es-1440",
+          "pass": false,
+          "detail": "{\"border\":1,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+        },
+        {
+          "name": "S13-05 visual focus guest-es-1440",
+          "pass": false,
+          "detail": "{\"border\":1,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+        }
+      ],
+      "originalHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395"
+    },
+    {
+      "id": "N3",
+      "phase": "restored",
+      "pass": true,
+      "guard": "S13-05",
+      "summary": "34/34 PASS",
+      "failed": [],
+      "restoredHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395",
+      "originalHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395"
+    },
+    {
+      "id": "N4",
+      "phase": "red",
+      "pass": true,
+      "guard": "S13-07",
+      "summary": "33/34 PASS; FAIL: S13-07 deletion baseline session-es-1440 ({\"before\":{\"box\":[510,290.671875,420,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"868px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]},\"after\":{\"box\":[1070,12,370,900],\"padding\":\"24px\",\"radius\":\"0px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"none\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]}})",
+      "failed": [
+        {
+          "name": "S13-07 deletion baseline session-es-1440",
+          "pass": false,
+          "detail": "{\"before\":{\"box\":[510,290.671875,420,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"868px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]},\"after\":{\"box\":[1070,12,370,900],\"padding\":\"24px\",\"radius\":\"0px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"none\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]}}"
+        }
+      ],
+      "originalHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395"
+    },
+    {
+      "id": "N4",
+      "phase": "restored",
+      "pass": true,
+      "guard": "S13-07",
+      "summary": "34/34 PASS",
+      "failed": [],
+      "restoredHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395",
+      "originalHash": "1e65033b8ec9dade1eb44501dcd985f231916eaff5c0ff3ca0dba8a81ee80395"
+    }
+  ]
+}

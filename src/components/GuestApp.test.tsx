@@ -37,14 +37,17 @@ describe("signed-out home", () => {
     render(<App />);
 
     expect(screen.getByRole("button", { name: "Navegación de Aunara" })).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Inicio" })).toBeTruthy();
+    expect(screen.queryByRole("link", { name: "Inicio" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Ingresar" })).toBeNull();
     expect(screen.queryByLabelText("Idioma")).toBeNull();
     const row = document.querySelector(".site-header .shared-navigation")!;
+    expect(row.children).toHaveLength(2);
     expect(row.lastElementChild).toBe(screen.getByRole("button", { name: "Abrir navegación" }));
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+    expect(screen.getByRole("link", { name: "Inicio" }).getAttribute("href")).toBe("#top");
     expect(screen.getByRole("button", { name: "Ingresar / crear cuenta" })).toBeTruthy();
     expect(screen.getByLabelText("Idioma")).toBeTruthy();
+    expect(screen.getByLabelText("Idioma").getAttribute("tabindex")).toBe("0");
     expect(screen.queryByRole("button", { name: "Idioma / configuración" })).toBeNull();
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("button", { name: "Sign up" })).toBeNull();

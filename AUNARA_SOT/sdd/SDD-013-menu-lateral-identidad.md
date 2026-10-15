@@ -1,6 +1,8 @@
 # SDD-013 — Menú lateral, identidad móvil y detalles de consentimiento/footer
 
-2026-10-13 · v0.1 · Estado: **Aprobado por el Operator el 2026-10-14; implementación autorizada, sin publicación**.
+2026-10-13 · v0.1 + D-13-6 · Estado al 2026-10-15: **Implementado; APPROVED técnico independiente, pendiente cierre del Operator y sin publicación**.
+
+`[AUNARA/codex · gpt-6.1-sol]` — Entrega del candidato aislado sobre `549b100`: [revisión final ciclo2](2026-10-13-sdd013-revision/review-cycle2.md) y [recibo de entrega](2026-10-13-sdd013-revision/delivery-receipt.md). Fuente congelada: ocho SHA256 coincidentes con el manifest revisado. S13-01…08 aceptados técnicamente bajo D-13-6 aprobada explícitamente el 15Oct; suite con fecha real sigue roja por cuatro fallos antiguos, no corregidos. Las referencias siguientes a «futura», «por aprobar» o «solo especificación» describen la propuesta histórica y quedan superadas únicamente como estado vigente de implementación/decisiones D-13-1/2/3; no se altera su alcance. No hay aceptación humana, integración a dev, push ni deploy; D-13-4/5 siguen abiertos.
 
 Aprobación explícita: «Sí» ante la pregunta de aprobar SDD-013 con menú lateral, cabecera solo marca/hamburguesa, accesos conservados, opcional sin recuadro y footer alineado. D-13-1/2/3 resueltas a favor del alcance recomendado. D-13-4/5 siguen pendientes, fuera de implementación visual. Se conservan abajo las formulaciones de propuesta como historia del diseño; no hay autorización de push/deploy.
 Origen: `[AUNARA/codex · modelo no expuesto]`. Base técnica: `dev` `41fa9d9`; inspección del worktree aislado `/private/tmp/aunara-uat-20261013-dev` en `de6f165` (diferencias contra base exclusivamente documentales). Regla: Operator SDD Workflow y metodología Personal, máximo tres ciclos, revisión independiente fresca antes de entrega.
@@ -109,4 +111,26 @@ Matriz obligatoria sobre build del candidato: Chromium y WebKit × ES/EN ×1440/
 
 ## 10. Definición de terminado
 
-D-13-2 resuelta, SDD explícitamente aprobado, S13-01…08 verdes con revisión independiente y evidencia reproducible, NO-TOCAR intacto, documentación de entrega al día y un commit local acotado. Aceptación humana/UAT iPhone y recuperación siguen pendientes hasta evidencia y cierre del Operator. Estado actual: **solo especificación; sin implementación ni aprobación técnica/humana del candidato**.
+D-13-2 resuelta, SDD explícitamente aprobado, S13-01…08 con revisión independiente y evidencia reproducible (S13-08 bajo excepción D-13-6), NO-TOCAR intacto, documentación de entrega al día y un commit local acotado. Aceptación humana/UAT iPhone y recuperación siguen pendientes hasta evidencia y cierre del Operator. Estado actual: **implementado y APPROVED técnico; cierre humano pendiente**. El estado anterior «solo especificación» queda superado por la evidencia de entrega, no por una aprobación humana de UAT.
+
+## Enmienda propuesta — D-13-6: comparación controlada de cuatro fallos dependientes del día
+
+**Actualización vigente — 2026-10-15:** `[AUNARA/codex · modelo no expuesto]`. El Operator respondió explícitamente **«Aprobar excepción acotada»** a D-13-6: aprueba únicamente la comparación controlada baseline/candidato de las cuatro pruebas antiguas dependientes del día, con corrección separada y todos los demás criterios obligatorios en PASS, sin publicación. Se habilita reevaluación independiente bajo ese límite; no hay APPROVED automático ni afirmación de suite verde con fecha real. El estado «PROPUESTA PENDIENTE» y las formulaciones condicionales que siguen quedan **superados como estado de decisión** y se conservan como antecedente de la propuesta; sus límites técnicos permanecen vigentes.
+
+2026-10-15 · `[AUNARA/codex · modelo no expuesto]` · **PROPUESTA PENDIENTE de aprobación explícita del Operator.** No modifica retroactivamente v0.1 ni el criterio histórico S13-08. «Retomá y terminá» no aprueba esta excepción aún no presentada. Hasta resolverla, la exigencia de suite completa verde sigue incumplida; no hay APPROVED global.
+
+### Evidencia y límite
+
+El [recibo de desarrollo](2026-10-13-sdd013-revision/development-receipt.md), sección «Date-controlled comparison», documenta cuatro fallos con fecha real **miércoles 2026-10-14**, reproducidos idénticos en baseline `549b100` y candidato: el caso de edición de rutina en `AppFlows.test.tsx` espera Jump Squat del lunes aunque está seleccionado miércoles, y tres aserciones de `WorkoutPanel.test.tsx` sobre slots de miembros/selección de ejercicios también esperan lunes. Baseline real: 359 PASS y 4 FAIL de 363; la suite con fecha real permanece roja. La comparación no demuestra un arreglo del editor ni independencia temporal de sus pruebas.
+
+El control externo `MondayDate` usa el preload temporal `/private/tmp/aunara-sdd013-monday-clock.cjs`: solo Date sin argumentos/Date.now se fijan a `2026-10-12T12:00:00Z`; fechas explícitas y temporizadores se conservan. Mismo control en ambos árboles, sin modificar fuente/configuración del proyecto, omitir pruebas ni debilitar aserciones; no se usa en builds. Baseline: **363/363 Vitest + Sites 1/1**. Candidato del freeze vigente: **367/367 Vitest + Sites 1/1**, repetido independientemente en [main-checks](2026-10-13-sdd013-revision/main-checks.md), sección «Freeze ciclo2 con tabindex explícito»; el resultado anterior de 366 corresponde a un freeze superado, no se suma. Son resultados con lunes controlado, **no suite verde con fecha real**. El preload temporal es un instrumento de comparación, no un archivo entregable ni una modificación del reloj del sistema.
+
+### Decisión D-13-6 por aprobar
+
+**Decisión vigente: APROBADA por el Operator el 2026-10-15**, en los términos acotados registrados arriba. El título y texto de propuesta siguientes son antecedente histórico, no una segunda aprobación pendiente. Defecto de las cuatro pruebas abierto aparte; resto de SDD-013 debe pasar revisión independiente antes de entrega, sin push/publicación.
+
+Se propone aceptar **solo para la porción unitaria de S13-08 y estos cuatro fallos identificados** la comparación baseline/candidato con lunes controlado como evidencia de no regresión de SDD-013. Mantener abierto aparte el defecto de dependencia del día en las cuatro pruebas; no corregir fuente del editor ni sus tests dentro de este alcance NO-TOCAR. La excepción no cubre fallos distintos, nuevos o diferencias entre baseline y candidato; cualquier otro rojo bloquea. Registrar siempre lado a lado el resultado real rojo y el resultado controlado verde, su fecha/freeze y el control usado, sin presentar el segundo como reparación del primero.
+
+Si el Operator la aprueba explícitamente, únicamente permite evaluar el resto de criterios y verificaciones de SDD-013 sin atribuir esos cuatro fallos preexistentes al cambio visual. **No concede APPROVED automático**, no sustituye matrices Chromium/WebKit, revisión visual, negativos, auditoría NO-TOCAR ni revisión independiente fresca; tampoco amplía tres ciclos, autoriza commit de implementación antes de aprobación independiente, push/publicación, ni cierra UAT iPhone/recuperación.
+
+Alternativa: no aceptar la excepción y volver a una especificación separada para corregir la dependencia de fecha de las pruebas, con su propia aprobación y revisión; mientras tanto S13-08 y la entrega de SDD-013 permanecen bloqueados. Sin decisión explícita, esta enmienda permanece propuesta y no se aplica.
