@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-16 · 🟡 SDD-013 integrado en dev y UAT levantada; correo de marca en Spec, UAT humana pendiente
+
+`[AUNARA/codex · modelo no expuesto]` — Por autorización explícita, `origin/dev` actualizado a `d344eeb`, con la fuente revisada `ccce932` sin diferencias. Main `dfffa873` preservado; CI Verify source #34 SUCCESS, deploy/Pages SKIPPED. Vite iniciado desde candidato aislado usando envDir canónico sin copiar/mostrar `.env.local`: localhost5173 y LAN192.168.1.6:5173 HTTP200; menú lateral y wordmark comprobados en UI integrada. [Recibo](handoffs/UAT-2026-10-16-dev-arranque.md). No se crean cuentas, envían correos ni alteran datos; UAT iPhone/recuperación siguen pendientes. Nuevo pedido de contactos y correos de marca: responsable admin, soporte ES/EN y noreply bajo aunaratraining.com; Operator confirma Zoho y noreply existente. Se especifica antes de tocar Auth/SMTP/DNS o contacto legal; ninguna configuración remota de correo cambiada.
+
 ## 2026-10-16 · 🟡 Integración de SDD-013 a dev autorizada; UAT/runtime y cierre humano pendientes
 
 `[AUNARA/codex · gpt-6.1-sol]` — Operator dio «Sí» a integrar/subir `ccce932` a dev y levantar UAT sin producción. Se prepara fast-forward remoto desde `41fa9d9`, sin reescribir historia, con un commit exclusivamente documental encima de la entrega técnica. Ocho SHA256 iguales a `ccce932`/manifest final; revisión APPROVED y evidencia previa conservadas, sin repetir suites pesadas ni declarar verde la suite con fecha real. Preflight main remoto `dfffa873a2a29ee1535c49149f92a734c873923d`, preservado. [Recibo de integración](sdd/2026-10-13-sdd013-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16). Runtime UAT a cargo del frente principal, no acreditado aquí; sin servidor iniciado, canónico/UAT antiguo ni rama dev local de otro worktree modificados. Sin publicación, Auth/SMTP ni cierre humano; cuatro fallos weekday y recuperación pendientes.

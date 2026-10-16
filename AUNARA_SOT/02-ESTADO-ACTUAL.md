@@ -4,6 +4,12 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — SDD-013 subido a dev; UAT local nueva disponible; correo de marca en especificación
+
+Correo/contactos: [SDD-014 en revisión del Operator](sdd/SDD-014-correo-marca-y-contactos.md), sin implementación ni activación remota.
+
+`[AUNARA/codex · modelo no expuesto]` — `origin/dev` confirmado en `d344eeb` (fuente idéntica a `ccce932`); `main` permanece `dfffa873`. CI [Verify source #34](https://github.com/AC-Setroc/aunara/actions/runs/38859775887) SUCCESS, deploy/Pages omitidos; no publicación. Vite sirve el candidato aislado en `http://localhost:5173/` y `http://192.168.1.6:5173/`, ambos HTTP200 desde Mac; navegador integrado muestra wordmark y menú lateral nuevos. [Recibo de arranque](handoffs/UAT-2026-10-16-dev-arranque.md). Superado el estado de arranque pendiente siguiente; iPhone físico, cuenta/correo y recuperación no se retestearon. Canónico dirty intacto. Operator informa Zoho, cuenta noreply existente y contactos admin/soporte/support del dominio; preparar SDD-014, sin activar SMTP, cambiar contactos legales ni plantillas en vivo antes de su gate. La excepción D-13-6 no equivale a reparación de las cuatro pruebas antiguas.
+
 ### 2026-10-16 — Integración de SDD-013 en dev autorizada; UAT pendiente de levantar/verificar
 
 `[AUNARA/codex · gpt-6.1-sol]` — Operator respondió **«Sí»** a integrar/subir `ccce932` a `dev` y levantar UAT, **sin producción**. Preflight remoto real: `dev` en `41fa9d9`, ancestro del candidato; `main` en `dfffa873a2a29ee1535c49149f92a734c873923d`. Integración por fast-forward normal de la ascendencia aprobada más este registro documental, sin cherry-pick, cambios de producto ni mover la rama local `dev` de otro worktree. Ocho hashes SHA256 de fuente/tests idénticos a `ccce932` y al manifest APPROVED. [Recibo de integración](sdd/2026-10-13-sdd013-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16). La prohibición anterior de push queda superada **solo para dev**; no autoriza main, deploy ni cierre humano. Puesta en marcha y verificación HTTP/UI UAT a cargo del frente principal, todavía no acreditadas por este recibo. Recuperación LAN→prod y cuatro pruebas dependientes del día siguen abiertas; no se afirma suite normal verde ni aceptación iPhone/Safari físico.
