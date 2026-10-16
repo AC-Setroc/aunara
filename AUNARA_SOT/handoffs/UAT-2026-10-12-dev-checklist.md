@@ -45,16 +45,22 @@ Un FALLA no se parchea en la UAT: se registra con evidencia y vuelve a Spec como
 
 Prerrequisito: Supabase → Authentication → URL Configuration → Redirect URLs incluye `http://localhost:5173/**` y el origen LAN que imprime Vite; si no, los enlaces de los correos siguen llevando a producción (UAT13-21) y las capturas mezclan entornos. Verificar que la pantalla dice `dev` por el slogan y el crédito del footer antes de cada punto.
 
+2026-10-16: `dev` ≥ `d344eeb` incluye además SDD-013 (menú lateral desde el borde derecho, wordmark en la cabecera móvil, consentimiento opcional sin recuadro, footer alineado). Los puntos 11 y 12 se leen con esa presentación; los puntos 19–22 la cubren.
+
 | # | Qué probar | Qué debe verse | Decisión que confirma |
 |---|---|---|---|
-| 11 | Tocar el logo y la hamburguesa, invitado y con sesión, iPhone y escritorio | El menú se abre como panel completo, en columna, dentro de la pantalla; la hamburguesa está a la derecha de la barra | S12-01/02 |
-| 12 | Barra superior | Sin selector de idioma ni botón Ingresar; dentro del menú hay selector de idioma (cambia ES/EN sin cerrar el menú) e «Ingresar / crear cuenta» o «Cuenta / privacidad» | D-12-1 |
+| 11 | Tocar el logo y la hamburguesa, invitado y con sesión, iPhone y escritorio | El menú se abre como panel lateral pegado al borde derecho (ancho completo en móvil), en columna, dentro de la pantalla; la hamburguesa está a la derecha de la barra | S12-01/02, S13-01 |
+| 12 | Barra superior | Solo logo y hamburguesa; dentro del menú están Inicio / rutas, Biblioteca, Perfil, Entrenamiento de hoy, Cuenta / sincronización, «Ingresar / crear cuenta» o «Cuenta / privacidad», Ayuda, selector de idioma (cambia ES/EN sin cerrar el menú) y Salir con sesión | D-12-1 superada por D-13-2 |
 | 13 | Perfil con sesión | Botón «Salir» junto a «Listo»; al pulsarlo cierra el perfil y cierra la sesión. Como invitado no aparece | S12-04 |
 | 14 | Perfil → Preferencias de entrenamiento | Un solo control «Experiencia entrenando»; cambiarlo y pulsar «Listo» lo conserva al reabrir y tras recargar; «Cuerpo y salud» no tiene otro; no existe «Guardar preferencias» | D-12-3, UAT13-22 |
 | 15 | Cuenta pendiente de confirmación | «Reenviar correo de confirmación» se lee sin pasar el mouse | UAT13-06 |
 | 16 | Footer con sesión iniciada, ES/EN | Muestra «Desarrollado por» con el wordmark; «Privacidad» y «Términos» se leen con y sin hover | UAT13-13/15 (las capturas del 13 eran de producción) |
 | 17 | Menú → «Cuenta / privacidad» con sesión | Lista «Perfil y preferencias», permite exportar y tiene «Eliminar cuenta» con el modal de confirmación | UAT13-14/16 |
 | 18 | Editor de rutina, un ejercicio con triserie | Un solo bloque de series por ejercicio; no aparece «Plan de series» repetido como texto fijo | UAT13-19 (la captura era de producción) |
+| 19 | Cabecera en iPhone (390 y 320 de ancho), ES/EN | Se ve el wordmark completo «Aunara Training Systems», no solo el símbolo; nada se corta ni se superpone | S13-02 |
+| 20 | Menú abierto: Tab y Shift+Tab desde el botón de cerrar | El foco recorre cierre, destinos y selector de idioma sin salir al fondo; Escape, cerrar y tocar fuera devuelven el foco al botón que lo abrió | S13-04 |
+| 21 | Crear cuenta → bloque de consentimientos | El consentimiento opcional de salud no tiene recuadro propio y su texto se lee en verde oscuro; se puede crear cuenta sin autorizarlo y no sin aceptar los términos | S13-05, UAT13-05 |
+| 22 | Footer, ES/EN, escritorio y móvil | Logo Aunara sobre el slogan en el mismo eje; «Desarrollado por» y AC Setroc lado a lado y centrados | S13-06, UAT13-01/02 |
 
 Un FALLA vuelve a Spec como hallazgo, igual que en §2.
 
