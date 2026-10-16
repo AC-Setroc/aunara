@@ -1,5 +1,7 @@
 # UAT dev — arranque del candidato SDD-013 integrado
 
+> **Superado operativamente:** el servidor5173 ahora sirve SDD-013+014 desde otro candidato aislado, fuente d2ba0aa. Ver [handoff vigente](HANDOFF-2026-10-16.md) y [UAT26 casos](UAT-2026-10-16-dev-checklist.md). Este recibo preserva el arranque anterior, no describe el proceso actual.
+
 2026-10-16 · `[AUNARA/codex · modelo no expuesto]`.
 
 ## Versión y autoridad

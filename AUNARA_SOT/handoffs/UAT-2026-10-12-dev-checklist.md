@@ -1,5 +1,7 @@
 # UAT manual sobre `dev` — guion para Codex y el Operator
 
+> **Operación vigente 2026-10-16:** usar el [guion consolidado SDD-013+014](UAT-2026-10-16-dev-checklist.md) y su [handoff/receta](HANDOFF-2026-10-16.md). Conserva los puntos1–22 y añade23–26. Este archivo y su receta son antecedentes; no ejecutar su copia de entorno ni identificar dev solo por el slogan.
+
 2026-10-12 · `[AUNARA/claude · modelo no expuesto]` · Base: `dev` = `551152e` (código: SDD-006 E2+E3+E4 `1d4ccc9`, SDD-011 H-01 `8db846e`, H-02 `13a1264`). Todo con APPROVED técnico en Chromium y WebKit; lo que sigue es lo que ningún harness puede acreditar: cuenta, correo, Safari e iPhone reales.
 
 ## 1. Entorno de prueba

@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — UAT actualizada a SDD-013+014; 26 casos listos, aceptación humana pendiente
+
+`[AUNARA/codex · modelo no expuesto]` — Por orden de documentar/subir y dar servidor/lista: Vite5173 reemplazado desde candidato aislado SDD-014, fuente dev d2ba0aa; localhost y LAN192.168.1.6 HTTP200 desde Mac. UI real integrada muestra admin@aunaratraining.com con versión legal1.0 sin cambios. CI de fuente Verify source #37 SUCCESS. [Handoff/receta](handoffs/HANDOFF-2026-10-16.md) y [guion vigente con pasos/expectativas](handoffs/UAT-2026-10-16-dev-checklist.md). Supera las frases históricas de abajo «UAT conserva SDD-013» y «actualizar UAT no autorizado»: esta orden lo autoriza y ya se realizó. No SMTP/plantillas remotas, correo real, datos ni main. Recuperación LAN→prod, UAT física y gates remotos siguen abiertos; no aceptación humana ni hotpatch.
+
 ### 2026-10-16 — SDD-014 integrado a dev por orden explícita; SMTP y UAT sin activar
 
 `[AUNARA/codex · gpt-6.1-sol]` — «Sí» del Operator autoriza integrar/subir SDD-014 **solo a dev** manteniendo SMTP pendiente. Fuente local `71948e5` rebasada limpiamente como `9c52809` sobre `origin/dev` `35b1f933`, cuyo avance era exclusivamente dos documentos SOT; ambas aportaciones preservadas. Este registro acompaña el avance fast-forward de dev, sin force-push ni cambiar la rama dev local de otro worktree. [Recibo](sdd/2026-10-16-sdd014-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16).117/117 hashes revisados y blobs HEAD idénticos; no código nuevo ni repetición de matrices costosas. Main `dfffa873a2a29ee1535c49149f92a734c873923d` preservado. Superado únicamente el pendiente de integración/push dev de abajo; no autoriza SMTP/DNS/envíos, publicación, actualizar UAT5173 ni cierre humano. UAT conserva SDD-013/base61610c1. Criterios remotos y clientes reales siguen NO EJECUTADOS; recuperación y cuatro fallos de tests de miércoles siguen abiertos.

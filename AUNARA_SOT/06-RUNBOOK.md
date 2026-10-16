@@ -1,5 +1,9 @@
 # Runbook — Aunara
 
+## UAT dev vigente — 2026-10-16
+
+Usar [handoff y receta aislada](handoffs/HANDOFF-2026-10-16.md) y [lista UAT26 casos con expectativas](handoffs/UAT-2026-10-16-dev-checklist.md). Servidor fuente d2ba0aa (SDD-013+014): localhost5173 y Network192.168.1.6:5173. No ejecutar la receta genérica de abajo en la carpeta canónica dirty para esta UAT. SMTP/plantillas remotas no activados; retorno LAN→prod abierto. Cada FALLA se registra y vuelve a Spec, sin hotpatch/publicación.
+
 ## SDD-005 — dominio publicado; seguimiento Auth/PWA
 
 `[AUNARA/codex · GPT-5]` — Dominio canónico operativo: `https://aunaratraining.com/`, mismo repo `AC-Setroc/aunara`, artifact exclusivo `dist/client/`, base `/`. Publicación `1c709a3`, Actions 37636074747 SUCCESS. Los cuatro A Pages, `www` a GitHub, TXT de propiedad, certificado y Enforce HTTPS quedaron verificados; registros no web se preservan. Las secciones históricas bajo `/aunara/` quedan como antecedente/rollback, no URL canónica actual.

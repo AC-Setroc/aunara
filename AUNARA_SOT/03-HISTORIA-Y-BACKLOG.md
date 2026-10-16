@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 Servidor dev SDD-013+014 y UAT consolidada entregados; revisión humana pendiente
+
+`[AUNARA/codex · modelo no expuesto]` — Orden de dejar documentación en repo y servidor/lista: sustituido únicamente el Vite anterior verificado por candidato aislado SDD-014, fuente d2ba0aa. Local/Network5173 HTTP200; UI integrada confirma admin@aunaratraining.com, versión1.0; CI de fuente #37 SUCCESS. [Handoff](handoffs/HANDOFF-2026-10-16.md), [26 casos con expectativas/límites](handoffs/UAT-2026-10-16-dev-checklist.md) y punteros de documentación actualizados. Manifest de fuente117/117 intacto; ningún cambio de producto, paquetes o configuración. No cuenta/correo/datos, SMTP/DNS ni producción. Recuperación LAN→prod y gates remotos conservan estado abierto, UAT del Operator aún no cerrada. Superadas las notas históricas que indicaban servidor antiguo; evidencia previa preservada.
+
 ## 2026-10-16 · 🟡 SDD-014 integrado a dev; SMTP, UAT y cierre pendientes
 
 `[AUNARA/codex · gpt-6.1-sol]` — Nueva orden «Sí» aprueba integración/push únicamente a dev. Rebase limpio de `71948e5` a `9c52809` sobre avance documental remoto `35b1f933`; preservadas nota de cuatro tests que fallan los miércoles y actualización del guion UAT SDD-013, sin alterar ese entorno.117 hashes y blobs HEAD intactos respecto al freeze APPROVED LOCAL. Este commit documental acompaña fast-forward normal de dev; main `dfffa873` sin cambios, sin deploy ni activación Auth/SMTP/DNS/correo. Evidencia técnica previa sigue válida por identidad de fuente; no se hereda waiver D-13-6 ni se arreglan tests antiguos. [Recibo](sdd/2026-10-16-sdd014-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16). UAT5173 conserva SDD-013; C14-02/04/05/07 y Gmail/Outlook06, recuperación y cierre humano pendientes. Superada únicamente la prohibición anterior de push dev, no la de publicación.
