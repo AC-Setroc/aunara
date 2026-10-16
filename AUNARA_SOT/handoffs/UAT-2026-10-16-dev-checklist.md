@@ -10,7 +10,7 @@
 - Antes de abrir correos desde iPhone, el Operator comprueba que Redirect URLs permita `http://192.168.1.6:5173/**`; también localhost y 127.0.0.1:5173 para Mac. No reemplazar Site URL con la IP privada. No se ha reinspeccionado la configuración remota. Permitir un origen no demuestra que el retorno esté corregido.
 - Dev usa Supabase real: cuenta, correos y datos no están aislados por rama. Usar cuenta desechable propia y datos ficticios; no borrar una cuenta habitual. El Operator introduce credenciales, acepta términos y confirma cualquier borrado irreversible.
 - No identificar la versión solo por el slogan: registrar URL, dispositivo, navegador, idioma y fuente indicada arriba. Si el correo cambia el origen, anotarlo antes de continuar: prod no contiene estas entregas.
-- Cada fila empieza **NO PROBADO** en esta nueva corrida. Registrar PASA / FALLA / NO PROBADO / BLOQUEADO con evidencia. La aprobación técnica no es aceptación humana.
+- Cada caso **manual** empieza **NO PROBADO** en esta nueva corrida. Registrar PASA / FALLA / NO PROBADO / BLOQUEADO con evidencia. El punto28 conserva su PASS técnico previo, no se traslada a aceptación humana.
 - HTTP LAN no acredita service worker/PWA/offline: el punto 9 requiere entorno adecuado separado. No publicar para poder probarlo sin orden nueva.
 
 ## 2. Cuenta, datos y rutina — puntos originales 1–10
