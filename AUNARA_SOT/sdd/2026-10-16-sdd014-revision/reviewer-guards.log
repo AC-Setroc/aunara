@@ -1,0 +1,18 @@
+✔ local contact and preserved legal/Auth source contracts (4.631ms)
+✔ both local email artifacts satisfy bilingual content and link contracts (3.882708ms)
+✔ intended From fixture is exact (not an actual received header) (0.179584ms)
+✔ N1 old controller: disposable copy is rejected and original hashes stay intact (18.362208ms)
+✔ N1 crossed support: disposable copy is rejected and original hashes stay intact (9.625084ms)
+✔ N3 fixed CTA host: disposable copy is rejected and original hashes stay intact (15.144125ms)
+✔ N3 divergent backup: disposable copy is rejected and original hashes stay intact (11.743541ms)
+✔ N4 legal version: disposable copy is rejected and original hashes stay intact (8.7525ms)
+✔ N4 consent mutation: disposable copy is rejected and original hashes stay intact (11.119ms)
+✔ N2 wrong From synthetic fixture is rejected; intended fixture is green (0.911583ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 143.982458

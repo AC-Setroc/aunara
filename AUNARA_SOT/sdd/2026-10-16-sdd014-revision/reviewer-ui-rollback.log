@@ -1,0 +1,20 @@
+(node:47454) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/private/tmp/aunara-sdd013-runtime.lDUUmv/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+launch chromium
+launched chromium
+legal chromium 320 es
+legal chromium 320 en
+legal chromium 390 es
+legal chromium 390 en
+legal chromium 1440 es
+legal chromium 1440 en
+launch webkit
+launched webkit
+legal webkit 320 es
+legal webkit 320 en
+legal webkit 390 es
+legal webkit 390 en
+legal webkit 1440 es
+legal webkit 1440 en
+PASS rollback 24 matrix cases; source freeze unchanged

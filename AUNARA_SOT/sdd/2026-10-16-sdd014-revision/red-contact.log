@@ -1,0 +1,768 @@
+
+ RUN  v4.1.10 /private/tmp/aunara-sdd014-candidate
+
+ ❯ src/components/LegalPanel.test.tsx (15 tests | 5 failed) 197ms
+     × shows the Colombian privacy information required before collecting data 12ms
+     × shows the privacy controller contact, not support (es/privacy) 3ms
+     × shows the privacy controller contact, not support (en/privacy) 3ms
+     × shows the privacy controller contact, not support (es/terms) 3ms
+     × shows the privacy controller contact, not support (en/terms) 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/LegalPanel.test.tsx > legal documents > shows the Colombian privacy information required before collecting data
+TestingLibraryElementError: Unable to find an element with the text: /admin@aunaratraining\.com/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"legal-backdrop"[39m
+      [33mrole[39m=[32m"presentation"[39m
+    [36m>[39m
+      [36m<article[39m
+        [33maria-labelledby[39m=[32m"legal-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"legal-panel"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<span>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-shield-check"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 12 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mVersión 1.0 / vigente desde 2026-07-29[0m
+            [36m</p>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"legal-title"[39m
+            [36m>[39m
+              [0mPolítica de privacidad[0m
+            [36m</h2>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Cerrar documento legal"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-x"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"20"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"20"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M18 6 6 18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 6 12 12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</header>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"legal-copy"[39m
+        [36m>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mResponsable y contacto[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mEl responsable del tratamiento de datos personales de Aunara es Alejandro Cortés Burgos, Colombia. Las solicitudes de privacidad se reciben en alejandro@ac-setroc.com.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mDatos y finalidades[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara usa los datos de cuenta para autenticar y sincronizar el servicio; los datos de rutinas y rendimiento para guardar planes y progreso; y, únicamente con autorización separada, datos sensibles de salud para personalizar referencias de entrenamiento, recuperación y nutrición.[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mEntregar datos sensibles de salud es opcional. Si no los autorizás, Aunara ofrece una ruta básica que no usa medidas corporales, lesiones, síntomas, alergias ni registros de bienestar.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mProveedores y tratamiento internacional[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mLa autenticación y la base de datos personal usan Supabase en la región de São Paulo, Brasil. La aplicación web pública se entrega mediante GitHub Pages. Las búsquedas de alimentos se envían directamente a USDA FoodData Central sin adjuntar el identificador de la cuenta de Aunara.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mConservación y seguridad[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mEl contenido personal se conserva mientras la cuenta esté activa o hasta que lo eliminés. Aunara separa el registro de cada usuario en la base de datos y bloquea el acceso anónimo. Las copias de respaldo de los proveedores pueden permanecer durante su ciclo técnico documentado de rotación.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mTus derechos[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mPodés consultar, exportar, corregir o eliminar tus datos; revocar la autorización de datos sensibles; solicitar prueba de la autorización; y presentar consultas o reclamos. Aunara procura responder consultas en máximo 10 días hábiles y reclamos en máximo 15 días hábiles.[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mSi tu solicitud no se resuelve, podés acudir a la Superintendencia de Industria y Comercio de Colombia.[0m
+              [0m [0m
+              [36m<a[39m
+                [33mhref[39m=[32m"https://www.sic.gov.co/"[39m
+                [33mrel[39m=[32m"noreferrer"[39m
+                [33mtarget[39m=[32m"_blank"[39m
+              [36m>[39m
+                [0msic.gov.co[0m
+              [36m</a>[39m
+              [0m.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</article>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/LegalPanel.test.tsx:95:19
+     93|     expect(screen.getByRole("heading", { name: "Política de privacidad…
+     94|     expect(screen.getByText(/Alejandro Cortés Burgos/)).toBeTruthy();
+     95|     expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+       |                   ^
+     96|     expect(screen.getAllByText(/datos sensibles/i).length).toBeGreater…
+     97|     expect(screen.getByText(/São Paulo, Brasil/i)).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/components/LegalPanel.test.tsx > legal documents > shows the privacy controller contact, not support (es/privacy)
+TestingLibraryElementError: Unable to find an element with the text: /admin@aunaratraining\.com/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"legal-backdrop"[39m
+      [33mrole[39m=[32m"presentation"[39m
+    [36m>[39m
+      [36m<article[39m
+        [33maria-labelledby[39m=[32m"legal-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"legal-panel"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<span>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-shield-check"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 12 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mVersión 1.0 / vigente desde 2026-07-29[0m
+            [36m</p>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"legal-title"[39m
+            [36m>[39m
+              [0mPolítica de privacidad[0m
+            [36m</h2>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Cerrar documento legal"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-x"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"20"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"20"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M18 6 6 18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 6 12 12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</header>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"legal-copy"[39m
+        [36m>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mResponsable y contacto[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mEl responsable del tratamiento de datos personales de Aunara es Alejandro Cortés Burgos, Colombia. Las solicitudes de privacidad se reciben en alejandro@ac-setroc.com.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mDatos y finalidades[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara usa los datos de cuenta para autenticar y sincronizar el servicio; los datos de rutinas y rendimiento para guardar planes y progreso; y, únicamente con autorización separada, datos sensibles de salud para personalizar referencias de entrenamiento, recuperación y nutrición.[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mEntregar datos sensibles de salud es opcional. Si no los autorizás, Aunara ofrece una ruta básica que no usa medidas corporales, lesiones, síntomas, alergias ni registros de bienestar.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mProveedores y tratamiento internacional[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mLa autenticación y la base de datos personal usan Supabase en la región de São Paulo, Brasil. La aplicación web pública se entrega mediante GitHub Pages. Las búsquedas de alimentos se envían directamente a USDA FoodData Central sin adjuntar el identificador de la cuenta de Aunara.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mConservación y seguridad[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mEl contenido personal se conserva mientras la cuenta esté activa o hasta que lo eliminés. Aunara separa el registro de cada usuario en la base de datos y bloquea el acceso anónimo. Las copias de respaldo de los proveedores pueden permanecer durante su ciclo técnico documentado de rotación.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mTus derechos[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mPodés consultar, exportar, corregir o eliminar tus datos; revocar la autorización de datos sensibles; solicitar prueba de la autorización; y presentar consultas o reclamos. Aunara procura responder consultas en máximo 10 días hábiles y reclamos en máximo 15 días hábiles.[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mSi tu solicitud no se resuelve, podés acudir a la Superintendencia de Industria y Comercio de Colombia.[0m
+              [0m [0m
+              [36m<a[39m
+                [33mhref[39m=[32m"https://www.sic.gov.co/"[39m
+                [33mrel[39m=[32m"noreferrer"[39m
+                [33mtarget[39m=[32m"_blank"[39m
+              [36m>[39m
+                [0msic.gov.co[0m
+              [36m</a>[39m
+              [0m.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</article>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/LegalPanel.test.tsx:106:19
+    104|   ] as const)("shows the privacy controller contact, not support (%s/%…
+    105|     render(<LegalPanel language={language} document={document} onClose…
+    106|     expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+       |                   ^
+    107|     expect(screen.queryByText(/alejandro@ac-setroc\.com|soporte@|suppo…
+    108|     expect(screen.getByText(/1\.0.*2026-07-29/)).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/components/LegalPanel.test.tsx > legal documents > shows the privacy controller contact, not support (en/privacy)
+TestingLibraryElementError: Unable to find an element with the text: /admin@aunaratraining\.com/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"legal-backdrop"[39m
+      [33mrole[39m=[32m"presentation"[39m
+    [36m>[39m
+      [36m<article[39m
+        [33maria-labelledby[39m=[32m"legal-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"legal-panel"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<span>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-shield-check"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 12 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mVersion 1.0 / effective 2026-07-29[0m
+            [36m</p>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"legal-title"[39m
+            [36m>[39m
+              [0mPrivacy policy[0m
+            [36m</h2>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Close legal document"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-x"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"20"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"20"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M18 6 6 18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 6 12 12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</header>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"legal-copy"[39m
+        [36m>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mResponsible party and contact[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mThe controller of Aunara personal data is Alejandro Cortés Burgos, Colombia. Privacy requests can be sent to alejandro@ac-setroc.com.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mData and purposes[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara uses account data to authenticate and synchronize the service; routine and performance data to save training plans and progress; and, only with separate authorization, sensitive health data to personalize training, recovery and nutrition references.[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mProviding sensitive health data is optional. If you decline, Aunara offers a basic route that does not use body measurements, injuries, symptoms, allergies or wellbeing check-ins.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mProviders and international processing[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAuthentication and the personal database use Supabase in the São Paulo, Brazil region. The public web application is delivered through GitHub Pages. Food searches are sent directly to USDA FoodData Central without attaching the Aunara account identifier.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mRetention and security[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mPersonal content is kept while the account is active or until you delete it. Aunara separates each user's database row and blocks anonymous access. Provider backups may remain for their documented technical rotation period.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mYour rights[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mYou may access, export, correct or delete your data; revoke sensitive-data authorization; ask for proof of authorization; and submit a consultation or claim. Aunara aims to answer consultations within 10 business days and claims within 15 business days.[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mIf your request is not resolved, you may contact Colombia's Superintendencia de Industria y Comercio.[0m
+              [0m [0m
+              [36m<a[39m
+                [33mhref[39m=[32m"https://www.sic.gov.co/"[39m
+                [33mrel[39m=[32m"noreferrer"[39m
+                [33mtarget[39m=[32m"_blank"[39m
+              [36m>[39m
+                [0msic.gov.co[0m
+              [36m</a>[39m
+              [0m.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</article>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/LegalPanel.test.tsx:106:19
+    104|   ] as const)("shows the privacy controller contact, not support (%s/%…
+    105|     render(<LegalPanel language={language} document={document} onClose…
+    106|     expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+       |                   ^
+    107|     expect(screen.queryByText(/alejandro@ac-setroc\.com|soporte@|suppo…
+    108|     expect(screen.getByText(/1\.0.*2026-07-29/)).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/components/LegalPanel.test.tsx > legal documents > shows the privacy controller contact, not support (es/terms)
+TestingLibraryElementError: Unable to find an element with the text: /admin@aunaratraining\.com/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"legal-backdrop"[39m
+      [33mrole[39m=[32m"presentation"[39m
+    [36m>[39m
+      [36m<article[39m
+        [33maria-labelledby[39m=[32m"legal-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"legal-panel"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<span>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-shield-check"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 12 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mVersión 1.0 / vigente desde 2026-07-29[0m
+            [36m</p>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"legal-title"[39m
+            [36m>[39m
+              [0mTérminos de uso[0m
+            [36m</h2>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Cerrar documento legal"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-x"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"20"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"20"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M18 6 6 18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 6 12 12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</header>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"legal-copy"[39m
+        [36m>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mAlcance del servicio[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara es una herramienta personal de bienestar y planificación de ejercicio para personas adultas. Ayuda a organizar rutinas, cargas, preferencias y referencias generales de nutrición.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mNo es un servicio clínico[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara no sustituye un diagnóstico, prescripción, tratamiento o plan de rehabilitación médico, nutricional o fisioterapéutico. Suspendé el ejercicio y buscá atención profesional adecuada cuando aparezcan síntomas, empeoren o generen dudas sobre la seguridad de la actividad.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mResponsabilidades de la cuenta[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mDebés suministrar información correcta, proteger tu contraseña, revisar los movimientos sugeridos antes de realizarlos y evitar cargar información privada de otra persona sin autorización. Aunara está destinada actualmente solo a personas de 18 años o más.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mDisponibilidad y cambios[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mEsta versión personal de UAT se ofrece sin suscripción paga ni disponibilidad garantizada. Los cambios materiales en estos términos o en la política de privacidad requerirán un nuevo aviso y, cuando corresponda, una nueva aceptación.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mContacto y ley aplicable[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mLas consultas se reciben en alejandro@ac-setroc.com. Estos términos se rigen por la legislación colombiana.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</article>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/LegalPanel.test.tsx:106:19
+    104|   ] as const)("shows the privacy controller contact, not support (%s/%…
+    105|     render(<LegalPanel language={language} document={document} onClose…
+    106|     expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+       |                   ^
+    107|     expect(screen.queryByText(/alejandro@ac-setroc\.com|soporte@|suppo…
+    108|     expect(screen.getByText(/1\.0.*2026-07-29/)).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/components/LegalPanel.test.tsx > legal documents > shows the privacy controller contact, not support (en/terms)
+TestingLibraryElementError: Unable to find an element with the text: /admin@aunaratraining\.com/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"legal-backdrop"[39m
+      [33mrole[39m=[32m"presentation"[39m
+    [36m>[39m
+      [36m<article[39m
+        [33maria-labelledby[39m=[32m"legal-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"legal-panel"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<header>[39m
+          [36m<span>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-shield-check"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 12 2 2 4-4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [36m<div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"eyebrow"[39m
+            [36m>[39m
+              [0mVersion 1.0 / effective 2026-07-29[0m
+            [36m</p>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"legal-title"[39m
+            [36m>[39m
+              [0mTerms of use[0m
+            [36m</h2>[39m
+          [36m</div>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Close legal document"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-x"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"20"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"20"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M18 6 6 18"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m6 6 12 12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</header>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"legal-copy"[39m
+        [36m>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mService scope[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara is a personal wellness and exercise-planning tool for adults. It helps organize routines, loads, preferences and general nutrition references.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mNot a clinical service[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mAunara does not replace a medical, nutritional or physiotherapy diagnosis, prescription, treatment or rehabilitation plan. Stop exercising and seek suitable professional attention when symptoms appear, worsen or create doubt about safe activity.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mAccount responsibilities[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mYou must provide accurate information, protect your password, review suggested movements before performing them and avoid sharing another person's private information without authorization. Aunara is currently intended only for users aged 18 or older.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mAvailability and changes[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mThis personal UAT version is provided without a paid subscription or guaranteed availability. Material changes to these terms or the privacy policy will require a new notice and, when appropriate, renewed acceptance.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+          [36m<section>[39m
+            [36m<h3>[39m
+              [0mContact and governing law[0m
+            [36m</h3>[39m
+            [36m<p>[39m
+              [0mQuestions can be sent to alejandro@ac-setroc.com. These terms are governed by Colombian law.[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</article>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../../Users/alejandro/AI Projects/Personal/aunara/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/LegalPanel.test.tsx:106:19
+    104|   ] as const)("shows the privacy controller contact, not support (%s/%…
+    105|     render(<LegalPanel language={language} document={document} onClose…
+    106|     expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+       |                   ^
+    107|     expect(screen.queryByText(/alejandro@ac-setroc\.com|soporte@|suppo…
+    108|     expect(screen.getByText(/1\.0.*2026-07-29/)).toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 10 passed (15)
+   Start at  01:20:23
+   Duration  1.18s (transform 58ms, setup 0ms, import 219ms, tests 197ms, environment 650ms)
+

@@ -4,9 +4,13 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — SDD-014 implementado y APPROVED LOCAL; activación, integración y UAT pendientes
+
+`[AUNARA/codex · gpt-6.1-sol]` — «Dale» aprobó desarrollo local: contacto admin, soporte ES/EN y dos plantillas Auth bilingües. [Revisión independiente ciclo1](sdd/2026-10-16-sdd014-revision/review-cycle1.md): C14-01/03/08 y preview06 PASS LOCAL;72 casos Chromium/WebKit raíz/rollback,120 capturas/20 collages, contraste mínimo5.8483:1. Suite real371/25 +Sites1, base367/25 +Sites1; tipos/guardas/builds PASS sin excepción D-13-6. [Entrega local](sdd/2026-10-16-sdd014-revision/delivery-receipt.md):117 hashes intactos. Sin SMTP, envíos, DNS, push, merge ni deploy; C14-02/04/05/07 y Gmail/Outlook06 NO EJECUTADOS. Zoho/noreply reportados, capacidades no inspeccionadas. UAT5173 conserva SDD-013/base61610c1, no sirve SDD-014. Integración a dev requiere nueva orden; gate remoto, UAT/cierre humano, recuperación LAN→prod y cuatro rojos históricos siguen abiertos. Canónico/entorno UAT intactos.
+
 ### 2026-10-16 — SDD-013 subido a dev; UAT local nueva disponible; correo de marca en especificación
 
-Correo/contactos: [SDD-014 en revisión del Operator](sdd/SDD-014-correo-marca-y-contactos.md), sin implementación ni activación remota.
+Antecedente al arranque: SDD-014 estaba en revisión y sin implementación. Superado por la entrega local de arriba; activación remota todavía pendiente.
 
 `[AUNARA/codex · modelo no expuesto]` — `origin/dev` confirmado en `d344eeb` (fuente idéntica a `ccce932`); `main` permanece `dfffa873`. CI [Verify source #34](https://github.com/AC-Setroc/aunara/actions/runs/38859775887) SUCCESS, deploy/Pages omitidos; no publicación. Vite sirve el candidato aislado en `http://localhost:5173/` y `http://192.168.1.6:5173/`, ambos HTTP200 desde Mac; navegador integrado muestra wordmark y menú lateral nuevos. [Recibo de arranque](handoffs/UAT-2026-10-16-dev-arranque.md). Superado el estado de arranque pendiente siguiente; iPhone físico, cuenta/correo y recuperación no se retestearon. Canónico dirty intacto. Operator informa Zoho, cuenta noreply existente y contactos admin/soporte/support del dominio; preparar SDD-014, sin activar SMTP, cambiar contactos legales ni plantillas en vivo antes de su gate. La excepción D-13-6 no equivale a reparación de las cuatro pruebas antiguas.
 

@@ -22,7 +22,7 @@ El centro de privacidad permite:
 - borrar el contenido guardado;
 - eliminar permanentemente la cuenta.
 
-Las solicitudes adicionales se reciben en alejandro@ac-setroc.com. Debe
+Las solicitudes adicionales se reciben en admin@aunaratraining.com. Debe
 verificarse la identidad sin pedir más datos de los necesarios y registrarse:
 fecha de ingreso, identidad verificada, alcance, acciones tomadas y fecha de
 respuesta.

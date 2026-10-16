@@ -1,0 +1,16 @@
+
+> repbook@0.1.0 test:exercise-directory
+> node --test scripts/build-bilingual-exercise-directory.node-test.mjs
+
+✔ exposes a pure bilingual-directory builder (0.406833ms)
+✔ builds stable bilingual entries with translation and owned-media status (0.678292ms)
+✔ rejects untranslated taxonomy terms instead of silently mixing languages (0.220917ms)
+✔ covers every source exercise and every taxonomy term in the real dataset (93.865375ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 152.928917

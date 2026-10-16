@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 SDD-014 implementado y APPROVED LOCAL; activación e integración pendientes
+
+`[AUNARA/codex · gpt-6.1-sol]` — Contacto admin y dos plantillas bilingües implementados tras «Dale»; revisión independiente ciclo1 APPROVED LOCAL. C14-01/03/08 y preview06 PASS LOCAL;72 casos Chromium/WebKit raíz/rollback,120 capturas/20 collages, contraste mínimo5.8483:1. Suite real371/25 +Sites1 frente a base367/25 +Sites1, tipos/Node10/directorio4/Node previos28/builds32 PASS sin waiver. Freeze117/117 idéntico antes/después de entrega. [Recibo](sdd/2026-10-16-sdd014-revision/delivery-receipt.md) y [revisión](sdd/2026-10-16-sdd014-revision/review-cycle1.md). Commit local enfocado; sin push, merge, deploy ni activación SMTP/DNS/envíos. Integración a dev exige orden nueva; gate remoto, C14-02/04/05/07, Gmail/Outlook06 y UAT/cierre humano pendientes. Cuatro rojos históricos y recuperación LAN→prod no arreglados. UAT5173 sigue SDD-013/base61610c1; canónico y fuentes NO-TOCAR intactos.
+
 Entradas más recientes arriba; no reescribir entradas previas.
 
 ## 2026-10-16 · 🟡 SDD-013 integrado en dev y UAT levantada; correo de marca en Spec, UAT humana pendiente

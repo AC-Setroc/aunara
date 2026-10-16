@@ -1,6 +1,6 @@
 # Aunara — registro de privacidad y cumplimiento
 
-Estado: versión personal de UAT. Registro actualizado el 2026-10-12 (SDD-010);
+Estado: versión personal de UAT. Canal de privacidad actualizado localmente el 2026-10-16 (SDD-014);
 política y términos siguen en la versión 1.0 del 2026-07-29.
 
 Este registro acompaña los controles visibles en la aplicación. No sustituye
@@ -12,11 +12,14 @@ legales.
 ## Responsable configurado
 
 - Responsable: Alejandro Cortés Burgos, Colombia.
-- Canal de privacidad: alejandro@ac-setroc.com.
+- Canal de privacidad: admin@aunaratraining.com.
 - Política y términos: versión 1.0, vigentes desde 2026-07-29.
-- El canal de privacidad se mantiene en `alejandro@ac-setroc.com` por decisión del
-  Operator del 2026-10-12; se actualizará cuando el correo del dominio propio esté
-  activo. Ese cambio requerirá revisar este registro y el aviso en pantalla.
+- Por decisión del Operator del 2026-10-16, el canal de privacidad pasa a
+  `admin@aunaratraining.com` en este candidato local y en el aviso que consume la
+  constante. Sustituye la decisión provisional del 2026-10-12; no cambia al
+  responsable ni la versión jurídica. La existencia del correo del dominio propio
+  fue reportada por el Operator, no verificada mediante envío. Activación de
+  plantillas/SMTP y publicación permanecen fuera de esta entrega local.
 
 Si la identidad comercial o el responsable cambian, deben actualizarse antes
 de recoger nuevas aceptaciones. Un cambio material requiere aviso nuevo y,

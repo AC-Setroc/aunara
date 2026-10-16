@@ -4,7 +4,9 @@ Fecha de corte: 2026-10-16. Origen de actualización: `[AUNARA/codex · gpt-6.1-
 
 ## Abiertos
 
-- Aprobar [SDD-014 — correo de marca y contactos](sdd/SDD-014-correo-marca-y-contactos.md) para desarrollo local; Zoho y noreply existentes confirmados por Operator. Configuración remota y envíos reales tienen gate separado.
+- `[AUNARA/codex · gpt-6.1-sol]` — 2026-10-16: [SDD-014](sdd/SDD-014-correo-marca-y-contactos.md) **implementado y APPROVED LOCAL ciclo1**, D14-03 resuelta por «Dale». [Entrega](sdd/2026-10-16-sdd014-revision/delivery-receipt.md):117 hashes intactos; suite real371/25 +Sites1 sin waiver, base367/25 +Sites1;72 casos Chromium/WebKit. Pendientes: orden nueva de integración a dev/push; gate remoto D14-04 (ambientes, permisos, rollback, acceso seguro y destinatarios controlados), D14-05 solo si aplica; C14-02/04/05/07 y Gmail/Outlook06 NO EJECUTADOS, UAT/cierre del Operator. Sin activar correo ni tocar UAT5173/SDD-013. No se hereda permiso SDD-013 ni se arreglan cuatro rojos históricos. Supera solicitud anterior de aprobación/desarrollo local, no comprobaciones remotas.
+
+**La entrada histórica «nuevo alcance de correo/contactos en Spec» de abajo queda superada por «Dale» y la entrega local anterior:** no vuelve a pedir aprobación local ni afirmar desarrollo pendiente. Restricciones remotas siguen vigentes.
 
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-16: **UAT nueva disponible tras push dev `d344eeb`**. [Recibo](handoffs/UAT-2026-10-16-dev-arranque.md): localhost5173 y LAN192.168.1.6:5173, HTTP200 desde Mac y menú nuevo en navegador integrado. Superado el arranque pendiente siguiente; no prueba conectividad iPhone ni correo real. Agregar el origen LAN nuevo a Redirect URLs por el Operator antes de probar correos; no sustituir Site URL ni asumir resuelto el retorno a prod. UAT humana y recuperación siguen abiertas; no publicar main.
 

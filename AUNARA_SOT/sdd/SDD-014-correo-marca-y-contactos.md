@@ -1,6 +1,10 @@
 # SDD-014 — Correo de marca y contactos de Aunara
 
-2026-10-16 · v0.1 · **En revisión del Operator. No aprobado; sin implementación ni activación remota.**
+2026-10-16 · v0.1 · **Desarrollo local implementado y APPROVED LOCAL, ciclo 1. Sin activación remota, UAT ni cierre del Operator.**
+
+Aprobación explícita: «Dale» ante la pregunta de aprobar el desarrollo local con contactos, Zoho como proveedor reportado y dos plantillas inicialmente bilingües, manteniendo activación remota aparte. D14-03 resuelta a favor de ese alcance. Se conservan las formulaciones de propuesta siguientes como historia; no autorizan SMTP/DNS, envíos reales, push ni publicación. Desarrollo en `/private/tmp/aunara-sdd014-candidate`, desde `61610c1`, separado del worktree que sirve UAT SDD-013.
+
+La revisión de esta entrega emitió APPROVED **local**, no aprobación global del pedido operativo: C14-01/03/08 y la parte de preview de C14-06 PASS LOCAL; C14-02/04/05/07 y clientes de correo reales de C14-06 permanecen NO EJECUTADOS hasta su gate remoto. Los controles estáticos/fixtures de enlaces o headers no se presentan como envío, token validado ni autenticación DNS reales. Esta separación aplica las fases ya previstas en §8/§10, no elimina esos criterios de la definición final de terminado.
 
 `[AUNARA/codex · gpt-6.1-sol]` — Pedido del Operator: responsable `admin@aunaratraining.com`; soporte ES `soporte@aunaratraining.com`, EN `support@aunaratraining.com`; confirmación de cuenta y recuperación desde `noreply@aunaratraining.com`, con dos plantillas de marca. Confirmación posterior: **Zoho; noreply ya existe**. Son hechos reportados por el Operator, no comprobaciones de acceso SMTP, entrega ni configuración efectiva.
 
@@ -14,9 +18,9 @@ Resultado deseado: privacidad por admin; soporte diferenciado ES/EN; confirmaci�
 
 ## 2. Alcance y fuera de alcance
 
-**Fase actual:** únicamente este SDD. No código, configuración, plantillas HTML ejecutables, maquetas, correos de prueba, conexión a cuentas ni cambios remotos. La aprobación solicitada es para el desarrollo local descrito aquí; la aplicación remota necesita un gate adicional explícito.
+**Fase actual:** entrega local tras implementación y [revisión independiente APPROVED LOCAL](2026-10-16-sdd014-revision/review-cycle1.md). La fase original de solo SPEC quedó superada por «Dale» para desarrollo local; no hubo conexión a cuentas, correos reales ni cambios remotos. La aplicación remota requiere otro gate explícito.
 
-Allowlist propuesta para implementación futura, después de aprobación:
+Allowlist aprobada y aplicada para implementación local:
 
 | Archivo exacto | Cambio permitido |
 | --- | --- |
@@ -31,7 +35,7 @@ Allowlist propuesta para implementación futura, después de aprobación:
 | `scripts/auth-email-templates.node-test.mjs` | Nuevos controles locales de contenido, enlaces y negativos; ejecución directa sin cambiar dependencias/scripts existentes. |
 | `AUNARA_SOT/sdd/2026-10-16-sdd014-revision/README.md` | Nuevo recibo de revisión, matriz y evidencia sanitizada; capturas/resultados bajo esa carpeta sin tokens ni destinatarios identificables. |
 
-Documentación de entrega futura: este SDD, `AUNARA_SOT/02-ESTADO-ACTUAL.md`, `AUNARA_SOT/PENDIENTES.md`, entrada aditiva en `AUNARA_SOT/03-HISTORIA-Y-BACKLOG.md` y recibo de revisión. No tocar ahora los documentos que otro frente está entregando por SDD-013. Antes de crear cada artefacto futuro se comprueba que siga libre; una colisión o necesidad de otro archivo vuelve al gate, no autoriza sobrescribir.
+Documentación de esta entrega: este SDD, `AUNARA_SOT/02-ESTADO-ACTUAL.md`, `AUNARA_SOT/PENDIENTES.md`, entrada aditiva en `AUNARA_SOT/03-HISTORIA-Y-BACKLOG.md` y [recibo local](2026-10-16-sdd014-revision/delivery-receipt.md). La prohibición original durante desarrollo de tocar esos documentos queda superada solo para esta entrega prevista; evidencia SDD-013 intacta. Colisiones o nuevos archivos fuera de allowlist vuelven al gate.
 
 **Operación futura separada:** inspección autorizada de capacidades y estado efectivo de Zoho/Supabase; propuesta exacta de parámetros y cambios, seguida de autorización explícita para aplicar remitente/SMTP y las dos plantillas. Cambios DNS, si realmente hacen falta, se presentan uno por uno al Operator con baseline/rollback; no quedan autorizados por aprobar el desarrollo local.
 
@@ -136,7 +140,7 @@ Registrar equivalente de texto simple. Verificar si el servicio realmente genera
 | C14-07 | Comprobación autorizada de headers/DNS acredita autenticación de dominio y alineación DMARC con SPF/DKIM válidos según configuración; tracking de enlaces desactivado. MX y correo Zoho existente preservados, sin SPF duplicado. Sin asumir inbox universal por un envío. |
 | C14-08 | Diff limitado a allowlist, guardas negativas detectan desviaciones y controles restaurados pasan; typecheck, tests aplicables y builds completos con evidencia. No PASS global con comprobaciones pendientes ni excepción SDD-013 trasladada. |
 
-Matriz planificada, **no ejecutada en fase SPEC**:
+Matriz planificada originalmente, **no ejecutada en fase SPEC**; ejecución local acreditada en [desarrollo](2026-10-16-sdd014-revision/README.md) y [revisión](2026-10-16-sdd014-revision/review-cycle1.md). Parte remota NO EJECUTADA:
 
 - `npm run typecheck`, `npm test`, `npm run check:exercise-directory`, `npm run test:exercise-directory`, `npm run build`, `git diff --check`; lint N/A por ausencia de script. Comparar baseline/candidato con fecha real y registrar cada rojo; aprobación de cualquier tratamiento comparativo requiere decisión nueva.
 - `node --test scripts/auth-email-templates.node-test.mjs`: estructura/copy, asuntos documentados, contactos, CTA/backup y placeholders. Pruebas existentes de `privacy`, `LegalPanel`, `useCloudSync`, `AccessPanel` y flujos de cuenta conservadas sin debilitar cobertura.
@@ -160,19 +164,19 @@ Matriz planificada, **no ejecutada en fase SPEC**:
 | --- | --- |
 | D14-01 | **Resuelto por pedido 16Oct:** admin responsable/contacto, soporte ES y EN, noreply remitente, dos plantillas de marca. No cambia identidad jurídica. |
 | D14-02 | **Resuelto por respuesta posterior:** proveedor Zoho y noreply existente. Plan, centro de datos, SMTP habilitado, credencial y permisos From **no verificados**. Se recomienda reutilizarlo solo si resulta compatible, sin gasto nuevo. |
-| D14-03 | **Pendiente:** aprobar SDD v0.1 para desarrollo local, diseño conservador y fallback bilingüe inicial (no selección automática nueva). La opción condicional por metadatos requiere decisión explícita distinta. |
+| D14-03 | **Resuelta por «Dale», 16Oct:** SDD v0.1 aprobado para desarrollo local, diseño conservador y contenido bilingüe fijo inicial, sin selección automática nueva. Superada la solicitud original pendiente. Condicional por metadatos exige decisión distinta. |
 | D14-04 | **Pendiente antes de operación:** proyecto Auth/ambientes afectados, autorización remota separada, ventana/rollback, acceso seguro, comprobación de proveedores, direcciones de prueba y permiso de envíos/alta/recovery. No enviar contraseñas al chat. |
 | D14-05 | **Pendiente si aparece:** autorización específica de diff DNS; alternativa si Zoho incompatible; ampliación de textos/inventario por nuevo procesamiento; no tomar estas decisiones por defecto. |
-| D14-06 | **Pendiente si el gate unitario falla:** decisión propia de tratamiento de cuatro rojos antiguos; D-13-6 solo cubrió SDD-013. No tocar editor ni debilitar tests dentro de este alcance. |
+| D14-06 | **No activada en este ciclo:** suite real candidato371/371 en25 archivos +Sites1/1; base367/367 +Sites1/1, sin waiver ni reloj alterado. Los cuatro rojos históricos no se arreglaron; si reaparecen requieren decisión propia, no D-13-6. |
 
 No se vuelve a preguntar si noreply existe ni cuál es el proveedor: ya contestado. No afirmar que están configurados los servicios por esa respuesta.
 
 ## 10. Definición de terminado
 
-**SPEC terminado:** diez secciones completas, evidencia local/fuentes, allowlist y NO-TOCAR claros, decisiones pendientes explícitas; revisión del Operator solicitada. Estado de este documento: **En revisión del Operator**, no implementado ni aceptado.
+**SPEC terminado y aprobado:** diez secciones completas; estado original «En revisión del Operator» superado por «Dale» para desarrollo local, no operación remota.
 
-**Desarrollo local terminado (futuro):** SDD aprobado, contacto y artefactos implementados, revisión independiente APPROVED con criterio por criterio, docs/commit enfocados y ningún cambio no autorizado. Todavía no equivale a correo activado.
+**Desarrollo local implementado y APPROVED LOCAL:** C14-01/03/08 y preview06 PASS LOCAL; fuentes117/117 congeladas preservadas, documentación/entrega enfocadas. No equivale a correo activado, UAT ni cierre humano. C14-02/04/05/07 y Gmail/Outlook06 siguen NO EJECUTADOS.
 
 **Pedido operativo terminado (futuro):** autorización remota y de envíos documentadas; ambas clases de correo más reenvío entregados y verificados desde noreply con marca/contactos; dominios/enlaces/retornos correctos y negativos seguros; clientes reales revisados; responsable/consentimientos/datos y correo existente preservados; Operator realiza UAT y cierra. Si falta cualquiera, registrar pendiente sin afirmar que “ya llega” o que la recuperación LAN está resuelta.
 
-Recibo de esta fase: solo nuevo archivo SDD; sin código, tests, plantillas reales, configuración, credenciales, DNS, correos, commit/stage, push o despliegue por este frente. La integración de SDD-013 pertenece al otro frente y no se acredita ni se modifica aquí.
+Recibo histórico de SPEC: entonces solo nuevo SDD, sin implementación ni cambios remotos. Superado únicamente por desarrollo, revisión y [entrega locales](2026-10-16-sdd014-revision/delivery-receipt.md). Sin push, merge, deploy o activación SDD-014. Integración a dev requiere orden nueva propia; no se hereda autorización SDD-013. UAT5173 sigue SDD-013/base61610c1, no este producto SDD-014.

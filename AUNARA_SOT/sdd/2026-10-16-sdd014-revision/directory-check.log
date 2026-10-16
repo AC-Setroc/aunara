@@ -1,0 +1,4 @@
+
+> repbook@0.1.0 check:exercise-directory
+> node scripts/build-bilingual-exercise-directory.mjs --check
+

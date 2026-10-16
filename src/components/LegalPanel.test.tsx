@@ -92,10 +92,21 @@ describe("legal documents", () => {
 
     expect(screen.getByRole("heading", { name: "Política de privacidad" })).toBeTruthy();
     expect(screen.getByText(/Alejandro Cortés Burgos/)).toBeTruthy();
-    expect(screen.getByText(/alejandro@ac-setroc\.com/)).toBeTruthy();
+    expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
     expect(screen.getAllByText(/datos sensibles/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/São Paulo, Brasil/i)).toBeTruthy();
     expect(screen.getByText(/Superintendencia de Industria y Comercio/i)).toBeTruthy();
+  });
+
+  it.each([
+    ["es", "privacy"], ["en", "privacy"],
+    ["es", "terms"], ["en", "terms"],
+  ] as const)("shows the privacy controller contact, not support (%s/%s)", (language, document) => {
+    render(<LegalPanel language={language} document={document} onClose={vi.fn()} />);
+    expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+    expect(screen.queryByText(/alejandro@ac-setroc\.com|soporte@|support@/)).toBeNull();
+    expect(screen.getByText(/1\.0.*2026-07-29/)).toBeTruthy();
+    expect(screen.queryByRole("checkbox")).toBeNull();
   });
 
   it("shows service limits and returns to the previous screen", () => {
