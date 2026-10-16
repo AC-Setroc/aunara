@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 Diagnóstico recibido; baseline confirmado y specs de tests/sync pendientes de aprobación
+
+`[AUNARA/codex · modelo no expuesto]` — Leído diagnóstico Claude de dev999c8f6; sin defectos bloqueantes automatizables y sin correcciones a SDD-012/013/014. Reproducción sin alterar código: npm test371/25 + Sites1 PASS en fecha real; NODE_OPTIONS con wednesday-clock367 PASS/4FAIL exactos. Specs separadas015/016, gate explícito antes de fix; guardas de correo en npm test esperan orden. [Base congelada ciclo3](sdd/2026-10-16-uat-dev-revision/CICLO-3-BASE.md): seis archivos ya versionados, checks sintácticos MJS PASS; receta shell con placeholders FALLA y rutas de host no portables, documentadas sin cambios silenciosos. No ejecución nueva Chromium/WebKit ni cierre humano, cambios de runtime o publicación.
+
 ## 2026-10-16 · 🟢 UAT automatizada de `dev` completa en dos motores; cuatro hallazgos menores para Codex
 
 `[AUNARA/claude · modelo no expuesto]` — Sobre `d2ba0aa` (SDD-006/011/012/013/014) se corrieron las seis matrices del ciclo 2, los checks de SDD-013 con línea base, los de SDD-012 adaptados al menú lateral y un recorrido del guion de UAT (dos dispositivos, contacto legal, triserie, menú, privacidad), todo verde en Chromium y WebKit. No hay defectos bloqueantes; quedan para Codex las pruebas dependientes del miércoles, la protección del servidor ante filas rechazadas por esquema, el test de plantillas fuera de CI y la versión del aviso legal. [Informe](handoffs/UAT-2026-10-16-claude-dev-diagnostico.md).
