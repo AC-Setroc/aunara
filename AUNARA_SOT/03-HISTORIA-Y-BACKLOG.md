@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 Dev015/016 confirmado y CI de código SUCCESS; aceptación humana pendiente
+
+`[AUNARA/codex · modelo no expuesto]` — Push normal c48664b confirmado por ls-remote; [Verify source #42](https://github.com/AC-Setroc/aunara/actions/runs/38956392413) completed/success. Se agrega recibo documental sin modificar fuente ya revisada ni repetir suites innecesariamente. Main dfffa873 preservado, ningún deploy solicitado. Canónico/servidor5173 y configuración remota no intervenidos; no afirmar que ese servidor ya sirve016. Pendientes humanos y gates remotos conservados explícitamente.
+
 ## 2026-10-16 · 🟡 SDD015/016 completados técnicamente; cierre humano pendiente y producción intacta
 
 `[AUNARA/codex · modelo no expuesto]` — Tras «Retomá y terminá», se recuperó resultado independiente HTTP24/24 del revisor interrumpido por límite de uso; tres hashes coinciden con candidato. Coordinador, que no implementó fuente/probe, inspecciona diff y completa revisión/entrega: nuevas suites real/miércoles396/25+Node11, tipos, build ambas bases32 y guardas27 PASS; baseline HTTP reproduce sobrescritura, candidato0POST y normalesW01verdes. [Recibo](sdd/2026-10-16-sdd016-revision/README.md) registra timeout previo resuelto sin debilitar pruebas y errores de entorno/invocación controlados. Solo siete archivos autorizados más evidencia/spec/SOT; commit016 enfocado para dev, sin main ni despliegue. SDD015 ya dev26d60a9 con CI#41SUCCESS. Canónico/servidor5173/Supabase/SMTP/DNS intactos; aceptación humana pendiente.

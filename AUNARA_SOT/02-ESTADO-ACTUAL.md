@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — Entrega015/016 confirmada en dev; CI de código verde
+
+`[AUNARA/codex · modelo no expuesto]` — Remoto dev confirmado en c48664be62cc49473db529c1ff1f6c7b332199c7 (incluye015 y016), working tree limpio tras push. [Verify source #42](https://github.com/AC-Setroc/aunara/actions/runs/38956392413) completed/success sobre ese código, consultado después del push. Este recibo posterior solo modifica SOT, no fuente revisada. Main remoto dfffa873a2a29ee1535c49149f92a734c873923d permanece intacto. Implementación/revisión/push completados; aceptación humana, actualización autorizada del servidor5173, H-03, recuperación y SMTP siguen pendientes.
+
 ### 2026-10-16 — SDD-015/016 implementados y APPROVED técnico; entrega dev, sin publicación
 
 `[AUNARA/codex · modelo no expuesto]` — SDD01522ee411 ya integrado en dev26d60a9, CI#41 SUCCESS. SDD016: lectura ausente/presente explícita y bloqueo de subidas ante remoto inválido; enmienda de guarda aplicada sin debilitar negativos. [Recibo completo](sdd/2026-10-16-sdd016-revision/README.md): suites propias real/miércoles396/25+Node11 PASS, typecheck, dos builds32, guardas27, HTTPbaseline24/candidato24 y repetición independiente24/24 con hashes coincidentes. El coordinador cerró la revisión/entrega tras límite de uso de los agentes, distinto del desarrollador de fuente/probe; incidentes de timeout/sandbox/invocación del guard registrados con controles verdes. Superadas las entradas «en desarrollo/pendiente de revisión» de abajo. Commit enfocado y push dev por orden permanente; no declarar CI final antes de consultarlo. Repo candidato `/private/tmp/aunara-sdd015-016-candidate`; canónico y servidor humano5173 conservados (este último aún fuente anterior, no usar para aceptar016). Main sigue dfffa873; SMTP/recuperación/H-03/UAT física siguen pendientes. Cierre humano reservado al Operator.
