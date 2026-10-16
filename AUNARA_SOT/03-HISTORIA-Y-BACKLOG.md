@@ -1,5 +1,8 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟢 UAT automatizada de `dev` completa en dos motores; cuatro hallazgos menores para Codex
+
+`[AUNARA/claude · modelo no expuesto]` — Sobre `d2ba0aa` (SDD-006/011/012/013/014) se corrieron las seis matrices del ciclo 2, los checks de SDD-013 con línea base, los de SDD-012 adaptados al menú lateral y un recorrido del guion de UAT (dos dispositivos, contacto legal, triserie, menú, privacidad), todo verde en Chromium y WebKit. No hay defectos bloqueantes; quedan para Codex las pruebas dependientes del miércoles, la protección del servidor ante filas rechazadas por esquema, el test de plantillas fuera de CI y la versión del aviso legal. [Informe](handoffs/UAT-2026-10-16-claude-dev-diagnostico.md).
 ## 2026-10-16 · 🟡 Servidor dev SDD-013+014 y UAT consolidada entregados; revisión humana pendiente
 
 `[AUNARA/codex · modelo no expuesto]` — Orden de dejar documentación en repo y servidor/lista: sustituido únicamente el Vite anterior verificado por candidato aislado SDD-014, fuente d2ba0aa. Local/Network5173 HTTP200; UI integrada confirma admin@aunaratraining.com, versión1.0; CI de fuente #37 SUCCESS. [Handoff](handoffs/HANDOFF-2026-10-16.md), [26 casos con expectativas/límites](handoffs/UAT-2026-10-16-dev-checklist.md) y punteros de documentación actualizados. Manifest de fuente117/117 intacto; ningún cambio de producto, paquetes o configuración. No cuenta/correo/datos, SMTP/DNS ni producción. Recuperación LAN→prod y gates remotos conservan estado abierto, UAT del Operator aún no cerrada. Superadas las notas históricas que indicaban servidor antiguo; evidencia previa preservada.
