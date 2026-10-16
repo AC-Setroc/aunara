@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 Guion UAT28 actualizado y entregado; pruebas humanas pendientes
+
+`[AUNARA/codex · modelo no expuesto]` — «Dame lista de UAT»: corregida guía operativa a código devc48664b/015–016, con servidor anterior claramente separado. Conserva1–26, añade27edición entre días y28probe remoto inválido (PASS técnico ya acreditado, sin manipular datos reales). Runbook/handoff/estado/pendientes al día; removida afirmación vigente obsoleta de fixtures aún sin reparar. Revisión documental de links/numeración/whitespace, sin tocar runtime, levantar servidor, ejecutar casos humanos ni publicar.
+
 ## 2026-10-16 · 🟡 Dev015/016 confirmado y CI de código SUCCESS; aceptación humana pendiente
 
 `[AUNARA/codex · modelo no expuesto]` — Push normal c48664b confirmado por ls-remote; [Verify source #42](https://github.com/AC-Setroc/aunara/actions/runs/38956392413) completed/success. Se agrega recibo documental sin modificar fuente ya revisada ni repetir suites innecesariamente. Main dfffa873 preservado, ningún deploy solicitado. Canónico/servidor5173 y configuración remota no intervenidos; no afirmar que ese servidor ya sirve016. Pendientes humanos y gates remotos conservados explícitamente.

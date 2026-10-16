@@ -4,6 +4,8 @@ Fecha de corte: 2026-10-16. Origen de actualización: `[AUNARA/codex · gpt-6.1-
 
 ## Abiertos
 
+- `[AUNARA/codex · modelo no expuesto]` — 2026-10-16: [lista UAT vigente28 casos](handoffs/UAT-2026-10-16-dev-checklist.md) ya distingue27manual y28técnico sintético, preservando numeración anterior. Antes de nueva UAT humana: actualizar con orden el servidor5173 a código devc48664b y confirmar direcciones/allowlist; no está acreditado por actualizar Git o esta lista. Correo de marca/PWA HTTP LAN y retorno de recuperación tienen límites explícitos; no fabricar PASS humanos.
+
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-16: **entrega a dev y CI de código015/016 completadas** en c48664b, [run42SUCCESS](https://github.com/AC-Setroc/aunara/actions/runs/38956392413). No queda pendiente integración/push/revisión técnica de estos dos SDD. Continúan cierre del Operator y UAT humana; servidor5173 anterior preservado, requiere actualización autorizada antes de aceptar016. Sin publicar ni activar SMTP.
 
 - `[AUNARA/codex · modelo no expuesto]` — 2026-10-16: **SDD015/016 implementados y APPROVED técnico; cierre humano pendiente**. [Recibo016](sdd/2026-10-16-sdd016-revision/README.md):396/25+11 ambos relojes; HTTP24/24 baseline/candidato y repetición independiente24/24, builds32 por base, guardas27. Supera los pendientes de implementación/revisión/enmienda/subida015 de abajo; entrega016 acompaña push dev autorizado. Servidor5173 permanece anterior por NO-TOCAR y requiere orden de actualización para UAT016. No cierran H-03, recuperación LAN→prod, SMTP/plantillas remotas, Safari/iPhone ni publicación. No volver a pedir aprobación de desarrollo015/016 o de su enmienda de hash.

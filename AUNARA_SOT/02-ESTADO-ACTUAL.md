@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — Lista UAT actualizada a28 casos, objetivo015/016 y prerequisito de servidor explícitos
+
+`[AUNARA/codex · modelo no expuesto]` — A pedido «Dame lista de UAT», [guion](handoffs/UAT-2026-10-16-dev-checklist.md) conserva1–26 y añade27edición de día/28protección remota técnica. Corrige objetivo de versión a c48664b, elimina la afirmación obsoleta de cuatro pruebas aún sin corregir y separa servidor humano anterior/CI técnico/aceptación humana/correo remoto. Runbook y handoff enlazados actualizados sin borrar antecedentes. Solo documentación; no se actualiza el servidor, ni se ejecuta nueva UAT, ni se cambian datos/SMTP/producción.
+
 ### 2026-10-16 — Entrega015/016 confirmada en dev; CI de código verde
 
 `[AUNARA/codex · modelo no expuesto]` — Remoto dev confirmado en c48664be62cc49473db529c1ff1f6c7b332199c7 (incluye015 y016), working tree limpio tras push. [Verify source #42](https://github.com/AC-Setroc/aunara/actions/runs/38956392413) completed/success sobre ese código, consultado después del push. Este recibo posterior solo modifica SOT, no fuente revisada. Main remoto dfffa873a2a29ee1535c49149f92a734c873923d permanece intacto. Implementación/revisión/push completados; aceptación humana, actualización autorizada del servidor5173, H-03, recuperación y SMTP siguen pendientes.

@@ -1,12 +1,12 @@
-# UAT vigente — dev con SDD-013 y SDD-014
+# UAT vigente — dev con SDD-013 a SDD-016
 
 2026-10-16 · `[AUNARA/codex · modelo no expuesto]`.
 
 ## 1. Preparación y alcance
 
-Fuente servida: `d2ba0aa` de dev (implementación SDD-014 `9c52809`, incluye SDD-013). Los commits documentales posteriores no cambian esa fuente. [Recibo y receta de arranque](HANDOFF-2026-10-16.md). Sustituye operativamente el [guion anterior](UAT-2026-10-12-dev-checklist.md), cuyos números 1–22 conserva; no borra sus antecedentes.
+**Fuente objetivo de esta UAT: código `c48664b` en dev, con SDD-015/016 implementados y CI42 SUCCESS; recibo documental `d15c3ea`. El servidor humano5173 NO se actualizó a esa fuente.** Antes de empezar, Codex debe actualizar el servidor mediante una orden de entorno y comprobar qué versión sirve; no aceptar016 desde el servidor anterior ni desde producción. [Recibo técnico016](../sdd/2026-10-16-sdd016-revision/README.md). Los commits posteriores solo documentales no cambian el objetivo. [Recibo y receta de arranque histórica](HANDOFF-2026-10-16.md). Sustituye operativamente el [guion anterior](UAT-2026-10-12-dev-checklist.md), cuyos números 1–22 conserva; añade27–28 sin renumerar evidencia anterior.
 
-- Mac: <http://localhost:5173/>. iPhone, misma Wi-Fi: <http://192.168.1.6:5173/>. Mantener Mac despierta y servidor abierto; la IP puede cambiar al cambiar de red.
+- Últimas direcciones reportadas, **no reinspeccionadas en esta actualización documental**: Mac <http://localhost:5173/> e iPhone <http://192.168.1.6:5173/>. Codex confirma ambas al actualizar el servidor; la IP puede cambiar de red. Mantener Mac despierta, servidor abierto y misma Wi-Fi. No tomar estos enlaces históricos como prueba de que la versión actual ya está servida.
 - Antes de abrir correos desde iPhone, el Operator comprueba que Redirect URLs permita `http://192.168.1.6:5173/**`; también localhost y 127.0.0.1:5173 para Mac. No reemplazar Site URL con la IP privada. No se ha reinspeccionado la configuración remota. Permitir un origen no demuestra que el retorno esté corregido.
 - Dev usa Supabase real: cuenta, correos y datos no están aislados por rama. Usar cuenta desechable propia y datos ficticios; no borrar una cuenta habitual. El Operator introduce credenciales, acepta términos y confirma cualquier borrado irreversible.
 - No identificar la versión solo por el slogan: registrar URL, dispositivo, navegador, idioma y fuente indicada arriba. Si el correo cambia el origen, anotarlo antes de continuar: prod no contiene estas entregas.
@@ -56,6 +56,13 @@ Repetir visuales en ES/EN, Mac y Safari iPhone; 320/390 de ancho donde se pueda.
 | 25 | Tras autorización remota separada: alta, reenvío y recuperación a destinatarios controlados Gmail/Outlook. | **BLOQUEADO: SMTP/plantillas no activados.** Objetivo From Aunara <noreply@aunaratraining.com>, asuntos y marca correctos, recepción/headers/MIME/autenticación de dominio y enlaces reales comprobados. Llegar hoy desde Supabase no refuta la entrega local: activación pendiente. |
 | 26 | Tras gate remoto: enlaces válidos, inválidos, usados y expirados; Mac y LAN. | **NO PROBADO / gate remoto.** Retorno al entorno solicitado, errores recuperables y ninguna exposición de tokens. Confirmar caducidad real; no inventar plazos. La falla de recuperación previa sigue separada. |
 
+## 2d. SDD-015/016 — regresión y protección de datos
+
+| # | Pasos / responsable | Resultado esperado y estado |
+|---|---|---|
+| 27 | Operator: editar una rutina con lunes y miércoles; seleccionar lunes, mover un ejercicio a miércoles, guardar, cerrar/reabrir y recargar. | La edición afecta el ejercicio/día elegido y persiste; no registra carga de una sesión por editar el plan. SDD-015 corrigió solo tests, no cambió la selección inicial del producto: puede abrir en el día actual si está en la ruta. Prueba manual pendiente. Prueba técnica de fecha real/miércoles ya PASS, sin que el Operator cambie el reloj del dispositivo. |
+| 28 | Codex: probe sintético de remoto inválido, no manipular la fila real del Operator. Probar sport vacío/posición inválida; editar una preferencia local; luego casos ausente/válido y dos dispositivos. | Remoto inválido:0POST automáticos, fila intacta, datos y edición local conservados, error legible ES/EN; retry solo habilita escritura después de lectura válida/ausente. Ausente/válido: sincronización normal. **PASS técnico ya acreditado** Chromium/WebKit, ambas bases,24casos y repetición independiente24/24; no aceptación de Safari/iPhone real. No pedir al Operator corromper su base para probarlo. [Recibo/probe](../sdd/2026-10-16-sdd016-revision/README.md). |
+
 ## 3. Pedidos previos que no se declaran resueltos en esta entrega
 
 Consultar [clasificación de feedback](UAT-2026-10-13-resultados-operator.md) y [pendientes](../PENDIENTES.md). Esta preparación no implementa:
@@ -64,11 +71,11 @@ Consultar [clasificación de feedback](UAT-2026-10-13-resultados-operator.md) y 
 - Preflight con «Otro» libre y botones Revisar/Iniciar; registro/historial de carga ejecutada por día de SDD-007.
 - Agregar ejercicios desde la tarjeta de cada día (D-12-2); ampliación/traducción del catálogo por nombres específicos, distinta de filtrar grupo «abdominales».
 - Mensaje que confirme existencia de una cuenta: no aprobar enumeración de usuarios como requisito implícito; el error genérico se evalúa aparte.
-- H-03, estadísticas desvinculadas, SDD-007/008/009, versión legal1.1 ni reparación de cuatro fixtures dependientes de miércoles. D-13-6 fue excepción acotada, no arreglo.
+- H-03, estadísticas desvinculadas, SDD-007/008/009 ni versión legal1.1. **Los cuatro casos dependientes del miércoles sí quedaron corregidos por SDD-015** y pasan con ambos relojes; D-13-6 queda como excepción histórica, no como método de verificación vigente. SDD-016 protege el remoto inválido, pero no resuelve H-03 ni la recuperación LAN→prod.
 - Publicación, proveedor SMTP activo o garantía universal de entrega/inbox.
 
 ## 4. Registro y cierre
 
 Por caso: `número · PASA/FALLA/NO PROBADO/BLOQUEADO · fecha/hora · URL sin query/hash · fuente · dispositivo/navegador/idioma · pasos · esperado · observado · evidencia sanitizada`.
 
-Capturas con correo personal, salud, tokens o enlaces de acceso quedan fuera del repo público. Versionar solo descripción sanitizada y referencia privada sin secretos. **FALLA vuelve a Spec; no se parchea durante UAT.** No cambiar producción para salvar una prueba. El Operator cierra aceptación; publicar exige una orden nueva. Ningún caso manual nuevo se marca PASA por este documento.
+Capturas con correo personal, salud, tokens o enlaces de acceso quedan fuera del repo público. Versionar solo descripción sanitizada y referencia privada sin secretos. **FALLA vuelve a Spec; no se parchea durante UAT.** No cambiar producción para salvar una prueba. El Operator cierra aceptación; publicar exige una orden nueva. Ningún caso manual nuevo se marca PASA por este documento. El PASS técnico28 se conserva separado de los resultados humanos.

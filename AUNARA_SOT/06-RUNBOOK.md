@@ -2,7 +2,7 @@
 
 ## UAT dev vigente — 2026-10-16
 
-Usar [handoff y receta aislada](handoffs/HANDOFF-2026-10-16.md) y [lista UAT26 casos con expectativas](handoffs/UAT-2026-10-16-dev-checklist.md). Servidor fuente d2ba0aa (SDD-013+014): localhost5173 y Network192.168.1.6:5173. No ejecutar la receta genérica de abajo en la carpeta canónica dirty para esta UAT. SMTP/plantillas remotas no activados; retorno LAN→prod abierto. Cada FALLA se registra y vuelve a Spec, sin hotpatch/publicación.
+Usar [lista UAT28 casos con expectativas](handoffs/UAT-2026-10-16-dev-checklist.md) y [handoff/receta histórica aislada](handoffs/HANDOFF-2026-10-16.md). Objetivo actual código devc48664b (SDD-013…016); servidor humano5173 todavía anterior, requiere orden de actualización y verificación de versión/direcciones antes de comenzar. Última LAN192.168.1.6:5173, no reinspeccionada en la actualización de lista. No ejecutar la receta genérica de abajo en el canónico dirty. SMTP/plantillas remotas no activados; retorno LAN→prod abierto. FALLA vuelve a Spec, sin hotpatch/publicación. Punto28 es probe sintético técnico ya acreditado, nunca corromper filas reales para probarlo.
 
 ## SDD-005 — dominio publicado; seguimiento Auth/PWA
 
