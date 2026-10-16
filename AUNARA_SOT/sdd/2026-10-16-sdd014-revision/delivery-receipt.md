@@ -1,5 +1,17 @@
 # SDD-014 — entrega local
 
+## Integración autorizada a dev — 2026-10-16
+
+`[AUNARA/codex · gpt-6.1-sol]` — Operator respondió **«Sí»** a integrar/subir SDD-014 a dev manteniendo SMTP pendiente. Esta autorización propia supera solo la prohibición histórica de push dev registrada abajo; no autoriza main, publicación, operación Auth/SMTP/DNS/envíos ni actualizar entorno UAT.
+
+Preflight remoto real: `origin/dev` `35b1f93363bd7e477515d49a49c4075558dad25d`, `main` `dfffa873a2a29ee1535c49149f92a734c873923d`. Desde base `61610c1`, el avance remoto contenía únicamente una nota de tests de miércoles en `PENDIENTES.md` y diez líneas del guion `handoffs/UAT-2026-10-12-dev-checklist.md` para SDD-013. Rebase privado normal, limpio y sin conflictos: entrega local original `71948e55c8d4e0992e7bbf7ea1d95135999d42cd` corresponde ahora a `9c528092b5ade4e5821b24f4c53bb8412d20beda`. Ambas aportaciones remotas conservadas; ningún archivo de producto cambia con integración.
+
+El commit documental portador de este registro acompaña el avance fast-forward normal a `refs/heads/dev`; no force-push ni movimiento de la rama dev local de otro worktree. Reproducir verificación fuente con `node AUNARA_SOT/sdd/2026-10-16-sdd014-revision/delivery-audit.mjs --head`:117/117 hashes y blobs HEAD coinciden con freeze; manifest original intacto. Diff frente a entrega aprobada fuera de SOT vacío, fuente/docs vigentes sin errores de whitespace; advertencias de logs crudos documentadas abajo preservadas, no check global inventado. Evidencia de revisión sigue vigente por identidad exacta de fuente; no nuevas suites caras ni acceso a servicios/cuentas/envs.
+
+UAT5173 y canónico intactos, siguen SDD-013/base61610c1; este push no actualiza ese proceso. SMTP y plantillas globales **no activados**. Gate remoto D14-04/05, C14-02/04/05/07, Gmail/Outlook06 y UAT/cierre humano pendientes; cuatro tests de miércoles y recuperación LAN→prod sin reparar. Sin cambio de workflows/deps, PR, deploy ni main. SHA efectivo remoto se confirma tras push y se entrega al Operator; este registro queda ligado al commit portador, no a un SHA autorreferente.
+
+## Antecedente: entrega local sin push
+
 2026-10-16 · `[AUNARA/codex · gpt-6.1-sol]` · **APPROVED LOCAL ciclo1; sin activación remota ni cierre del Operator.**
 
 Checkout aislado `/private/tmp/aunara-sdd014-candidate`, rama persistente `wip/sdd014-local-2026-10-16`, base `61610c1`. Entrega tras [revisión independiente](review-cycle1.md), no implementación ni aprobación propia por este rol. El commit que incorpora este recibo es la frontera local de entrega; consultar `git log -1` en esa rama. Ningún push, merge, cambio a dev/main ni despliegue autorizado o ejecutado.

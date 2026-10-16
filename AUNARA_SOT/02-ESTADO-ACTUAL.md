@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — SDD-014 integrado a dev por orden explícita; SMTP y UAT sin activar
+
+`[AUNARA/codex · gpt-6.1-sol]` — «Sí» del Operator autoriza integrar/subir SDD-014 **solo a dev** manteniendo SMTP pendiente. Fuente local `71948e5` rebasada limpiamente como `9c52809` sobre `origin/dev` `35b1f933`, cuyo avance era exclusivamente dos documentos SOT; ambas aportaciones preservadas. Este registro acompaña el avance fast-forward de dev, sin force-push ni cambiar la rama dev local de otro worktree. [Recibo](sdd/2026-10-16-sdd014-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16).117/117 hashes revisados y blobs HEAD idénticos; no código nuevo ni repetición de matrices costosas. Main `dfffa873a2a29ee1535c49149f92a734c873923d` preservado. Superado únicamente el pendiente de integración/push dev de abajo; no autoriza SMTP/DNS/envíos, publicación, actualizar UAT5173 ni cierre humano. UAT conserva SDD-013/base61610c1. Criterios remotos y clientes reales siguen NO EJECUTADOS; recuperación y cuatro fallos de tests de miércoles siguen abiertos.
+
 ### 2026-10-16 — SDD-014 implementado y APPROVED LOCAL; activación, integración y UAT pendientes
 
 `[AUNARA/codex · gpt-6.1-sol]` — «Dale» aprobó desarrollo local: contacto admin, soporte ES/EN y dos plantillas Auth bilingües. [Revisión independiente ciclo1](sdd/2026-10-16-sdd014-revision/review-cycle1.md): C14-01/03/08 y preview06 PASS LOCAL;72 casos Chromium/WebKit raíz/rollback,120 capturas/20 collages, contraste mínimo5.8483:1. Suite real371/25 +Sites1, base367/25 +Sites1; tipos/guardas/builds PASS sin excepción D-13-6. [Entrega local](sdd/2026-10-16-sdd014-revision/delivery-receipt.md):117 hashes intactos. Sin SMTP, envíos, DNS, push, merge ni deploy; C14-02/04/05/07 y Gmail/Outlook06 NO EJECUTADOS. Zoho/noreply reportados, capacidades no inspeccionadas. UAT5173 conserva SDD-013/base61610c1, no sirve SDD-014. Integración a dev requiere nueva orden; gate remoto, UAT/cierre humano, recuperación LAN→prod y cuatro rojos históricos siguen abiertos. Canónico/entorno UAT intactos.
