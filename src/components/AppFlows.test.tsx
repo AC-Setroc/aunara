@@ -879,6 +879,7 @@ describe("routine exercise controls", () => {
     expect(screen.queryByRole("button", { name: "Log today’s load for Jump Squat" })).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Edit routine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
     fireEvent.change(screen.getByLabelText("Training day for Jump Squat"), { target: { value: "wednesday" } });
 
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ day: "wednesday" }));

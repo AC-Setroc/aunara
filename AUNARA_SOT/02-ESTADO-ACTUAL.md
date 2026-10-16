@@ -4,6 +4,14 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — SDD-015 APPROVED técnico; cierre del Operator pendiente
+
+`[AUNARA/codex · gpt-6.1-sol]` — Supera «revisión pendiente/en curso» de las entradas anteriores: revisión independiente aprobada sobre las tres inserciones Monday de los cuatro casos autorizados. Baseline real y candidato real/miércoles: 371/371 Vitest (25 archivos) + 11/11 Node; baseline negativo miércoles: exactamente 4 FAIL. Typecheck/diff-check PASS; hashes de tests coincidentes con el recibo y runtime idéntico a `2ebb569`. [Evidencia y entrega](sdd/2026-10-16-sdd015-revision/README.md). SDD-015 implementado, pendiente de cierre humano. SDD-016 sigue sin implementar y a la espera de aprobación de su enmienda de guarda; H-03 no se declara resuelto. Entrega local exclusiva de 015, sin push/deploy por este frente; coordinación conserva el cierre documental en dev. Canónico y servidor UAT intactos.
+
+### 2026-10-16 — SDD-015 implementado en revisión; SDD-016 aprobado con enmienda de guarda pendiente
+
+`[AUNARA/codex · modelo no expuesto]` — «Implementá. Necesito que esta versión quede lista hoy» aprueba ambos SDD. Candidato aislado `/private/tmp/aunara-sdd015-016-candidate`, base2ebb569; canónico y servidor UAT intactos. SDD-015: tres selecciones Monday dentro de cuatro casos, baseline miércoles4FAIL → candidato real/miércoles371/25 + Node11 PASS; typecheck/diff PASS, revisión independiente pendiente. [Recibo](sdd/2026-10-16-sdd015-revision/README.md). SDD-016 **sin implementar**: guarda de correo incorporada en2ebb569 fija hash de useCloudSync anterior, incompatible con el fix. Enmienda propuesta en su cabecera para actualizar solo esa referencia tras revisión, preservando negativos/otros hashes; esperando aprobación explícita del Operator. No se cambia la guarda para conseguir verde ni se amplía scope tácitamente. Sin publicar.
+
 ### 2026-10-16 — Guardas de correo añadidas a npm test por orden explícita
 
 `[AUNARA/codex · modelo no expuesto]` — Operator rectifica «Dejarlo pendiente»: «Actualizá de una vez. Fue un error de click». Cambio mecánico acotado únicamente al comando test de package.json: conserva Vitest y Sites e incorpora scripts/auth-email-templates.node-test.mjs. Sin dependencias, lockfile, workflow, runtime ni activación SMTP. Esta orden supera la espera de permiso para ese comando, no aprueba SDD-015/016. Documentación/push a dev pasan a ser parte permanente del cierre por orden del Operator; ver índice SOT. Verificación de esta entrega en la bitácora.

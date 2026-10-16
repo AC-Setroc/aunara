@@ -1,7 +1,8 @@
 # SDD-015 — Cuatro pruebas independientes del día
 
-**Estado: En revisión del Operator.** 2026-10-16. `[AUNARA/codex · modelo no expuesto]`.
-Solo especificación: requiere aprobación explícita antes de desarrollar. Base inspeccionada: `dev` `999c8f6`, copia de trabajo `/private/tmp/aunara-sdd014-candidate` (no canónica). IDs 015/016 libres al buscar nombres y referencias en `AUNARA_SOT/`. Se leyeron AGENTS, metodología Personal, SOT y `operator-sdd-workflow`.
+**Estado: Implementado; APPROVED técnico independiente, pendiente de cierre del Operator.** 2026-10-16. `[AUNARA/codex · gpt-6.1-sol]`.
+Revisión independiente aprobada: candidato real y miércoles con 371/371 pruebas Vitest (25 archivos) + 11/11 Node; baseline real verde y negativo miércoles con los cuatro fallos esperados. Typecheck/diff-check PASS y runtime idéntico. [Recibo completo](2026-10-16-sdd015-revision/README.md). Supera el estado previo de desarrollo/revisión en curso; no cierra SDD-016 ni autoriza producción.
+Operator: «Implementá. Necesito que esta versión quede lista hoy» aprueba SDD-015/016. Base de desarrollo `2ebb569` en copia aislada `/private/tmp/aunara-sdd015-016-candidate`, sin tocar servidor UAT/canónico. La inspección original siguiente se preserva: `dev` `999c8f6`, copia `/private/tmp/aunara-sdd014-candidate`. IDs 015/016 libres al buscar nombres y referencias en `AUNARA_SOT/`. Se leyeron AGENTS, metodología Personal, SOT y `operator-sdd-workflow`.
 
 ## 1. Problema y resultado
 
@@ -46,11 +47,11 @@ Ejecutar baseline sin cambios de tests y candidato, con el mismo entorno/depende
 
 ## 8. Plan de entrega
 
-Aprobación del Operator → desarrollo mínimo → revisión independiente con comparación baseline/candidato → actualización de recibo/estado/pendientes/bitácora → commit local exclusivo de SDD-015. No combinar con SDD-016, no push/deploy ni tocar el runtime que sirve UAT. Esta fase solo versiona la propuesta documental, no implementación.
+Aprobación del Operator → desarrollo mínimo → revisión independiente con comparación baseline/candidato → actualización de recibo/estado/pendientes/bitácora → commit local exclusivo de SDD-015. No combinar con SDD-016 ni tocar el runtime que sirve UAT. Este frente entrega solo el commit local, sin push/deploy; la coordinación conserva la orden permanente de documentación en dev.
 
 ## 9. Decisiones del Operator
 
-Aprobar o ajustar esta selección explícita de lunes y el alcance de cuatro casos. No se solicita decisión de producto. No hay aprobación implícita por presentar el documento.
+La selección explícita de lunes y el alcance de cuatro casos fueron aprobados por la orden del Operator registrada en la cabecera. Resta su cierre; la aprobación técnica independiente no lo sustituye. No se solicita una decisión de producto adicional para SDD-015.
 
 ## 10. Definición de terminado
 

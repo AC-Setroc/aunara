@@ -17,6 +17,7 @@ function setup() {
 describe("independent manual prescriptions", () => {
   it.each([2, 3])("removes a member from %i slots without discarding surviving targets or searches", (count) => {
     const { adder, onAddStructure } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
     fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
     for (let index = 0; index < count; index += 1) {
       if (index) fireEvent.click(adder.getByRole("button", { name: "Add another exercise" }));
@@ -52,6 +53,7 @@ describe("independent manual prescriptions", () => {
   });
   it("chooses exercises before structure and keeps each target independent when going back", () => {
     const { adder, onAddStructure } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
     fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
     fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
     fireEvent.click(adder.getByRole("button", { name: "Add another exercise" }));

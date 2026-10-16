@@ -1,5 +1,13 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 SDD-015 APPROVED técnico y entrega local; falta cierre del Operator
+
+`[AUNARA/codex · gpt-6.1-sol]` — Revisión independiente aprobada, superando la entrada «en revisión» conservada debajo. Solo tres clics Monday en dos archivos cubren los cuatro casos autorizados; hashes coinciden con el recibo revisado. Baseline real verde; candidato real y miércoles 371/371 Vitest (25 archivos) + Node 11/11; negativo baseline miércoles reproduce exactamente cuatro fallos. Typecheck/diff-check PASS y runtime idéntico. [Recibo](sdd/2026-10-16-sdd015-revision/README.md). Entrega con SDD-015/recibo y SOT al día en un commit local enfocado; SDD-016 excluido del commit y sin implementar, esperando aprobación de enmienda de guarda. Sin push, merge, despliegue ni intervención de UAT/canónico por este frente. Coordinación conserva la orden permanente de documentación en dev; cierre final reservado al Operator.
+
+## 2026-10-16 · 🟡 SDD-015 desarrollado y en revisión; SDD-016 espera enmienda mínima
+
+`[AUNARA/codex · modelo no expuesto]` — Orden «Implementá» aprueba ambos SDD. En candidato aislado base2ebb569 se reprodujeron cuatro fallos de miércoles y se añadieron solo tres clics Monday en los casos autorizados. Candidato fecha real/miércoles371/25 + Node11 PASS, typecheck/diff PASS; revisión independiente en curso. [Recibo](sdd/2026-10-16-sdd015-revision/README.md). Descubierta incompatibilidad de SDD-016 con la guarda hash de useCloudSync añadida a npm test: enmienda documental propuesta y consultada al Operator, no implementada sin permiso. Servidor UAT/canónico, runtime, paquetes y producción intactos; no afirmar SDD-016 listo.
+
 ## 2026-10-16 · Guardas de correo incorporadas al comando test; decisión rectificada
 
 `[AUNARA/codex · modelo no expuesto]` — Operator aclara que «Dejarlo pendiente» fue un clic erróneo y ordena actualizar. Un único cambio en comando test de package.json añade las guardas de plantillas a los Node tests existentes, conservando Vitest/Sites; sin paquetes/lockfile/workflows ni código del producto. No activa SMTP ni aprueba specs015/016. Orden permanente documental registrada en índice SOT. Verificación local fecha real16Oct: npm test371/25 Vitest PASS + Node11/11 (10 guardas de correo y1 Sites), typecheck PASS, diff --check PASS; diff contra999c8f6 confirma lockfile/workflows/src/supabase/public intactos. No se ejecutó build ni nueva UAT: no hay cambio de cliente. Cuatro fixtures de miércoles siguen abiertos bajo SDD-015; esta corrida verde de viernes no los corrige.
