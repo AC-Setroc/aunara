@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 Enmienda mínima SDD-016 aprobada; arranca implementación aislada
+
+`[AUNARA/codex · modelo no expuesto]` — «Aprobar enmienda mínima» autoriza actualizar únicamente la referencia hash de useCloudSync a la versión revisada016, sin debilitar las guardas de correo/consentimiento. Spec016 actualizada, desarrollo fuente/unitarios y probe HTTP compilado separados tras commit01522ee411. No se declara016 aprobado técnicamente ni completo; sin cambios remotos ni producción. La pausa histórica anterior queda superada por esta decisión.
+
 ## 2026-10-16 · 🟡 SDD-015 APPROVED técnico y entrega local; falta cierre del Operator
 
 `[AUNARA/codex · gpt-6.1-sol]` — Revisión independiente aprobada, superando la entrada «en revisión» conservada debajo. Solo tres clics Monday en dos archivos cubren los cuatro casos autorizados; hashes coinciden con el recibo revisado. Baseline real verde; candidato real y miércoles 371/371 Vitest (25 archivos) + Node 11/11; negativo baseline miércoles reproduce exactamente cuatro fallos. Typecheck/diff-check PASS y runtime idéntico. [Recibo](sdd/2026-10-16-sdd015-revision/README.md). Entrega con SDD-015/recibo y SOT al día en un commit local enfocado; SDD-016 excluido del commit y sin implementar, esperando aprobación de enmienda de guarda. Sin push, merge, despliegue ni intervención de UAT/canónico por este frente. Coordinación conserva la orden permanente de documentación en dev; cierre final reservado al Operator.

@@ -1,7 +1,11 @@
 # SDD-016 — Remoto inválido sin sobrescritura
 
-**Estado: En revisión del Operator.** 2026-10-16. `[AUNARA/codex · modelo no expuesto]`.
-Solo especificación; aprobación explícita requerida antes de desarrollar. Base inspeccionada: `dev` `999c8f6`, `/private/tmp/aunara-sdd014-candidate` (no canónica). Se leyeron AGENTS, metodología Personal, SOT y `operator-sdd-workflow`; IDs 015/016 sin ocupación previa en nombres/referencias de la SOT.
+**Estado: Aprobado, incluida enmienda mínima de guarda; desarrollo en curso sobre SDD-015 revisado.** 2026-10-16. `[AUNARA/codex · modelo no expuesto]`.
+Operator: «Implementá. Necesito que esta versión quede lista hoy» aprueba SDD-015/016. Base de desarrollo `2ebb569` en `/private/tmp/aunara-sdd015-016-candidate` (no canónica ni servidor UAT). Inspección original preservada: `dev` `999c8f6`, `/private/tmp/aunara-sdd014-candidate`. Se leyeron AGENTS, metodología Personal, SOT y `operator-sdd-workflow`; IDs 015/016 sin ocupación previa en nombres/referencias de la SOT.
+
+## Enmienda mínima aprobada — guarda de SDD-014
+
+Operator responde **«Aprobar enmienda mínima»** a la consulta específica del script. `2ebb569` incorpora a npm test las guardas de correo. `scripts/auth-email-templates.node-test.mjs:21,41-42` exige el hash exacto de useCloudSync de61610c1, incompatible con el fix de este SDD. Se añade a la allowlist **solo ese script**, para actualizar únicamente su referencia de useCloudSync a la fuente corregida y revisada, con comentario de procedencia SDD-016; mantener hashes de privacidad/LegalPanel, todas las validaciones, pruebas negativas y conteos. El revisor debe calcular/contrastar el hash final por su cuenta y verificar que la mutación de consentimiento siga roja; no aceptar un hash para esconder un diff no revisado. Aclaración documental de esta transición en el recibo SDD-016, sin modificar las plantillas ni la evidencia SDD-014 original. El resto del scope/NO-TOCAR se conserva.
 
 ## 1. Problema y resultado
 

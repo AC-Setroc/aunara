@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — Enmienda SDD-016 aprobada; desarrollo y probe sintético en curso
+
+`[AUNARA/codex · modelo no expuesto]` — Operator responde «Aprobar enmienda mínima» a añadir solo referencia hash de useCloudSync en la guarda de correo al scope016. Superada la pausa por ese permiso de abajo; resto de NO-TOCAR intacto. Desarrollo016 parte del commit local015 `22ee411`, con frentes separados de fuente/unitarios y probe HTTP compilado Chromium/WebKit con Supabase sintético. Aún no revisado ni entregado016; no declarar versión completa lista. Sin aplicación remota, SMTP/cuentas/datos reales ni intervención del servidor UAT.
+
 ### 2026-10-16 — SDD-015 APPROVED técnico; cierre del Operator pendiente
 
 `[AUNARA/codex · gpt-6.1-sol]` — Supera «revisión pendiente/en curso» de las entradas anteriores: revisión independiente aprobada sobre las tres inserciones Monday de los cuatro casos autorizados. Baseline real y candidato real/miércoles: 371/371 Vitest (25 archivos) + 11/11 Node; baseline negativo miércoles: exactamente 4 FAIL. Typecheck/diff-check PASS; hashes de tests coincidentes con el recibo y runtime idéntico a `2ebb569`. [Evidencia y entrega](sdd/2026-10-16-sdd015-revision/README.md). SDD-015 implementado, pendiente de cierre humano. SDD-016 sigue sin implementar y a la espera de aprobación de su enmienda de guarda; H-03 no se declara resuelto. Entrega local exclusiva de 015, sin push/deploy por este frente; coordinación conserva el cierre documental en dev. Canónico y servidor UAT intactos.
