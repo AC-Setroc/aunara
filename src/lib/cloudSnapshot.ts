@@ -349,7 +349,15 @@ export function normalizeRepbookSnapshot(
   value: unknown,
   fallback: RepbookCloudSnapshot,
 ): RepbookCloudSnapshot {
-  if (!isRecord(value)) return fallback;
+  const result = validateRepbookSnapshot(value);
+  return result.valid ? result.snapshot : fallback;
+}
+
+export type SnapshotValidation = { valid: true; snapshot: RepbookCloudSnapshot } | { valid: false };
+
+/** Explicit boundary validation; fallback normalization keeps its original contract. */
+export function validateRepbookSnapshot(value: unknown): SnapshotValidation {
+  if (!isRecord(value)) return { valid: false };
 
   const candidate = value;
   const valid = candidate.schemaVersion === 1
@@ -365,7 +373,7 @@ export function normalizeRepbookSnapshot(
     && Array.isArray(candidate.checkIns)
     && candidate.checkIns.every(isWeeklyCheckIn);
 
-  return valid ? candidate as unknown as RepbookCloudSnapshot : fallback;
+  return valid ? { valid: true, snapshot: candidate as unknown as RepbookCloudSnapshot } : { valid: false };
 }
 
 export function selectBootstrapSnapshot(

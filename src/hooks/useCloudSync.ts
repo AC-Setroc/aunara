@@ -8,7 +8,7 @@ import type {
   VerifyAccountInput,
 } from "../components/AccessPanel";
 import {
-  normalizeRepbookSnapshot,
+  validateRepbookSnapshot,
   outboundSnapshot,
   reconcileRemoteSnapshot,
   selectBootstrapSnapshot,
@@ -171,12 +171,16 @@ export function useCloudSync({
   const onSignedOutRef = useRef(onSignedOut);
   const bootstrappedUserId = useRef<string | null>(null);
   const lastSavedSnapshot = useRef("");
+  const syncGeneration = useRef(0);
+  const currentSyncUser = useRef(user);
+  const saveTimer = useRef<number | undefined>(undefined);
   // True while the debounced save below owns the "syncing" status: set when it schedules a save, cleared when the
   // save settles or when the change is reverted before the timer fires (SDD-011 H-01).
   const debouncedSavePending = useRef(false);
   const recordedConsentIds = useRef(new Set<string>());
 
   latestSnapshot.current = snapshot;
+  currentSyncUser.current = user;
   onRemoteSnapshotRef.current = onRemoteSnapshot;
   onSignedOutRef.current = onSignedOut;
 
@@ -257,26 +261,38 @@ export function useCloudSync({
   }, [client, user]);
 
   useEffect(() => {
+    // Every existing bootstrap trigger must re-earn write eligibility, including the same user's retry.
+    const generation = ++syncGeneration.current;
+    bootstrappedUserId.current = null;
+    lastSavedSnapshot.current = "";
+    window.clearTimeout(saveTimer.current);
+    saveTimer.current = undefined;
+    debouncedSavePending.current = false;
     if (!client || !user) {
-      bootstrappedUserId.current = null;
-      lastSavedSnapshot.current = "";
       setStatus("local");
       return;
     }
 
     let active = true;
+    const isCurrentCycle = () => active && syncGeneration.current === generation && currentSyncUser.current === user;
     const store = createCloudStore(client as unknown as CloudStoreClient);
     setStatus("syncing");
     setMessage(undefined);
 
     store.load(user.id)
       .then(async (remoteValue) => {
-        if (!active) return;
+        if (!isCurrentCycle()) return;
         const local = latestSnapshot.current;
         const policy = sensitiveDataPolicy(user);
-        const remote = remoteValue
-          ? normalizeRepbookSnapshot(remoteValue, local)
-          : null;
+        const validation = remoteValue.status === "present" ? validateRepbookSnapshot(remoteValue.payload) : null;
+        if (validation && !validation.valid) {
+          setStatus("error");
+          setMessage(tr(local.language,
+            "We could not read the cloud copy. It was not overwritten. Your local data is still available on this device.",
+            "No pudimos leer la copia de la nube y no se sobrescribió. Tus datos locales siguen disponibles en este dispositivo."));
+          return;
+        }
+        const remote = validation?.valid ? validation.snapshot : null;
         const bootstrap = selectBootstrapSnapshot(local, remote && reconcileRemoteSnapshot(local, remote, policy));
 
         if (bootstrap.action === "use-remote" && remote) {
@@ -287,18 +303,20 @@ export function useCloudSync({
           const payload = outboundSnapshot(bootstrap.snapshot, policy);
           const serialized = JSON.stringify(payload);
           if (!snapshotsEqual(payload, remote)) await store.save(user.id, payload);
+          if (!isCurrentCycle()) return;
           lastSavedSnapshot.current = serialized;
         } else {
           const payload = outboundSnapshot(bootstrap.snapshot, policy);
-          lastSavedSnapshot.current = JSON.stringify(payload);
           await store.save(user.id, payload);
+          if (!isCurrentCycle()) return;
+          lastSavedSnapshot.current = JSON.stringify(payload);
         }
-        if (!active) return;
+        if (!isCurrentCycle()) return;
         bootstrappedUserId.current = user.id;
         setStatus("synced");
       })
       .catch((error: unknown) => {
-        if (!active) return;
+        if (!isCurrentCycle()) return;
         setStatus("error");
         setMessage(error instanceof Error ? error.message : "Cloud sync is unavailable.");
       });
@@ -310,6 +328,10 @@ export function useCloudSync({
 
   useEffect(() => {
     if (!client || !user || bootstrappedUserId.current !== user.id) return;
+    const generation = syncGeneration.current;
+    let active = true;
+    const isCurrentCycle = () => active && syncGeneration.current === generation
+      && currentSyncUser.current === user && bootstrappedUserId.current === user.id;
 
     const payload = outboundSnapshot(snapshot, sensitiveDataPolicy(user));
     const serialized = JSON.stringify(payload);
@@ -326,22 +348,31 @@ export function useCloudSync({
     debouncedSavePending.current = true;
     setStatus("syncing");
     const timer = window.setTimeout(() => {
+      if (!isCurrentCycle()) return;
+      saveTimer.current = undefined;
       const store = createCloudStore(client as unknown as CloudStoreClient);
       store.save(user.id, payload)
         .then(() => {
+          if (!isCurrentCycle()) return;
           lastSavedSnapshot.current = serialized;
           debouncedSavePending.current = false;
           setStatus("synced");
           setMessage(undefined);
         })
         .catch((error: unknown) => {
+          if (!isCurrentCycle()) return;
           debouncedSavePending.current = false;
           setStatus("error");
           setMessage(error instanceof Error ? error.message : "Cloud sync is unavailable.");
         });
     }, 800);
+    saveTimer.current = timer;
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      active = false;
+      window.clearTimeout(timer);
+      if (saveTimer.current === timer) saveTimer.current = undefined;
+    };
   }, [client, snapshot, user, setStatus, setMessage]);
 
   const createAccount = useCallback(async ({

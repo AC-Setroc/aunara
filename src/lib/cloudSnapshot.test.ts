@@ -8,6 +8,7 @@ import {
   withholdSensitiveData,
   createRepbookSnapshot,
   normalizeRepbookSnapshot,
+  validateRepbookSnapshot,
   selectBootstrapSnapshot,
 } from "./cloudSnapshot";
 
@@ -48,6 +49,14 @@ const checkIn: WeeklyCheckIn = {
 };
 
 describe("cloud snapshots", () => {
+  it("explicitly validates a remote identical to the local object without fallback identity heuristics", () => {
+    const local = createRepbookSnapshot({ profileName: "Synthetic", language: "en", favoriteIds: [], tracks: [track], activeTrackId: track.id, healthProfile, checkIns: [] });
+    expect(validateRepbookSnapshot(local)).toEqual({ valid: true, snapshot: local });
+    for (const invalid of [null, false, 0, "", { ...local, schemaVersion: 2 }, { ...local, healthProfile: { ...healthProfile, sport: "" } }, { ...local, tracks: [{ ...track, workout: [{ ...track.workout[0], structure: { id: "s", type: "superset", position: 2, size: 2 } }] }] }, { ...local, checkIns: [{ ...checkIn, energy: "high" }] }]) {
+      expect(validateRepbookSnapshot(invalid)).toEqual({ valid: false });
+      expect(normalizeRepbookSnapshot(invalid, local)).toBe(local);
+    }
+  });
   it.each(["invalid", null, 20])("rejects invalid repetition count %j on items and work blocks", (repetitionCount) => {
     const local = createRepbookSnapshot({ profileName: "Synthetic", language: "en", favoriteIds: [], tracks: [track], activeTrackId: track.id, healthProfile, checkIns: [] });
     for (const item of [{ ...track.workout[0], repetitionCount }, { ...track.workout[0], prescriptionMode: "special", specialPrescription: { technique: "custom", rounds: 1, restBetweenRoundsSeconds: 0, blocks: [{ id: "synthetic", type: "work", target: "reps", value: 20, repetitionCount, loadType: "same" }] } }]) {

@@ -1,6 +1,7 @@
 # SDD-016 — Remoto inválido sin sobrescritura
 
-**Estado: Aprobado, incluida enmienda mínima de guarda; desarrollo en curso sobre SDD-015 revisado.** 2026-10-16. `[AUNARA/codex · modelo no expuesto]`.
+**Estado: Implementado y APPROVED técnico; cierre del Operator pendiente.** 2026-10-16. `[AUNARA/codex · modelo no expuesto]`.
+Revisión y entrega: [recibo](2026-10-16-sdd016-revision/README.md). Suites real/miércoles396/25+Node11 PASS; HTTP24/24 por versión y repetición independiente24/24; builds raíz/rollback32 cada uno y guardas27 PASS. El coordinador completó el veredicto/entrega tras interrupción de los agentes revisor/entrega, sin haber implementado fuente ni probe. No es aceptación humana ni publicación.
 Operator: «Implementá. Necesito que esta versión quede lista hoy» aprueba SDD-015/016. Base de desarrollo `2ebb569` en `/private/tmp/aunara-sdd015-016-candidate` (no canónica ni servidor UAT). Inspección original preservada: `dev` `999c8f6`, `/private/tmp/aunara-sdd014-candidate`. Se leyeron AGENTS, metodología Personal, SOT y `operator-sdd-workflow`; IDs 015/016 sin ocupación previa en nombres/referencias de la SOT.
 
 ## Enmienda mínima aprobada — guarda de SDD-014

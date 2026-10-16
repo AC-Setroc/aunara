@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 SDD015/016 completados técnicamente; cierre humano pendiente y producción intacta
+
+`[AUNARA/codex · modelo no expuesto]` — Tras «Retomá y terminá», se recuperó resultado independiente HTTP24/24 del revisor interrumpido por límite de uso; tres hashes coinciden con candidato. Coordinador, que no implementó fuente/probe, inspecciona diff y completa revisión/entrega: nuevas suites real/miércoles396/25+Node11, tipos, build ambas bases32 y guardas27 PASS; baseline HTTP reproduce sobrescritura, candidato0POST y normalesW01verdes. [Recibo](sdd/2026-10-16-sdd016-revision/README.md) registra timeout previo resuelto sin debilitar pruebas y errores de entorno/invocación controlados. Solo siete archivos autorizados más evidencia/spec/SOT; commit016 enfocado para dev, sin main ni despliegue. SDD015 ya dev26d60a9 con CI#41SUCCESS. Canónico/servidor5173/Supabase/SMTP/DNS intactos; aceptación humana pendiente.
+
 ## 2026-10-16 · 🟡 Enmienda mínima SDD-016 aprobada; arranca implementación aislada
 
 `[AUNARA/codex · modelo no expuesto]` — «Aprobar enmienda mínima» autoriza actualizar únicamente la referencia hash de useCloudSync a la versión revisada016, sin debilitar las guardas de correo/consentimiento. Spec016 actualizada, desarrollo fuente/unitarios y probe HTTP compilado separados tras commit01522ee411. No se declara016 aprobado técnicamente ni completo; sin cambios remotos ni producción. La pausa histórica anterior queda superada por esta decisión.

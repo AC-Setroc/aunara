@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — SDD-015/016 implementados y APPROVED técnico; entrega dev, sin publicación
+
+`[AUNARA/codex · modelo no expuesto]` — SDD01522ee411 ya integrado en dev26d60a9, CI#41 SUCCESS. SDD016: lectura ausente/presente explícita y bloqueo de subidas ante remoto inválido; enmienda de guarda aplicada sin debilitar negativos. [Recibo completo](sdd/2026-10-16-sdd016-revision/README.md): suites propias real/miércoles396/25+Node11 PASS, typecheck, dos builds32, guardas27, HTTPbaseline24/candidato24 y repetición independiente24/24 con hashes coincidentes. El coordinador cerró la revisión/entrega tras límite de uso de los agentes, distinto del desarrollador de fuente/probe; incidentes de timeout/sandbox/invocación del guard registrados con controles verdes. Superadas las entradas «en desarrollo/pendiente de revisión» de abajo. Commit enfocado y push dev por orden permanente; no declarar CI final antes de consultarlo. Repo candidato `/private/tmp/aunara-sdd015-016-candidate`; canónico y servidor humano5173 conservados (este último aún fuente anterior, no usar para aceptar016). Main sigue dfffa873; SMTP/recuperación/H-03/UAT física siguen pendientes. Cierre humano reservado al Operator.
+
 ### 2026-10-16 — Enmienda SDD-016 aprobada; desarrollo y probe sintético en curso
 
 `[AUNARA/codex · modelo no expuesto]` — Operator responde «Aprobar enmienda mínima» a añadir solo referencia hash de useCloudSync en la guarda de correo al scope016. Superada la pausa por ese permiso de abajo; resto de NO-TOCAR intacto. Desarrollo016 parte del commit local015 `22ee411`, con frentes separados de fuente/unitarios y probe HTTP compilado Chromium/WebKit con Supabase sintético. Aún no revisado ni entregado016; no declarar versión completa lista. Sin aplicación remota, SMTP/cuentas/datos reales ni intervención del servidor UAT.

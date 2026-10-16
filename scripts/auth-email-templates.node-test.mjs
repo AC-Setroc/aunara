@@ -16,9 +16,11 @@ const files = [
 ];
 // SHA-256 of immutable source contracts at approved base 61610c1. No Git-history
 // dependency: these checks also run in a source archive or a shallow clone.
+// SDD-016 approved amendment: only useCloudSync's hash advances to the fail-closed sync gate;
+// Auth/consent behavior remains under independent diff review and the existing negative guards.
 const baselineHashes = {
   "src/lib/privacy.ts": "2c7ed232f740e5e7932cc81a4f4ba87a01e3c549ba1972b8150be7872817dc25",
-  "src/hooks/useCloudSync.ts": "c977db60872384df136bef879a4bdf95af336bd9d90201ef52c2d1623e572afd",
+  "src/hooks/useCloudSync.ts": "8bf75a022a17f17731a2aea59354c806ea884dd2d8a300b06dc19e1e4d9536f1",
   "src/components/LegalPanel.tsx": "142e3355e457312224759f6b9ec17f7e942ff9c09a4b18fd739283d22d0207f9",
 };
 const hash = (value) => createHash("sha256").update(value).digest("hex");

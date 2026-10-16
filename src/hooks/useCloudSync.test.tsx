@@ -2,7 +2,7 @@
 
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { StrictMode } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createRepbookSnapshot } from "../lib/cloudSnapshot";
 import { passwordRecoverySignalFor, type supabaseClient } from "../lib/supabaseClient";
 
@@ -165,7 +165,7 @@ beforeEach(() => {
   passwordRecoverySignalFor(testClient).clear();
   vi.clearAllMocks();
   authStateHandler = undefined;
-  load.mockResolvedValue(null);
+  load.mockResolvedValue({ status: "absent" });
   save.mockResolvedValue(undefined);
   signUp.mockResolvedValue({
     data: {
@@ -187,6 +187,194 @@ beforeEach(() => {
   resetPasswordForEmail.mockResolvedValue({ data: {}, error: null });
   updateUser.mockResolvedValue({ data: { user: null }, error: null });
   invoke.mockResolvedValue({ data: {}, error: null });
+});
+
+describe("remote validation gate (SDD-016)", () => {
+  const user = (id = "user-a") => ({ id, email: `${id}@example.invalid`, user_metadata: { health_data_consent: "granted" } });
+  const present = (payload: unknown) => ({ status: "present", payload });
+  const invalidPayloads: [string, unknown][] = [
+    ["empty sport", { ...snapshot, healthProfile: { ...snapshot.healthProfile, sport: "" } }],
+    ["structure position at size", { ...snapshot, tracks: [{ id: "track", name: "Track", kind: "goal", focus: "strength", equipment: "bodyweight", sessionMinutes: 45, daysPerWeek: 3, workout: [{ exerciseId: "0514", sets: 3, reps: 10, structure: { id: "s", type: "superset", position: 2, size: 2 } }] }] }],
+    ["null", null], ["false", false], ["zero", 0], ["empty string", ""],
+    ["unknown version", { ...snapshot, schemaVersion: 2 }],
+    ["nested invalid", { ...snapshot, checkIns: [{ id: "ci", date: "2026-10-16", energy: "high" }] }],
+  ];
+  const tick = async () => { await act(async () => { await vi.advanceTimersByTimeAsync(1000); }); };
+  const emit = async (id = "user-a") => { await act(async () => { authStateHandler?.("USER_UPDATED", { user: user(id) }); }); };
+  function mount(local = snapshot) {
+    const onRemote = vi.fn();
+    const hook = renderHook(({ value }) => useCloudSync({ snapshot: value, onRemoteSnapshot: onRemote, client: testClient }), { initialProps: { value: local } });
+    return { ...hook, onRemote };
+  }
+  beforeEach(() => { vi.useFakeTimers(); });
+  afterEach(() => { vi.useRealTimers(); });
+
+  it.each(invalidPayloads)("blocks %s through local edits, debounce and clearAuthError", async (_name, payload) => {
+    load.mockResolvedValue(present(payload));
+    const localBefore = JSON.stringify(snapshot);
+    const h = mount();
+    await emit();
+    expect(h.result.current.status).toBe("error");
+    expect(h.result.current.message).toContain("no se sobrescribió");
+    expect(h.onRemote).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+    act(() => h.result.current.clearAuthError());
+    h.rerender({ value: { ...snapshot, profileName: "Local edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).not.toHaveBeenCalled();
+    expect(h.onRemote).not.toHaveBeenCalled();
+    expect(JSON.stringify(snapshot)).toBe(localBefore);
+  });
+
+  it("uses neutral English copy, not a guessed corruption or version cause", async () => {
+    load.mockResolvedValue(present(null));
+    const h = mount({ ...snapshot, language: "en" });
+    await emit();
+    expect(h.result.current.message).toBe("We could not read the cloud copy. It was not overwritten. Your local data is still available on this device.");
+  });
+
+  it("accepts a valid identical local object and a genuinely absent row", async () => {
+    load.mockResolvedValueOnce(present(snapshot));
+    const h = mount();
+    await emit();
+    expect(h.result.current.status).toBe("synced");
+    expect(h.onRemote).toHaveBeenCalledWith(snapshot);
+    expect(save).not.toHaveBeenCalled();
+    load.mockResolvedValueOnce({ status: "absent" });
+    await emit();
+    expect(save).toHaveBeenCalledExactlyOnceWith("user-a", snapshot);
+    expect(h.result.current.status).toBe("synced");
+  });
+
+  it("keeps local data and blocks edits after a transport error", async () => {
+    load.mockRejectedValueOnce(new Error("transport unavailable"));
+    const h = mount();
+    await emit();
+    h.rerender({ value: { ...snapshot, profileName: "Local edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(h.result.current.message).toBe("transport unavailable");
+    expect(h.onRemote).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+  });
+
+  it("closes a successful cycle and cancels its pending timer before a rejected rebootstrap", async () => {
+    load.mockResolvedValueOnce(present(snapshot));
+    const h = mount();
+    await emit();
+    expect(h.result.current.status).toBe("synced");
+    h.rerender({ value: { ...snapshot, profileName: "Pending edit" } });
+    expect(h.result.current.status).toBe("syncing");
+    load.mockResolvedValue(present(null));
+    await emit();
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).not.toHaveBeenCalled();
+    h.rerender({ value: { ...snapshot, profileName: "Another edit" } });
+    await tick();
+    expect(save).not.toHaveBeenCalled();
+    expect(h.onRemote).toHaveBeenCalledTimes(1);
+  });
+
+  it("blocks while retry is pending, stays blocked on invalid retry, then recovers on valid retry", async () => {
+    load.mockResolvedValue(present(null));
+    const h = mount();
+    await emit();
+    let resolve!: (value: unknown) => void;
+    load.mockReturnValueOnce(new Promise(done => { resolve = done; }));
+    await emit();
+    h.rerender({ value: { ...snapshot, profileName: "Pending retry edit" } });
+    await tick();
+    expect(save).not.toHaveBeenCalled();
+    await act(async () => { resolve(present(null)); });
+    expect(h.result.current.status).toBe("error");
+    await emit();
+    expect(h.result.current.status).toBe("error");
+    load.mockResolvedValueOnce(present({ ...snapshot, profileName: "Valid remote" }));
+    await emit();
+    expect(h.result.current.status).toBe("synced");
+    expect(h.onRemote).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ profileName: "Valid remote" }));
+    h.rerender({ value: { ...snapshot, profileName: "Recovered edit" } });
+    await tick();
+    expect(save).toHaveBeenCalledExactlyOnceWith("user-a", expect.objectContaining({ profileName: "Recovered edit" }));
+  });
+
+  it("isolates blocked A → working B → blocked A without inherited data or eligibility", async () => {
+    load.mockResolvedValueOnce(present(null));
+    const h = mount();
+    await emit("user-a");
+    expect(h.result.current.status).toBe("error");
+    const localB = { ...snapshot, profileName: "Device B" };
+    h.rerender({ value: localB });
+    load.mockResolvedValueOnce({ status: "absent" });
+    await emit("user-b");
+    expect(h.result.current.status).toBe("synced");
+    expect(save).toHaveBeenCalledExactlyOnceWith("user-b", localB);
+    h.rerender({ value: { ...localB, profileName: "B pending" } });
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-a");
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(h.onRemote).not.toHaveBeenCalled();
+  });
+
+  it("ignores a late read of A while B is blocked", async () => {
+    let resolveA!: (value: unknown) => void;
+    load.mockReturnValueOnce(new Promise(done => { resolveA = done; }));
+    const h = mount();
+    await emit("user-a");
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-b");
+    await act(async () => { resolveA(present(snapshot)); });
+    h.rerender({ value: { ...snapshot, profileName: "B edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).not.toHaveBeenCalled();
+    expect(h.onRemote).not.toHaveBeenCalled();
+  });
+
+  it("ignores an already-sent A save completing after B rejects its remote", async () => {
+    let resolveSave!: () => void;
+    save.mockReturnValueOnce(new Promise<void>(done => { resolveSave = done; }));
+    const h = mount();
+    await emit("user-a");
+    expect(save).toHaveBeenCalledTimes(1);
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-b");
+    await act(async () => { resolveSave(); });
+    h.rerender({ value: { ...snapshot, profileName: "B edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(save.mock.calls[0][0]).toBe("user-a");
+  });
+
+  it.each(["resolve", "reject"] as const)("ignores an already-sent A debounce %s after B rejects its remote", async (completion) => {
+    load.mockResolvedValueOnce(present(snapshot));
+    const h = mount();
+    await emit("user-a");
+    let resolveSave!: () => void;
+    let rejectSave!: (error: Error) => void;
+    save.mockReturnValueOnce(new Promise<void>((resolve, reject) => { resolveSave = resolve; rejectSave = reject; }));
+    h.rerender({ value: { ...snapshot, profileName: "A pending" } });
+    await tick();
+    expect(save).toHaveBeenCalledTimes(1);
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-b");
+    const blockedMessage = h.result.current.message;
+    await act(async () => {
+      if (completion === "resolve") resolveSave();
+      else rejectSave(new Error("stale A failure"));
+    });
+    expect(h.result.current.status).toBe("error");
+    expect(h.result.current.message).toBe(blockedMessage);
+    h.rerender({ value: { ...snapshot, profileName: "B edit" } });
+    await tick();
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(save.mock.calls[0][0]).toBe("user-a");
+  });
 });
 
 describe("password account access", () => {
@@ -317,7 +505,7 @@ describe("password account access", () => {
     act(() => authStateHandler?.("SIGNED_IN", { user: { id: "test-user", email: account.email } }));
     act(() => result.current.clearAuthError());
     expect(result.current.status).toBe("syncing");
-    await act(async () => { request.resolve(snapshot); });
+    await act(async () => { request.resolve({ status: "present", payload: snapshot }); });
     await waitFor(() => expect(result.current.status).toBe("synced"));
     const calls = remote.mock.calls.length;
     act(() => result.current.clearAuthError());
@@ -362,7 +550,7 @@ describe("password account access", () => {
 
     it("uploads health data and check-ins only with granted consent", async () => {
       for (const [consent, expectsData] of [["granted", true], ["declined", false], ["revoked", false], [undefined, false]] as const) {
-        vi.clearAllMocks(); load.mockResolvedValue(null); save.mockResolvedValue(undefined);
+        vi.clearAllMocks(); load.mockResolvedValue({ status: "absent" }); save.mockResolvedValue(undefined);
         const { result, unmount } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: vi.fn(), client: testClient }));
         await waitFor(() => expect(authStateHandler).toBeDefined());
         act(() => authStateHandler?.("SIGNED_IN", { user: userWith(consent) }));
@@ -379,7 +567,7 @@ describe("password account access", () => {
 
     it("keeps the device's health data when the remote arrives without consent, then cleans the server copy", async () => {
       const remote = { ...sensitive, profileName: "Otro", healthProfile: { ...sensitive.healthProfile, healthNotes: "subido antes del fix" } };
-      load.mockResolvedValue(remote);
+      load.mockResolvedValue({ status: "present", payload: remote });
       const onRemote = vi.fn();
       const { result } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: onRemote, client: testClient }));
       await waitFor(() => expect(authStateHandler).toBeDefined());
@@ -413,7 +601,7 @@ describe("password account access", () => {
       expect(lastSaved().healthProfile.experience).toBe("intermediate");
       const savesAfterRevoke = save.mock.calls.length;
 
-      load.mockResolvedValue(lastSaved());
+      load.mockResolvedValue({ status: "present", payload: lastSaved() });
       act(() => authStateHandler?.("USER_UPDATED", { user: userWith("granted") }));
       await waitFor(() => expect(save.mock.calls.length).toBeGreaterThan(savesAfterRevoke), { timeout: 3000 });
       await waitFor(() => expect(result.current.status).toBe("synced"));
