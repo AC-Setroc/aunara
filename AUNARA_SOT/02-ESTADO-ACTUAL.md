@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — Guardas de correo añadidas a npm test por orden explícita
+
+`[AUNARA/codex · modelo no expuesto]` — Operator rectifica «Dejarlo pendiente»: «Actualizá de una vez. Fue un error de click». Cambio mecánico acotado únicamente al comando test de package.json: conserva Vitest y Sites e incorpora scripts/auth-email-templates.node-test.mjs. Sin dependencias, lockfile, workflow, runtime ni activación SMTP. Esta orden supera la espera de permiso para ese comando, no aprueba SDD-015/016. Documentación/push a dev pasan a ser parte permanente del cierre por orden del Operator; ver índice SOT. Verificación de esta entrega en la bitácora.
+
 ### 2026-10-16 — Diagnóstico999c8f6 leído; specs015/016 en revisión, sin fix antes del gate
 
 `[AUNARA/codex · modelo no expuesto]` — Orden del Operator: tests de miércoles primero, spec remoto rechazado segundo, pedir orden para guardas de correo en npm test y conservar harness como base ciclo3. Remoto dev999c8f6 integrado por fast-forward solo documental/evidencia en candidato aislado, sin cambiar aplicación ni servidor. Reproducción Mac: fecha real371/25 + Sites1 PASS; miércoles controlado367 PASS/4 FAIL exactos. [SDD-015](sdd/SDD-015-tests-independientes-del-dia.md) y [SDD-016](sdd/SDD-016-remoto-invalido-sin-sobrescritura.md) en revisión del Operator. [Base ciclo3 e inventario](sdd/2026-10-16-uat-dev-revision/CICLO-3-BASE.md): harness ya versionado, placeholders/rutas históricas requieren preparación, no se afirma ciclo3 ejecutado. Sin corregir SDD-012/013/014, package.json, runtime, remoto ni main. Specs pendientes de aprobación explícita antes del fix.

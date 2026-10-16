@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · Guardas de correo incorporadas al comando test; decisión rectificada
+
+`[AUNARA/codex · modelo no expuesto]` — Operator aclara que «Dejarlo pendiente» fue un clic erróneo y ordena actualizar. Un único cambio en comando test de package.json añade las guardas de plantillas a los Node tests existentes, conservando Vitest/Sites; sin paquetes/lockfile/workflows ni código del producto. No activa SMTP ni aprueba specs015/016. Orden permanente documental registrada en índice SOT. Verificación local fecha real16Oct: npm test371/25 Vitest PASS + Node11/11 (10 guardas de correo y1 Sites), typecheck PASS, diff --check PASS; diff contra999c8f6 confirma lockfile/workflows/src/supabase/public intactos. No se ejecutó build ni nueva UAT: no hay cambio de cliente. Cuatro fixtures de miércoles siguen abiertos bajo SDD-015; esta corrida verde de viernes no los corrige.
+
 ## 2026-10-16 · 🟡 Diagnóstico recibido; baseline confirmado y specs de tests/sync pendientes de aprobación
 
 `[AUNARA/codex · modelo no expuesto]` — Leído diagnóstico Claude de dev999c8f6; sin defectos bloqueantes automatizables y sin correcciones a SDD-012/013/014. Reproducción sin alterar código: npm test371/25 + Sites1 PASS en fecha real; NODE_OPTIONS con wednesday-clock367 PASS/4FAIL exactos. Specs separadas015/016, gate explícito antes de fix; guardas de correo en npm test esperan orden. [Base congelada ciclo3](sdd/2026-10-16-uat-dev-revision/CICLO-3-BASE.md): seis archivos ya versionados, checks sintácticos MJS PASS; receta shell con placeholders FALLA y rutas de host no portables, documentadas sin cambios silenciosos. No ejecución nueva Chromium/WebKit ni cierre humano, cambios de runtime o publicación.
