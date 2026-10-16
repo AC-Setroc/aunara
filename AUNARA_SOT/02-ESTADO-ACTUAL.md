@@ -1,8 +1,12 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-15. Origen de actualización: `[AUNARA/codex · gpt-6.1-sol]`; se preservan las entradas previas como historia.
+Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex · gpt-6.1-sol]`; se preservan las entradas previas como historia.
 
 ## Verificado
+
+### 2026-10-16 — Integración de SDD-013 en dev autorizada; UAT pendiente de levantar/verificar
+
+`[AUNARA/codex · gpt-6.1-sol]` — Operator respondió **«Sí»** a integrar/subir `ccce932` a `dev` y levantar UAT, **sin producción**. Preflight remoto real: `dev` en `41fa9d9`, ancestro del candidato; `main` en `dfffa873a2a29ee1535c49149f92a734c873923d`. Integración por fast-forward normal de la ascendencia aprobada más este registro documental, sin cherry-pick, cambios de producto ni mover la rama local `dev` de otro worktree. Ocho hashes SHA256 de fuente/tests idénticos a `ccce932` y al manifest APPROVED. [Recibo de integración](sdd/2026-10-13-sdd013-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16). La prohibición anterior de push queda superada **solo para dev**; no autoriza main, deploy ni cierre humano. Puesta en marcha y verificación HTTP/UI UAT a cargo del frente principal, todavía no acreditadas por este recibo. Recuperación LAN→prod y cuatro pruebas dependientes del día siguen abiertas; no se afirma suite normal verde ni aceptación iPhone/Safari físico.
 
 ### 2026-10-15 — SDD-013 implementado y APPROVED técnico; UAT/cierre del Operator pendientes
 
@@ -151,6 +155,8 @@ Fecha de actualización: 2026-10-15. Origen de actualización: `[AUNARA/codex ·
 - [SDD-010](sdd/SDD-010-compliance-docs-aunara.md) **implementado y revisado**: los cinco docs de `docs/compliance/` describen Aunara, GitHub Pages, `aunaratraining.com` y GoDaddy, con sección «Cambios desde la versión 1.0» y decisión de versión explícitamente pendiente. Panel de tres lentes con contexto limpio: Correctitud y Regresión APRUEBAN en ciclo 1; Seguridad rechazó una frase (afirmaba que el texto aceptado no cambió; `4a17378` cambió la marca en 18 líneas del aviso), corregida en ciclo 2 y APRUEBA. Entregado en `dev`. Cierre del Operator ejecutado en navegador: producción muestra v1.0 y aún «OpenAI Sites», como exigía el paso 6. Enmienda 2 aplicada: el inventario dice que GitHub no recibe datos de cuenta ni perfil pero sí IP y agente de usuario del visitante, con logs no verificados. SDD-010 **cerrado**; quedan fuera por diseño la versión legal y la publicación de SDD-002.
 
 ## Próxima acción
+
+**Vigente al 2026-10-16:** `[AUNARA/codex · gpt-6.1-sol]` — Completar el push normal autorizado exclusivamente a `dev` y confirmar su SHA remoto; el frente principal levanta/verifica UAT sobre la fuente aprobada antes de entregar URL al Operator. No usar una preview antigua como evidencia de SDD-013. Después, Operator prueba iPhone/Safari y cierra visualmente; recuperación LAN→prod se diagnostica aparte. La autorización de integración/arranque ya fue concedida y supera ese gate del 15Oct; no concede cierre humano ni publicación. Este frente no inicia servidor ni altera el canónico dirty o el antiguo entorno UAT.
 
 **Vigente al 2026-10-15:** `[AUNARA/codex · gpt-6.1-sol]` — Operator revisa la entrega técnica de SDD-013 y decide integración/actualización del entorno UAT mediante orden nueva; después retomar UAT iPhone/Safari real y cerrar visualmente. No se cambió la preview abierta. Diagnóstico separado del retorno de recuperación LAN→prod, sin tocar Auth/SMTP/Supabase por suposición. Especificar aparte las cuatro pruebas antiguas dependientes del día; D-13-6 no las corrige. Dos filas Inicio tienen acciones distintas preservadas (rutas/ancla), observación UX para Operator, no autofix. Publicación requiere orden explícita posterior. El plan anterior siguiente permanece como antecedente; sus puntos de aprobación/presentación visual se actualizan por esta entrega, no por cierre humano.
 

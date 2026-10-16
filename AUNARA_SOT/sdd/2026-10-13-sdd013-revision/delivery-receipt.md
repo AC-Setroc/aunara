@@ -38,3 +38,15 @@ NO-TOCAR intacto: Auth/hooks/lib/storage, recuperación/mail/SMTP/DNS/Supabase, 
 ## Pendiente del Operator
 
 UAT visual y Safari/iPhone físico diferidos; cierre humano no concedido. Dos filas Inicio mantienen rutas y ancla distintas por contrato; observación UX, no eliminación unilateral. Autorizar integración/actualización de entorno por orden separada. Diagnosticar retorno de recuperación LAN→producción sin causa aún confirmada. Corregir aparte las cuatro pruebas dependientes del día con su propia especificación/aprobación. Publicación requiere nueva autorización expresa.
+
+## Integración autorizada a dev — 2026-10-16
+
+`[AUNARA/codex · gpt-6.1-sol]` — Nueva orden explícita del Operator: **«Sí» a integrar/subir `ccce932` a dev y levantar UAT, sin producción**. Supera la prohibición de push/actualización de entorno de la entrega del 15Oct únicamente en ese alcance. No concede aceptación humana ni permiso sobre main, Pages o producción.
+
+Preflight remoto real mediante `git ls-remote`: `refs/heads/dev` = `41fa9d9c3ae7d87f33bf216ebbaa83fc3b6b4668`, `refs/heads/main` = `dfffa873a2a29ee1535c49149f92a734c873923d`. `dev` remoto es ancestro de `ccce9326cf8416f40be6517a0a01d73fe4e34d58`; integración por fast-forward de esa misma ascendencia y un commit documental enfocado. Push normal autorizado: `HEAD:refs/heads/dev`, sin force y con detención ante divergencia. No se mueve `refs/heads/dev` local (`89e2fc1cdc65c086a2d40055794abe3da5f1e591`), usado por otro worktree.
+
+El commit de esta iteración toca exclusivamente `02-ESTADO-ACTUAL.md`, `03-HISTORIA-Y-BACKLOG.md`, `PENDIENTES.md` y este recibo; fuente completa de producto, pruebas, dependencias, activos y configuración idéntica a `ccce932`. Ocho hashes comprobados antes/después contra el manifest final; enlaces y `git diff --check` verificados. No se incorpora ninguna especificación concurrente ni se gestionan correo/SMTP, Auth, Supabase o datos. No se repiten suites pesadas sobre fuente inmutable; D-13-6 y sus cuatro fallos reales abiertos conservan exactamente su alcance.
+
+La confirmación del SHA de dev después del push y de main intacto se entrega en el reporte de esta orden; el HEAD documental se identifica mediante `git log -1` de esta rama de entrega. La configuración CI leída escucha push a main/codex y PR a main, no push directo dev; los efectos reales se consultan sin modificar workflows ni PRs. No se afirma CI verde si no ejecutó.
+
+**Runtime pendiente del frente principal:** este agente no inicia servidor, no toca env ni actualiza previews, canónico dirty o `/private/tmp/aunara-uat-20261013-dev`; no acredita HTTP, interacción UI ni acceso LAN. El principal coordina el entorno autorizado y el Operator realiza UAT iPhone/Safari real y cierre. Recuperación LAN→prod y corrección separada de las cuatro pruebas dependientes del día siguen pendientes; publicación requiere otra orden expresa.

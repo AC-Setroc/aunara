@@ -1,8 +1,10 @@
 # Pendientes — Aunara
 
-Fecha de corte: 2026-10-15. Origen de actualización: `[AUNARA/codex · gpt-6.1-sol]`; las entradas anteriores se preservan como antecedentes.
+Fecha de corte: 2026-10-16. Origen de actualización: `[AUNARA/codex · gpt-6.1-sol]`; las entradas anteriores se preservan como antecedentes.
 
 ## Abiertos
+
+- `[AUNARA/codex · gpt-6.1-sol]` — 2026-10-16: **integración/push a dev y arranque UAT autorizados por «Sí» del Operator**, fuente aprobada `ccce932` sin cambios. Superado únicamente el pedido anterior de autorización de integración/entorno. El frente principal debe levantar y verificar runtime/HTTP/UI antes de presentar UAT; este frente documental no acredita esas comprobaciones. Confirmación del SHA remoto y alcance en [recibo](sdd/2026-10-13-sdd013-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16). Siguen abiertos UAT/cierre humano iPhone-Safari, recuperación LAN→prod y cuatro pruebas antiguas dependientes del día bajo D-13-6. No hay permiso para publicar a main/producción ni tocar Auth/SMTP/Supabase, datos o configuración en esta integración.
 
 - `[AUNARA/codex · gpt-6.1-sol]` — 2026-10-15: **SDD-013 APPROVED técnico, cierre del Operator pendiente**. [Revisión final](sdd/2026-10-13-sdd013-revision/review-cycle2.md) y [entrega](sdd/2026-10-13-sdd013-revision/delivery-receipt.md). D-13-1/2/3 aprobadas el 14Oct e implementadas en candidato aislado; se supera únicamente el pedido anterior de aprobar alcance/preparar visual. Decidir integración y actualización del entorno mediante orden nueva; UAT iPhone/Safari real sigue diferida, no PASS. D-13-4 recuperación LAN→prod permanece FALLA sin causa raíz confirmada; no tocar Auth/SMTP/infra. Aceptación visual del menú/wordmark/opcional/footer pendiente; dos filas Inicio conservan rutas y ancla distintas, observación UX para Operator. Sin push/publicación.
 

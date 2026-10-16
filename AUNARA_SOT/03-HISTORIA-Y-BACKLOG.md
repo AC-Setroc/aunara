@@ -2,6 +2,10 @@
 
 Entradas más recientes arriba; no reescribir entradas previas.
 
+## 2026-10-16 · 🟡 Integración de SDD-013 a dev autorizada; UAT/runtime y cierre humano pendientes
+
+`[AUNARA/codex · gpt-6.1-sol]` — Operator dio «Sí» a integrar/subir `ccce932` a dev y levantar UAT sin producción. Se prepara fast-forward remoto desde `41fa9d9`, sin reescribir historia, con un commit exclusivamente documental encima de la entrega técnica. Ocho SHA256 iguales a `ccce932`/manifest final; revisión APPROVED y evidencia previa conservadas, sin repetir suites pesadas ni declarar verde la suite con fecha real. Preflight main remoto `dfffa873a2a29ee1535c49149f92a734c873923d`, preservado. [Recibo de integración](sdd/2026-10-13-sdd013-revision/delivery-receipt.md#integración-autorizada-a-dev--2026-10-16). Runtime UAT a cargo del frente principal, no acreditado aquí; sin servidor iniciado, canónico/UAT antiguo ni rama dev local de otro worktree modificados. Sin publicación, Auth/SMTP ni cierre humano; cuatro fallos weekday y recuperación pendientes.
+
 ## 2026-10-15 · 🟡 SDD-013 implementado y APPROVED técnico; UAT/cierre humano pendientes
 
 `[AUNARA/codex · gpt-6.1-sol]` — Entrega independiente del menú lateral, wordmark móvil, opcional sin recuadro y footer en candidato aislado sobre `549b100`; ocho fuentes/tests iguales por SHA256 al manifest de [revisión final ciclo2](sdd/2026-10-13-sdd013-revision/review-cycle2.md). Cuatro matrices393/393 (12 casos cada una), 96 superficies visuales, seis regresiones276/84/42/84/156/52 por motor,16 negativos/restaurados, tipos/directorio4/guards27/artifact32 por base PASS. Unitarios367/25 + Sites1 y baseline363 + Sites1 **con lunes controlado**, bajo D-13-6 explícitamente aprobada el 15Oct; cuatro fallos antiguos con fecha real continúan rojos y abiertos aparte. [Recibo de entrega](sdd/2026-10-13-sdd013-revision/delivery-receipt.md). Documentación vigente actualizada sin reescribir historia, NO-TOCAR intacto y un commit local enfocado. Canónico dirty y UAT abierta no modificados, sin integración a dev, push ni deploy. Operator conserva cierre/UAT iPhone-Safari; recuperación LAN→prod pendiente sin causa confirmada.
