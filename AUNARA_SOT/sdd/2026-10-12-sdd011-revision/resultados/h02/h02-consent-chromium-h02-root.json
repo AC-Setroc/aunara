@@ -1,0 +1,52 @@
+{
+  "build": "h02-root",
+  "browser": "chromium",
+  "summary": "9/9 PASS",
+  "rows": [
+    {
+      "name": "S11-06 consentimiento=granted → POST con datos sensibles",
+      "pass": true,
+      "detail": "saves=1 notes=\"nota de salud sintética\" height=180 checkIns=1 prefs=true errors="
+    },
+    {
+      "name": "S11-06 consentimiento=declined → POST sin datos sensibles",
+      "pass": true,
+      "detail": "saves=1 notes=\"\" height=null checkIns=0 prefs=true errors="
+    },
+    {
+      "name": "S11-06 consentimiento=revoked → POST sin datos sensibles",
+      "pass": true,
+      "detail": "saves=1 notes=\"\" height=null checkIns=0 prefs=true errors="
+    },
+    {
+      "name": "S11-06 consentimiento=null → POST sin datos sensibles",
+      "pass": true,
+      "detail": "saves=1 notes=\"\" height=null checkIns=0 prefs=true errors="
+    },
+    {
+      "name": "S11-06 legacy: fila remota con salud + declined → servidor limpiado en el arranque, salud local intacta, resto del remoto aplicado",
+      "pass": true,
+      "detail": "saves=1 remoteNotes=\"\" exportNotes=\"nota de salud sintética\" name=\"Otro dispositivo\" errors="
+    },
+    {
+      "name": "S11-07 declined + remoto sin salud → recarga conserva salud local, cero guardados redundantes",
+      "pass": true,
+      "detail": "savesBootstrap=0 savesAfterReload=0 exportNotes=\"nota de salud sintética\" height=180 errors="
+    },
+    {
+      "name": "S11-07b declined + fila de cliente viejo sin salud → una sola normalización, salud local intacta, cero guardados tras recargar",
+      "pass": true,
+      "detail": "savesFirst=1 savesAfterReload=1 exportNotes=\"nota de salud sintética\" errors="
+    },
+    {
+      "name": "S11-08 granted → revocar: servidor y dispositivo sin datos sensibles, preferencias intactas → autorizar: modo personalizado, servidor = dispositivo",
+      "pass": true,
+      "detail": "uploaded=true serverCleaned=true localCleaned=true regranted=true saves=5 errors="
+    },
+    {
+      "name": "S11-08b segundo dispositivo con datos + granted + remoto sin salud → conserva y restaura el servidor",
+      "pass": true,
+      "detail": "saves=1 remoteNotes=\"nota de salud sintética\" exportNotes=\"nota de salud sintética\" errors="
+    }
+  ]
+}

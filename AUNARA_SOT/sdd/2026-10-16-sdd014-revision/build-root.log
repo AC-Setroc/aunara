@@ -1,0 +1,18 @@
+
+> repbook@0.1.0 build
+> npm run check:exercise-directory && tsc -b && vite build && node scripts/prepare-sites-dist.mjs
+
+
+> repbook@0.1.0 check:exercise-directory
+> node scripts/build-bilingual-exercise-directory.mjs --check
+
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 1850 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   1.72 kB │ gzip:  0.66 kB
+dist/assets/index-Da7VJzlI.css  105.43 kB │ gzip: 18.39 kB
+dist/assets/index-DiDj00uA.js   193.59 kB │ gzip: 61.19 kB
+dist/assets/App-Cl4MIoyI.js     252.59 kB │ gzip: 74.40 kB
+
+✓ built in 407ms

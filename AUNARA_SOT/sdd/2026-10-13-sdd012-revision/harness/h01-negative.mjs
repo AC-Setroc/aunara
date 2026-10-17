@@ -1,0 +1,21 @@
+// Recovery probe: after the rapid en→es switch leaves status stuck in "syncing", does a later snapshot change recover it?
+import { startServer, stopServers, launch, installSyntheticSupabase, syntheticSession, syntheticUser, setLanguageViaMenu } from "./lib.mjs";
+const BUILDS = new URL("../builds/", import.meta.url).pathname;
+const url = await startServer(4379, "/", `${BUILDS}${process.env.BUILD ?? "e4-root"}`);
+const browser = await launch();
+const PROFILE = JSON.stringify({ onboardingCompleted: true, initialRoutineDecision: "rejected", primaryGoal: "strength", equipmentPreference: "mixed", trainingDaysPerWeek: 3, sessionMinutes: 45, birthDate: "", ageYears: null, metabolicSex: "unspecified", heightCm: null, currentWeightKg: null, targetWeightKg: null, waistCm: null, activityLevel: "moderate", experience: "beginner", dietaryPattern: "omnivore", nutritionPlanMode: "simple", macroMealsPerDay: 4, allergies: "", healthNotes: "", readinessScreen: { confirmed: false, chestPain: false, dizzinessOrFainting: false, medicallySupervisedOnly: false, musculoskeletalConcern: false }, limitations: [] });
+const user = syntheticUser({ user_metadata: { health_data_consent: "declined" } });
+const seed = `localStorage.setItem("repbook-language", '"es"'); localStorage.setItem("aunara-storage-notice-v1", "1"); localStorage.setItem("repbook-health-profile", ${JSON.stringify(PROFILE)}); localStorage.setItem("repbook-training-tracks-initialized", "true"); localStorage.setItem("sb-synthetic-auth-token", ${JSON.stringify(JSON.stringify(syntheticSession(user)))});`;
+const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "es-CO", serviceWorkers: "block" });
+await context.addInitScript(seed); const log = []; await installSyntheticSupabase(context, { log });
+const page = await context.newPage();
+await page.goto(url); await page.waitForSelector(".sync-trigger.is-synced", { timeout: 10000 });
+const status = () => page.evaluate(() => document.querySelector(".sync-trigger")?.className.replace("sync-trigger ", ""));
+const sel = { selectOption: (code) => setLanguageViaMenu(page, code) };
+await sel.selectOption("en"); await sel.selectOption("es");
+await page.waitForTimeout(3000);
+const stuck = await status();
+await sel.selectOption("en"); await page.waitForTimeout(2500);
+const after = await status();
+console.log(`stuck=${stuck} after-third-switch=${after} posts=${log.filter((l) => l.method === "POST").length}`);
+await browser.close(); stopServers();

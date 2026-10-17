@@ -1,0 +1,75 @@
+SDD-016 — recibo de desarrollo HTTP/UI, 2026-10-16
+[AUNARA/codex · modelo no expuesto]
+
+Resultado del frente: PASS, no aprobación independiente ni cierre del Operator.
+Baseline 22ee411740b675f92f7c9b07dcd824ce951cfbfc: 24/24 expectativas cumplidas.
+Candidato: 24/24 expectativas cumplidas.
+Cada versión: Chromium y WebKit × / y /aunara/ × ES y EN × 3 escenarios.
+
+Negativos (16 por versión): GET HTTP real del cliente compilado recibe una fila
+existente con payload rechazado (healthProfile.sport=""; structure.position=size=3).
+No es un mock del contrato interno CloudStore.load/save. Se intercepta el límite
+HTTP de Supabase sintético; la aplicación usa su cliente y serialización reales.
+Tras GET/bootstrap se esperan 1250 ms (>800 ms), se cambia experiencia a advanced
+mediante Perfil en la UI, se esperan otros 1250 ms y se abre Cuenta/privacidad.
+Baseline: 2 POST repbook_user_data tras bootstrap, 3 después de editar, en cada
+caso; la serialización de la fila remota cambia (defecto reproducido).
+Candidato: 0 POST tras bootstrap y edición en los 16 casos; serialización JSON
+de la fila remota exactamente igual antes/después; nombre y rutinas locales
+conservados, edición de experiencia persistida; estado error y mensaje legible
+de copia de nube no sobrescrita en ES/EN. Cero errores/avisos de consola fuera
+del aviso esperado de Playwright por bloquear service workers.
+
+Normales (8 por versión): fila ausente permite guardar dispositivo A; el payload
+guardado se valida con normalizeRepbookSnapshot de la fuente exacta; B recibe
+nombre y rutina de A desde fila válida; B edita Perfil y guarda; A2 restaura la
+experiencia avanzada desde B. Todos PASS; cero errores de consola.
+El fixture W-01 válido se contrasta con el validador antes de navegar, y cada
+fixture negativo se confirma rechazado. No se flexibiliza ningún validador.
+
+Reproducción desde el repo:
+node AUNARA_SOT/sdd/2026-10-16-sdd016-revision/probe.mjs baseline /private/tmp/aunara-sdd015-016-candidate
+node AUNARA_SOT/sdd/2026-10-16-sdd016-revision/probe.mjs candidate /private/tmp/aunara-sdd015-016-candidate
+Para evidencia independiente: copiar probe.mjs a scratch y pasar el repo como
+tercer argumento; los JSON se escriben junto a esa copia, no sobre estos recibos.
+Puertos localhost baseline 4486/4487; candidato 4496/4497; liberados al terminar.
+
+Builds: git archive del baseline a mkdtemp, symlink de dependencias existentes;
+para candidato sólo se superponen los tres archivos runtime permitidos. Dos
+builds Vite por versión, base / y /aunara/, con URL synthetic.supabase.invalid y
+clave pública sintética. Archive comprobado sin .env, .env.local,
+.env.production ni .env.production.local; no se copia el directorio real de env.
+Validación TS del fixture: bundle Rolldown ya instalado, exclusivamente scratch.
+typecheck/npm test/build completo corresponden al frente principal/revisor;
+este recibo no los sustituye. node --check del probe PASS.
+
+Adaptaciones de harness, exclusivamente scratch:
+- Copia de lib.mjs histórico con import absoluto de Playwright instalado.
+- server.mjs faltante se copia del antecedente SDD-006, sin cambiarlo.
+- Chromium instalado revisión 1223 explícito porque el runtime espera 1234 no
+  presente; WebKit instalado 2336 coincide con el runtime. Sin instalaciones.
+- esbuild no estaba instalado: se usa Rolldown existente, sin nuevas dependencias.
+- Primer intento de servidor recibió EPERM del sandbox; corridas finales con
+  permiso escalado para servidor local y motores aislados.
+Chrome DevTools MCP no está disponible: fallback Playwright con perfiles aislados,
+DOM y red reales. Ningún navegador personal ni credencial real se utiliza.
+El helper bloquea externos antes de navegar y responde Supabase sólo sintético.
+Los archivos históricos se consumen en lectura y permanecen intactos.
+
+Hash candidato useCloudSync.ts:
+8bf75a022a17f17731a2aea59354c806ea884dd2d8a300b06dc19e1e4d9536f1
+Hashes de los tres archivos runtime y del helper original: candidate.json.
+
+Capturas locales fuera del repo, las cuatro inspeccionadas visualmente:
+/private/var/folders/k_/c9_12pb53gd6zkj5yd89p9540000gn/T/aunara-sdd016-candidate-uKtyDr/error-chromium-es.png
+/private/var/folders/k_/c9_12pb53gd6zkj5yd89p9540000gn/T/aunara-sdd016-candidate-uKtyDr/error-chromium-en.png
+/private/var/folders/k_/c9_12pb53gd6zkj5yd89p9540000gn/T/aunara-sdd016-candidate-uKtyDr/error-webkit-es.png
+/private/var/folders/k_/c9_12pb53gd6zkj5yd89p9540000gn/T/aunara-sdd016-candidate-uKtyDr/error-webkit-en.png
+Mensaje visible sin recorte en Cuenta/privacidad, ES/EN, ambos motores.
+
+Límites: sólo escritorio 1440x900 para interacción afectada (sin cambios de
+layout); no cuentas reales, no servidor UAT, no producción, no push/deploy,
+no Safari físico. Rebootstrap/retry/identidades y guardas de consentimiento se
+verifican además en los tests del otro frente y la revisión independiente.
+No se promete deshacer POST ya enviado antes de conocer un rechazo.
+Este agente sólo escribió probe.mjs, baseline.json, candidate.json, verification.txt.

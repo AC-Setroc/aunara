@@ -4,10 +4,10 @@
 
 - Cuenta y contenido activo: se conservan mientras la cuenta exista o hasta que
   el titular los elimine.
-- Borrar datos Repbook: elimina el registro personal en la nube y la copia local
+- Borrar datos Aunara: elimina el registro personal en la nube y la copia local
   del dispositivo; la cuenta de acceso permanece activa.
 - Eliminar cuenta: elimina el usuario de autenticación y, por cascada, sus datos
-  Repbook y su historial de autorizaciones.
+  Aunara y su historial de autorizaciones.
 - Respaldos técnicos: pueden permanecer temporalmente durante el ciclo de
   rotación documentado por cada proveedor. Ese plazo debe verificarse y
   publicarse antes del lanzamiento comercial.
@@ -22,7 +22,7 @@ El centro de privacidad permite:
 - borrar el contenido guardado;
 - eliminar permanentemente la cuenta.
 
-Las solicitudes adicionales se reciben en alejandro@ac-setroc.com. Debe
+Las solicitudes adicionales se reciben en admin@aunaratraining.com. Debe
 verificarse la identidad sin pedir más datos de los necesarios y registrarse:
 fecha de ingreso, identidad verificada, alcance, acciones tomadas y fecha de
 respuesta.

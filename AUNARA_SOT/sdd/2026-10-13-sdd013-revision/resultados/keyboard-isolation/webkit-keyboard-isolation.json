@@ -1,0 +1,132 @@
+[
+  {
+    "explicitTabIndex": false,
+    "trace": [
+      {
+        "key": "Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Tab",
+        "tag": "BODY",
+        "id": "",
+        "text": "CloseDestinationAnchorLanguageESENHelp"
+      },
+      {
+        "key": "Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Tab",
+        "tag": "BODY",
+        "id": "",
+        "text": "CloseDestinationAnchorLanguageESENHelp"
+      },
+      {
+        "key": "Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "BODY",
+        "id": "",
+        "text": "CloseDestinationAnchorLanguageESENHelp"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "BODY",
+        "id": "",
+        "text": "CloseDestinationAnchorLanguageESENHelp"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "BODY",
+        "id": "",
+        "text": "CloseDestinationAnchorLanguageESENHelp"
+      }
+    ]
+  },
+  {
+    "explicitTabIndex": true,
+    "trace": [
+      {
+        "key": "Tab",
+        "tag": "BUTTON",
+        "id": "destination",
+        "text": "Destination"
+      },
+      {
+        "key": "Tab",
+        "tag": "A",
+        "id": "anchor",
+        "text": "Anchor"
+      },
+      {
+        "key": "Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Tab",
+        "tag": "BUTTON",
+        "id": "help",
+        "text": "Help"
+      },
+      {
+        "key": "Tab",
+        "tag": "BODY",
+        "id": "",
+        "text": "CloseDestinationAnchorLanguageESENHelp"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "BUTTON",
+        "id": "help",
+        "text": "Help"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "SELECT",
+        "id": "language",
+        "text": "ESEN"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "A",
+        "id": "anchor",
+        "text": "Anchor"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "BUTTON",
+        "id": "destination",
+        "text": "Destination"
+      },
+      {
+        "key": "Shift+Tab",
+        "tag": "BUTTON",
+        "id": "close",
+        "text": "Close"
+      }
+    ]
+  }
+]

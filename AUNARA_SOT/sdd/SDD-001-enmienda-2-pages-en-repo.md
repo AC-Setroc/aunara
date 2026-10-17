@@ -12,7 +12,11 @@ Estado: **Aprobado por el Operator el 2026-10-01 para implementación técnica y
 
 Documento base: [SDD-001 — Casa canónica de Aunara en Personal](./SDD-001-casa-canonica.md)
 
+**LOG operativo posterior (2026-10-01):** el Operator autorizó pausar `mindally-test` para reactivar este proyecto y renombrarlo. Confirmados `mindally-test=INACTIVE`, proyecto existente `mrkqtajrzrhsdbfomkpz` con nombre Aunara y estado `ACTIVE_HEALTHY`, y consulta `select 1` correcta. No se borraron datos ni cambió esquema. Auth conserva Site URL y único redirect antiguos de `chatgpt.site`; el ajuste exacto para Pages sigue pendiente de autorización/configuración y UAT. Los bloqueos de pausa descritos anteriormente son históricos, no el estado vigente.
+
 Origen: `[AUNARA/codex · GPT-5]`
+
+**LOG de callbacks posterior (2026-10-01):** con autorización explícita del Operator, Site URL y redirect exacto se guardaron como `https://ac-setroc.github.io/aunara/`. El redirect anterior permanece por compatibilidad. Persistencia verificada tras recargar el dashboard, sin comodines ni cambios de usuarios, datos o permisos. No se enviaron correos de prueba; UAT de confirmación, recuperación, login y sync sigue pendiente. Los pendientes de configuración en los registros anteriores son históricos.
 
 ## 1. Propósito, autoridad y gate
 

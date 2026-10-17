@@ -1,5 +1,9 @@
 # Runbook — Aunara
 
+## UAT dev vigente — 2026-10-16
+
+Usar [lista UAT28 casos](handoffs/UAT-2026-10-16-dev-checklist.md) y [arranque/limpieza vigentes](handoffs/UAT-2026-10-16-dev-reinicio.md). Servidor actualizado por orden a devc48664b/015–016, carpeta aislada SDD015-016, Local localhost5173 y LAN192.168.80.19:5173, HTTP/UI Mac verificados. Se borraron3 cuentas autorizadas y datos asociados, preservando la excepción indicada; Supabase compartido también afecta cuentas de producción. No se publicó código. Usar ventana privada para evitar datos locales previos. No tocar canónico dirty. SMTP pendiente; retorno LAN→prod abierto y nueva allowlist LAN a comprobar por Operator. FALLA vuelve a Spec. Punto28 técnico ya acreditado, no corromper filas reales.
+
 ## SDD-005 — dominio publicado; seguimiento Auth/PWA
 
 `[AUNARA/codex · GPT-5]` — Dominio canónico operativo: `https://aunaratraining.com/`, mismo repo `AC-Setroc/aunara`, artifact exclusivo `dist/client/`, base `/`. Publicación `1c709a3`, Actions 37636074747 SUCCESS. Los cuatro A Pages, `www` a GitHub, TXT de propiedad, certificado y Enforce HTTPS quedaron verificados; registros no web se preservan. Las secciones históricas bajo `/aunara/` quedan como antecedente/rollback, no URL canónica actual.
@@ -26,11 +30,83 @@ Referencias y aceptación completa: [SDD-005](sdd/SDD-005-dominio-aunaratraining
 
 ## Pages desde el mismo repo — gates
 
-El repo público `AC-Setroc/aunara` contiene la fuente y el workflow; la URL objetivo de Pages es `https://ac-setroc.github.io/aunara/`. Consultar [ADR 0003](../docs/architecture/0003-pages-from-aunara-repository.md). Antes de publicar, confirmar que las variables cliente publicables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` están configuradas en Actions, sin mostrar sus valores. El build de release usa `AUNARA_BASE_PATH=/aunara/`; `node scripts/check-pages-client.mjs` valida `dist/client/` y crea el fallback `404.html`. El workflow solo sube ese directorio; `dist/server/`, `dist/.openai/`, fuente, SOT y referencias locales quedan fuera del artifact.
+El repo público `AC-Setroc/aunara` contiene la fuente y el workflow. La URL canónica es `https://aunaratraining.com/` desde el 2026-10-07 ([SDD-005](sdd/SDD-005-dominio-aunaratraining.md)); `https://ac-setroc.github.io/aunara/` redirige 301 al apex y se conserva como rollback. Consultar [ADR 0003](../docs/architecture/0003-pages-from-aunara-repository.md). Antes de publicar, confirmar que las variables cliente publicables `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` están configuradas en Actions, sin mostrar sus valores. El build de release usa `AUNARA_BASE_PATH=/` desde `1c709a3`; el build de rollback usa `AUNARA_BASE_PATH=/aunara/`. `node scripts/check-pages-client.mjs` valida `dist/client/` y crea el fallback `404.html`. El workflow solo sube ese directorio; `dist/server/`, `dist/.openai/`, fuente, SOT y referencias locales quedan fuera del artifact.
 
 No agregar `AUNARA_SOT/reference/` ni otros documentos con datos personales al commit público sin revisión específica. El sitio raíz anterior puede tener un worker con scope `/` que controle también `/aunara/`; verificarlo en navegador antes de UAT/corte. Confirmar redirecciones de Supabase para `/aunara/`, instalar/actualizar la PWA en dispositivos de prueba y hacer smoke real. No retirar la publicación anterior ni limpiar cachés de usuarios por este runbook. Un build local no publica por sí mismo; el push/deploy sigue siendo un gate separado del Operator.
 
-**Bloqueo actual de cuenta:** Supabase Repbook está pausado; el límite de dos proyectos gratuitos activos impide reanudarlo sin decisión del Operator. Registro, login, sincronización y configuración de la allowlist de callback no se declaran verificados ni utilizables para UAT mientras siga pausado. No pausar otros proyectos ni cambiar de plan desde este runbook.
+**Estado actual de cuenta (2026-10-01):** por autorización del Operator, `mindally-test` está pausado y el proyecto existente ahora se llama Aunara, con estado `ACTIVE_HEALTHY` y consulta `select 1` correcta. Site URL y redirect exacto de Pages `https://ac-setroc.github.io/aunara/` quedaron guardados y verificados tras recargar; el redirect anterior se conservó por compatibilidad. Confirmación, recuperación, login y sync reales requieren UAT con correos nuevos; no se enviaron correos de prueba desde esta configuración. No pausar otros proyectos ni cambiar de plan desde este runbook.
+
+## Ramas — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Inventario de ramas remotas y su autoridad:
+
+| Rama | Uso | CI |
+|---|---|---|
+| `main` | Única rama que publica a Pages. Push solo por orden explícita del Operator. | verify + deploy |
+| `dev` | Integración documental y, cuando el Operator lo decida, de código aprobado. Base: `main` + SOT/SDD/docs del snapshot. | ninguna |
+| `wip/dirty-2026-10-12` | Snapshot sin revisar del working tree de la Mac (`e4baf5f3eb4b7cd7178e6efa9e7eee6039ab8884`). Evidencia y respaldo; no es base de trabajo ni entrega. | ninguna |
+| `wip/sdd006-e2-candidate-2026-10-12` (`19dcb4f`), `wip/sdd006-e3-candidate-2026-10-12` (`85e4415`), `wip/sdd006-e4-candidate-2026-10-12` (`6704681`) | Candidatos E2/E3/E4 de SDD-006 sobre `1c709a3`. E4 = revisión ciclo 2 APPROVED técnico (Chromium + WebKit). Evidencia y respaldo; la integración a `dev` es un commit aparte por orden. | ninguna |
+| `wip/sdd011-h01-candidate-2026-10-12` (`96b71c8`), `wip/sdd011-h02-candidate-2026-10-12` (`0fd2743`) | Candidatos H-01/H-02 de SDD-011 sobre `6704681`. APPROVED e integrados en `dev` (`8db846e`, `13a1264`). Evidencia y respaldo. | ninguna |
+| `wip/sdd012-candidate-2026-10-13` (`1e7fa15`) | Candidato de SDD-012 sobre `bfb97a1` (menú por portal, cabecera, Salir en perfil, UAT13-22/06). APPROVED técnico e integrado en `dev` (`d381e52`). Evidencia y respaldo. | ninguna |
+| `archive/github-pages/main` | Build compilado histórico (ago-2026) con base `/`, historia independiente. No tocar. | ninguna |
+
+## Snapshots del trabajo local — 2026-10-12
+
+`[AUNARA/claude · modelo no expuesto]` — Dos scripts para la Mac del Operator. Ambos arman el commit con un índice temporal (`GIT_INDEX_FILE`), excluyen `AUNARA_SOT/reference/` y entornos, muestran el delta y piden `SI` antes de pushear; no modifican rama ni índice de ningún repo. El remoto es público: revisar el preview antes de confirmar.
+
+**`~/push-dirty.sh`** (ya ejecutado el 2026-10-12 → `wip/dirty-2026-10-12`): snapshot del working tree canónico `~/AI Projects/Personal/aunara`. Para refrescarlo, cambiar `BRANCH` a una fecha nueva. Una copia quedó en la raíz del snapshot por accidente; no versionarla en `dev` ni `main`.
+
+**`~/push-candidates.sh`** (paso 1 de la [orden vigente](ordenes/ORDEN-2026-10-12-retomar-sdd006.md)): copia los recibos de `/private/tmp/aunara-*` a `~/Documents/aunara-evidencias-<fecha>/` (local, no se publica) y pushea cada candidato `/private/tmp/aunara-sdd006-*candidate*/repo` como `wip/sdd006-<e2|e3|e4>-candidate-<fecha>`. Crear el archivo con `cat > ~/push-candidates.sh <<'FIN'` … `FIN` y correrlo con `bash ~/push-candidates.sh`.
+
+```bash
+#!/usr/bin/env bash
+# Respalda los candidatos de SDD-006 que viven en /private/tmp de la Mac:
+# 1) copia recibos/evidencias a ~/Documents (local, no se publica);
+# 2) pushea el working tree de cada candidato como rama wip/ con índice temporal,
+#    sin tocar los repos candidatos ni el canónico. Repo público: revisar el preview.
+set -euo pipefail
+REMOTE="https://github.com/AC-Setroc/aunara.git"
+DATE="$(date +%Y-%m-%d)"
+EVID="$HOME/Documents/aunara-evidencias-$DATE"
+
+echo "== 1. Copia local de recibos y evidencias (sin repos, .git ni node_modules) =="
+mkdir -p "$EVID"
+rsync -a --exclude 'repo' --exclude 'node_modules' --exclude '.git' /private/tmp/aunara-* "$EVID/" 2>/dev/null || true
+echo "   copiado a $EVID: $(find "$EVID" -type f | wc -l | tr -d ' ') archivos"
+
+echo "== 2. Candidatos en /private/tmp/aunara-sdd006-*candidate*/repo =="
+found=0
+for repo in /private/tmp/aunara-sdd006-*candidate*/repo; do
+  [ -d "$repo/.git" ] || continue
+  found=1
+  name="$(basename "$(dirname "$repo")")"
+  tag="$(echo "$name" | sed -E 's/^aunara-sdd006-([a-z0-9]+)-candidate.*/\1/')"
+  BRANCH="wip/sdd006-$tag-candidate-$DATE"
+  echo; echo "-- $name  →  origin/$BRANCH"
+  (
+    cd "$repo"
+    echo "   HEAD: $(git log -1 --format='%h %s' | cut -c1-90)"
+    export GIT_INDEX_FILE; GIT_INDEX_FILE="$(mktemp)"
+    git read-tree HEAD
+    git add -A -- . ':(exclude)AUNARA_SOT/reference' ':(exclude)**/.env' ':(exclude)**/.env.*' ':(exclude,glob)**/*.local'
+    echo "   delta del working tree sobre HEAD:"; git diff --cached --stat HEAD | tail -n 3 | sed 's/^/     /'
+    echo "   binarios (debería ser solo el wordmark o nada):"; git diff --cached --numstat HEAD | awk '$1=="-" && $2=="-" {print "     " $3}'
+    TREE="$(git write-tree)"
+    COMMIT="$(git commit-tree "$TREE" -p HEAD -m "wip: snapshot candidato $tag de SDD-006 ($DATE)
+
+Working tree de $repo sobre $(git rev-parse --short HEAD). Sin revisar; evidencia y respaldo.
+
+[AUNARA/operator · snapshot manual]")"
+    rm -f "$GIT_INDEX_FILE"; unset GIT_INDEX_FILE
+    read -r -p "   ¿Pushear $tag a origin/$BRANCH? (escribí SI) " ok </dev/tty
+    [ "$ok" = "SI" ] || { echo "   omitido"; exit 0; }
+    git push "$REMOTE" "$COMMIT:refs/heads/$BRANCH"
+    echo "   OK $COMMIT"
+  ) || echo "   ERROR en $name; sigo con el siguiente"
+done
+[ "$found" = 1 ] || echo "   (no se encontró ningún candidato: avisar al agente con la ruta real)"
+echo; echo "Listo. Ramas remotas wip/:"; git -C "$HOME/AI Projects/Personal/aunara" ls-remote --heads "$REMOTE" 'wip/*'
+```
 
 ## Última publicación verificada — 2026-10-01
 

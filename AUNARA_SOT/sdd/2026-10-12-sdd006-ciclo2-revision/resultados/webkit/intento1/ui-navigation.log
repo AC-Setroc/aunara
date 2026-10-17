@@ -1,0 +1,29 @@
+… root/es/desktop
+… root/es/mobile
+… root/es/narrow
+… root/en/desktop
+… root/en/mobile
+… root/en/narrow
+… aunara/es/desktop
+… aunara/es/mobile
+… aunara/es/narrow
+… aunara/en/desktop
+… aunara/en/mobile
+… aunara/en/narrow
+UI NAVIGATION: 151/156 PASS; FAIL: bloque sesión root/es/desktop (error: TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.sync-trigger.is-synced')[22m
+); bloque sesión root/es/mobile (error: TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.sync-trigger.is-synced')[22m
+); bloque sesión root/es/narrow (error: TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.sync-trigger.is-synced')[22m
+); bloque sesión root/en/desktop (error: TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.sync-trigger.is-synced')[22m
+); bloque sesión root/en/narrow (error: TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.sync-trigger.is-synced')[22m
+)
+ui-navigation exit=0

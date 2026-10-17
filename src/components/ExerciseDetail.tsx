@@ -1,6 +1,6 @@
 import { ArrowLeft, Check, Heart, Plus, X } from "lucide-react";
 import { useEffect } from "react";
-import { exerciseDisplayName, mediaUrl, titleCase } from "../lib/exercises";
+import { exerciseDisplayName, exerciseTaxonomyLabel, isExerciseNamePending, mediaUrl } from "../lib/exercises";
 import { tr } from "../lib/i18n";
 import type { Exercise, LanguageCode } from "../types";
 
@@ -39,7 +39,7 @@ export function ExerciseDetail({
 
   const steps = exercise.instruction_steps[language]?.length
     ? exercise.instruction_steps[language]
-    : exercise.instruction_steps.en;
+    : exercise.instructions[language] ? [] : exercise.instruction_steps.en;
   const instructions = exercise.instructions[language] || exercise.instructions.en;
   const displayName = exerciseDisplayName(exercise, language);
   const backLabel = origin === "workout"
@@ -77,17 +77,19 @@ export function ExerciseDetail({
           <button className="detail-back-button" type="button" onClick={onClose}>
             <ArrowLeft size={16} /> {backLabel}
           </button>
-          <p className="eyebrow">{tr(language, "Movement", "Movimiento")} #{exercise.id} · {titleCase(exercise.body_part)}</p>
+          <p className="eyebrow">{tr(language, "Movement", "Movimiento")} #{exercise.id} · {exerciseTaxonomyLabel(exercise.body_part, language)}</p>
           <h2 id="exercise-title">{displayName}</h2>
+          {isExerciseNamePending(exercise, language) && <p className="translation-pending">Nombre en inglés · traducción pendiente</p>}
 
           <dl className="detail-facts">
-            <div><dt>{tr(language, "Target", "Objetivo")}</dt><dd>{titleCase(exercise.target)}</dd></div>
-            <div><dt>{tr(language, "Equipment", "Equipo")}</dt><dd>{titleCase(exercise.equipment)}</dd></div>
-            <div><dt>{tr(language, "Supports", "Grupo muscular")}</dt><dd>{titleCase(exercise.muscle_group)}</dd></div>
+            <div><dt>{tr(language, "Target", "Objetivo")}</dt><dd>{exerciseTaxonomyLabel(exercise.target, language)}</dd></div>
+            <div><dt>{tr(language, "Equipment", "Equipo")}</dt><dd>{exerciseTaxonomyLabel(exercise.equipment, language)}</dd></div>
+            <div><dt>{tr(language, "Supports", "Grupo muscular")}</dt><dd>{exerciseTaxonomyLabel(exercise.muscle_group, language)}</dd></div>
           </dl>
 
           <div className="instruction-block">
             <p className="section-kicker">{tr(language, "How to perform", "Cómo realizarlo")}</p>
+            {language === "es" && !exercise.instruction_steps.es?.length && !exercise.instructions.es && <p className="translation-pending">Instrucciones en inglés · traducción pendiente</p>}
             {steps?.length ? (
               <ol>
                 {steps.map((step, index) => <li key={`${exercise.id}-${index}`}>{step}</li>)}
@@ -101,7 +103,7 @@ export function ExerciseDetail({
             <div className="secondary-list">
               <span>{tr(language, "Also works", "También trabaja")}</span>
               {exercise.secondary_muscles.map((muscle) => (
-                <em key={muscle}>{titleCase(muscle)}</em>
+                <em key={muscle}>{exerciseTaxonomyLabel(muscle, language)}</em>
               ))}
             </div>
           )}

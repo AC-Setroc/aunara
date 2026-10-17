@@ -1,0 +1,425 @@
+{
+  "summary": "84/84 PASS",
+  "rows": [
+    {
+      "name": "RG-01 nombre parcial (onboarding=false) root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=undefined) root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola primaryGoal root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola goals root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sport root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola equipmentPreference root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola trainingDaysPerWeek root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sessionMinutes root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola experience root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: defaults root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: nombre vacío root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: goals [] root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: sport null root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo sensible root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo readiness root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo decisión propuesta root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-04 rutas/favoritos/check-ins y salud no autorizada root/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\",\"Rutas y prescripciones: 1\",\"Favoritos: 2\",\"Registros semanales: 1\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad root/es",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-05 usuario B vacío root/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas root/es",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=false) root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=undefined) root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola primaryGoal root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola goals root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sport root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola equipmentPreference root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola trainingDaysPerWeek root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sessionMinutes root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola experience root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: defaults root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: nombre vacío root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: goals [] root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: sport null root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo sensible root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo readiness root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo decisión propuesta root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-04 rutas/favoritos/check-ins y salud no autorizada root/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\",\"Routes and prescriptions: 1\",\"Favorites: 2\",\"Weekly check-ins: 1\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad root/en",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-05 usuario B vacío root/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas root/en",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=false) aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=undefined) aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola primaryGoal aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola goals aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sport aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola equipmentPreference aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola trainingDaysPerWeek aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sessionMinutes aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola experience aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\"]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: defaults aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: nombre vacío aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: goals [] aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: sport null aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo sensible aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo readiness aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo decisión propuesta aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-04 rutas/favoritos/check-ins y salud no autorizada aunara/es",
+      "pass": true,
+      "detail": "[\"Perfil y preferencias\",\"Rutas y prescripciones: 1\",\"Favoritos: 2\",\"Registros semanales: 1\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad aunara/es",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-05 usuario B vacío aunara/es",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas aunara/es",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=false) aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-01 nombre parcial (onboarding=undefined) aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola primaryGoal aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola goals aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sport aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola equipmentPreference aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola trainingDaysPerWeek aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola sessionMinutes aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 preferencia sola experience aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-03 completado sin nombre ni prefs aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\"]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: defaults aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: nombre vacío aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: goals [] aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: sport null aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo sensible aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo readiness aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-02 sin falso positivo: solo decisión propuesta aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-04 rutas/favoritos/check-ins y salud no autorizada aunara/en",
+      "pass": true,
+      "detail": "[\"Profile and preferences\",\"Routes and prescriptions: 1\",\"Favorites: 2\",\"Weekly check-ins: 1\"]"
+    },
+    {
+      "name": "RG-05 invitado sin centro de privacidad aunara/en",
+      "pass": true,
+      "detail": "privacy-center=0"
+    },
+    {
+      "name": "RG-05 usuario B vacío aunara/en",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "RG-06 export estable y sin escrituras nuevas aunara/en",
+      "pass": true,
+      "detail": "same=true writes 1->1 name=Synthetic athlete"
+    }
+  ]
+}

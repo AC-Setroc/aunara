@@ -1,7 +1,7 @@
 # ADR 0003 — Pages desde el mismo repositorio Aunara
 
 Fecha: 1 de octubre de 2026\
-Estado: Aceptada por decisión explícita del Operator; implementación local pendiente de revisión y despliegue.
+Estado: Aceptada por decisión explícita del Operator; implementada y publicada (`fc88568`, 2026-10-01, bajo `/aunara/`; `1c709a3`, 2026-10-07, con base `/` y dominio `aunaratraining.com`, ver enmienda abajo). Actualización de estado 2026-10-12 `[AUNARA/claude · modelo no expuesto]`; el texto original se conserva.
 
 ## Contexto y decisión
 

@@ -41,8 +41,10 @@ export interface ConsentEvent {
   source: "account" | "privacy-center" | "migration-gate";
 }
 
+export type CloudSnapshotRead = { status: "absent" } | { status: "present"; payload: unknown };
+
 export interface CloudStore {
-  load: (userId: string) => Promise<RepbookCloudSnapshot | null>;
+  load: (userId: string) => Promise<CloudSnapshotRead>;
   save: (userId: string, snapshot: RepbookCloudSnapshot) => Promise<void>;
   remove: (userId: string) => Promise<void>;
   recordConsent: (event: ConsentEvent) => Promise<void>;
@@ -70,7 +72,7 @@ export function createCloudStore(client: CloudStoreClient): CloudStore {
         .eq("user_id", userId)
         .maybeSingle();
       if (error) throw asError(error);
-      return data?.payload as RepbookCloudSnapshot | null ?? null;
+      return data == null ? { status: "absent" } : { status: "present", payload: data.payload };
     },
 
     async save(userId, snapshot) {

@@ -1,0 +1,14 @@
+… root/es/desktop
+… root/es/mobile
+… root/es/narrow
+… root/en/desktop
+… root/en/mobile
+… root/en/narrow
+… aunara/es/desktop
+… aunara/es/mobile
+… aunara/es/narrow
+… aunara/en/desktop
+… aunara/en/mobile
+… aunara/en/narrow
+STARTUP FALLBACK: 84/84 PASS
+startup-fallback exit=0

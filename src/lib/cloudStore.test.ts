@@ -33,7 +33,7 @@ describe("cloud data store", () => {
 
     const store = createCloudStore({ from });
 
-    await expect(store.load("user-123")).resolves.toEqual(snapshot);
+    await expect(store.load("user-123")).resolves.toEqual({ status: "present", payload: snapshot });
     expect(from).toHaveBeenCalledWith("repbook_user_data");
     expect(eq).toHaveBeenCalledWith("user_id", "user-123");
   });
@@ -49,7 +49,13 @@ describe("cloud data store", () => {
       }),
     };
 
-    await expect(createCloudStore(client).load("new-user")).resolves.toBeNull();
+    await expect(createCloudStore(client).load("new-user")).resolves.toEqual({ status: "absent" });
+  });
+
+  it.each([null, false, 0, "", undefined, { schemaVersion: 2 }])("preserves an existing unknown payload %j, never treating it as absence", async (payload) => {
+    const maybeSingle = vi.fn().mockResolvedValue({ data: { payload }, error: null });
+    const from = vi.fn().mockReturnValue({ select: () => ({ eq: () => ({ maybeSingle }) }) });
+    await expect(createCloudStore({ from }).load("user-123")).resolves.toEqual({ status: "present", payload });
   });
 
   it("upserts only the signed-in user's versioned snapshot", async () => {

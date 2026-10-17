@@ -1,0 +1,18 @@
+{
+  "engine": "chromium",
+  "base": "/",
+  "completedCases": 0,
+  "summary": "0/2 PASS; FAIL: fatal execution incomplete (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.shared-navigation') to be visible\u001b[22m\n\u001b[2m    - locator resolved to visible <div class=\"shared-navigation\">…</div>\u001b[22m\n); S13-08 complete case coverage (completed=0)",
+  "rows": [
+    {
+      "name": "fatal execution incomplete",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.shared-navigation') to be visible\u001b[22m\n\u001b[2m    - locator resolved to visible <div class=\"shared-navigation\">…</div>\u001b[22m\n"
+    },
+    {
+      "name": "S13-08 complete case coverage",
+      "pass": false,
+      "detail": "completed=0"
+    }
+  ]
+}

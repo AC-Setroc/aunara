@@ -199,7 +199,8 @@ function proteinPlanningFactors(profile: HealthProfile): { min: number; max: num
   ]);
   const physicallyActive = profile.activityLevel === "moderate"
     || profile.activityLevel === "very-active"
-    || (profile.primaryGoal ? trainingFocusedGoals.has(profile.primaryGoal) : false);
+    || (profile.goals?.[0] ? trainingFocusedGoals.has(profile.goals[0]) : profile.primaryGoal ? trainingFocusedGoals.has(profile.primaryGoal) : false)
+    || (profile.sport ? trainingFocusedGoals.has(profile.sport) : false);
 
   return physicallyActive
     ? { min: 1.4, max: 2 }

@@ -1,0 +1,36 @@
+{
+ "hosts": [
+  "127.0.0.1",
+  "synthetic.supabase.invalid"
+ ],
+ "blocked": [],
+ "requests": [
+  "GET /rest/v1/repbook_user_data",
+  "POST /rest/v1/repbook_user_data",
+  "POST /rest/v1/repbook_user_data",
+  "POST /auth/v1/logout"
+ ],
+ "tokenInDom": false,
+ "tokenInExport": false,
+ "exportKeys": [
+  "exportVersion",
+  "exportedAt",
+  "account",
+  "data"
+ ],
+ "dataKeys": [
+  "schemaVersion",
+  "profileName",
+  "language",
+  "favoriteIds",
+  "tracks",
+  "activeTrackId",
+  "healthProfile",
+  "checkIns",
+  "tracksInitialized"
+ ],
+ "savePostHasAuthHeaderOnly": true,
+ "savePostCarriesHealthNotes": true,
+ "savePostUserId": true,
+ "storageAfterSignOut": []
+}

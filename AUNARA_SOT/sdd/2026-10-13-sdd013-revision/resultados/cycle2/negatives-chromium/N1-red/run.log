@@ -1,0 +1,15 @@
+FAIL fatal execution incomplete TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('.shared-navigation') to be visible[22m
+[2m    - locator resolved to visible <div class="shared-navigation">…</div>[22m
+
+FAIL S13-08 complete case coverage completed=0
+0/2 PASS; FAIL: fatal execution incomplete (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('.shared-navigation') to be visible[22m
+[2m    - locator resolved to visible <div class="shared-navigation">…</div>[22m
+); S13-08 complete case coverage (completed=0)
+
+(node:54322) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/private/tmp/aunara-sdd013-runtime.lDUUmv/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)

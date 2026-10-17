@@ -8,9 +8,13 @@ import type {
   VerifyAccountInput,
 } from "../components/AccessPanel";
 import {
-  normalizeRepbookSnapshot,
+  validateRepbookSnapshot,
+  outboundSnapshot,
+  reconcileRemoteSnapshot,
   selectBootstrapSnapshot,
+  snapshotsEqual,
   type RepbookCloudSnapshot,
+  type SensitiveDataPolicy,
 } from "../lib/cloudSnapshot";
 import { createCloudStore, type CloudStoreClient } from "../lib/cloudStore";
 import { tr } from "../lib/i18n";
@@ -31,6 +35,7 @@ interface CloudSyncController extends CloudAccessState {
   verifyAccount: (input: VerifyAccountInput) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
   clearExistingAccount: () => void;
+  clearAuthError: () => void;
   requestPasswordReset: (email: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
   signIn: (input: PasswordSignInInput) => Promise<void>;
@@ -56,6 +61,50 @@ function consentStatusFromUser(user: User | null): HealthDataConsentStatus | nul
     : null;
 }
 
+function sensitiveDataPolicy(user: User | null): SensitiveDataPolicy {
+  // SDD-011 H-02: sensitive health data leaves the device only while the authorization is "granted";
+  // "declined", "revoked" and an unanswered (null) authorization all withhold it.
+  return { consentGranted: consentStatusFromUser(user) === "granted" };
+}
+
+type AuthFailure = "credentials" | "confirmation" | "email" | "password" | "rate" | "expired" | "unavailable" | "legal" | "unknown";
+
+function classifyAuthError(error: { code?: string; status?: number; name?: string }): AuthFailure {
+  switch (error.code) {
+    case "invalid_credentials": return "credentials";
+    case "email_not_confirmed": return "confirmation";
+    case "email_address_invalid": return "email";
+    case "weak_password": case "same_password": return "password";
+    case "over_request_rate_limit": case "over_email_send_rate_limit": return "rate";
+    case "otp_expired": case "otp_disabled": return "expired";
+    default:
+      if (error.status === 429) return "rate";
+      if (error.name === "AuthRetryableFetchError" || (error.status ?? 0) >= 500) return "unavailable";
+      return "unknown";
+  }
+}
+
+function authErrorCopy(language: RepbookCloudSnapshot["language"], failure: AuthFailure): string {
+  const copy: Record<AuthFailure, [string, string]> = {
+    credentials: ["Your email or password do not match the registered details. Try again or recover your password", "Tu correo o contraseña no coinciden con los datos registrados. Intentá de nuevo o recuperá tu contraseña"],
+    confirmation: ["Confirm your email before signing in.", "Confirmá tu correo antes de ingresar."],
+    email: ["Check your email address and try again.", "Revisá tu correo electrónico y volvé a intentar."],
+    password: ["Choose a different password with at least eight characters.", "Elegí una contraseña diferente de al menos ocho caracteres."],
+    rate: ["Too many attempts. Wait a moment before trying again.", "Hubo demasiados intentos. Esperá un momento antes de volver a intentar."],
+    expired: ["The confirmation code is invalid or expired. Request a new one.", "El código de confirmación no es válido o venció. Solicitá uno nuevo."],
+    unavailable: ["Account access is temporarily unavailable. Try again later.", "El acceso a la cuenta no está disponible por ahora. Intentá más tarde."],
+    legal: ["Accept the Terms of use and Privacy policy to create the account.", "Aceptá los Términos de uso y la Política de privacidad para crear la cuenta."],
+    unknown: ["We could not complete this account action. Try again.", "No pudimos completar esta acción de la cuenta. Volvé a intentar."],
+  };
+  return tr(language, ...copy[failure]);
+}
+
+function passwordRecoveryCopy(language: RepbookCloudSnapshot["language"]): string {
+  return tr(language,
+    "Recovery request processed. This does not confirm that an email was sent or delivered. If you receive the instructions, check your inbox and spam folder. If they do not arrive, you can try again later.",
+    "Solicitud de recuperación procesada. Esto no confirma que el correo se haya enviado o entregado. Si recibís las instrucciones, revisá tu bandeja de entrada y spam. Si no llegan, podés intentar nuevamente más tarde.");
+}
+
 export function useCloudSync({
   snapshot,
   onRemoteSnapshot,
@@ -63,8 +112,56 @@ export function useCloudSync({
   client = supabaseClient,
 }: UseCloudSyncOptions): CloudSyncController {
   const [user, setUser] = useState<User | null>(null);
-  const [status, setStatus] = useState<CloudAccessState["status"]>("local");
-  const [message, setMessage] = useState<string>();
+  const [status, setStatusValue] = useState<CloudAccessState["status"]>("local");
+  const [message, setMessageValue] = useState<string>();
+  const [recoveryFeedback, setRecoveryFeedback] = useState(false);
+  const [authFailure, setAuthFailure] = useState<AuthFailure | null>(null);
+  const authFailureRef = useRef<AuthFailure | null>(null);
+  const [authErrorKind, setAuthErrorKind] = useState<CloudAccessState["authErrorKind"]>();
+  const statusRef = useRef(status);
+  const authGeneration = useRef(0);
+  const pendingAuth = useRef<object | null>(null);
+  const resetPending = useRef(false);
+  // General status/message writes retain their existing behavior and provenance.
+  const setStatus = useCallback((value: CloudAccessState["status"]) => {
+    pendingAuth.current = null;
+    statusRef.current = value;
+    setStatusValue(value);
+  }, []);
+  const setMessage = useCallback((value: string | undefined, isRecoveryFeedback = false) => {
+    authFailureRef.current = null;
+    setAuthFailure(null);
+    setAuthErrorKind(undefined);
+    setMessageValue(value);
+    setRecoveryFeedback(isRecoveryFeedback);
+  }, []);
+  const beginAuth = useCallback(() => {
+    const operation = { generation: authGeneration.current, previousStatus: statusRef.current };
+    setStatus("syncing");
+    setMessage(undefined);
+    pendingAuth.current = operation;
+    return operation;
+  }, [setStatus, setMessage]);
+  const failAuth = useCallback((operation: ReturnType<typeof beginAuth>, failure: AuthFailure, fromSignIn = false) => {
+    if (operation.generation !== authGeneration.current) {
+      // Release only this operation's pending state; never overwrite a newer sync/action.
+      if (pendingAuth.current === operation) setStatus(operation.previousStatus === "syncing" ? "local" : operation.previousStatus);
+      return;
+    }
+    if (pendingAuth.current !== operation) return;
+    setStatus("error");
+    setMessage(undefined);
+    authFailureRef.current = failure;
+    setAuthFailure(failure);
+    setAuthErrorKind(fromSignIn && failure === "credentials" ? "credentials" : undefined);
+  }, [setStatus, setMessage]);
+  const clearAuthError = useCallback(() => {
+    authGeneration.current += 1;
+    if (authFailureRef.current) {
+      setMessage(undefined);
+      if (statusRef.current === "error") setStatus("local");
+    }
+  }, [setStatus, setMessage]);
   const [pendingVerification, setPendingVerification] = useState<PendingVerification | null>(null);
   const [existingAccountEmail, setExistingAccountEmail] = useState<string | null>(null);
   const [passwordRecoveryState, setPasswordRecoveryState] = useState<"requested" | "ready" | null>(null);
@@ -74,9 +171,16 @@ export function useCloudSync({
   const onSignedOutRef = useRef(onSignedOut);
   const bootstrappedUserId = useRef<string | null>(null);
   const lastSavedSnapshot = useRef("");
+  const syncGeneration = useRef(0);
+  const currentSyncUser = useRef(user);
+  const saveTimer = useRef<number | undefined>(undefined);
+  // True while the debounced save below owns the "syncing" status: set when it schedules a save, cleared when the
+  // save settles or when the change is reverted before the timer fires (SDD-011 H-01).
+  const debouncedSavePending = useRef(false);
   const recordedConsentIds = useRef(new Set<string>());
 
   latestSnapshot.current = snapshot;
+  currentSyncUser.current = user;
   onRemoteSnapshotRef.current = onRemoteSnapshot;
   onSignedOutRef.current = onSignedOut;
 
@@ -157,39 +261,62 @@ export function useCloudSync({
   }, [client, user]);
 
   useEffect(() => {
+    // Every existing bootstrap trigger must re-earn write eligibility, including the same user's retry.
+    const generation = ++syncGeneration.current;
+    bootstrappedUserId.current = null;
+    lastSavedSnapshot.current = "";
+    window.clearTimeout(saveTimer.current);
+    saveTimer.current = undefined;
+    debouncedSavePending.current = false;
     if (!client || !user) {
-      bootstrappedUserId.current = null;
-      lastSavedSnapshot.current = "";
       setStatus("local");
       return;
     }
 
     let active = true;
+    const isCurrentCycle = () => active && syncGeneration.current === generation && currentSyncUser.current === user;
     const store = createCloudStore(client as unknown as CloudStoreClient);
     setStatus("syncing");
     setMessage(undefined);
 
     store.load(user.id)
       .then(async (remoteValue) => {
-        if (!active) return;
+        if (!isCurrentCycle()) return;
         const local = latestSnapshot.current;
-        const remote = remoteValue
-          ? normalizeRepbookSnapshot(remoteValue, local)
-          : null;
-        const bootstrap = selectBootstrapSnapshot(local, remote);
-
-        lastSavedSnapshot.current = JSON.stringify(bootstrap.snapshot);
-        if (bootstrap.action === "use-remote") {
-          onRemoteSnapshotRef.current(bootstrap.snapshot);
-        } else {
-          await store.save(user.id, bootstrap.snapshot);
+        const policy = sensitiveDataPolicy(user);
+        const validation = remoteValue.status === "present" ? validateRepbookSnapshot(remoteValue.payload) : null;
+        if (validation && !validation.valid) {
+          setStatus("error");
+          setMessage(tr(local.language,
+            "We could not read the cloud copy. It was not overwritten. Your local data is still available on this device.",
+            "No pudimos leer la copia de la nube y no se sobrescribió. Tus datos locales siguen disponibles en este dispositivo."));
+          return;
         }
-        if (!active) return;
+        const remote = validation?.valid ? validation.snapshot : null;
+        const bootstrap = selectBootstrapSnapshot(local, remote && reconcileRemoteSnapshot(local, remote, policy));
+
+        if (bootstrap.action === "use-remote" && remote) {
+          onRemoteSnapshotRef.current(bootstrap.snapshot);
+          // The server row must match what this device is allowed to send: a legacy copy written before consent was
+          // withheld is cleaned here, and sensitive data kept locally under granted consent is restored here, so the
+          // server is consistent even if the person changes nothing afterwards.
+          const payload = outboundSnapshot(bootstrap.snapshot, policy);
+          const serialized = JSON.stringify(payload);
+          if (!snapshotsEqual(payload, remote)) await store.save(user.id, payload);
+          if (!isCurrentCycle()) return;
+          lastSavedSnapshot.current = serialized;
+        } else {
+          const payload = outboundSnapshot(bootstrap.snapshot, policy);
+          await store.save(user.id, payload);
+          if (!isCurrentCycle()) return;
+          lastSavedSnapshot.current = JSON.stringify(payload);
+        }
+        if (!isCurrentCycle()) return;
         bootstrappedUserId.current = user.id;
         setStatus("synced");
       })
       .catch((error: unknown) => {
-        if (!active) return;
+        if (!isCurrentCycle()) return;
         setStatus("error");
         setMessage(error instanceof Error ? error.message : "Cloud sync is unavailable.");
       });
@@ -201,27 +328,52 @@ export function useCloudSync({
 
   useEffect(() => {
     if (!client || !user || bootstrappedUserId.current !== user.id) return;
+    const generation = syncGeneration.current;
+    let active = true;
+    const isCurrentCycle = () => active && syncGeneration.current === generation
+      && currentSyncUser.current === user && bootstrappedUserId.current === user.id;
 
-    const serialized = JSON.stringify(snapshot);
-    if (serialized === lastSavedSnapshot.current) return;
+    const payload = outboundSnapshot(snapshot, sensitiveDataPolicy(user));
+    const serialized = JSON.stringify(payload);
+    if (serialized === lastSavedSnapshot.current) {
+      // The snapshot went back to what is already saved before the pending save fired: nothing to upload, and the
+      // "syncing" this effect announced must not outlive the change that caused it.
+      if (debouncedSavePending.current) {
+        debouncedSavePending.current = false;
+        setStatus("synced");
+      }
+      return;
+    }
 
+    debouncedSavePending.current = true;
     setStatus("syncing");
     const timer = window.setTimeout(() => {
+      if (!isCurrentCycle()) return;
+      saveTimer.current = undefined;
       const store = createCloudStore(client as unknown as CloudStoreClient);
-      store.save(user.id, snapshot)
+      store.save(user.id, payload)
         .then(() => {
+          if (!isCurrentCycle()) return;
           lastSavedSnapshot.current = serialized;
+          debouncedSavePending.current = false;
           setStatus("synced");
           setMessage(undefined);
         })
         .catch((error: unknown) => {
+          if (!isCurrentCycle()) return;
+          debouncedSavePending.current = false;
           setStatus("error");
           setMessage(error instanceof Error ? error.message : "Cloud sync is unavailable.");
         });
     }, 800);
+    saveTimer.current = timer;
 
-    return () => window.clearTimeout(timer);
-  }, [client, snapshot, user]);
+    return () => {
+      active = false;
+      window.clearTimeout(timer);
+      if (saveTimer.current === timer) saveTimer.current = undefined;
+    };
+  }, [client, snapshot, user, setStatus, setMessage]);
 
   const createAccount = useCallback(async ({
     name,
@@ -232,17 +384,14 @@ export function useCloudSync({
   }: CreateAccountInput) => {
     const language = latestSnapshot.current.language;
     if (!client) {
-      setStatus("error");
-      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      failAuth(beginAuth(), "unavailable");
       return;
     }
     if (!acceptedLegal) {
-      setStatus("error");
-      setMessage(tr(language, "Accept the Terms of use and Privacy policy to create the account.", "Aceptá los Términos de uso y la Política de privacidad para crear la cuenta."));
+      failAuth(beginAuth(), "legal");
       return;
     }
-    setStatus("syncing");
-    setMessage(undefined);
+    const operation = beginAuth();
     const acceptedAt = new Date().toISOString();
     const healthConsentStatus = healthDataConsent ? "granted" : "declined";
     const { data, error } = await client.auth.signUp({
@@ -264,8 +413,7 @@ export function useCloudSync({
       },
     });
     if (error) {
-      setStatus("error");
-      setMessage(error.message);
+      failAuth(operation, classifyAuthError(error));
       return;
     }
     if (data.session) {
@@ -293,50 +441,44 @@ export function useCloudSync({
       "Check your email to confirm the new account.",
       "Revisá tu correo para confirmar la cuenta nueva.",
     ));
-  }, [client]);
+  }, [client, beginAuth, failAuth, setStatus, setMessage]);
 
   const verifyAccount = useCallback(async ({ email, token }: VerifyAccountInput) => {
     const language = latestSnapshot.current.language;
     if (!client) {
-      setStatus("error");
-      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      failAuth(beginAuth(), "unavailable");
       return;
     }
-    setStatus("syncing");
-    setMessage(undefined);
+    const operation = beginAuth();
     const { data, error } = await client.auth.verifyOtp({
       email,
       token,
       type: "signup",
     });
     if (error) {
-      setStatus("error");
-      setMessage(error.message);
+      failAuth(operation, classifyAuthError(error));
       return;
     }
     setPendingVerification(null);
     setUser(data.user ?? data.session?.user ?? null);
     setStatus("syncing");
     setMessage(tr(language, "Account confirmed. Saving your Aunara data…", "Cuenta confirmada. Estamos guardando tus datos de Aunara…"));
-  }, [client]);
+  }, [client, beginAuth, failAuth, setStatus, setMessage]);
 
   const resendVerification = useCallback(async (email: string) => {
     const language = latestSnapshot.current.language;
     if (!client) {
-      setStatus("error");
-      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      failAuth(beginAuth(), "unavailable");
       return;
     }
-    setStatus("syncing");
-    setMessage(undefined);
+    const operation = beginAuth();
     const { error } = await client.auth.resend({
       type: "signup",
       email,
       options: { emailRedirectTo: publicBaseUrl(import.meta.env.BASE_URL, window.location.origin) },
     });
     if (error) {
-      setStatus("error");
-      setMessage(error.message);
+      failAuth(operation, classifyAuthError(error));
       return;
     }
     setStatus("local");
@@ -345,7 +487,7 @@ export function useCloudSync({
       "If the account is pending confirmation, a new email was requested. If it is already active, sign in instead.",
       "Si la cuenta está pendiente de confirmación, solicitamos un nuevo correo. Si ya está activa, ingresá directamente.",
     ));
-  }, [client]);
+  }, [client, beginAuth, failAuth, setStatus, setMessage]);
 
   const clearExistingAccount = useCallback(() => {
     setExistingAccountEmail(null);
@@ -354,40 +496,43 @@ export function useCloudSync({
 
   const requestPasswordReset = useCallback(async (email: string) => {
     const language = latestSnapshot.current.language;
+    if (resetPending.current) return;
     if (!client) {
-      setStatus("error");
-      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      failAuth(beginAuth(), "unavailable");
       return;
     }
-    setStatus("syncing");
-    setMessage(undefined);
-    const { error } = await client.auth.resetPasswordForEmail(email, {
-      redirectTo: publicBaseUrl(import.meta.env.BASE_URL, window.location.origin),
-    });
+    resetPending.current = true;
+    const operation = beginAuth();
+    let error;
+    try {
+      ({ error } = await client.auth.resetPasswordForEmail(email, {
+        redirectTo: publicBaseUrl(import.meta.env.BASE_URL, window.location.origin),
+      }));
+    } catch {
+      failAuth(operation, "unavailable");
+      return;
+    } finally {
+      resetPending.current = false;
+    }
     if (error) {
-      setStatus("error");
-      setMessage(error.message);
+      failAuth(operation, classifyAuthError(error));
       return;
     }
-    setExistingAccountEmail(email);
     setPasswordRecoveryState("requested");
     setStatus("local");
-    setMessage(tr(
-      language,
-      "We sent you an email to recover your password.",
-      "Te enviamos un correo para recuperar tu contraseña.",
-    ));
-  }, [client]);
+    setMessage(passwordRecoveryCopy(language), true);
+  }, [client, beginAuth, failAuth, setStatus, setMessage]);
 
   const updatePassword = useCallback(async (password: string) => {
     const language = latestSnapshot.current.language;
-    if (!client) return;
-    setStatus("syncing");
-    setMessage(undefined);
+    if (!client) {
+      failAuth(beginAuth(), "unavailable");
+      return;
+    }
+    const operation = beginAuth();
     const { error } = await client.auth.updateUser({ password });
     if (error) {
-      setStatus("error");
-      setMessage(error.message);
+      failAuth(operation, classifyAuthError(error));
       return;
     }
     setExistingAccountEmail(null);
@@ -400,24 +545,21 @@ export function useCloudSync({
       "Password updated. Your session is now active.",
       "Contraseña actualizada. Tu sesión ya está activa.",
     ));
-  }, [client]);
+  }, [client, beginAuth, failAuth, setStatus, setMessage]);
 
   const signIn = useCallback(async ({ email, password }: PasswordSignInInput) => {
     const language = latestSnapshot.current.language;
     if (!client) {
-      setStatus("error");
-      setMessage(tr(language, "Cloud setup is not connected yet.", "La conexión en la nube todavía no está disponible."));
+      failAuth(beginAuth(), "unavailable");
       return;
     }
-    setStatus("syncing");
-    setMessage(undefined);
+    const operation = beginAuth();
     const { error } = await client.auth.signInWithPassword({
       email,
       password,
     });
     if (error) {
-      setStatus("error");
-      setMessage(error.message);
+      failAuth(operation, classifyAuthError(error), true);
       return;
     }
     setExistingAccountEmail(null);
@@ -425,7 +567,7 @@ export function useCloudSync({
     setMessage(tr(language, "Signed in. Loading your Aunara data…", "Sesión iniciada. Estamos cargando tus datos de Aunara…"));
     recoveryUserId.current = null;
     passwordRecoverySignalFor(client).clear();
-  }, [client]);
+  }, [client, beginAuth, failAuth, setStatus, setMessage]);
 
   const signOut = useCallback(async () => {
     if (!client) return;
@@ -533,7 +675,8 @@ export function useCloudSync({
     configured: cloudConfigured,
     email: user?.email ?? null,
     status,
-    message,
+    message: authFailure ? authErrorCopy(snapshot.language, authFailure) : recoveryFeedback ? passwordRecoveryCopy(snapshot.language) : message,
+    authErrorKind,
     pendingVerification,
     existingAccountEmail,
     passwordRecoveryState,
@@ -542,6 +685,7 @@ export function useCloudSync({
     verifyAccount,
     resendVerification,
     clearExistingAccount,
+    clearAuthError,
     requestPasswordReset,
     updatePassword,
     signIn,

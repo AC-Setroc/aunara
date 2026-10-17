@@ -1,0 +1,425 @@
+{
+  "summary": "84/84 PASS",
+  "rows": [
+    {
+      "name": "AR-04 root/es/desktop fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"No se pudo cargar Aunara\" p=\"Recargá para volver a intentar.\" shells=1"
+    },
+    {
+      "name": "AR-04 root/es/desktop selector de idioma",
+      "pass": true,
+      "detail": "Aunara could not load"
+    },
+    {
+      "name": "AR-05 root/es/desktop un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 root/es/desktop recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4311/ requests=2"
+    },
+    {
+      "name": "AR-03 root/es/desktop bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"No se pudo iniciar Aunara\" hashKept=true"
+    },
+    {
+      "name": "AR-03 root/es/desktop App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 root/es/desktop sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 root/es/mobile fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"No se pudo cargar Aunara\" p=\"Recargá para volver a intentar.\" shells=1"
+    },
+    {
+      "name": "AR-04 root/es/mobile selector de idioma",
+      "pass": true,
+      "detail": "Aunara could not load"
+    },
+    {
+      "name": "AR-05 root/es/mobile un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 root/es/mobile recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4311/ requests=2"
+    },
+    {
+      "name": "AR-03 root/es/mobile bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"No se pudo iniciar Aunara\" hashKept=true"
+    },
+    {
+      "name": "AR-03 root/es/mobile App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 root/es/mobile sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 root/es/narrow fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"No se pudo cargar Aunara\" p=\"Recargá para volver a intentar.\" shells=1"
+    },
+    {
+      "name": "AR-04 root/es/narrow selector de idioma",
+      "pass": true,
+      "detail": "Aunara could not load"
+    },
+    {
+      "name": "AR-05 root/es/narrow un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 root/es/narrow recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4311/ requests=2"
+    },
+    {
+      "name": "AR-03 root/es/narrow bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"No se pudo iniciar Aunara\" hashKept=true"
+    },
+    {
+      "name": "AR-03 root/es/narrow App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 root/es/narrow sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 root/en/desktop fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not load\" p=\"Reload to try again.\" shells=1"
+    },
+    {
+      "name": "AR-04 root/en/desktop selector de idioma",
+      "pass": true,
+      "detail": "No se pudo cargar Aunara"
+    },
+    {
+      "name": "AR-05 root/en/desktop un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 root/en/desktop recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4311/ requests=2"
+    },
+    {
+      "name": "AR-03 root/en/desktop bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not start\" hashKept=true"
+    },
+    {
+      "name": "AR-03 root/en/desktop App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 root/en/desktop sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 root/en/mobile fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not load\" p=\"Reload to try again.\" shells=1"
+    },
+    {
+      "name": "AR-04 root/en/mobile selector de idioma",
+      "pass": true,
+      "detail": "No se pudo cargar Aunara"
+    },
+    {
+      "name": "AR-05 root/en/mobile un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 root/en/mobile recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4311/ requests=2"
+    },
+    {
+      "name": "AR-03 root/en/mobile bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not start\" hashKept=true"
+    },
+    {
+      "name": "AR-03 root/en/mobile App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 root/en/mobile sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 root/en/narrow fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not load\" p=\"Reload to try again.\" shells=1"
+    },
+    {
+      "name": "AR-04 root/en/narrow selector de idioma",
+      "pass": true,
+      "detail": "No se pudo cargar Aunara"
+    },
+    {
+      "name": "AR-05 root/en/narrow un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 root/en/narrow recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4311/ requests=2"
+    },
+    {
+      "name": "AR-03 root/en/narrow bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not start\" hashKept=true"
+    },
+    {
+      "name": "AR-03 root/en/narrow App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 root/en/narrow sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 aunara/es/desktop fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"No se pudo cargar Aunara\" p=\"Recargá para volver a intentar.\" shells=1"
+    },
+    {
+      "name": "AR-04 aunara/es/desktop selector de idioma",
+      "pass": true,
+      "detail": "Aunara could not load"
+    },
+    {
+      "name": "AR-05 aunara/es/desktop un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 aunara/es/desktop recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4312/aunara/ requests=2"
+    },
+    {
+      "name": "AR-03 aunara/es/desktop bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"No se pudo iniciar Aunara\" hashKept=true"
+    },
+    {
+      "name": "AR-03 aunara/es/desktop App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 aunara/es/desktop sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 aunara/es/mobile fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"No se pudo cargar Aunara\" p=\"Recargá para volver a intentar.\" shells=1"
+    },
+    {
+      "name": "AR-04 aunara/es/mobile selector de idioma",
+      "pass": true,
+      "detail": "Aunara could not load"
+    },
+    {
+      "name": "AR-05 aunara/es/mobile un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 aunara/es/mobile recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4312/aunara/ requests=2"
+    },
+    {
+      "name": "AR-03 aunara/es/mobile bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"No se pudo iniciar Aunara\" hashKept=true"
+    },
+    {
+      "name": "AR-03 aunara/es/mobile App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 aunara/es/mobile sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 aunara/es/narrow fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"No se pudo cargar Aunara\" p=\"Recargá para volver a intentar.\" shells=1"
+    },
+    {
+      "name": "AR-04 aunara/es/narrow selector de idioma",
+      "pass": true,
+      "detail": "Aunara could not load"
+    },
+    {
+      "name": "AR-05 aunara/es/narrow un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 aunara/es/narrow recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4312/aunara/ requests=2"
+    },
+    {
+      "name": "AR-03 aunara/es/narrow bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"No se pudo iniciar Aunara\" hashKept=true"
+    },
+    {
+      "name": "AR-03 aunara/es/narrow App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 aunara/es/narrow sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 aunara/en/desktop fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not load\" p=\"Reload to try again.\" shells=1"
+    },
+    {
+      "name": "AR-04 aunara/en/desktop selector de idioma",
+      "pass": true,
+      "detail": "No se pudo cargar Aunara"
+    },
+    {
+      "name": "AR-05 aunara/en/desktop un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 aunara/en/desktop recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4312/aunara/ requests=2"
+    },
+    {
+      "name": "AR-03 aunara/en/desktop bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not start\" hashKept=true"
+    },
+    {
+      "name": "AR-03 aunara/en/desktop App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 aunara/en/desktop sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 aunara/en/mobile fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not load\" p=\"Reload to try again.\" shells=1"
+    },
+    {
+      "name": "AR-04 aunara/en/mobile selector de idioma",
+      "pass": true,
+      "detail": "No se pudo cargar Aunara"
+    },
+    {
+      "name": "AR-05 aunara/en/mobile un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 aunara/en/mobile recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4312/aunara/ requests=2"
+    },
+    {
+      "name": "AR-03 aunara/en/mobile bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not start\" hashKept=true"
+    },
+    {
+      "name": "AR-03 aunara/en/mobile App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 aunara/en/mobile sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "AR-04 aunara/en/narrow fallo no-storage honesto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not load\" p=\"Reload to try again.\" shells=1"
+    },
+    {
+      "name": "AR-04 aunara/en/narrow selector de idioma",
+      "pass": true,
+      "detail": "No se pudo cargar Aunara"
+    },
+    {
+      "name": "AR-05 aunara/en/narrow un solo intento de import",
+      "pass": true,
+      "detail": "requests=1"
+    },
+    {
+      "name": "AR-04 aunara/en/narrow recarga real y URL intacta",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:4312/aunara/ requests=2"
+    },
+    {
+      "name": "AR-03 aunara/en/narrow bloqueo get-only con hash intacto",
+      "pass": true,
+      "detail": "h1=\"Aunara could not start\" hashKept=true"
+    },
+    {
+      "name": "AR-03 aunara/en/narrow App vuelve y conserva datos",
+      "pass": true,
+      "detail": "{\"name\":\"\\\"Persistida Atleta\\\"\",\"lang\":\"\\\"en\\\"\",\"shells\":1,\"roots\":1}"
+    },
+    {
+      "name": "AR-05 aunara/en/narrow sin errores de consola al montar",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

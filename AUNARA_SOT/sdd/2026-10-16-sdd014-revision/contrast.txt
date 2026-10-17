@@ -1,0 +1,5 @@
+teal / white: 11.67:1
+blue / white: 6.58:1
+blue / sand: 5.85:1
+ink / sand: 14.39:1
+ink / white: 16.20:1

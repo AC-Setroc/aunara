@@ -42,6 +42,20 @@ test("rejects a server file even when the client is otherwise valid", async () =
   }
 });
 
+test("accepts the exact AC Setroc wordmark and rejects arbitrary brand files", async () => {
+  const directory = await fixture("/aunara/");
+  try {
+    await writeFile(join(directory, "brand/ac-setroc-wordmark.png"), "fixture");
+    assert.ok((await checkPagesClient(directory, "/aunara/")).includes("brand/ac-setroc-wordmark.png"));
+    await writeFile(join(directory, "brand/arbitrary.png"), "not approved");
+    await assert.rejects(checkPagesClient(directory, "/aunara/"), /Unexpected file.*brand\/arbitrary\.png/);
+    await rm(join(directory, "brand/arbitrary.png"));
+    assert.ok((await checkPagesClient(directory, "/aunara/")).includes("brand/ac-setroc-wordmark.png"));
+  } finally {
+    await rm(directory, { recursive: true });
+  }
+});
+
 test("rejects a root-relative asset path", async () => {
   const directory = await fixture("/aunara/");
   try {

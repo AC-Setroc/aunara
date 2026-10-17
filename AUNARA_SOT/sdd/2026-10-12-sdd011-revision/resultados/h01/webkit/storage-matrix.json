@@ -1,0 +1,4339 @@
+{
+  "summary": "276/276 PASS",
+  "rows": [
+    {
+      "name": "e4/root/es/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/root/es/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/root/es/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/root/es/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/es/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/root/en/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/root/en/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/root/en/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/root/en/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/aunara/es/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/aunara/es/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/aunara/es/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/es/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/aunara/en/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/aunara/en/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/aunara/en/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e4/aunara/en/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/es/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/es/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/es/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/es/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/en/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/en/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/en/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/root/en/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/es/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/es/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/es/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/es/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/en/desktop/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/desktop/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/en/mobile/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/mobile/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/none",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/en/narrow/set-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/get+set",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/getter-throws",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/remove-only",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/get+remove",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "e2/aunara/en/narrow/all-denied",
+      "pass": true,
+      "detail": "app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/desktop/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/mobile/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/es/narrow/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/desktop/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/mobile/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity root/en/narrow/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/desktop/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/mobile/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/es/narrow/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/desktop/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/mobile/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/none",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/set-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/get+set",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/getter-throws",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/remove-only",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/get+remove",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    },
+    {
+      "name": "AR-02 parity aunara/en/narrow/all-denied",
+      "pass": true,
+      "detail": "e4=app e2=app"
+    }
+  ],
+  "results": [
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "none",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "set-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+set",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "getter-throws",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "remove-only",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get+remove",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "all-denied",
+      "outcome": "app",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [],
+      "external": 0
+    }
+  ]
+}

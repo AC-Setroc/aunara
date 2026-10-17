@@ -1,0 +1,175 @@
+{
+  "build": "dev16-root",
+  "base": "/",
+  "browser": "chromium",
+  "summary": "25/25 PASS",
+  "rows": [
+    {
+      "name": "W-01a dispositivo A guarda en el servidor",
+      "pass": true,
+      "detail": "{\"posts\":1,\"name\":\"Alejo A\"}"
+    },
+    {
+      "name": "W-01b dispositivo B recibe nombre y rutina de A",
+      "pass": true,
+      "detail": "{\"bName\":\"Alejo A\",\"bTracks\":[\"Triserie fixture\"]}"
+    },
+    {
+      "name": "W-01c cambio en B llega al servidor",
+      "pass": true,
+      "detail": "{\"savedB\":true,\"serverExp\":\"advanced\"}"
+    },
+    {
+      "name": "W-01d A recarga y ve el cambio de B",
+      "pass": true,
+      "detail": "{\"aExp\":\"advanced\"}"
+    },
+    {
+      "name": "W-01e sin errores de consola en A, B y A2",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "W-02 contacto legal nuevo y sin el viejo (es)",
+      "pass": true,
+      "detail": "{\"privacy\":{\"newMail\":true,\"oldMail\":false,\"version\":true},\"terms\":{\"newMail\":true,\"oldMail\":false,\"version\":true}}"
+    },
+    {
+      "name": "W-02 consola legal (es)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-02 contacto legal nuevo y sin el viejo (en)",
+      "pass": true,
+      "detail": "{\"privacy\":{\"newMail\":true,\"oldMail\":false,\"version\":true},\"terms\":{\"newMail\":true,\"oldMail\":false,\"version\":true}}"
+    },
+    {
+      "name": "W-02 consola legal (en)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-03 editor sin «Plan de series» como texto fijo (desktop)",
+      "pass": true,
+      "detail": "{\"fixedPlan\":0,\"planControls\":0}"
+    },
+    {
+      "name": "W-03 consola entrenamiento (desktop)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-03 editor sin «Plan de series» como texto fijo (mobile)",
+      "pass": true,
+      "detail": "{\"fixedPlan\":0,\"planControls\":0}"
+    },
+    {
+      "name": "W-03 consola entrenamiento (mobile)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-06 menú sin filas duplicadas (invitado/desktop)",
+      "pass": true,
+      "detail": "{\"inventory\":[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"],\"dup\":[]}"
+    },
+    {
+      "name": "W-04 consola pantallas principales (invitado/desktop)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-06 menú sin filas duplicadas (invitado/mobile)",
+      "pass": true,
+      "detail": "{\"inventory\":[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"],\"dup\":[]}"
+    },
+    {
+      "name": "W-04 consola pantallas principales (invitado/mobile)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-06 menú sin filas duplicadas (sesión/desktop)",
+      "pass": true,
+      "detail": "{\"inventory\":[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Triserie fixture3\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"],\"dup\":[]}"
+    },
+    {
+      "name": "W-05 Cuenta/privacidad lista perfil, exporta y elimina (desktop)",
+      "pass": true,
+      "detail": "{\"summary\":[\"Perfil y preferencias\",\"Rutas y prescripciones: 1\"],\"hasExport\":1,\"hasDelete\":1,\"modal\":true}"
+    },
+    {
+      "name": "W-04 perfil abre desde el menú y tiene Salir (desktop)",
+      "pass": true,
+      "detail": "salir=1"
+    },
+    {
+      "name": "W-04 consola pantallas principales (sesión/desktop)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "W-06 menú sin filas duplicadas (sesión/mobile)",
+      "pass": true,
+      "detail": "{\"inventory\":[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Triserie fixture3\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"],\"dup\":[]}"
+    },
+    {
+      "name": "W-05 Cuenta/privacidad lista perfil, exporta y elimina (mobile)",
+      "pass": true,
+      "detail": "{\"summary\":[\"Perfil y preferencias\",\"Rutas y prescripciones: 1\"],\"hasExport\":1,\"hasDelete\":1,\"modal\":true}"
+    },
+    {
+      "name": "W-04 perfil abre desde el menú y tiene Salir (mobile)",
+      "pass": true,
+      "detail": "salir=1"
+    },
+    {
+      "name": "W-04 consola pantallas principales (sesión/mobile)",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "report": {
+    "w01Log": [
+      "GET /rest/v1/repbook_user_data",
+      "POST /rest/v1/repbook_user_data",
+      "GET /rest/v1/repbook_user_data",
+      "POST /rest/v1/repbook_user_data",
+      "POST /rest/v1/repbook_user_data",
+      "GET /rest/v1/repbook_user_data"
+    ],
+    "inventory-guest-desktop": [
+      "Inicio / rutas",
+      "Inicio",
+      "Ingresar / crear cuenta",
+      "Ayuda / instalación"
+    ],
+    "inventory-guest-mobile": [
+      "Inicio / rutas",
+      "Inicio",
+      "Ingresar / crear cuenta",
+      "Ayuda / instalación"
+    ],
+    "inventory-session-desktop": [
+      "Inicio / rutas",
+      "Biblioteca de ejercicios",
+      "Perfil",
+      "Triserie fixture3",
+      "Sincronizado",
+      "Cuenta / privacidad",
+      "Ayuda / instalación",
+      "Salir"
+    ],
+    "inventory-session-mobile": [
+      "Inicio / rutas",
+      "Biblioteca de ejercicios",
+      "Perfil",
+      "Triserie fixture3",
+      "Sincronizado",
+      "Cuenta / privacidad",
+      "Ayuda / instalación",
+      "Salir"
+    ]
+  }
+}

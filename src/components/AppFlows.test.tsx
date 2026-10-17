@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Exercise, HealthProfile, TrainingTrack } from "../types";
 import { ProfilePanel } from "./ProfilePanel";
@@ -10,9 +10,13 @@ import { InitialRoutineProposal } from "./InitialRoutineProposal";
 import { TrainingTracks } from "./TrainingTracks";
 import { WorkoutPanel } from "./WorkoutPanel";
 import { createSpecialPrescription } from "../lib/workoutPrescription";
+import { createRepbookSnapshot, normalizeRepbookSnapshot, type RepbookCloudSnapshot } from "../lib/cloudSnapshot";
 
+const accessMock = vi.hoisted(() => ({ overrides: {} as Record<string, unknown>, clearAuthError: vi.fn(), requestPasswordReset: vi.fn(),
+  options: null as { snapshot: RepbookCloudSnapshot; onRemoteSnapshot: (snapshot: RepbookCloudSnapshot) => void; onSignedOut: () => void } | null,
+}));
 vi.mock("../hooks/useCloudSync", () => ({
-  useCloudSync: () => ({
+  useCloudSync: (options: NonNullable<typeof accessMock.options>) => (accessMock.options = options, {
     configured: true,
     email: "athlete@example.com",
     status: "synced",
@@ -20,10 +24,179 @@ vi.mock("../hooks/useCloudSync", () => ({
     createAccount: vi.fn(),
     signIn: vi.fn(),
     signOut: vi.fn(),
+    clearAuthError: accessMock.clearAuthError,
+    requestPasswordReset: accessMock.requestPasswordReset,
+    ...accessMock.overrides,
   }),
 }));
 
 import App from "../App";
+
+function openLogin() {
+  fireEvent.click(screen.getByRole("button", { name: /Open navigation|Abrir navegación/ }));
+  fireEvent.click(screen.getByRole("button", { name: /Login \/ create account|Ingresar \/ crear cuenta/ }));
+}
+
+function openNavigation() {
+  fireEvent.click(screen.getByRole("button", { name: /Open navigation|Abrir navegación/ }));
+}
+
+describe("stored profile summary", () => {
+  // Valid legacy-compatible profile with omitted optional preferences/defaults.
+  const emptyProfile: HealthProfile = {
+    birthDate: "", ageYears: null, metabolicSex: "unspecified", heightCm: null,
+    currentWeightKg: null, targetWeightKg: null, waistCm: null, activityLevel: "moderate",
+    experience: "beginner", dietaryPattern: "omnivore", allergies: "", healthNotes: "",
+  };
+  function openSummary(profile: HealthProfile, name = "Mi perfil", language: "en" | "es" = "en") {
+    const snapshot = createRepbookSnapshot({ profileName: name, language, healthProfile: profile,
+      tracks: [], activeTrackId: "", favoriteIds: [], checkIns: [], tracksInitialized: false });
+    expect(normalizeRepbookSnapshot(snapshot, { ...snapshot })).toBe(snapshot);
+    localStorage.setItem("repbook-health-profile", JSON.stringify(profile));
+    localStorage.setItem("repbook-profile-name", JSON.stringify(name));
+    localStorage.setItem("repbook-language", JSON.stringify(language));
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    const view = render(<App />);
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: language === "en"
+      ? "Open account and synchronization" : "Abrir cuenta y sincronización" }));
+    return { ...view, snapshot, summary: view.container.querySelector(".privacy-summary")! };
+  }
+  const preferences: { label: string; value: Partial<HealthProfile> }[] = [
+    { label: "primaryGoal", value: { primaryGoal: "mobility" } },
+    { label: "goals including initial goal", value: { goals: ["strength"] } },
+    { label: "sport", value: { sport: "running" } },
+    { label: "equipmentPreference", value: { equipmentPreference: "bodyweight" } },
+    { label: "trainingDaysPerWeek", value: { trainingDaysPerWeek: 2 } },
+    { label: "sessionMinutes", value: { sessionMinutes: 30 } },
+    { label: "experience", value: { experience: "intermediate" } },
+  ];
+  it.each((["en", "es"] as const).flatMap(language => [false, undefined].map(onboardingCompleted => ({ language, onboardingCompleted }))))(
+    "lists a valid partial name with onboarding $onboardingCompleted ($language)", ({ language, onboardingCompleted }) => {
+      const { summary } = openSummary({ ...emptyProfile, onboardingCompleted }, "  Synthetic athlete  ", language);
+      expect(summary.querySelectorAll("li")).toHaveLength(1);
+      expect(summary.textContent).toContain(language === "en" ? "Profile and preferences" : "Perfil y preferencias");
+      expect(summary.textContent).not.toContain("Synthetic athlete");
+    });
+  it.each(preferences.flatMap(preference => [false, undefined].map(onboardingCompleted => ({ ...preference, onboardingCompleted }))))(
+    "lists $label alone with onboarding $onboardingCompleted", ({ value, onboardingCompleted }) => {
+      const { summary } = openSummary({ ...emptyProfile, ...value, onboardingCompleted });
+      expect(summary.querySelectorAll("li")).toHaveLength(1);
+      expect(summary.textContent).toContain("Profile and preferences");
+    });
+  it.each(["", "   ", "Mi perfil", "  Mi perfil  "])("omits empty/default name '%s' and normalized initial preferences", name => {
+    const { summary } = openSummary({ ...emptyProfile, onboardingCompleted: false, primaryGoal: "strength",
+      sport: null, equipmentPreference: "mixed", trainingDaysPerWeek: 3, sessionMinutes: 45 }, name);
+    expect(summary.querySelectorAll("li")).toHaveLength(0);
+  });
+  it("omits optional defaults, sensitive data and proposal markers as presence indicators", () => {
+    const { summary } = openSummary({ ...emptyProfile, healthDataMode: "personalized", healthNotes: "PRIVATE sentinel",
+      allergies: "PRIVATE allergy", initialRoutineDecision: "rejected", readinessScreen: {
+        confirmed: true, chestPain: true, dizzinessOrFainting: false, medicallySupervisedOnly: false, musculoskeletalConcern: false,
+      } });
+    expect(summary.querySelectorAll("li")).toHaveLength(1);
+    expect(summary.textContent).toContain("Authorized health context");
+    expect(summary.textContent).not.toContain("Profile and preferences");
+    expect(summary.textContent).not.toContain("PRIVATE");
+  });
+  it("treats a locally representable empty goals array as empty without changing the schema", () => {
+    // The cloud validator rejects explicit goals: []; this is only a local-state control.
+    localStorage.setItem("repbook-health-profile", JSON.stringify({ ...emptyProfile, goals: [] }));
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    const { container } = render(<App />);
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
+    expect(container.querySelectorAll(".privacy-summary li")).toHaveLength(0);
+  });
+  it("preserves completed-profile recognition even without a meaningful name or preferences", () => {
+    const { summary } = openSummary({ ...emptyProfile, onboardingCompleted: true });
+    expect(summary.querySelectorAll("li")).toHaveLength(1);
+    expect(summary.textContent).toContain("Profile and preferences");
+  });
+  it("does not attribute local legacy workout to the account summary", () => {
+    localStorage.setItem("repbook-workout", JSON.stringify([{ exerciseId: "0514", sets: 3, reps: 8 }]));
+    const { summary } = openSummary(emptyProfile);
+    expect(summary.querySelectorAll("li")).toHaveLength(0);
+  });
+  it("keeps the guest privacy center hidden even with a meaningful profile", () => {
+    accessMock.overrides = { email: null };
+    localStorage.setItem("repbook-health-profile", JSON.stringify(emptyProfile));
+    localStorage.setItem("repbook-profile-name", JSON.stringify("Synthetic athlete"));
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    const { container } = render(<App />);
+    openLogin();
+    expect(container.querySelector(".privacy-summary")).toBeNull();
+    expect(screen.queryByText("Export my data")).toBeNull();
+  });
+  it("keeps exported snapshot bytes and collection counts unchanged across summary open/close", () => {
+    const exports: { data: RepbookCloudSnapshot; account: { email: string } }[] = [];
+    const NativeBlob = Blob;
+    vi.stubGlobal("Blob", class extends NativeBlob {
+      constructor(parts: BlobPart[], options?: BlobPropertyBag) {
+        super(parts, options);
+        exports.push(JSON.parse(parts[0] as string));
+      }
+    });
+    const NativeURL = URL;
+    vi.stubGlobal("URL", class extends NativeURL {
+      static createObjectURL() { return "blob:synthetic-export"; }
+      static revokeObjectURL() {}
+    });
+    const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => undefined);
+    localStorage.setItem("repbook-training-tracks", JSON.stringify([track]));
+    localStorage.setItem("repbook-favorites", JSON.stringify(["0514"]));
+    const { summary } = openSummary({ ...emptyProfile, onboardingCompleted: false, goals: ["strength"] }, " Synthetic athlete ");
+    const original = structuredClone(accessMock.options!.snapshot);
+    const write = vi.spyOn(Storage.prototype, "setItem");
+    try {
+      expect([...summary.querySelectorAll("li")].map(item => item.textContent)).toEqual([
+        "Profile and preferences", "Routes and prescriptions: 1", "Favorites: 1",
+      ]);
+      fireEvent.click(screen.getByRole("button", { name: "Export my data" }));
+      fireEvent.click(screen.getByRole("button", { name: "Close access panel" }));
+      openNavigation();
+      fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
+      fireEvent.click(screen.getByRole("button", { name: "Export my data" }));
+      expect(exports).toHaveLength(2);
+      expect(exports.map(item => item.data)).toEqual([original, original]);
+      expect(exports.every(item => normalizeRepbookSnapshot(item.data, { ...item.data }) === item.data)).toBe(true);
+      expect(exports.map(item => item.account.email)).toEqual(["athlete@example.com", "athlete@example.com"]);
+      expect(accessMock.options!.snapshot).toEqual(original);
+      expect(write).not.toHaveBeenCalled();
+      expect(anchorClick).toHaveBeenCalledTimes(2);
+    } finally {
+      write.mockRestore(); anchorClick.mockRestore();
+    }
+  });
+  it("clears A on the existing sign-out callback and derives the empty B snapshot on identity change", () => {
+    const { rerender, container } = openSummary({ ...emptyProfile, goals: ["strength"] }, "Synthetic A");
+    fireEvent.click(screen.getByRole("button", { name: "Close access panel" }));
+    accessMock.overrides = { signOut: () => {
+      accessMock.overrides = { email: null };
+      accessMock.options!.onSignedOut();
+    } };
+    // Execute the existing hook callback contract; SDK identity isolation is checked in compiled UI separately.
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sign out" }));
+    expect(container.querySelector(".privacy-summary")).toBeNull();
+    accessMock.overrides = { email: "synthetic-b@example.invalid" };
+    rerender(<App />);
+    // Sign-out restores Spanish; B receives a valid empty current-context snapshot.
+    const empty = createRepbookSnapshot({ profileName: "Mi perfil", language: "en", healthProfile: emptyProfile,
+      tracks: [], activeTrackId: "", favoriteIds: [], checkIns: [], tracksInitialized: false });
+    expect(normalizeRepbookSnapshot(empty, { ...empty })).toBe(empty);
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: "Abrir cuenta y sincronización" }));
+    // Remote data is applied through the actual App callback, not by reseeding rendered local state.
+    fireEvent.click(screen.getByRole("button", { name: "Cerrar acceso" }));
+    act(() => accessMock.options!.onRemoteSnapshot(empty));
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
+    expect(container.querySelectorAll(".privacy-summary li")).toHaveLength(0);
+    expect(container.querySelector(".privacy-summary")?.textContent).not.toContain("Synthetic A");
+  });
+});
 
 const exercise: Exercise = {
   id: "0514",
@@ -82,6 +255,9 @@ const healthProfile: HealthProfile = {
 };
 
 beforeEach(() => {
+  accessMock.overrides = {};
+  accessMock.clearAuthError.mockClear();
+  accessMock.requestPasswordReset.mockClear();
   localStorage.setItem("repbook-language", JSON.stringify("en"));
   localStorage.setItem("repbook-health-profile", JSON.stringify({
     ...healthProfile,
@@ -93,6 +269,140 @@ afterEach(() => {
   cleanup();
   localStorage.clear();
   vi.unstubAllGlobals();
+});
+
+describe("storage notice and footer integration", () => {
+  it("keeps immediate recovery visible when a new identity arrives, then allows normal completion", () => {
+    accessMock.overrides = { email: null, passwordRecoveryState: null };
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    const { rerender } = render(<App />);
+    accessMock.overrides = { email: "synthetic-recovery@example.com", passwordRecoveryState: "ready" };
+    rerender(<App />);
+    expect(screen.getByRole("button", { name: "Save new password" })).toBeTruthy();
+    expect(screen.queryByRole("dialog", { name: "My profile" })).toBeNull();
+    accessMock.overrides = { email: "synthetic-recovery@example.com", passwordRecoveryState: null };
+    rerender(<App />);
+    expect(screen.queryByRole("button", { name: "Save new password" })).toBeNull();
+    expect(screen.getByText("synthetic-recovery@example.com")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Done" }));
+    expect(screen.queryByRole("dialog", { name: "Access Aunara anywhere" })).toBeNull();
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Home / routes" }).classList.contains("is-active")).toBe(true);
+  });
+  it("returns a completed profile to home after a simulated sign-in without opening profile", () => {
+    accessMock.overrides = { email: null };
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    const { rerender } = render(<App />);
+    openLogin();
+    expect(screen.getByRole("dialog", { name: "Access Aunara anywhere" })).toBeTruthy();
+    accessMock.overrides = { email: "synthetic@example.com" };
+    rerender(<App />);
+    expect(screen.queryByRole("dialog", { name: "Access Aunara anywhere" })).toBeNull();
+    expect(screen.queryByRole("dialog", { name: "My profile" })).toBeNull();
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Home / routes" }).classList.contains("is-active")).toBe(true);
+  });
+  it("connects auth-error cleanup and explicit recovery without disturbing the guest legal flow", async () => {
+    accessMock.overrides = { email: null, status: "error", message: "Simulated auth error" };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: vi.fn().mockResolvedValue([exercise]) }));
+    render(<App />);
+    openLogin();
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
+    expect(accessMock.clearAuthError).toHaveBeenCalledOnce();
+    const input = screen.getByLabelText("Email address");
+    fireEvent.change(input, { target: { value: "  Guest+tag@sub.example.com  " } });
+    expect(screen.queryByRole("button", { name: "Recover password" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "I already have an account" }));
+    fireEvent.click(screen.getByRole("button", { name: "Recover password" }));
+    expect(accessMock.requestPasswordReset).toHaveBeenCalledExactlyOnceWith("Guest+tag@sub.example.com");
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Terms of use" })[0]);
+    expect(screen.getByRole("heading", { name: "Terms of use" })).toBeTruthy();
+    fireEvent.keyDown(screen.getByRole("button", { name: "Close legal document" }), { key: "Escape" });
+    expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("  Guest+tag@sub.example.com  ");
+    expect((screen.getByRole("checkbox", { name: /I accept the Terms/ }) as HTMLInputElement).checked).toBe(false);
+  });
+  it("keeps the complete app and all nine stored states usable with global storage denied", async () => {
+    const clear = vi.spyOn(Storage.prototype, "clear");
+    const remove = vi.spyOn(Storage.prototype, "removeItem");
+    const read = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => { throw new DOMException("Blocked", "SecurityError"); });
+    const write = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new DOMException("Blocked", "SecurityError"); });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: vi.fn().mockResolvedValue([exercise]) }));
+    try {
+      const first = render(<App />);
+      expect(screen.getByRole("button", { name: "Navegación de Aunara" })).toBeTruthy();
+      for (const key of [
+        "repbook-language", "repbook-profile-name", "repbook-favorites", "repbook-workout",
+        "repbook-training-tracks", "repbook-active-track", "repbook-training-tracks-initialized",
+        "repbook-health-profile", "repbook-weekly-checkins",
+      ]) {
+        expect(read).toHaveBeenCalledWith(key);
+        expect(write.mock.calls.some(([writtenKey]) => writtenKey === key)).toBe(true);
+      }
+      fireEvent.click(screen.getByRole("button", { name: "Entendido" }));
+      expect(screen.queryByRole("complementary", { name: /Aviso de almacenamiento/ })).toBeNull();
+      const opener = screen.getByRole("button", { name: "Cookies y almacenamiento" });
+      fireEvent.click(opener);
+      expect(screen.getByRole("dialog", { name: "Cookies y almacenamiento" })).toBeTruthy();
+      fireEvent.keyDown(window, { key: "Escape" });
+      expect(window.document.activeElement).toBe(opener);
+      fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+      fireEvent.change(screen.getByLabelText("Idioma"), { target: { value: "en" } });
+      expect((screen.getByLabelText("Language") as HTMLSelectElement).value).toBe("en");
+      fireEvent.keyDown(window, { key: "Escape" });
+      expect(screen.getByRole("button", { name: "Cookies and storage" })).toBeTruthy();
+      expect(screen.getByAltText("AC Setroc")).toBeTruthy();
+      expect(clear).not.toHaveBeenCalled();
+      expect(remove).not.toHaveBeenCalled();
+      first.unmount();
+      render(<App />);
+      expect(screen.getByRole("button", { name: "Entendido" })).toBeTruthy();
+      fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+      expect((screen.getByLabelText("Idioma") as HTMLSelectElement).value).toBe("es");
+    } finally {
+      cleanup();
+      vi.restoreAllMocks();
+    }
+  });
+
+  it.each(["es", "en"] as const)("reopens all documents and preserves credit and attributions (%s)", async (language) => {
+    localStorage.setItem("repbook-language", JSON.stringify(language));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: vi.fn().mockResolvedValue([exercise]) }));
+    render(<App />);
+    const credit = screen.getByAltText("AC Setroc") as HTMLImageElement;
+    expect(credit.getAttribute("src")).toBe(`${import.meta.env.BASE_URL}brand/ac-setroc-wordmark.png`);
+    expect(credit.closest("a")).toBeNull();
+    expect(screen.getByText(language === "es" ? "Desarrollado por" : "Developed by")).toBeTruthy();
+    const slogan = screen.getByText(language === "es" ? "Tu propósito marca el camino." : "Your purpose leads the way.");
+    expect(slogan.closest(".footer-brand")?.querySelector("img")?.getAttribute("src")).toBe(`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`);
+    expect(credit.closest(".footer-development-credit")?.querySelector("span")?.textContent).toBe(language === "es" ? "Desarrollado por" : "Developed by");
+    expect(screen.getByRole("link", { name: "Gym visual" })).toBeTruthy();
+    expect(screen.getByText(/Hasan Emir Yıldırım, MIT/)).toBeTruthy();
+    expect(screen.queryByRole("dialog")).toBeNull();
+    const more = screen.getByRole("button", { name: language === "es" ? "Más información" : "Learn more" });
+    // Safari-like click: the trigger need not already own keyboard focus.
+    expect(window.document.activeElement).not.toBe(more);
+    fireEvent.click(more);
+    expect(screen.getByRole("dialog", { name: language === "es" ? "Cookies y almacenamiento" : "Cookies and storage" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: language === "es" ? "Cerrar documento legal" : "Close legal document" }));
+    expect(window.document.activeElement).toBe(more);
+    fireEvent.click(screen.getByRole("button", { name: language === "es" ? "Entendido" : "Understood" }));
+    expect(screen.queryByRole("complementary", { name: /storage notice|Aviso de almacenamiento/ })).toBeNull();
+    const titles = language === "es"
+      ? ["Política de privacidad", "Términos de uso", "Cookies y almacenamiento"]
+      : ["Privacy policy", "Terms of use", "Cookies and storage"];
+    for (const title of titles) {
+      const opener = screen.getByRole("button", { name: title });
+      opener.focus();
+      fireEvent.click(opener);
+      expect(screen.getByRole("dialog", { name: title })).toBeTruthy();
+      fireEvent.keyDown(window, { key: "Escape" });
+      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(window.document.activeElement).toBe(opener);
+    }
+    openNavigation();
+    await screen.findByRole("button", { name: language === "es" ? "Biblioteca de ejercicios" : "Exercise library" });
+  });
 });
 
 describe("training track controls", () => {
@@ -161,7 +471,7 @@ describe("training track controls", () => {
       onDelete={vi.fn()}
     />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Add route/ }));
 
     expect(screen.getByRole("option", { name: "Mixed" })).toBeTruthy();
   });
@@ -178,7 +488,7 @@ describe("training track controls", () => {
       onEdit={vi.fn()}
     />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Add route/ }));
     fireEvent.change(screen.getByLabelText("Goal"), { target: { value: "weight-loss" } });
     fireEvent.click(screen.getByRole("button", { name: "Manual routine" }));
     fireEvent.change(screen.getByLabelText("Session minutes"), { target: { value: "75" } });
@@ -210,7 +520,7 @@ describe("training track controls", () => {
     render(<App />);
 
     await screen.findByRole("heading", { name: "Training tracks" });
-    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Add route/ }));
     fireEvent.click(screen.getByRole("button", { name: "Create track & suggest routine" }));
 
     expect(await screen.findByRole("dialog", { name: "Review suggested routine" })).toBeTruthy();
@@ -251,7 +561,7 @@ describe("training track controls", () => {
       onDelete={vi.fn()}
     />);
 
-    fireEvent.click(screen.getByRole("button", { name: /Add another track/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Add route/ }));
     fireEvent.click(screen.getByRole("button", { name: "Sport" }));
 
     expect(screen.getByRole("option", { name: "Mountain biking (MTB)" })).toBeTruthy();
@@ -260,6 +570,27 @@ describe("training track controls", () => {
 });
 
 describe("routine exercise controls", () => {
+  it("persists manual prescription values without inventing a legacy note", async () => {
+    localStorage.setItem("repbook-training-tracks", JSON.stringify([{ ...track, creationMode: "manual", trainingDays: ["monday"], workout: [] }]));
+    localStorage.setItem("repbook-training-tracks-initialized", "true");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: vi.fn().mockResolvedValue([exercise]) }));
+    render(<App />);
+    await screen.findByRole("heading", { name: "Training tracks" });
+    fireEvent.click(screen.getByRole("button", { name: /Open active routine/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Start creating" }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose exercises for this day" }));
+    fireEvent.click(screen.getByRole("button", { name: "Select Jump Squat as exercise 1" }));
+    fireEvent.click(screen.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.change(screen.getByLabelText("Sets"), { target: { value: "4" } });
+    fireEvent.change(screen.getByLabelText("Repetitions"), { target: { value: "8" } });
+    fireEvent.click(screen.getByRole("button", { name: "Choose local structure" }));
+    fireEvent.click(screen.getByRole("button", { name: "Single set" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add single set" }));
+    const saved = JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")[0].workout[0];
+    expect(saved).toMatchObject({ sets: 4, reps: 8, setPlan: "4 × 8", day: "monday" });
+    expect(saved.originalSetPlan).toBeUndefined();
+    expect(screen.queryByText(/Original plan note/)).toBeNull();
+  });
   it("asks for a route and day before adding an exercise, and can remove an existing placement", () => {
     const onAdd = vi.fn();
     const onRemove = vi.fn();
@@ -351,7 +682,7 @@ describe("routine exercise controls", () => {
       }}
       onClose={vi.fn()}
       onUpdate={vi.fn()}
-      onAddExercise={onAddExercise}
+      onAddStructure={onAddExercise}
       onRemove={vi.fn()}
       onSwap={vi.fn()}
       onClear={vi.fn()}
@@ -364,17 +695,20 @@ describe("routine exercise controls", () => {
     expect(screen.queryByText("Why this routine")).toBeNull();
     expect(screen.queryByRole("button", { name: "Suggest this routine" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Start creating" }));
-    fireEvent.click(screen.getByRole("button", { name: "Single set" }));
     fireEvent.click(screen.getByRole("button", { name: "Wednesday" }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose exercises for this day" }));
     fireEvent.change(screen.getByLabelText("Search exercise 1"), { target: { value: "quadriceps" } });
     fireEvent.click(screen.getByRole("button", { name: "Select Jump Squat as exercise 1" }));
+    fireEvent.click(screen.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose local structure" }));
+    fireEvent.click(screen.getByRole("button", { name: "Single set" }));
     fireEvent.click(screen.getByRole("button", { name: "Add single set" }));
 
     expect(onGenerate).not.toHaveBeenCalled();
-    expect(onAddExercise).toHaveBeenCalledWith(exercise.id, "wednesday");
+    expect(onAddExercise).toHaveBeenCalledWith("single", [exercise.id], "wednesday", [expect.objectContaining({ sets: 3, reps: 10 })]);
   });
 
-  it("starts manual building with only the training-structure choices", () => {
+  it("starts manual building with the day before exercises and structure", () => {
     render(<WorkoutPanel
       language="es"
       items={[]}
@@ -400,10 +734,10 @@ describe("routine exercise controls", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
 
-    expect(screen.getByRole("button", { name: "Monoserie" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Biserie" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Triserie" })).toBeTruthy();
-    expect(screen.queryByLabelText("Buscar ejercicios para agregar")).toBeNull();
+    expect(screen.getByRole("button", { name: "Elegir ejercicios para este día" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Monoserie" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Biserie" })).toBeNull();
+    expect(screen.queryByLabelText("Buscar ejercicio 1")).toBeNull();
   });
 
   it("collects two exercise fields before adding a biset", () => {
@@ -428,15 +762,21 @@ describe("routine exercise controls", () => {
     />);
 
     fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
-    fireEvent.click(screen.getByRole("button", { name: "Biserie" }));
-
+    fireEvent.click(screen.getByRole("button", { name: "Elegir ejercicios para este día" }));
     fireEvent.change(screen.getByLabelText("Buscar ejercicio 1"), { target: { value: "jump" } });
     fireEvent.click(screen.getByRole("button", { name: "Seleccionar Sentadilla con salto como ejercicio 1" }));
+    fireEvent.click(screen.getByRole("button", { name: "Agregar otro ejercicio" }));
+    expect((screen.getByRole("button", { name: "Configurar series y repeticiones" }) as HTMLButtonElement).disabled).toBe(true);
     fireEvent.change(screen.getByLabelText("Buscar ejercicio 2"), { target: { value: "shoulder" } });
     fireEvent.click(screen.getByRole("button", { name: "Seleccionar Press de hombros sentado con mancuernas como ejercicio 2" }));
+    fireEvent.click(screen.getByRole("button", { name: "Configurar series y repeticiones" }));
+    fireEvent.change(screen.getByLabelText("Series para Sentadilla con salto"), { target: { value: "4" } });
+    fireEvent.change(screen.getByLabelText("Repeticiones para Sentadilla con salto"), { target: { value: "12" } });
+    fireEvent.click(screen.getByRole("button", { name: "Elegir estructura local" }));
+    fireEvent.click(screen.getByRole("button", { name: "Biserie" }));
     fireEvent.click(screen.getByRole("button", { name: "Agregar biserie" }));
 
-    expect(onAddStructure).toHaveBeenCalledWith("biset", [exercise.id, pressExercise.id], "monday");
+    expect(onAddStructure).toHaveBeenCalledWith("biset", [exercise.id, pressExercise.id], "monday", [expect.objectContaining({ sets: 4, reps: 12, prescriptionMode: "standard" }), expect.objectContaining({ sets: 3, reps: 10, prescriptionMode: "standard" })]);
   });
 
   it("opens the exercise preview from a manual routine search result", () => {
@@ -466,7 +806,7 @@ describe("routine exercise controls", () => {
     />);
 
     fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
-    fireEvent.click(screen.getByRole("button", { name: "Monoserie" }));
+    fireEvent.click(screen.getByRole("button", { name: "Elegir ejercicios para este día" }));
     fireEvent.click(screen.getByRole("button", { name: "Ver Sentadilla con salto demostración y pasos" }));
 
     expect(onOpenExercise).toHaveBeenCalledWith(exercise);
@@ -539,6 +879,7 @@ describe("routine exercise controls", () => {
     expect(screen.queryByRole("button", { name: "Log today’s load for Jump Squat" })).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Edit routine" }));
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
     fireEvent.change(screen.getByLabelText("Training day for Jump Squat"), { target: { value: "wednesday" } });
 
     expect(onUpdateItem).toHaveBeenCalledWith("monday-jump-squat", expect.objectContaining({ day: "wednesday" }));
@@ -583,9 +924,8 @@ describe("routine exercise controls", () => {
       onOpenProfile={vi.fn()}
     />);
 
-    const planSummary = screen.getByLabelText("Set plan for Jump Squat");
-    expect(planSummary.tagName).toBe("OUTPUT");
-    expect(planSummary.textContent).toBe("3 × 10");
+    expect(screen.queryByLabelText("Set plan for Jump Squat")).toBeNull();
+    expect(screen.queryByText("Original plan note: 3 × 8")).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Increase repetitions" }));
     expect(onUpdate).toHaveBeenCalledWith("monday-jump-squat", "reps", 1);
@@ -810,12 +1150,29 @@ describe("routine exercise controls", () => {
 });
 
 describe("profile access", () => {
-  it("opens account and phone installation guidance from the header", () => {
+  it("moves training/account access into the drawer and retains the header gates without health consent", () => {
+    accessMock.overrides = { healthDataConsent: "declined" };
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    render(<App />);
+    expect(document.querySelector(".shared-navigation")!.children).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: "Open profile" })).toBeNull();
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Open profile" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Exercise library" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Open account and synchronization" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Account / privacy" })).toBeTruthy();
+    fireEvent.click(document.querySelector(".navigation-panel .workout-trigger")!);
+    expect(screen.queryByRole("dialog", { name: "Navigation" })).toBeNull();
+    // The existing consent gate still controls whether the destination can render.
+    expect(screen.getByRole("button", { name: "Open navigation" }).getAttribute("aria-expanded")).toBe("false");
+  });
+  it("opens account and phone installation guidance from the shared header menu", () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     render(<App />);
 
     expect(screen.queryByRole("button", { name: "Android installation instructions" })).toBeNull();
     expect(screen.queryByRole("button", { name: "iPhone installation instructions" })).toBeNull();
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open account and synchronization" }));
 
     expect(screen.getByRole("dialog", { name: "Access Aunara anywhere" })).toBeTruthy();
@@ -823,10 +1180,11 @@ describe("profile access", () => {
     expect(screen.getByText("iPhone")).toBeTruthy();
   });
 
-  it("opens a visible profile summary from the header", () => {
+  it("opens a visible profile summary from the shared header menu", () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
     render(<App />);
 
+    openNavigation();
     fireEvent.click(screen.getByRole("button", { name: "Open profile" }));
 
     expect(screen.getByRole("dialog", { name: "My profile" })).toBeTruthy();
@@ -1017,7 +1375,8 @@ describe("profile access", () => {
     }));
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Exercises" }));
+    openNavigation();
+    fireEvent.click(screen.getByRole("button", { name: "Exercise library" }));
     await screen.findByRole("heading", { name: "Exercise library" });
     fireEvent.change(screen.getByLabelText("Body part"), { target: { value: "upper legs" } });
 
