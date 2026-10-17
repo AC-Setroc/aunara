@@ -29,10 +29,28 @@ afterEach(() => {
 
 function openLogin() {
   fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-  fireEvent.click(screen.getByRole("button", { name: "Ingresar / crear cuenta" }));
+  fireEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
 
 describe("signed-out home", () => {
+  it("omits installation help only when already installed", () => {
+    vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true })));
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+    expect([...document.querySelectorAll(".navigation-row")].map(row => row.textContent)).toEqual(["Inicio", "Ingresar"]);
+  });
+
+  it("uses the top anchor and keeps help on the existing access panel", () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+    fireEvent.click(screen.getByRole("link", { name: "Inicio" }));
+    expect(screen.queryByRole("dialog", { name: "Navegación" })).toBeNull();
+    expect(document.getElementById("top")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+    fireEvent.click(screen.getByRole("button", { name: "Ayuda / instalación" }));
+    expect(screen.getByRole("button", { name: "Ingresar" })).toBeTruthy();
+    expect(screen.getByText("iPhone")).toBeTruthy();
+  });
   it("shows only public navigation and hides personal training content", () => {
     render(<App />);
 
@@ -45,9 +63,13 @@ describe("signed-out home", () => {
     expect(row.lastElementChild).toBe(screen.getByRole("button", { name: "Abrir navegación" }));
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
     expect(screen.getByRole("link", { name: "Inicio" }).getAttribute("href")).toBe("#top");
-    expect(screen.getByRole("button", { name: "Ingresar / crear cuenta" })).toBeTruthy();
-    expect(screen.getByLabelText("Idioma")).toBeTruthy();
-    expect(screen.getByLabelText("Idioma").getAttribute("tabindex")).toBe("0");
+    expect([...document.querySelectorAll(".navigation-row")].map(row => row.textContent)).toEqual([
+      "Inicio", "Ingresar", "Ayuda / instalación",
+    ]);
+    expect(screen.getByRole("button", { name: "Cambiar a inglés" }).getAttribute("tabindex")).toBe("0");
+    expect(screen.queryByRole("combobox")).toBeNull();
+    expect(screen.queryByRole("link", { name: "Rutas" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Inicio / rutas" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Idioma / configuración" })).toBeNull();
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("button", { name: "Sign up" })).toBeNull();
@@ -62,10 +84,8 @@ describe("signed-out home", () => {
     render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    expect((screen.getByLabelText("Idioma") as HTMLSelectElement).value).toBe("es");
-    expect(screen.getByRole("option", { name: "ES" })).toBeTruthy();
-    expect(screen.getByRole("option", { name: "EN" })).toBeTruthy();
-    expect(screen.getAllByRole("option")).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Cambiar a inglés" }).textContent).toBe("ES");
+    expect(screen.queryByRole("option")).toBeNull();
     expect(screen.getByRole("heading", { name: /Un cuerpo preparado.*para todo lo que te importa/i })).toBeTruthy();
   });
 
@@ -73,10 +93,15 @@ describe("signed-out home", () => {
     render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    fireEvent.change(screen.getByLabelText("Idioma"), { target: { value: "en" } });
+    const toggle = screen.getByRole("button", { name: "Cambiar a inglés" });
+    toggle.focus();
+    fireEvent.click(toggle);
 
     expect(screen.getByRole("dialog", { name: "Navigation" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Login / create account" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Log in" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Switch to Spanish" })).toBe(toggle);
+    expect(document.activeElement).toBe(toggle);
+    expect(localStorage.getItem("repbook-language")).toBe('"en"');
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.getByRole("heading", { name: /A body ready.*for what matters most/i })).toBeTruthy();
   });

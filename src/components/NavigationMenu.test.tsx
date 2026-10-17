@@ -4,6 +4,22 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { NavigationMenu } from "./NavigationMenu";
 afterEach(cleanup);
 describe("shared navigation", () => {
+  it("keeps the language slot in the portaled header before destinations and in the focus trap", () => {
+    render(<NavigationMenu language="en" entries={[{ label: "Home", action: vi.fn() }]}
+      headerContent={<button type="button" tabIndex={0}>EN</button>} />);
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    const dialog = screen.getByRole("dialog");
+    const language = screen.getByRole("button", { name: "EN" });
+    expect(dialog.querySelector(".navigation-head")?.children[1]).toBe(language);
+    expect(language.compareDocumentPosition(dialog.querySelector("nav")!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(document.activeElement).toBe(language);
+    fireEvent.keyDown(language, { key: "Tab", shiftKey: true });
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Home" }));
+    fireEvent.keyDown(document.activeElement!, { key: "Tab" });
+    expect(document.activeElement).toBe(language);
+    fireEvent.keyDown(language, { key: "Escape" });
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Open navigation" }));
+  });
   it("shares one destination list and restores the trigger focus on Escape and selection", () => {
     const action = vi.fn();
     render(<NavigationMenu language="en" entries={[{ label: "Home", action }]} />);

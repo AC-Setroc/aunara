@@ -6,7 +6,6 @@ import {
   Heart,
   CircleHelp,
   House,
-  Languages,
   LogOut,
   Search,
   SlidersHorizontal,
@@ -111,10 +110,6 @@ function hasProfileSummary(snapshot: RepbookCloudSnapshot): boolean {
     || (profile.sessionMinutes ?? DEFAULT_HEALTH_PROFILE.sessionMinutes) !== DEFAULT_HEALTH_PROFILE.sessionMinutes
     || (profile.experience ?? DEFAULT_HEALTH_PROFILE.experience) !== DEFAULT_HEALTH_PROFILE.experience;
 }
-const LANGUAGE_OPTIONS: { code: LanguageCode; label: string }[] = [
-  { code: "es", label: "ES" },
-  { code: "en", label: "EN" },
-];
 
 function App() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -664,8 +659,9 @@ function App() {
     }}>
       <header className="site-header">
         <NavigationMenu language={language} entries={[
-          { label: tr(language, "Home / routes", "Inicio / rutas"), icon: <House size={20} aria-hidden="true" />, active: appSection === "home", action: () => setAppSection("home") },
-          ...(!hasAppAccess ? [{ label: tr(language, "Home", "Inicio"), href: "#top", icon: <House size={20} aria-hidden="true" />, action: () => {} }] : []),
+          ...(hasAppAccess
+            ? [{ label: tr(language, "Home / routes", "Inicio / rutas"), icon: <House size={20} aria-hidden="true" />, active: appSection === "home", action: () => setAppSection("home") }]
+            : [{ label: tr(language, "Home", "Inicio"), href: "#top", icon: <House size={20} aria-hidden="true" />, action: () => setAppSection("home") }]),
           ...((canUseTraining || (hasAppAccess && !onboardingRequired)) ? [
             { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), icon: <BookOpen size={20} aria-hidden="true" />, active: appSection === "library", action: () => setAppSection("library") },
             { label: tr(language, "Profile", "Perfil"), ariaLabel: tr(language, "Open profile", "Abrir perfil"), icon: <UserRound size={20} aria-hidden="true" />, action: () => setProfileOpen(true) },
@@ -678,20 +674,16 @@ function App() {
           ...(hasAppAccess ? [{ label: cloud.email ? tr(language, "Synced", "Sincronizado") : tr(language, "Account", "Cuenta"),
             ariaLabel: tr(language, "Open account and synchronization", "Abrir cuenta y sincronización"),
             icon: <Cloud size={20} aria-hidden="true" />, group: "account" as const, action: () => openAccess("create") }] : []),
-          { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), icon: <ShieldCheck size={20} aria-hidden="true" />, group: "account", action: () => openAccess("sign-in") },
+          { label: hasAppAccess ? (cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta")) : tr(language, "Log in", "Ingresar"), icon: <ShieldCheck size={20} aria-hidden="true" />, group: "account", action: () => openAccess("sign-in") },
           ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), icon: <CircleHelp size={20} aria-hidden="true" />, group: "settings" as const, action: () => openAccess("sign-in") }] : []),
           ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), icon: <LogOut size={20} aria-hidden="true" />, group: "exit" as const, action: () => { void cloud.signOut(); } }] : []),
         ]}
-        panelContent={
-          <label className="language-select">
-            <Languages size={16} />
-            <span>{tr(language, "Language", "Idioma")}</span>
-            <select tabIndex={0} value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
-              {LANGUAGE_OPTIONS.map((option) => (
-                <option key={option.code} value={option.code}>{option.label}</option>
-              ))}
-            </select>
-          </label>
+        headerContent={
+          <button className="navigation-language-toggle" type="button" tabIndex={0}
+            aria-label={tr(language, "Switch to Spanish", "Cambiar a inglés")}
+            onClick={() => setLanguage(language === "es" ? "en" : "es")}>
+            {language.toUpperCase()}
+          </button>
         } />
       </header>
 

@@ -34,7 +34,7 @@ import App from "../App";
 
 function openLogin() {
   fireEvent.click(screen.getByRole("button", { name: /Open navigation|Abrir navegación/ }));
-  fireEvent.click(screen.getByRole("button", { name: /Login \/ create account|Ingresar \/ crear cuenta/ }));
+  fireEvent.click(screen.getByRole("button", { name: /^(Login \/ create account|Ingresar \/ crear cuenta|Log in|Ingresar)$/ }));
 }
 
 function openNavigation() {
@@ -272,6 +272,27 @@ afterEach(() => {
 });
 
 describe("storage notice and footer integration", () => {
+  it("persists the header language toggle without closing the authenticated drawer or changing destinations", () => {
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
+    const view = render(<App />);
+    openNavigation();
+    const toggle = screen.getByRole("button", { name: "Switch to Spanish" });
+    toggle.focus();
+    fireEvent.click(toggle);
+    expect(document.activeElement).toBe(toggle);
+    expect(screen.getByRole("dialog", { name: "Navegación" })).toBeTruthy();
+    expect([...document.querySelectorAll(".navigation-row")].map(row => row.getAttribute("aria-label") ?? row.textContent)).toEqual([
+      "Inicio / rutas", "Biblioteca de ejercicios", "Abrir perfil", "Entrenamiento de hoy0",
+      "Abrir cuenta y sincronización", "Cuenta / privacidad", "Ayuda / instalación", "Salir",
+    ]);
+    expect(screen.queryByRole("combobox", { name: /Language|Idioma/ })).toBeNull();
+    view.unmount();
+    render(<App />);
+    openNavigation();
+    expect(screen.getByRole("button", { name: "Cambiar a inglés" }).textContent).toBe("ES");
+    fireEvent.click(screen.getByRole("button", { name: "Cambiar a inglés" }));
+    expect(screen.getByRole("button", { name: "Switch to Spanish" }).textContent).toBe("EN");
+  });
   it("keeps immediate recovery visible when a new identity arrives, then allows normal completion", () => {
     accessMock.overrides = { email: null, passwordRecoveryState: null };
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => undefined)));
@@ -347,8 +368,8 @@ describe("storage notice and footer integration", () => {
       fireEvent.keyDown(window, { key: "Escape" });
       expect(window.document.activeElement).toBe(opener);
       fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-      fireEvent.change(screen.getByLabelText("Idioma"), { target: { value: "en" } });
-      expect((screen.getByLabelText("Language") as HTMLSelectElement).value).toBe("en");
+      fireEvent.click(screen.getByRole("button", { name: "Cambiar a inglés" }));
+      expect(screen.getByRole("button", { name: "Switch to Spanish" }).textContent).toBe("EN");
       fireEvent.keyDown(window, { key: "Escape" });
       expect(screen.getByRole("button", { name: "Cookies and storage" })).toBeTruthy();
       expect(screen.getByAltText("AC Setroc")).toBeTruthy();
@@ -358,7 +379,7 @@ describe("storage notice and footer integration", () => {
       render(<App />);
       expect(screen.getByRole("button", { name: "Entendido" })).toBeTruthy();
       fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-      expect((screen.getByLabelText("Idioma") as HTMLSelectElement).value).toBe("es");
+      expect(screen.getByRole("button", { name: "Cambiar a inglés" }).textContent).toBe("ES");
     } finally {
       cleanup();
       vi.restoreAllMocks();

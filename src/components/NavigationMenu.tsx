@@ -8,11 +8,13 @@ interface NavigationMenuProps {
   language: LanguageCode;
   entries: { label: string; action: () => void; icon?: ReactNode; group?: "account" | "settings" | "exit";
     href?: string; ariaLabel?: string; className?: string; active?: boolean; detail?: ReactNode }[];
-  /** Settings controls inside the drawer (e.g. the real language selector). */
+  /** Persistent controls above the destination list. */
+  headerContent?: ReactNode;
+  /** Additional settings controls inside the drawer. */
   panelContent?: ReactNode;
 }
 
-export function NavigationMenu({ language, entries, panelContent }: NavigationMenuProps) {
+export function NavigationMenu({ language, entries, headerContent, panelContent }: NavigationMenuProps) {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement | null>(null);
   const panel_ = useRef<HTMLDivElement>(null);
@@ -66,6 +68,7 @@ export function NavigationMenu({ language, entries, panelContent }: NavigationMe
       <div id="aunara-navigation" className="navigation-panel" ref={panel_} role="dialog" aria-modal="true" aria-label={tr(language, "Navigation", "Navegación")}>
         <div className="navigation-head">
           <img src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" />
+          {headerContent}
           <button className="navigation-close" type="button" tabIndex={0} aria-label={tr(language, "Close navigation", "Cerrar navegación")} onClick={close}><X size={22} aria-hidden="true" /></button>
         </div>
         <nav aria-label={tr(language, "Destinations", "Destinos")}>

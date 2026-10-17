@@ -1,0 +1,15 @@
+{
+  "baselineRef": "6e3ddaa",
+  "scratch": "/private/tmp/aunara-s17-build-XjXOVn",
+  "sourceHashes": {
+    "src/App.tsx": "76329637f15bdbd6aec0d32d009d7ce5c0fccfcbdf55beee08c44924c42b093f",
+    "src/styles.css": "644c042d78355136323f782f24db46e9ea7bc217640e179d2b2c509b4d9a6da3",
+    "src/components/NavigationMenu.tsx": "f913024c5831a193a304898eff92f060f95d6be2026889dbcf0327a59eb973d1"
+  },
+  "builds": {
+    "baseline-root": "/private/tmp/aunara-s17-build-XjXOVn/baseline-root",
+    "baseline-aunara": "/private/tmp/aunara-s17-build-XjXOVn/baseline-aunara",
+    "candidate-root": "/private/tmp/aunara-s17-build-XjXOVn/candidate-root",
+    "candidate-aunara": "/private/tmp/aunara-s17-build-XjXOVn/candidate-aunara"
+  }
+}
