@@ -1,10 +1,18 @@
 # SDD-017 — UAT17: presentación, menú y retorno de acceso
 
-2026-10-17 · v0.1 · **En revisión del Operator — PENDIENTE APROBACIÓN. Solo especificación; no implementado.**
+2026-10-17 · v0.1 · **Fase A APROBADA por el Operator («Sí»); implementación y revisión en curso. Gates de correo remoto sin aprobar.**
+
+La aprobación responde a la pregunta explícita sobre corrección local. Cubre D17-01/02 y restauración operativa sin daemon global. No autoriza escrituras SMTP/plantillas/Redirect URLs, envíos reales ni publicación a main. Las menciones de espera en el plan original conservan el gate histórico; este recibo las supera solo para A.
+
+### Enmienda 1 — Rutas solo con acceso, APROBADA
+
+La inspección de desarrollo confirmó que `App.tsx:720` solo monta `TrainingTracks` con `canUseTraining && exercises.length > 0`; `TrainingTracks.tsx:96` tiene clase, no id, `tracks-section`. Por ello el salto guest propuesto en §4 no existe: esa afirmación de la spec queda corregida, no se implementa un ancla vacía ni se concede acceso. El Operator decidió explícitamente: **«No; omitir Rutas hasta iniciar sesión»**. El menú guest queda **Inicio → Ingresar → Ayuda / instalación** (EN Home → Log in → Help / installation), preservando la condición actual de ayuda. El menú con acceso conserva sus destinos/acciones actuales. Esta enmienda supera solo el inventario/destino guest de §4 y C17-03; no introduce archivos, navegación ni entrenamiento nuevos. Destino desbloqueado para implementar y verificar con este criterio.
 
 `[AUNARA/codex · modelo no expuesto]` — [Reporte UAT sanitizado](../handoffs/UAT-2026-10-17-resultados-operator.md). ID017 libre comprobado mediante inventario de `AUNARA_SOT/sdd/`; candidato aislado `/private/tmp/aunara-sdd015-016-candidate`, HEAD `aa4cf20`, detached y limpio antes de esta ronda. No es el canónico. Aprobaciones técnicas locales de SDD-013/014 no equivalen a UAT humana aprobada ni activación remota.
 
 ## 1. El problema, en el idioma del Operator
+
+**Inspección remota de solo lectura, 17Oct:** dashboard del proyecto Aunara: Site URL `https://aunaratraining.com/`; allowlist contiene localhost5173/**,127.0.0.1:5173/** y LAN192.168.80.19:5173/** (además de antecedentes). SMTP personalizado aparece **desactivado**, Save changes deshabilitado; Emails informa que usa plantillas predeterminadas hasta configurar SMTP. Confirma la causa de remitente/plantilla predeterminados, no la causa final del retorno a prod. No se abrió ningún enlace real con token, ni se enviaron correos o guardaron cambios. La cadena solicitud→correo→callback sigue sin medir; no corregir Auth por suposición. Fuentes de capacidades: [Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls) y changelog oficial consultados; configuración específica observada en UI, no inferida de docs.
 
 El footer blanco ocupa demasiado espacio y el slogan no se percibe centrado bajo el conjunto símbolo+nombre. El invitado encuentra Inicio duplicado y destinos en un orden distinto al deseado. El idioma debe cambiarse con un botón ES/EN visible arriba a la derecha del menú, no con un selector nativo. El texto opcional de salud mantiene un recuadro que debe desaparecer conservando su color y su función opcional. Los correos reales de confirmación y recuperación siguen llegando con apariencia/remitente predeterminados y llevan a producción aunque se solicitaron desde desarrollo. Además el servidor local no está disponible en esta revisión.
 

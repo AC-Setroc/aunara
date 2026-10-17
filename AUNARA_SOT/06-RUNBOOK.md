@@ -2,6 +2,8 @@
 
 ## Situación operativa vigente — 2026-10-17
 
+**Actualización posterior:** servidor restaurado y verificado desde copia aislada SDD015-016, con candidato017A aún en revisión. Local <http://localhost:5173/>; LAN <http://192.168.80.19:5173/>; ambos HTTP200 y UI guest Mac cargada. PID5225/sesión98164 efímeros; mantener Mac despierta, no asumir disponibilidad futura ni UAT aprobada. No daemon global ni limpieza nueva de cuentas. La indisponibilidad siguiente es antecedente superado del inicio de esta ronda.
+
 `[AUNARA/codex · modelo no expuesto]` — **Servidor5173 NO disponible; UAT17 NO APROBADA.** No usar los HTTP200/IP del16Oct como prueba de disponibilidad actual. Sin listener y sesión anterior no disponible según coordinación; causa no probada. Restauración/verificación separadas, sin daemon global ni cambio de config. [Reporte17](handoffs/UAT-2026-10-17-resultados-operator.md), [SDD017 PENDIENTE APROBACIÓN](sdd/SDD-017-uat17-presentacion-y-retorno.md) y [handoff17](handoffs/HANDOFF-2026-10-17.md). El arranque16Oct siguiente es recibo histórico; no repetir limpieza de cuentas.
 
 ## UAT dev — recibo histórico 2026-10-16
