@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-16 · 🟡 Servidor015/016 levantado y3 cuentas eliminadas; UAT humana lista para iniciar
+
+`[AUNARA/codex · modelo no expuesto]` — Por orden explícita se reemplaza solo PID1148 verificado por nuevo Vite en candidato aislado actual, lectura envDir sin mostrar/copiar secretos. Local/LAN192.168.80.19 HTTP200 y UI invitado verificados. Inventario Auth Aunara4cuentas,3objetivos resueltos; borrado transaccional con guardas/preservación de excepción elimina3 cuentas,3snapshots y6consentimientos asociados, sus sesiones/refresh tokens. Primera llamada de conector expirada no tuvo efecto, confirmado antes de reintentar; segunda exitosa y consulta independiente final1cuenta/0otrosdatos. [Recibo sanitizado](handoffs/UAT-2026-10-16-dev-reinicio.md). Sin backup de datos exportado ni recuperación desde app; no borrar almacenamiento local ni tocar canónico. La limpieza sí afecta cuentas del proyecto compartido en producción, no hay publicación de código ni cambio SMTP/DNS/Auth config. Guion/handoff/runbook/estado actualizados; próxima acción UAT en ventana privada y allowlist LAN por Operator.
+
 ## 2026-10-16 · 🟡 Guion UAT28 actualizado y entregado; pruebas humanas pendientes
 
 `[AUNARA/codex · modelo no expuesto]` — «Dame lista de UAT»: corregida guía operativa a código devc48664b/015–016, con servidor anterior claramente separado. Conserva1–26, añade27edición entre días y28probe remoto inválido (PASS técnico ya acreditado, sin manipular datos reales). Runbook/handoff/estado/pendientes al día; removida afirmación vigente obsoleta de fixtures aún sin reparar. Revisión documental de links/numeración/whitespace, sin tocar runtime, levantar servidor, ejecutar casos humanos ni publicar.

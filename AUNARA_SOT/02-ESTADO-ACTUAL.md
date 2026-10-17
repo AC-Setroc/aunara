@@ -4,6 +4,10 @@ Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex ·
 
 ## Verificado
 
+### 2026-10-16 — Servidor UAT actualizado y limpieza de cuentas ejecutada por orden explícita
+
+`[AUNARA/codex · modelo no expuesto]` — «Levantá servidor y borrá todas las cuentas… excepto…»: nuevo Vite desde candidato aislado015/016, código c48664b, localhost5173/LAN192.168.80.19:5173 HTTP200 y UI real Mac cargada; módulo servido contiene fix016. [Recibo](handoffs/UAT-2026-10-16-dev-reinicio.md). Proyecto Aunara contrastado con env local:4 cuentas→1,3 snapshots y6 eventos asociados borrados por cascada, sesiones/refresh tokens objetivos eliminados; cuenta preservada y datos idénticos verificados transaccionalmente. No se publican identificadores personales. Supabase compartido: limpieza afecta también cuentas de producción, aunque main/código/SMTP/DNS permanecen intactos. Datos locales de navegadores no borrados. Superado el pendiente de actualizar servidor de abajo; nueva IP requiere comprobar Redirect URLs por Operator. Sin UAT humana/iPhone físico acreditados ni recuperación resuelta.
+
 ### 2026-10-16 — Lista UAT actualizada a28 casos, objetivo015/016 y prerequisito de servidor explícitos
 
 `[AUNARA/codex · modelo no expuesto]` — A pedido «Dame lista de UAT», [guion](handoffs/UAT-2026-10-16-dev-checklist.md) conserva1–26 y añade27edición de día/28protección remota técnica. Corrige objetivo de versión a c48664b, elimina la afirmación obsoleta de cuatro pruebas aún sin corregir y separa servidor humano anterior/CI técnico/aceptación humana/correo remoto. Runbook y handoff enlazados actualizados sin borrar antecedentes. Solo documentación; no se actualiza el servidor, ni se ejecuta nueva UAT, ni se cambian datos/SMTP/producción.

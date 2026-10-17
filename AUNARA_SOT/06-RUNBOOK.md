@@ -2,7 +2,7 @@
 
 ## UAT dev vigente — 2026-10-16
 
-Usar [lista UAT28 casos con expectativas](handoffs/UAT-2026-10-16-dev-checklist.md) y [handoff/receta histórica aislada](handoffs/HANDOFF-2026-10-16.md). Objetivo actual código devc48664b (SDD-013…016); servidor humano5173 todavía anterior, requiere orden de actualización y verificación de versión/direcciones antes de comenzar. Última LAN192.168.1.6:5173, no reinspeccionada en la actualización de lista. No ejecutar la receta genérica de abajo en el canónico dirty. SMTP/plantillas remotas no activados; retorno LAN→prod abierto. FALLA vuelve a Spec, sin hotpatch/publicación. Punto28 es probe sintético técnico ya acreditado, nunca corromper filas reales para probarlo.
+Usar [lista UAT28 casos](handoffs/UAT-2026-10-16-dev-checklist.md) y [arranque/limpieza vigentes](handoffs/UAT-2026-10-16-dev-reinicio.md). Servidor actualizado por orden a devc48664b/015–016, carpeta aislada SDD015-016, Local localhost5173 y LAN192.168.80.19:5173, HTTP/UI Mac verificados. Se borraron3 cuentas autorizadas y datos asociados, preservando la excepción indicada; Supabase compartido también afecta cuentas de producción. No se publicó código. Usar ventana privada para evitar datos locales previos. No tocar canónico dirty. SMTP pendiente; retorno LAN→prod abierto y nueva allowlist LAN a comprobar por Operator. FALLA vuelve a Spec. Punto28 técnico ya acreditado, no corromper filas reales.
 
 ## SDD-005 — dominio publicado; seguimiento Auth/PWA
 
