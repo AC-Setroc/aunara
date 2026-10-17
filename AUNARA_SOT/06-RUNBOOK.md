@@ -1,6 +1,10 @@
 # Runbook — Aunara
 
-## UAT dev vigente — 2026-10-16
+## Situación operativa vigente — 2026-10-17
+
+`[AUNARA/codex · modelo no expuesto]` — **Servidor5173 NO disponible; UAT17 NO APROBADA.** No usar los HTTP200/IP del16Oct como prueba de disponibilidad actual. Sin listener y sesión anterior no disponible según coordinación; causa no probada. Restauración/verificación separadas, sin daemon global ni cambio de config. [Reporte17](handoffs/UAT-2026-10-17-resultados-operator.md), [SDD017 PENDIENTE APROBACIÓN](sdd/SDD-017-uat17-presentacion-y-retorno.md) y [handoff17](handoffs/HANDOFF-2026-10-17.md). El arranque16Oct siguiente es recibo histórico; no repetir limpieza de cuentas.
+
+## UAT dev — recibo histórico 2026-10-16
 
 Usar [lista UAT28 casos](handoffs/UAT-2026-10-16-dev-checklist.md) y [arranque/limpieza vigentes](handoffs/UAT-2026-10-16-dev-reinicio.md). Servidor actualizado por orden a devc48664b/015–016, carpeta aislada SDD015-016, Local localhost5173 y LAN192.168.80.19:5173, HTTP/UI Mac verificados. Se borraron3 cuentas autorizadas y datos asociados, preservando la excepción indicada; Supabase compartido también afecta cuentas de producción. No se publicó código. Usar ventana privada para evitar datos locales previos. No tocar canónico dirty. SMTP pendiente; retorno LAN→prod abierto y nueva allowlist LAN a comprobar por Operator. FALLA vuelve a Spec. Punto28 técnico ya acreditado, no corromper filas reales.
 

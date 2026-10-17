@@ -1,5 +1,7 @@
 # UAT vigente — dev con SDD-013 a SDD-016
 
+**Actualización17Oct — UAT17 NO APROBADA, servidor5173 NO disponible.** `[AUNARA/codex · modelo no expuesto]` — Este guion conserva sus28 casos, pero las direcciones/arranque16Oct siguientes son históricos y no acreditan disponibilidad actual. [Resultados17](UAT-2026-10-17-resultados-operator.md) y [SDD017 PENDIENTE APROBACIÓN](../sdd/SDD-017-uat17-presentacion-y-retorno.md). No repetir envíos/borrados/cambios remotos sin autorización; restauración con recibo nuevo antes de UAT. No hay corrección ni cierre humano por esta actualización documental.
+
 2026-10-16 · `[AUNARA/codex · modelo no expuesto]`.
 
 ## 1. Preparación y alcance

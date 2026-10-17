@@ -1,6 +1,10 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-16. Origen de actualización: `[AUNARA/codex · gpt-6.1-sol]`; se preservan las entradas previas como historia.
+Fecha de actualización: 2026-10-17. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`; se preservan las entradas previas como historia.
+
+## Frente vigente — PENDIENTE APROBACIÓN
+
+`[AUNARA/codex · modelo no expuesto]` — UAT17 **NO APROBADA**: [reporte sanitizado](handoffs/UAT-2026-10-17-resultados-operator.md), [SDD-017 v0.1](sdd/SDD-017-uat17-presentacion-y-retorno.md) en revisión, sin implementación. Footer compacto/centro óptico, guest Inicio→Rutas→Ingresar→Ayuda, toggle ES/EN sin select y opcional sin recuadro propuestos. Código fresco identifica herencias CSS y duplicación del menú, no acredita presentación corregida. Hook ya solicita origen/base; causa final del retorno a prod pendiente de diagnóstico, SMTP/plantillas014 remotos **NO ACTIVADOS**, operación global requiere autorización separada. Servidor5173 sin listener y sesión anterior no disponible según coordinación; causa no demostrada y restauración no ejecutada en este frente. Supera la disponibilidad histórica16Oct, no borra sus recibos ni revoca aprobaciones técnicas015/016. Dev remoto consultado `aa4cf20`, main `dfffa873`; canónico dirty intacto. [Handoff vigente](handoffs/HANDOFF-2026-10-17.md). Sin Supabase/config/env/código/publicación en esta ronda documental.
 
 ## Verificado
 
