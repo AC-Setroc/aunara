@@ -50,3 +50,8 @@ Verificación: `dig` MX/TXT y botón «Verify» de Zoho para SPF/DKIM antes de p
 ## Comprobaciones pendientes en Zoho
 - «Alias creado»: SMTP se autentica con un **buzón** (usuario), no con un alias. Hay que autenticar con un buzón y tener `noreply@aunaratraining.com` como dirección de envío permitida, o crear `noreply@` como buzón.
 - El plan debe permitir SMTP (el plan gratuito de Zoho Mail puede no incluirlo). Confirmar antes de tocar Supabase.
+
+## Registro de ejecución — DNS (17-10, hecho por el Operator con su aprobación)
+- Añadidos en GoDaddy: 3 MX Zoho (10/20/50), TXT SPF `v=spf1 include:zoho.com ~all`, TXT DKIM `zoho._domainkey` (selector `zoho`, 2048/1024 bits según Zoho). Verificado por `dig` contra `ns49.domaincontrol.com` y `8.8.8.8` y «DKIM selector is successfully verified» en Zoho. Nada existente se modificó ni borró.
+- Zoho: `noreply@aunaratraining.com` es **alias** del buzón `admin@aunaratraining.com`; el SMTP se autentica como el buzón.
+- Siguiente: diff de Supabase (SMTP, remitente, 2 plantillas), pendiente de baseline y «sí» del Operator.
