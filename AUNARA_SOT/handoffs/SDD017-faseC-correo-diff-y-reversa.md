@@ -76,3 +76,9 @@ Baseline privado de SMTP/plantillas antes de aplicar (fuera del repo). Reversa: 
 
 ### Pruebas (destinatarios autorizados)
 Recuperación y alta/reenvío → logs de Auth sin 429, cabeceras raw (From `noreply@aunaratraining.com`, SPF/DKIM/DMARC `pass`), HTML con imágenes bloqueadas y `redirect_to` del origen que lo pidió (LAN, localhost, prod). Cierra C17-08 y C17-09. Tope: 100/día en plan gratuito.
+
+## Registro de ejecución — Resend (17-10, hecho por el Operator)
+- Dominio `aunaratraining.com` creado en Resend, región `sa-east-1`, Return-Path `send`, subdominio de tracking vacío. **Estado Verified** (19:51 hora local); Resend aparece con proveedor GoDaddy: las filas de DNS se añadieron por autorización *Domain Connect* del Operator, no a mano.
+- Tracking: apagado por defecto (docs de Resend: solo actúa con subdominio de tracking verificado); pestaña *Configuration* muestra «Enable tracking metrics → Configure» sin configurar. TLS: Opportunistic (valor por defecto, sin cambio).
+- DNS verificado por `dig` (8.8.8.8, 17-10): añadidos `send` (CNAME → `send.forge.rmta.net`, que lleva MX y SPF de Resend) y `resend._domainkey` (TXT DKIM). **Intactos:** MX Zoho, SPF raíz `v=spf1 include:zoho.com ~all`, `zoho._domainkey`, `_dmarc` (`p=quarantine`), verificación Zoho.
+- Pendiente: baseline de Supabase, API key de Resend (la crea y pega el Operator), diff de Supabase y pruebas.
