@@ -8,7 +8,7 @@ import {
   titleCase,
   uniqueSorted,
 } from "./exercises";
-import type { Exercise, WorkoutItem } from "../types";
+import type { Exercise, Weekday, WorkoutItem } from "../types";
 
 describe("local group and prescription preservation", () => {
   it("translates reviewed taxonomy and honestly labels pending names", () => {
@@ -552,3 +552,39 @@ describe("training tracks", () => {
   });
 });
 // SDD-006 presentation does not mutate the canonical dataset or exercise IDs.
+
+describe("suggested routine volume per session", () => {
+  const parts = ["upper legs", "chest", "back", "shoulders", "upper arms", "waist", "lower legs"];
+  const pool = parts.flatMap((part) => ["barbell", "dumbbell", "body weight"].flatMap((equipment, e) => [0, 1, 2].map((n) => ({
+    id: `${part}-${equipment}-${n}`.replace(/\s/g, "_"), name: `${part} ${equipment} move ${n}`, body_part: part, category: part, equipment, target: part, muscle_group: part,
+    secondary_muscles: [], instructions: { en: "x" }, instruction_steps: { en: [] }, image: "i", gif_url: "g", media_id: "m", attribution: "a", created_at: "2026-10-17", _e: e,
+  } as unknown as Exercise))));
+  const track = { focus: "muscle-gain", equipment: "any", daysPerWeek: 4, trainingDays: ["monday", "tuesday", "thursday", "friday"] as Weekday[], sessionMinutes: 60 };
+  const perDay = (workout: WorkoutItem[]) => track.trainingDays!.map((day) => workout.filter((item) => item.day === day).length);
+
+  it("sizes a session by minutes and experience", () => {
+    expect(exerciseLibrary.exercisesPerSession("intermediate", 45)).toBe(4);
+    expect(exerciseLibrary.exercisesPerSession("intermediate", 60)).toBe(5);
+    expect(exerciseLibrary.exercisesPerSession("intermediate", 120)).toBe(6);
+    expect(exerciseLibrary.exercisesPerSession("intermediate", 15)).toBe(4);
+  });
+
+  it("gives an intermediate user 4 to 6 distinct movements on every training day", () => {
+    const { workout } = exerciseLibrary.generateAdaptiveTrackWorkout(pool, track, [], { experience: "intermediate" });
+    for (const count of perDay(workout)) { expect(count).toBeGreaterThanOrEqual(4); expect(count).toBeLessThanOrEqual(6); }
+    expect(new Set(workout.map((item) => item.exerciseId)).size).toBe(workout.length);
+    expect(new Set(workout.map((item) => item.id)).size).toBe(workout.length);
+  });
+
+  it("keeps the original behaviour when no experience is given", () => {
+    const { workout } = exerciseLibrary.generateAdaptiveTrackWorkout(pool, track, []);
+    expect(workout).toEqual(exerciseLibrary.generateTrackWorkout(pool, track));
+  });
+
+  it("never schedules equipment for a bodyweight-only route or a restricted movement", () => {
+    const bodyweight = exerciseLibrary.generateAdaptiveTrackWorkout(pool, { ...track, equipment: "bodyweight" }, [], { experience: "intermediate" }).workout;
+    expect(bodyweight.every((item) => pool.find((e) => e.id === item.exerciseId)!.equipment === "body weight")).toBe(true);
+    const restricted = exerciseLibrary.generateAdaptiveTrackWorkout(pool.map((e) => e.body_part === "waist" ? { ...e, name: `${e.name} twist` } : e), track, [{ restrictedMovements: ["rotation"] } as never], { experience: "intermediate" }).workout;
+    expect(restricted.some((item) => item.exerciseId.startsWith("waist"))).toBe(false);
+  });
+});

@@ -81,6 +81,37 @@ describe("independent manual prescriptions", () => {
       expect.objectContaining({ reps: 20, repetitionCount: "per-side", prescriptionMode: "standard" }),
     ]);
   });
+  it("lets a structure that needs more exercises add the missing slots instead of dead-ending", () => {
+    const { adder, onAddStructure } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
+    fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
+    expect((adder.getByRole("button", { name: "Tri-set" }) as HTMLButtonElement).disabled).toBe(false);
+    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
+    expect(adder.getByLabelText("Search exercise 3")).toBeTruthy();
+    expect(adder.getByText("Tri-set needs 3 exercises: 2 left to choose.")).toBeTruthy();
+    expect((adder.getByLabelText("Search exercise 1") as HTMLInputElement).value).toBe("Synthetic Press");
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Push-Up as exercise 2" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Climber as exercise 3" }));
+    fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
+    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
+    fireEvent.click(adder.getByRole("button", { name: "Add tri-set" }));
+    expect(onAddStructure).toHaveBeenCalledWith("triset", exercises.map((exercise) => exercise.id), "monday", expect.any(Array));
+  });
+  it("keeps disabling a structure that would drop already selected exercises", () => {
+    const { adder } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
+    fireEvent.click(adder.getByRole("button", { name: "Add another exercise" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Push-Up as exercise 2" }));
+    fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
+    expect((adder.getByRole("button", { name: "Single set" }) as HTMLButtonElement).disabled).toBe(true);
+  });
   it("does not advance with invalid individual prescription", () => {
     const { adder, onAddStructure } = setup();
     fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));

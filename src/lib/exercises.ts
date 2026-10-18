@@ -7,6 +7,7 @@ import type {
   TrainingLimitation,
   Weekday,
   WorkoutItem,
+  TrainingExperience,
 } from "../types";
 import spanishExerciseNames from "../../public/data/exercise-directory/name-overrides.es.json";
 import spanishTaxonomy from "../../public/data/exercise-directory/taxonomy.es.json";
@@ -302,6 +303,78 @@ export function generateTrackWorkout(
     });
 }
 
+export interface RoutineVolumeOptions {
+  experience: TrainingExperience;
+}
+
+// Session size by experience: [min, max, minutes per exercise]. A 60-minute intermediate session is 5 movements.
+const SESSION_VOLUME: Record<TrainingExperience, [number, number, number]> = {
+  beginner: [3, 5, 15],
+  intermediate: [4, 6, 12],
+  advanced: [5, 8, 10],
+};
+
+export function exercisesPerSession(experience: TrainingExperience, sessionMinutes: number): number {
+  const [min, max, minutesEach] = SESSION_VOLUME[experience];
+  const estimate = Number.isFinite(sessionMinutes) ? Math.round(sessionMinutes / minutesEach) : min;
+  return Math.max(min, Math.min(max, estimate));
+}
+
+// Rotating body-part order so each day mixes lower body, push, pull and trunk without repeating a region.
+const BODY_PART_CYCLE = ["upper legs", "chest", "back", "shoulders", "upper arms", "waist", "lower legs"];
+// Well-known lifts first; any other eligible movement of the same body part follows alphabetically.
+const PREFERRED_MOVEMENTS: Record<string, string[]> = {
+  "upper legs": ["barbell full squat", "dumbbell goblet squat", "barbell deadlift", "dumbbell romanian deadlift", "dumbbell lunge", "walking lunge", "dumbbell step-up", "barbell glute bridge", "jump squat"],
+  chest: ["barbell bench press", "dumbbell bench press", "push-up", "barbell incline bench press", "dumbbell fly", "decline push-up", "diamond push-up"],
+  back: ["pull-up", "barbell bent over row", "dumbbell bent over row", "cable seated row", "cable lat pulldown full range of motion", "inverted row", "chin-up"],
+  shoulders: ["dumbbell lateral raise", "dumbbell front raise", "dumbbell rear lateral raise"],
+  "upper arms": ["barbell curl", "dumbbell biceps curl", "dumbbell hammer curl", "triceps dip", "close-grip push-up"],
+  waist: ["dead bug", "hanging leg raise", "russian twist", "mountain climber"],
+  "lower legs": ["bodyweight standing calf raise", "barbell standing calf raise"],
+};
+
+function fillSessionVolume(
+  exercises: Exercise[],
+  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[]; sessionMinutes?: number },
+  workout: WorkoutItem[],
+  restricted: Set<string>,
+  experience: TrainingExperience,
+): WorkoutItem[] {
+  const days = track.trainingDays?.length ? track.trainingDays : WEEKDAYS.slice(0, Math.max(1, Math.min(7, track.daysPerWeek ?? 1)));
+  const target = exercisesPerSession(experience, track.sessionMinutes ?? 0);
+  const prescription = TRACK_PRESCRIPTIONS[track.focus] ?? { sets: 3, reps: 10 };
+  const used = new Set(workout.map((item) => item.exerciseId));
+  const usable = (exercise: Exercise) => !used.has(exercise.id)
+    && eligibleForPreference(exercise, track.equipment)
+    && !/stretch/i.test(exercise.name)
+    && exerciseMovementRestrictions(exercise).every((restriction) => !restricted.has(restriction));
+  const additions: WorkoutItem[] = [];
+  days.forEach((day, dayIndex) => {
+    let count = workout.filter((item) => item.day === day).length;
+    for (let step = 0; count < target && step < BODY_PART_CYCLE.length * 2; step += 1) {
+      const part = BODY_PART_CYCLE[(dayIndex * 3 + step) % BODY_PART_CYCLE.length];
+      const preferred = PREFERRED_MOVEMENTS[part] ?? [];
+      const candidates = exercises.filter((exercise) => exercise.body_part === part && usable(exercise));
+      const rank = (exercise: Exercise) => { const index = preferred.indexOf(exercise.name); return index < 0 ? preferred.length : index; };
+      const pick = candidates.sort((left, right) => rank(left) - rank(right) || left.name.localeCompare(right.name))[0];
+      if (!pick) continue;
+      used.add(pick.id);
+      count += 1;
+      additions.push({
+        id: `${track.focus}-${pick.id}-${workout.length + additions.length}`,
+        exerciseId: pick.id,
+        sets: prescription.sets,
+        reps: prescription.reps,
+        day,
+        setPlan: `${prescription.sets} × ${prescription.reps}`,
+        loadKg: null,
+        loadHistory: [],
+      });
+    }
+  });
+  return [...workout, ...additions];
+}
+
 const MOVEMENT_PATTERNS: Array<[MovementRestriction, RegExp]> = [
   ["impact", /\b(?:jump|rope|sprint|plyo|mountain climber|burpee|hop)\b/i],
   ["deep-knee-flexion", /\b(?:squat|lunge|leg press|step[\s-]?up|split squat)\b/i],
@@ -342,11 +415,14 @@ function replacementScore(candidate: Exercise, excluded: Exercise): number {
 
 export function generateAdaptiveTrackWorkout(
   exercises: Exercise[],
-  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[] },
+  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[]; sessionMinutes?: number },
   limitations: TrainingLimitation[],
+  volume?: RoutineVolumeOptions,
 ): { workout: WorkoutItem[]; adaptations: RoutineAdaptation[] } {
-  const workout = generateTrackWorkout(exercises, track);
   const restricted = new Set(limitations.flatMap((limitation) => limitation.restrictedMovements));
+  const base = generateTrackWorkout(exercises, track);
+  // Without an experience level the curated starter list is returned unchanged.
+  const workout = volume ? fillSessionVolume(exercises, track, base, restricted, volume.experience) : base;
   if (!restricted.size) return { workout, adaptations: [] };
 
   const exerciseById = new Map(exercises.map((exercise) => [exercise.id, exercise]));

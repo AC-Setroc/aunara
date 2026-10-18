@@ -686,7 +686,19 @@ function ExerciseAdder({
   useEffect(() => setSelectedDay(routeDays[0] ?? "monday"), [routeDays[0]]);
 
   function chooseStructure(type: WorkoutStructureType) {
-    if (workoutStructureSlotCount(type) !== selectedExercises.length) return;
+    const needed = workoutStructureSlotCount(type);
+    if (needed < selectedExercises.length) return; // never drop exercises already chosen
+    if (needed > selectedExercises.length) {
+      // The structure needs more movements: add the empty slots and go back to choosing exercises.
+      const missing = needed - selectedExercises.length;
+      setActiveSlot(selectedExercises.length);
+      setSelectedExercises((current) => [...current, ...Array<Exercise | null>(missing).fill(null)]);
+      setQueries((current) => [...current, ...Array<string>(missing).fill("")]);
+      setPrescriptions((current) => [...current, ...Array.from({ length: missing }, (): Partial<WorkoutItem> => ({ sets: 3, reps: 10, prescriptionMode: "standard" }))]);
+      setStructureType(type);
+      setStep(1);
+      return;
+    }
     setStructureType(type);
     setStep(4);
   }
@@ -767,12 +779,12 @@ function ExerciseAdder({
           </div>
           <div className="structure-choice-grid">
             {WORKOUT_STRUCTURE_OPTIONS.map((option) => (
-              <button key={option.value} type="button" disabled={workoutStructureSlotCount(option.value) !== selectedExercises.length} onClick={() => chooseStructure(option.value)}>
+              <button key={option.value} type="button" disabled={workoutStructureSlotCount(option.value) < selectedExercises.length} onClick={() => chooseStructure(option.value)}>
                 {localizedOptionLabel(option, language)}
               </button>
             ))}
           </div>
-          <p>{tr(language, "Choose a structure matching the number of selected exercises. Go back to add or remove exercises; their prescriptions are retained.", "Elegí una estructura que coincida con la cantidad de ejercicios. Volvé para agregar o quitar ejercicios; sus prescripciones se conservan.")}</p>
+          <p>{tr(language, "A structure that needs more exercises takes you back to choose them. Structures with fewer slots are disabled; go back to remove exercises first. Prescriptions are retained.", "Si la estructura necesita más ejercicios, te llevamos a elegirlos. Las que tienen menos lugares están desactivadas; volvé para quitar ejercicios primero. Las prescripciones se conservan.")}</p>
         </div>
       ) : step === 1 || step === 4 ? (
         <>
@@ -782,9 +794,12 @@ function ExerciseAdder({
             </button>
             <div>
               <span>{tr(language, "Building", "Armando")}</span>
-              <strong>{structureOption ? localizedOptionLabel(structureOption, language) : structureType}</strong>
+              <strong>{structureOption && workoutStructureSlotCount(structureType) === slotCount ? localizedOptionLabel(structureOption, language) : `${slotCount} ${tr(language, "exercises", "ejercicios")}`}</strong>
             </div>
           </div>
+          {step === 1 && structureOption && workoutStructureSlotCount(structureType) === slotCount && slotCount > 1 && selectedExercises.some((exercise) => !exercise) && (
+            <p className="structure-pending-hint">{tr(language, `${localizedOptionLabel(structureOption, language)} needs ${slotCount} exercises: ${selectedExercises.filter((exercise) => !exercise).length} left to choose.`, `${localizedOptionLabel(structureOption, language)} necesita ${slotCount} ejercicios: faltan ${selectedExercises.filter((exercise) => !exercise).length} por elegir.`)}</p>
+          )}
 
           {step === 1 && <button type="button" disabled={selectedExercises.length >= 4 || selectedExercises.some((exercise) => !exercise)} onClick={() => {
             setSelectedExercises((current) => [...current, null]); setQueries((current) => [...current, ""]);

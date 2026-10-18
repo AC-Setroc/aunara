@@ -363,6 +363,7 @@ function App() {
       exercises,
       initialTrack,
       healthProfile.limitations ?? [],
+      { experience: healthProfile.experience },
     );
     setInitialProposal({
       ...initialTrack,
@@ -497,10 +498,16 @@ function App() {
     setWorkoutOpen(true);
   }
 
+  function editTrackWorkout(trackId: string) {
+    selectTrack(trackId);
+    setWorkoutPanelMode("edit");
+    setWorkoutOpen(true);
+  }
+
   function generateRoutine(trackId: string) {
     const track = tracks.find((candidate) => candidate.id === trackId);
     if (!track) return;
-    const generated = generateAdaptiveTrackWorkout(exercises, track, healthProfile.limitations ?? []);
+    const generated = generateAdaptiveTrackWorkout(exercises, track, healthProfile.limitations ?? [], { experience: healthProfile.experience });
     setTracks((current) => current.map((candidate) => candidate.id === trackId
       ? { ...candidate, workout: generated.workout, adaptations: generated.adaptations }
       : candidate));
@@ -520,7 +527,7 @@ function App() {
     };
     const generated = input.creationMode === "manual"
       ? null
-      : generateAdaptiveTrackWorkout(exercises, input, healthProfile.limitations ?? []);
+      : generateAdaptiveTrackWorkout(exercises, input, healthProfile.limitations ?? [], { experience: healthProfile.experience });
     const track: TrainingTrack = generated
       ? { ...baseTrack, workout: generated.workout, adaptations: generated.adaptations }
       : baseTrack;
@@ -613,7 +620,7 @@ function App() {
     setHealthProfile(profile);
     const refreshProposal = (proposal: TrainingTrack | null): TrainingTrack | null => {
       if (!proposal || proposal.creationMode === "manual") return proposal;
-      const generated = generateAdaptiveTrackWorkout(exercises, proposal, profile.limitations ?? []);
+      const generated = generateAdaptiveTrackWorkout(exercises, proposal, profile.limitations ?? [], { experience: profile.experience });
       return {
         ...proposal,
         workout: generated.workout,
@@ -719,6 +726,7 @@ function App() {
             onGenerate={generateRoutine}
             onDelete={deleteTrack}
             onEdit={editTrack}
+            onEditWorkout={editTrackWorkout}
           />
         )}
 
