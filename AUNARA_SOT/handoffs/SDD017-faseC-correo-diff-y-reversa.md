@@ -55,3 +55,24 @@ Verificación: `dig` MX/TXT y botón «Verify» de Zoho para SPF/DKIM antes de p
 - Añadidos en GoDaddy: 3 MX Zoho (10/20/50), TXT SPF `v=spf1 include:zoho.com ~all`, TXT DKIM `zoho._domainkey` (selector `zoho`, 2048/1024 bits según Zoho). Verificado por `dig` contra `ns49.domaincontrol.com` y `8.8.8.8` y «DKIM selector is successfully verified» en Zoho. Nada existente se modificó ni borró.
 - Zoho: `noreply@aunaratraining.com` es **alias** del buzón `admin@aunaratraining.com`; el SMTP se autentica como el buzón.
 - Siguiente: diff de Supabase (SMTP, remitente, 2 plantillas), pendiente de baseline y «sí» del Operator.
+
+## Enmienda 1 (17-10) — el envío pasa de Zoho SMTP a Resend. SUPERA el diff de Supabase de arriba
+**Motivo (evidencia del Operator, capturas de Zoho):** plan **Mail Free**: IMAP «no disponible», POP y Forwards «solo planes de pago», pestaña SMTP sin acceso externo → Supabase no puede autenticar SMTP contra Zoho. Decisión del Operator: **Resend** (en lugar de subir a Zoho Mail Lite). Zoho queda solo para **recibir** y para correo humano; MX/SPF/DKIM de Zoho ya aplicados no se tocan.
+
+Fuentes (consultadas 17-10): [Resend + Supabase SMTP](https://resend.com/docs/send-with-supabase-smtp), [Add a domain](https://resend.com/docs/add-a-domain), [precios](https://resend.com/pricing). Plan gratuito: 3 000 correos/mes, 100/día, 3 dominios.
+
+### Pasos y diff (nada aplicado todavía)
+1. **Cuenta Resend** (la crea el Operator) y **Add domain** `aunaratraining.com`. Resend muestra en su pestaña *Records* los valores EXACTOS (copiar/pegar tal cual): TXT DKIM (`resend._domainkey`), y para el *Return-Path* (`send` por defecto) un TXT (SPF) más un MX o CNAME. No se adivinan los valores aquí.
+2. **DNS en GoDaddy — solo añadir** esas filas. No tocan el MX/SPF raíz de Zoho porque el SPF/MX de Resend va en el subdominio `send`. No tocar los A, `www`, `_domainconnect`, `zoho-verification`, SPF raíz, `zoho._domainkey`, `_dmarc` ni el desafío de GitHub Pages. Si Resend da un CNAME, no activar proxy. Esperar «Verified» en Resend.
+3. **Supabase › Authentication › Emails › SMTP Settings:** encendido; sender `noreply@aunaratraining.com` / `Aunara`; host `smtp.resend.com`; puerto `465`; usuario `resend`; contraseña = **API key de Resend** (la crea y la pega el Operator, de preferencia con permiso «Sending access» limitado a este dominio; nunca en chat/repo).
+4. **Plantillas:** igual que antes (asuntos y HTML de `supabase/templates/confirm-signup.html` y `reset-password.html`).
+5. Site URL, Redirect URLs, otras plantillas, contraseñas y hooks: **sin cambio**.
+
+### DMARC
+El `_dmarc` actual (`p=quarantine`, `adkim=r`, `aspf=r`) se conserva. Resend firma DKIM con `d=aunaratraining.com`, así que DMARC alinea por DKIM. Verificar `pass` en cabeceras reales.
+
+### Baseline y reversa
+Baseline privado de SMTP/plantillas antes de aplicar (fuera del repo). Reversa: apagar SMTP personalizado y restaurar plantillas del baseline; borrar las filas DNS de Resend; revocar la API key; borrar el dominio en Resend. No tocar MX/SPF/DKIM de Zoho. Quitar de Zoho la contraseña de aplicación `Aunara` que ya no se usa.
+
+### Pruebas (destinatarios autorizados)
+Recuperación y alta/reenvío → logs de Auth sin 429, cabeceras raw (From `noreply@aunaratraining.com`, SPF/DKIM/DMARC `pass`), HTML con imágenes bloqueadas y `redirect_to` del origen que lo pidió (LAN, localhost, prod). Cierra C17-08 y C17-09. Tope: 100/día en plan gratuito.
