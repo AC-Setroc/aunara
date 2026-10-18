@@ -2,12 +2,14 @@
 
 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` · **Nada aplicado.** Autorización del Operator: «Arrancá con C» = preparar diff/reversa; cada escritura remota sigue necesitando su «sí» (SDD-017 §9, SDD-014 gate).
 
-## Hallazgo bloqueante (lectura de solo lectura, 17-10)
-Consulta DNS al servidor autoritativo (`ns49.domaincontrol.com`, GoDaddy) de `aunaratraining.com`: **sin MX, sin TXT (SPF), sin `_dmarc` y sin DKIM `zoho`**. Solo existen los cuatro A de GitHub Pages. Sin eso, Zoho no verificará el dominio como remitente y los correos de `noreply@aunaratraining.com` fallarían o caerían en spam. El README de SDD-014 daba el buzón noreply como «reportado, no verificado»: esta consulta no lo respalda para este dominio.
+## Hallazgo de DNS (corregido, 17-10)
+Primera lectura (consulta `dig +short` TXT) **errónea**: dio vacío por un defecto de esa forma de consulta, y concluí mal que no había TXT/DMARC. Corregida con respuesta completa del servidor autoritativo (`ns49.domaincontrol.com`) y con la captura del panel GoDaddy del Operator (12 registros):
+- Presentes: 4 A de GitHub Pages, CNAME `www`, CNAME `_domainconnect`, TXT `@` = `zoho-verification=…` (dominio verificado en Zoho), TXT `_dmarc` = `v=DMARC1; p=quarantine; adkim=r; aspf=r; rua=mailto:dmarc_rua@onsecureserver.net;`, TXT `_github-pages-challenge-ac-setroc`.
+- **Faltan: MX, SPF y DKIM.** Con DMARC en `p=quarantine`, enviar sin SPF/DKIM haría que los correos se pongan en cuarentena: **no activar SMTP hasta que SPF y DKIM existan.**
 
 ## Pre-requisitos (los hace el Operator; no se adivinan)
 1. Dominio `aunaratraining.com` agregado y **verificado en Zoho Mail**, con buzón `noreply@aunaratraining.com`. Confirmar centro de datos (`smtp.zoho.com` / `.eu` / `.in`) y que el plan permite SMTP.
-2. DNS en GoDaddy con los valores EXACTOS que muestre Zoho (MX, SPF, DKIM, y DMARC sugerido). Diff DNS propio y aprobación aparte; **no tocar los cuatro A** ni otros registros. SPF: un único TXT.
+2. DNS en GoDaddy con los valores EXACTOS que muestre Zoho (MX, SPF, DKIM). DMARC ya existe: no se toca. Diff DNS propio y aprobación aparte; **no tocar los cuatro A** ni otros registros. SPF: un único TXT.
 3. Contraseña de aplicación de Zoho: se carga solo en el panel de Supabase; nunca en chat, repo ni capturas.
 
 ## Baseline (antes de cualquier cambio; privado, fuera del repo)
@@ -32,3 +34,19 @@ Apagar SMTP personalizado y restaurar remitente, asuntos y HTML del baseline. No
 
 ## Estado
 Esperando: pre-requisitos 1–3 del Operator y su «sí» al diff. Ninguna escritura remota hecha en esta fase.
+
+## Diff DNS propuesto (GoDaddy) — solo añadir, no se modifica ni borra nada existente
+Valores para centro de datos `zoho.com`; si es `.eu`/`.in`/otro, usar los que muestre Zoho. El DKIM lo genera Zoho (selector y clave propios): el Operator lo copia desde Zoho, no se inventa.
+| Tipo | Nombre | Datos | Prioridad / TTL |
+| --- | --- | --- | --- |
+| MX | `@` | `mx.zoho.com` | 10 / 1 hora |
+| MX | `@` | `mx2.zoho.com` | 20 / 1 hora |
+| MX | `@` | `mx3.zoho.com` | 50 / 1 hora |
+| TXT | `@` | `v=spf1 include:zoho.com ~all` (un solo SPF; hoy no hay otro) | 1 hora |
+| TXT | `<selector>._domainkey` | clave DKIM que muestre Zoho (Mail Admin › Domains › Email Configuration › DKIM) | 1 hora |
+Reversa: borrar esas cinco filas. No se tocan los A, `www`, `_domainconnect`, `zoho-verification`, `_dmarc` ni el desafío de GitHub Pages.
+Verificación: `dig` MX/TXT y botón «Verify» de Zoho para SPF/DKIM antes de pasar al diff de Supabase.
+
+## Comprobaciones pendientes en Zoho
+- «Alias creado»: SMTP se autentica con un **buzón** (usuario), no con un alias. Hay que autenticar con un buzón y tener `noreply@aunaratraining.com` como dirección de envío permitida, o crear `noreply@` como buzón.
+- El plan debe permitir SMTP (el plan gratuito de Zoho Mail puede no incluirlo). Confirmar antes de tocar Supabase.

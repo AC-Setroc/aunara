@@ -4,7 +4,7 @@ Fecha de corte: 2026-10-17. Origen de actualización: `[AUNARA/codex · modelo n
 
 ## Abiertos
 
-- 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **SDD-017 Fase C preparada, no aplicada**: [diff, baseline y reversa](handoffs/SDD017-faseC-correo-diff-y-reversa.md). Bloqueo: el DNS de `aunaratraining.com` no tiene MX/SPF/DKIM/DMARC; antes de Zoho hay que verificar el dominio allí y publicar esos registros en GoDaddy (diff DNS aparte). Contraseña de aplicación la carga el Operator en Supabase.
+- 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **SDD-017 Fase C preparada, no aplicada**: [diff, baseline y reversa](handoffs/SDD017-faseC-correo-diff-y-reversa.md). DNS corregido: ya hay verificación Zoho y DMARC (`p=quarantine`); faltan MX, SPF y DKIM, que hay que publicar antes de activar SMTP (diff DNS en el mismo documento, aprobación aparte). Confirmar que Zoho autentica con un buzón (no alias) y que el plan permite SMTP. Contraseña de aplicación la carga el Operator en Supabase.
 
 - 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **U17-06 diagnosticado** ([registro](handoffs/UAT-2026-10-17-retorno-diagnostico.md)): el retorno a producción venía de la allowlist (`…/**` no cubre `…/`), no del código; el Operator añadió tres entradas exactas (LAN, localhost, 127.0.0.1). Segundo correo no llegó: probado con logs de Auth, 429 `over_email_send_rate_limit` del SMTP integrado; verificación real pendiente de que se libere la cuota. C17-08 abierto; Fase C (Zoho/plantillas) sin autorizar.
 
