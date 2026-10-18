@@ -21,8 +21,10 @@ Entradas exactas añadidas por el Operator en Authentication › URL Configurati
 Reversa: borrar esas tres entradas. Site URL intacto (`https://aunaratraining.com/`).
 
 ## Verificación
-- Segunda recuperación pedida tras añadirlas (misma `redirect_to` LAN). **Resultado: el correo NO llegó** al momento de este registro. Causa no probada; hipótesis a verificar: límite de envíos del SMTP integrado de Supabase por hora/usuario, o demora/spam. No se reintenta en bucle.
+- Segunda recuperación pedida tras añadir las entradas (misma `redirect_to` LAN): el correo no llegó. **Causa probada con los logs de Auth del proyecto (solo lectura):** `POST /recover` → **429 `over_email_send_rate_limit`** (2026-10-17 23:59 UTC). Es el límite del SMTP integrado de Supabase, no un fallo de la allowlist ni del código.
+- Primer envío (23:44 UTC): `mail.send` tipo `recovery`, remitente **`noreply@mail.app.supabase.io`** (por defecto, sin marca) y enlace con `redirect_to` de producción, por el hallazgo 4.
+- La corrección de allowlist **no ha podido verificarse aún** con un correo real: el límite impide nuevos envíos hasta que se libere la cuota.
 - **C17-08 (retorno) queda ABIERTO** hasta ver un correo con `redirect_to` LAN. C17-09 (remitente Zoho/plantillas, Fase C) NO EJECUTADO.
 
 ## Pendiente
-Operator: confirmar si llegó el segundo correo (host y `redirect_to`, sin token). Si el límite del SMTP integrado lo impide, la Fase C (SMTP propio) lo resuelve y requiere su autorización separada, con baseline, diff y rollback.
+Operator: confirmar si llegó el segundo correo (host y `redirect_to`, sin token). El límite del SMTP integrado seguirá bloqueando pruebas repetidas; la Fase C (SMTP propio de Zoho, plantillas y remitente de marca) lo elimina y requiere su autorización separada, con baseline, diff y rollback.

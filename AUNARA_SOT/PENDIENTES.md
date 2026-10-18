@@ -4,7 +4,7 @@ Fecha de corte: 2026-10-17. Origen de actualización: `[AUNARA/codex · modelo n
 
 ## Abiertos
 
-- 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **U17-06 diagnosticado** ([registro](handoffs/UAT-2026-10-17-retorno-diagnostico.md)): el retorno a producción venía de la allowlist (`…/**` no cubre `…/`), no del código; el Operator añadió tres entradas exactas (LAN, localhost, 127.0.0.1). Segundo correo de verificación aún no llegó (causa no probada, posible límite del SMTP integrado). C17-08 abierto; Fase C (Zoho/plantillas) sin autorizar.
+- 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **U17-06 diagnosticado** ([registro](handoffs/UAT-2026-10-17-retorno-diagnostico.md)): el retorno a producción venía de la allowlist (`…/**` no cubre `…/`), no del código; el Operator añadió tres entradas exactas (LAN, localhost, 127.0.0.1). Segundo correo no llegó: probado con logs de Auth, 429 `over_email_send_rate_limit` del SMTP integrado; verificación real pendiente de que se libere la cuota. C17-08 abierto; Fase C (Zoho/plantillas) sin autorizar.
 
 - 2026-10-17 · `[AUNARA/codex · modelo no expuesto]` — **SDD017A aprobado y en revisión**, no pendiente de permiso local. Enmienda explícita: Rutas se omite sin sesión. Ciclo2 corrige margen móvil residual; falta revisión final, entrega y UAT física. Servidor restaurado y comprobado en Mac/LAN, no persistencia indefinida. SMTP/plantillas siguen sin activar; lectura remota confirmó estado, pero no cambios ni causa final del retorno. Supera la espera de aprobación17 local de abajo; no aprueba gates globales.
 

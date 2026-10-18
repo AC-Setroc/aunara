@@ -2,7 +2,7 @@
 
 Fecha de actualización: 2026-10-17. Origen de actualización: `[AUNARA/codex · modelo no expuesto]`; se preservan las entradas previas como historia.
 
-`[AUNARA/claude · modelo no expuesto]` — 2026-10-17 · **SDD-017 Fase B:** causa del retorno LAN→producción acreditada en configuración (Redirect URLs con `/**` no aceptan la raíz exacta); corregida por el Operator con tres entradas exactas, sin tocar SMTP/plantillas/Site URL. Verificación real pendiente: el segundo correo no había llegado. Detalle y reversa en [el registro](handoffs/UAT-2026-10-17-retorno-diagnostico.md).
+`[AUNARA/claude · modelo no expuesto]` — 2026-10-17 · **SDD-017 Fase B:** causa del retorno LAN→producción acreditada en configuración (Redirect URLs con `/**` no aceptan la raíz exacta); corregida por el Operator con tres entradas exactas, sin tocar SMTP/plantillas/Site URL. Verificación real pendiente: el segundo correo no llegó por límite de envíos del SMTP integrado (429, probado con logs). Detalle y reversa en [el registro](handoffs/UAT-2026-10-17-retorno-diagnostico.md).
 
 ## Frente vigente — SDD017A aprobado, revisión en curso
 
