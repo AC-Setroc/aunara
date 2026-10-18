@@ -4,6 +4,8 @@ Fecha de corte: 2026-10-17. Origen de actualización: `[AUNARA/codex · modelo n
 
 ## Abiertos
 
+- 2026-10-18 · `[AUNARA/claude · modelo no expuesto]` — **SDD-018 implementado localmente** ([spec y resultados](sdd/SDD-018-uat18-movil-y-rutinas.md)): rutina 4–6 por día, triserie sin bloqueo, «Editar ejercicios», minutos, fecha/pestañas/enfoque, opcional en azul atenuado. Pendiente: UAT del Operator en iPhone, slogan (medido centrado; falta captura anotada), nombre por autocompletado de iOS, logo en correo. Sin publicar.
+
 - 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **SDD-017 Fase C preparada, no aplicada**: [diff, baseline y reversa](handoffs/SDD017-faseC-correo-diff-y-reversa.md). DNS corregido: ya hay verificación Zoho y DMARC (`p=quarantine`); faltan MX, SPF y DKIM, que hay que publicar antes de activar SMTP (diff DNS en el mismo documento, aprobación aparte). Confirmar que Zoho autentica con un buzón (no alias) y que el plan permite SMTP. Contraseña de aplicación la carga el Operator en Supabase.
 
 - 2026-10-17 · `[AUNARA/claude · modelo no expuesto]` — **U17-06 diagnosticado** ([registro](handoffs/UAT-2026-10-17-retorno-diagnostico.md)): el retorno a producción venía de la allowlist (`…/**` no cubre `…/`), no del código; **corregido 18-10:** la hipótesis era errónea; Supabase honra localhost/127.0.0.1 pero descarta IP de LAN con cualquier entrada (prueba con token inválido). Segundo correo no llegó: probado con logs de Auth, 429 `over_email_send_rate_limit` del SMTP integrado; verificación real pendiente de que se libere la cuota. C17-08 abierto; Fase C (Zoho/plantillas) sin autorizar.
