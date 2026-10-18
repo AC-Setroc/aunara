@@ -14,7 +14,7 @@ No se tocó SMTP, plantillas, Site URL, DNS, cuentas ni datos. No se abrió ning
 | 1 | El cliente pide el retorno correcto. | `useCloudSync.ts:412,478,509` + `publicBase.ts`; en el navegador, `POST /auth/v1/recover?redirect_to=http://192.168.80.19:5173/`. |
 | 2 | Aun así el correo real llegó con `redirect_to=https://aunaratraining.com/` (Site URL). | Enlace pegado por el Operator (token omitido aquí). |
 | 3 | La allowlist ya tenía `http://192.168.80.19:5173/**`, `http://localhost:5173/**`, `http://127.0.0.1:5173/**`, más entradas exactas de producción/Pages. | Captura del panel aportada por el Operator. |
-| 4 | **Causa:** el patrón `…/**` no cubre la raíz exacta `…/`; Supabase cayó al Site URL. Las URLs de producción funcionan porque son entradas exactas. | Hallazgos 1–3 combinados. No es defecto de código. |
+| 4 | ~~Causa: el patrón `…/**` no cubre la raíz exacta~~ **Hipótesis descartada por la prueba de abajo (ver «Corrección»).** | — |
 
 ## Corrección aplicada (solo configuración, aditiva)
 Entradas exactas añadidas por el Operator en Authentication › URL Configuration › Redirect URLs: `http://192.168.80.19:5173/`, `http://localhost:5173/`, `http://127.0.0.1:5173/`.
@@ -28,3 +28,19 @@ Reversa: borrar esas tres entradas. Site URL intacto (`https://aunaratraining.co
 
 ## Pendiente
 Operator: confirmar si llegó el segundo correo (host y `redirect_to`, sin token). El límite del SMTP integrado seguirá bloqueando pruebas repetidas; la Fase C (SMTP propio de Zoho, plantillas y remitente de marca) lo elimina y requiere su autorización separada, con baseline, diff y rollback.
+
+## Corrección (18-10, 01:00 UTC) — la hipótesis del patrón `/**` era errónea
+Tras añadir las tres entradas exactas (`http://192.168.80.19:5173/`, `http://localhost:5173/`, `http://127.0.0.1:5173/`; confirmado en captura con barra final) y pasar el envío por Resend, el correo de recuperación pedido desde la LAN **siguió trayendo `redirect_to=https://aunaratraining.com/`**.
+Prueba sin correos ni cambios: `GET /auth/v1/verify` con token inválido y `redirect_to=<X>`; la cabecera `Location` muestra qué URL validó Supabase.
+| `redirect_to` probado | `Location` |
+| --- | --- |
+| `http://localhost:5173/` | `http://localhost:5173/` ✅ |
+| `http://127.0.0.1:5173/` | `http://127.0.0.1:5173/` ✅ |
+| `https://aunaratraining.com/` | `https://aunaratraining.com/` ✅ |
+| `http://192.168.80.19:5173/` (exacta y también cubierta por `/**`) | `https://aunaratraining.com/` ❌ |
+| `http://192.168.80.19:5173/x`, `http://192.168.80.26:5173/x` | `https://aunaratraining.com/` ❌ |
+**Conclusión:** el proyecto honra `localhost` y `127.0.0.1` pero **descarta las IP de LAN** (192.168.x.x) aunque estén en la lista, con cualquier forma de entrada. Causa no probada (sospecha: Supabase no acepta hosts de red privada como destino). No es código ni formato de entrada. Mi afirmación anterior de «causa casi probada» fue un error de diagnóstico; se corrige aquí.
+
+## Estado de C17-08 / C17-09 tras Resend (18-10)
+- **C17-09 marca ✅:** el correo real de recuperación llegó de `noreply@aunaratraining.com`, asunto `Restablecé tu contraseña de Aunara / Reset your Aunara password`, plantilla de marca con acentos correctos (captura del Operator, iPhone, modo oscuro). La solicitud devolvió 200, sin 429. **Pendiente:** cabeceras SPF/DKIM/DMARC en «Mostrar original»; logo en la plantilla (decisión pendiente: hoy marca en texto).
+- **C17-08 retorno:** `localhost` y `127.0.0.1` ✅, producción ✅, **LAN ❌**. Para probar desde el iPhone, el alta/recuperación debe pedirse en el Mac por `http://localhost:5173/`; iniciar sesión con contraseña en el iPhone no necesita correo. Alternativa a evaluar aparte: un nombre de host en lugar de IP (requiere permitir el host en Vite).
