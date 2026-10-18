@@ -25,7 +25,7 @@ describe("proposal day agenda", () => {
     expect(within(screen.getByRole("region", { name: "Friday" })).getByText("No exercises assigned")).toBeTruthy();
     fireEvent.click(within(monday).getByRole("button"));
     expect(open).toHaveBeenCalledWith(exercise);
-    fireEvent.click(screen.getByRole("button", { name: "Reject proposal" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reject" }));
     expect(reject).toHaveBeenCalledOnce();
     expect(accept).not.toHaveBeenCalled();
     expect(edit).not.toHaveBeenCalled();

@@ -168,7 +168,9 @@ export function OnboardingPanel({
               />
               <small>{calculatedAge === null
                 ? tr(language, "Used to calculate your age", "Se usa para calcular tu edad")
-                : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
+                : calculatedAge < 18 || calculatedAge > 100
+                  ? tr(language, "You must be between 18 and 100 to personalize with health data.", "Tenés que tener entre 18 y 100 años para personalizar con datos de salud.")
+                  : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
             </label>}
             {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Height", "Estatura")}</span>

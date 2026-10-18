@@ -83,12 +83,12 @@ describe("mandatory starting profile", () => {
     });
 
     expect(await screen.findByRole("dialog", { name: "Revisá tu primera rutina" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Aceptar rutina" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Aceptar y editar" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Rechazar propuesta" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Aceptar" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Editar" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Rechazar" })).toBeTruthy();
     expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
 
-    fireEvent.click(screen.getByRole("button", { name: "Aceptar rutina" }));
+    fireEvent.click(screen.getByRole("button", { name: "Aceptar" }));
     await waitFor(() => {
       expect(screen.queryByRole("dialog", { name: "Revisá tu primera rutina" })).toBeNull();
       expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toHaveLength(1);

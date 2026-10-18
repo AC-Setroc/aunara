@@ -2,6 +2,7 @@ import { Activity, ArrowRight, CalendarDays, Dumbbell, Pencil, Plus, RefreshCw, 
 import { useState } from "react";
 import { WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
+import { NumberInput } from "./NumberInput";
 import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack, Weekday } from "../types";
 
 export interface NewTrackInput {
@@ -257,8 +258,6 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave, onEdi
   const [name, setName] = useState(initialTrack?.name ?? "");
   const [equipment, setEquipment] = useState<EquipmentPreference>(initialTrack?.equipment ?? "any");
   const [sessionMinutes, setSessionMinutes] = useState(initialTrack?.sessionMinutes ?? 45);
-  // The field keeps its own text so it can be emptied and retyped; the number is only updated by valid input.
-  const [minutesText, setMinutesText] = useState(String(initialTrack?.sessionMinutes ?? 45));
   const [trainingDays, setTrainingDays] = useState<Weekday[]>(
     initialTrack?.trainingDays?.length
       ? initialTrack.trainingDays
@@ -351,20 +350,13 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave, onEdi
           </label>
           <label className="creator-field">
             <span>{tr(language, "Session minutes", "Minutos por sesión")}</span>
-            <input
+            <NumberInput
               aria-label={tr(language, "Session minutes", "Minutos por sesión")}
-              type="number"
               min={15}
               max={240}
               step={5}
-              value={minutesText}
-              onChange={(event) => {
-                const text = event.target.value.replace(/^0+(?=\d)/, "");
-                setMinutesText(text);
-                const minutes = Number(text);
-                if (text !== "" && Number.isFinite(minutes)) setSessionMinutes(minutes);
-              }}
-              onBlur={() => setMinutesText(String(sessionMinutes))}
+              value={sessionMinutes}
+              onValue={setSessionMinutes}
             />
           </label>
         </div>

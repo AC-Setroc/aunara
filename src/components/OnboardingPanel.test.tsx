@@ -85,4 +85,10 @@ describe("privacy-aware onboarding", () => {
     fireEvent.click(screen.getByRole("button", { name: "Autorizar personalización de salud" }));
     expect(onRequestHealthConsent).toHaveBeenCalledOnce();
   });
+  it.each([["es", "Tenés que tener entre 18 y 100 años para personalizar con datos de salud."], ["en", "You must be between 18 and 100 to personalize with health data."]] as const)("explains an under-age birth date in %s instead of only showing the age", (language, message) => {
+    render(<OnboardingPanel language={language} name="Fixture" profile={profile} healthDataConsent onComplete={vi.fn()} />);
+    const today = `${new Date().getFullYear() - 10}-01-01`;
+    fireEvent.change(screen.getByLabelText(language === "es" ? "Fecha de nacimiento" : "Date of birth"), { target: { value: today } });
+    expect(screen.getByText(message)).toBeTruthy();
+  });
 });

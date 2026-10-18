@@ -190,9 +190,9 @@ export function InitialRoutineProposal({
         </p>
 
         <div className="initial-proposal-actions">
-          <button type="button" className="is-secondary" onClick={onReject}><X size={16} /> {tr(language, "Reject proposal", "Rechazar propuesta")}</button>
-          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Accept and edit", "Aceptar y editar")}</button>
-          <button type="button" className="is-primary" onClick={onAccept} disabled={blocked}><ShieldCheck size={16} /> {tr(language, "Accept routine", "Aceptar rutina")}</button>
+          <button type="button" className="is-secondary" onClick={onReject}><X size={16} /> {tr(language, "Reject", "Rechazar")}</button>
+          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Edit", "Editar")}</button>
+          <button type="button" className="is-primary" onClick={onAccept} disabled={blocked}><ShieldCheck size={16} /> {tr(language, "Accept", "Aceptar")}</button>
         </div>
       </section>
     </div>

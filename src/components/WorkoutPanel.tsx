@@ -19,6 +19,7 @@ import {
 import { useEffect, useState } from "react";
 import { exerciseDisplayName, exerciseMovementRestrictions, exerciseTaxonomyLabel, isExerciseNamePending, filterExercises, findExerciseAlternatives, WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
+import { NumberInput } from "./NumberInput";
 import {
   createSpecialPrescription,
   isFreeLegacySetPlan,
@@ -760,11 +761,11 @@ function ExerciseAdder({
           const block = prescription.specialPrescription?.blocks.find((block) => block.type === "work");
           const target = prescription.prescriptionMode === "special" && block?.type === "work" ? block.target : "reps";
           return <fieldset key={index} className="special-round-settings"><legend>{name}</legend>
-            <label>{tr(language, "Sets", "Series")}<input aria-label={selectedExercises.length === 1 ? tr(language, "Sets", "Series") : `${tr(language, "Sets for", "Series para")} ${name}`} type="number" min="1" max="12" value={prescription.sets} onChange={(event) => updatePrescription(index, { sets: Number(event.target.value), ...(prescription.specialPrescription ? { specialPrescription: { ...prescription.specialPrescription, rounds: Number(event.target.value) } } : {}) })} /></label>
+            <label>{tr(language, "Sets", "Series")}<NumberInput aria-label={selectedExercises.length === 1 ? tr(language, "Sets", "Series") : `${tr(language, "Sets for", "Series para")} ${name}`} min="1" max="12" value={prescription.sets} onValue={(sets) => updatePrescription(index, { sets, ...(prescription.specialPrescription ? { specialPrescription: { ...prescription.specialPrescription, rounds: sets } } : {}) })} /></label>
             <label>{tr(language, "Target", "Objetivo")}<select aria-label={`${tr(language, "Target for", "Objetivo para")} ${name}`} value={target} onChange={(event) => changeTarget(index, event.target.value as WorkTargetType)}>
               <option value="reps">{tr(language, "Exact repetitions", "Repeticiones exactas")}</option><option value="technical-failure">{tr(language, "Technical failure", "Fallo técnico")}</option><option value="time">{tr(language, "Time", "Tiempo")}</option><option value="amrap">AMRAP</option>
             </select></label>
-            {(target === "reps" || target === "time") && <label>{target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")}<input aria-label={selectedExercises.length === 1 ? (target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")) : `${target === "time" ? tr(language, "Seconds for", "Segundos para") : tr(language, "Repetitions for", "Repeticiones para")} ${name}`} type="number" min="1" max={target === "reps" ? 100 : undefined} value={target === "time" ? block?.value : prescription.reps} onChange={(event) => updatePrescription(index, target === "time" && prescription.specialPrescription ? { specialPrescription: { ...prescription.specialPrescription, blocks: prescription.specialPrescription.blocks.map((value) => value.type === "work" ? { ...value, value: Number(event.target.value) } : value) } } : { reps: Number(event.target.value) })} /></label>}
+            {(target === "reps" || target === "time") && <label>{target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")}<NumberInput aria-label={selectedExercises.length === 1 ? (target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")) : `${target === "time" ? tr(language, "Seconds for", "Segundos para") : tr(language, "Repetitions for", "Repeticiones para")} ${name}`} min="1" max={target === "reps" ? 100 : undefined} value={target === "time" ? block?.value : prescription.reps} onValue={(amount) => updatePrescription(index, target === "time" && prescription.specialPrescription ? { specialPrescription: { ...prescription.specialPrescription, blocks: prescription.specialPrescription.blocks.map((value) => value.type === "work" ? { ...value, value: amount } : value) } } : { reps: amount })} /></label>}
             {target === "reps" && <label>{tr(language, "Repetition count", "Conteo de repeticiones")}<select aria-label={`${tr(language, "Repetition count for", "Conteo de repeticiones para")} ${name}`} value={prescription.repetitionCount ?? "total"} onChange={(event) => updatePrescription(index, { repetitionCount: event.target.value as WorkoutItem["repetitionCount"] })}><option value="total">{tr(language, "Total", "Total")}</option><option value="per-side">{tr(language, "Per side", "Por lado")}</option></select></label>}
           </fieldset>;
         })}
@@ -1027,23 +1028,21 @@ function SpecialTechniqueEditor({ language, prescription, onChange }: SpecialTec
       <div className="special-round-settings">
         <label>
           <span>{tr(language, "Repeat sequence", "Repetir secuencia")}</span>
-          <input
-            type="number"
+          <NumberInput
             min={1}
             max={12}
             value={prescription.rounds}
-            onChange={(event) => onChange({ ...prescription, rounds: Math.max(1, Number(event.target.value) || 1) })}
+            onValue={(rounds) => onChange({ ...prescription, rounds: Math.max(1, rounds) })}
           />
           <small>{tr(language, "rounds", "series")}</small>
         </label>
         <label>
           <span>{tr(language, "Rest between full rounds", "Descanso entre series completas")}</span>
-          <input
-            type="number"
+          <NumberInput
             min={0}
             step={5}
             value={prescription.restBetweenRoundsSeconds}
-            onChange={(event) => onChange({ ...prescription, restBetweenRoundsSeconds: Math.max(0, Number(event.target.value) || 0) })}
+            onValue={(seconds) => onChange({ ...prescription, restBetweenRoundsSeconds: Math.max(0, seconds) })}
           />
           <small>{tr(language, "seconds", "segundos")}</small>
         </label>
@@ -1068,7 +1067,7 @@ function SpecialTechniqueEditor({ language, prescription, onChange }: SpecialTec
             {block.type === "rest" ? (
               <label>
                 <span>{tr(language, "Duration", "Duración")}</span>
-                <div><input type="number" min={0} step={5} value={block.seconds} onChange={(event) => updateBlock(index, { seconds: Math.max(0, Number(event.target.value) || 0) })} /><small>{tr(language, "seconds", "segundos")}</small></div>
+                <div><NumberInput min={0} step={5} value={block.seconds} onValue={(seconds) => updateBlock(index, { seconds: Math.max(0, seconds) })} /><small>{tr(language, "seconds", "segundos")}</small></div>
               </label>
             ) : (
               <div className="work-block-fields">
@@ -1084,7 +1083,7 @@ function SpecialTechniqueEditor({ language, prescription, onChange }: SpecialTec
                 {(block.target === "reps" || block.target === "time") && (
                   <label>
                     <span>{block.target === "time" ? tr(language, "Seconds", "Segundos") : tr(language, "Repetitions", "Repeticiones")}</span>
-                    <input type="number" min={1} value={block.value ?? 1} onChange={(event) => updateBlock(index, { value: Math.max(1, Number(event.target.value) || 1) })} />
+                    <NumberInput min={1} value={block.value ?? 1} onValue={(amount) => updateBlock(index, { value: Math.max(1, amount) })} />
                   </label>
                 )}
                 {block.target === "reps" && <label><span>{tr(language, "Repetition count", "Conteo de repeticiones")}</span><select aria-label={`${tr(language, "Repetition count for block", "Conteo de repeticiones del bloque")} ${index + 1}`} value={block.repetitionCount ?? "total"} onChange={(event) => updateBlock(index, { repetitionCount: event.target.value as typeof block.repetitionCount })}><option value="total">{tr(language, "Total", "Total")}</option><option value="per-side">{tr(language, "Per side", "Por lado")}</option></select></label>}

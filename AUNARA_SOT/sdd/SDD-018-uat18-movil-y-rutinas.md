@@ -19,15 +19,17 @@
 | U18-06 | Triserie sin botón de confirmación: se bloquea | Corregido: una estructura que necesita más ejercicios añade los huecos y vuelve a elegir ejercicios, con aviso «Triserie necesita 3 ejercicios: faltan 2». Las de menos lugares siguen desactivadas para no perder selecciones. |
 | U18-07 | «Editar ruta» solo permite meta, nombre, equipo, minutos y días | Corregido: el formulario de edición tiene el botón «Editar ejercicios» que abre la rutina en modo edición (agregar, reemplazar, quitar). Título «Editar ruta». |
 | U18-08 | Opcional de salud no se distingue por color | Corregido: `--optional-consent: #3f5fbf` (5,2:1 sobre arena, 5,8:1 sobre blanco). |
-| U18-09 | Botones de la propuesta: «aceptar, rechazar y editar» | Ya existían los tres (`Rechazar propuesta`, `Aceptar y editar`, `Aceptar rutina`); la captura los cortaba bajo el pliegue. En móvil quedan fijos al pie del cuadro. **Si se quiere el rótulo «Editar» a secas, se cambia.** |
+| U18-09 | Botones de la propuesta: «Rechazar, Aceptar y Editar» | Rótulos cambiados a **Rechazar / Editar / Aceptar** (EN: Reject / Edit / Accept); «Editar» acepta y abre la rutina para editarla. Quedan fijos al pie del cuadro en móvil. |
 | U18-10 | Slogan descentrado | **Sin cambio.** Medida en la captura del Operator (921 px): lockup 292–628 → centro 460,0; slogan 281–636 → 458,5; centro de pantalla 460,5. Diferencias ≤ 2 px. Pendiente: captura anotada de lo que ve descentrado. |
-| U18-11 | Nombre «Alejandro» por defecto al crear cuenta | **No reproducido.** El campo está vacío con placeholder; el nombre viene de `autoComplete="name"` de iOS o de un perfil previo. Pendiente de confirmar. |
+| U18-11 | Nombre «Alejandro» por defecto al crear cuenta | **Sin cambio.** El Operator confirma que ya no aparece (probable caché/autocompletado de iOS). |
+| U18-12 | Fecha de nacimiento: iOS propone «hoy» y la edad queda en 0 sin explicación | Corregido: si la edad calculada está fuera de 18–100 se muestra «Tenés que tener entre 18 y 100 años para personalizar con datos de salud.» (ES/EN). |
+| U18-13 | Mismo defecto del cero en series, repeticiones, segundos, rondas y descansos del editor | Corregido con el componente `NumberInput` (vaciar, reescribir, sin ceros a la izquierda, restaura el último valor al salir vacío); también lo usa «Minutos por sesión» de la ruta. |
 
 ## Archivos
-`src/lib/exercises.ts`, `src/App.tsx`, `src/components/TrainingTracks.tsx`, `src/components/WorkoutPanel.tsx`, `src/styles.css`; pruebas `exercises.test.ts`, `WorkoutPanel.test.tsx`, `TrainingTracks.test.tsx` (nuevo).
+`src/lib/exercises.ts`, `src/App.tsx`, `src/components/TrainingTracks.tsx`, `src/components/WorkoutPanel.tsx`, `src/components/InitialRoutineProposal.tsx`, `src/components/OnboardingPanel.tsx`, `src/components/NumberInput.tsx` (nuevo), `src/styles.css`; pruebas `exercises`, `WorkoutPanel`, `TrainingTracks` (nuevo), `NumberInput` (nuevo), `OnboardingPanel`, `InitialRoutineProposal`, `AppFlows`, `OnboardingApp`.
 
 ## Verificación (18-10)
-`tsc -b` limpio; **410/410** pruebas; pruebas nuevas rojo→verde (volumen de rutina, estructura, editar ejercicios, minutos). WebKit 390 con Supabase sintético: fecha, pestañas, enfoque del día, triserie y propuesta (20 movimientos = 4×5). **No verificado:** iPhone físico tras estos cambios, Chromium de esta ronda, harness SDD-017 completo, otros campos numéricos con el mismo patrón (`OnboardingPanel`, `ProfilePanel`), fecha por defecto del selector de iOS.
+`tsc -b` limpio; **410/410** pruebas; pruebas nuevas rojo→verde (volumen de rutina, estructura, editar ejercicios, minutos). WebKit 390 con Supabase sintético: fecha, pestañas, enfoque del día, triserie y propuesta (20 movimientos = 4×5). **Ampliación 18-10 (tarde):** `tsc` limpio y **415/415**; Chromium **y** WebKit 390 con Supabase sintético repiten fecha, pestañas, enfoque, minutos, triserie y propuesta (4×5; botones Rechazar/Editar/Aceptar). `OnboardingPanel`/`ProfilePanel` no tienen el defecto (vacío → `""`). **No verificado:** iPhone físico tras estos cambios, base `/aunara/` en estas pruebas.
 
 ## Límites
 Sin cambios de contratos de datos, Auth, consentimiento ni publicación. Producción y `main` siguen como estaban.

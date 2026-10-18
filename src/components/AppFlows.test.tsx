@@ -545,9 +545,9 @@ describe("training track controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create track & suggest routine" }));
 
     expect(await screen.findByRole("dialog", { name: "Review suggested routine" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Accept routine" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Accept and edit" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Reject proposal" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Accept" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Edit" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Reject" })).toBeTruthy();
     expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
   });
 
@@ -1053,9 +1053,9 @@ describe("routine exercise controls", () => {
     />);
 
     expect(screen.getByRole("dialog", { name: "Review suggested routine" })).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Accept routine" }));
-    fireEvent.click(screen.getByRole("button", { name: "Accept and edit" }));
-    fireEvent.click(screen.getByRole("button", { name: "Reject proposal" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reject" }));
 
     expect(onAccept).toHaveBeenCalledOnce();
     expect(onEdit).toHaveBeenCalledOnce();
@@ -1081,8 +1081,8 @@ describe("routine exercise controls", () => {
       onReviewHealth={onReviewHealth}
     />);
 
-    expect(screen.getByRole("button", { name: "Accept routine" }).hasAttribute("disabled")).toBe(true);
-    expect(screen.getByRole("button", { name: "Accept and edit" }).hasAttribute("disabled")).toBe(true);
+    expect(screen.getByRole("button", { name: "Accept" }).hasAttribute("disabled")).toBe(true);
+    expect(screen.getByRole("button", { name: "Edit" }).hasAttribute("disabled")).toBe(true);
     fireEvent.click(screen.getByRole("button", { name: "Review health information" }));
 
     expect(onAccept).not.toHaveBeenCalled();
