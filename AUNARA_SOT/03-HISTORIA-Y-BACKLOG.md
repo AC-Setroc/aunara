@@ -1,5 +1,9 @@
 # Historia y backlog — Aunara
 
+## 2026-10-17 · 🟡 U17-06 diagnosticado: allowlist de Redirect URLs, no código
+
+Registro en [handoffs](handoffs/UAT-2026-10-17-retorno-diagnostico.md). Corrección de configuración aplicada por el Operator; verificación de entrega pendiente; Fase C sin autorizar.
+
 ## 2026-10-17 · 🟡 SDD017A aprobado e implementado localmente; revisión ciclo2 y correo remoto pendientes
 
 `[AUNARA/codex · modelo no expuesto]` — «Sí» aprueba A; enmienda posterior «No; omitir Rutas hasta iniciar sesión» corrige la premisa de sección guest inexistente. Footer/menú/toggle/consentimiento implementados quirúrgicamente; 144 focales y tipos verdes. Revisión encontró margen móvil12px residual y se corrigió a0; matriz final/revisión aún en curso. Corrida global real400+11PASS anterior al ajuste CSS; miércoles saturado tuvo timeouts, por repetir aisladamente sin cambiar pruebas ni límites. Servidor aislado restablecido, PID5225/sesión98164 efímeros, Local/LAN192.168.80.19 HTTP200, UI real guest carga/menú y consola sin errores/avisos. Primer intento sandboxEPERM no arrancó; permiso permitió arranque; causa de caída anterior desconocida. Dashboard inspeccionado solo lectura: SMTP off/default templates, SiteURLprod y LANactual permitida; no causa final del callback acreditada. Checkpoint documental a dev por orden permanente; fuente/harness sin entregar aún. No main, datos, SMTP, DNS, dependencia ni canónico tocados.
