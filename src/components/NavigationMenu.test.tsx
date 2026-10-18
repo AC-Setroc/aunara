@@ -105,4 +105,15 @@ describe("drawer focus and cleanup (SDD-013)", () => {
     expect(document.body.style.overflow).toBe("scroll");
     document.body.style.overflow = "";
   });
+  it("turns the logo into a home button when a home action is given, leaving the menu to the hamburger", () => {
+    const onHome = vi.fn();
+    render(<NavigationMenu language="en" entries={[{ label: "Library", action: vi.fn() }]} onHome={onHome} />);
+    const logo = screen.getByRole("button", { name: "Go to home" });
+    expect(logo.getAttribute("aria-expanded")).toBeNull();
+    fireEvent.click(logo);
+    expect(onHome).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole("dialog", { name: "Navigation" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    expect(screen.getByRole("dialog", { name: "Navigation" })).toBeTruthy();
+  });
 });

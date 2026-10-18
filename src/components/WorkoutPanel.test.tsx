@@ -48,7 +48,7 @@ describe("independent manual prescriptions", () => {
     const structure = count === 2 ? "Single set" : "Bi-set";
     expect((adder.getByRole("button", { name: structure }) as HTMLButtonElement).disabled).toBe(false);
     fireEvent.click(adder.getByRole("button", { name: structure }));
-    fireEvent.click(adder.getByRole("button", { name: count === 2 ? "Add single set" : "Add bi-set" }));
+    fireEvent.click(adder.getByRole("button", { name: count === 2 ? "Accept and add single set" : "Accept and add bi-set" }));
     expect(onAddStructure).toHaveBeenCalledWith(count === 2 ? "single" : "biset", count === 2 ? [exercises[0].id] : [exercises[0].id, exercises[2].id], "monday", count === 2 ? [expect.objectContaining({ reps: 8 })] : [expect.objectContaining({ reps: 8 }), expect.objectContaining({ reps: 20 })]);
   });
   it("chooses exercises before structure and keeps each target independent when going back", () => {
@@ -74,7 +74,7 @@ describe("independent manual prescriptions", () => {
     fireEvent.click(climber.getByRole("checkbox"));
     fireEvent.click(adder.getByRole("button", { name: "Back" }));
     fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
-    fireEvent.click(adder.getByRole("button", { name: "Add tri-set" }));
+    fireEvent.click(adder.getByRole("button", { name: "Accept and add tri-set" }));
     expect(onAddStructure).toHaveBeenCalledWith("triset", exercises.map((exercise) => exercise.id), "monday", [
       expect.objectContaining({ reps: 8, prescriptionMode: "standard" }),
       expect.objectContaining({ prescriptionMode: "special", specialPrescription: expect.objectContaining({ blocks: [expect.objectContaining({ target: "technical-failure" })] }) }),
@@ -98,8 +98,45 @@ describe("independent manual prescriptions", () => {
     fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
     fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
     fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
-    fireEvent.click(adder.getByRole("button", { name: "Add tri-set" }));
+    fireEvent.click(adder.getByRole("button", { name: "Accept and add tri-set" }));
     expect(onAddStructure).toHaveBeenCalledWith("triset", exercises.map((exercise) => exercise.id), "monday", expect.any(Array));
+  });
+  it("starts without a preset structure and lets the user pick one before choosing exercises", () => {
+    const { adder, onAddStructure } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
+    expect(adder.getByRole("button", { name: "Tri-set" })).toBeTruthy();
+    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
+    expect(adder.getByLabelText("Search exercise 3")).toBeTruthy();
+    expect(adder.getByText("Tri-set needs 3 exercises: 3 left to choose.")).toBeTruthy();
+    expect(adder.queryByRole("button", { name: "Add another exercise" })).toBeNull();
+    expect(adder.queryByRole("button", { name: "Remove exercise 2" })).toBeNull();
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Push-Up as exercise 2" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Climber as exercise 3" }));
+    fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
+    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
+    fireEvent.click(adder.getByRole("button", { name: "Accept and add tri-set" }));
+    expect(onAddStructure).toHaveBeenCalledWith("triset", exercises.map((exercise) => exercise.id), "monday", expect.any(Array));
+  });
+  it("does not label one chosen exercise as a single set until the user picks that structure", () => {
+    const { adder } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    expect(adder.queryByText("Single set")).toBeNull();
+    expect(adder.getByText("1 exercise")).toBeTruthy();
+  });
+  it("rejects the work in progress from any step and adds nothing", () => {
+    const { adder, onAddStructure } = setup();
+    fireEvent.click(screen.getByRole("button", { name: "Monday" }));
+    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
+    fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
+    fireEvent.click(adder.getByRole("button", { name: "Reject" }));
+    expect(adder.getByRole("button", { name: "Choose exercises for this day" })).toBeTruthy();
+    expect(onAddStructure).not.toHaveBeenCalled();
+    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    expect((adder.getByLabelText("Search exercise 1") as HTMLInputElement).value).toBe("");
   });
   it("keeps disabling a structure that would drop already selected exercises", () => {
     const { adder } = setup();

@@ -5,7 +5,6 @@ import {
   Dumbbell,
   Heart,
   CircleHelp,
-  House,
   LogOut,
   Search,
   SlidersHorizontal,
@@ -492,6 +491,12 @@ function App() {
     setActiveTrackId(trackId);
   }
 
+  // The logo is the only "home" control: back to the landing section, at the top.
+  function goHome() {
+    setAppSection("home");
+    window.scrollTo({ top: 0 });
+  }
+
   function openTrack(trackId: string) {
     selectTrack(trackId);
     setWorkoutPanelMode("view");
@@ -665,10 +670,7 @@ function App() {
       }
     }}>
       <header className="site-header">
-        <NavigationMenu language={language} entries={[
-          ...(hasAppAccess
-            ? [{ label: tr(language, "Home / routes", "Inicio / rutas"), icon: <House size={20} aria-hidden="true" />, active: appSection === "home", action: () => setAppSection("home") }]
-            : [{ label: tr(language, "Home", "Inicio"), href: "#top", icon: <House size={20} aria-hidden="true" />, action: () => setAppSection("home") }]),
+        <NavigationMenu language={language} onHome={goHome} entries={[
           ...((canUseTraining || (hasAppAccess && !onboardingRequired)) ? [
             { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), icon: <BookOpen size={20} aria-hidden="true" />, active: appSection === "library", action: () => setAppSection("library") },
             { label: tr(language, "Profile", "Perfil"), ariaLabel: tr(language, "Open profile", "Abrir perfil"), icon: <UserRound size={20} aria-hidden="true" />, action: () => setProfileOpen(true) },

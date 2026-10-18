@@ -656,6 +656,8 @@ function ExerciseAdder({
   onOpenExercise,
 }: ExerciseAdderProps) {
   const [structureType, setStructureType] = useState<WorkoutStructureType>("single");
+  // Nothing is preset: the structure only counts once the user picks it (up front or after choosing exercises).
+  const [structureChosen, setStructureChosen] = useState(false);
   const [step, setStep] = useState(0);
   const [prescriptions, setPrescriptions] = useState<Partial<WorkoutItem>[]>([{ sets: 3, reps: 10, prescriptionMode: "standard" }]);
   const [queries, setQueries] = useState<string[]>([""]);
@@ -666,6 +668,8 @@ function ExerciseAdder({
   const dayLabel = (day: Weekday) => tr(language, ...DAY_LABELS[day]);
   const structureOption = WORKOUT_STRUCTURE_OPTIONS.find((option) => option.value === structureType);
   const slotCount = selectedExercises.length;
+  // A structure picked by the user fixes how many exercises it has; free selection can still add or remove.
+  const fixedStructure = structureChosen && workoutStructureSlotCount(structureType) === slotCount;
   const activeQuery = queries[activeSlot] ?? "";
   const selectedIds = new Set(selectedExercises.flatMap((exercise, index) => (
     exercise && index !== activeSlot ? [exercise.id] : []
@@ -697,11 +701,35 @@ function ExerciseAdder({
       setQueries((current) => [...current, ...Array<string>(missing).fill("")]);
       setPrescriptions((current) => [...current, ...Array.from({ length: missing }, (): Partial<WorkoutItem> => ({ sets: 3, reps: 10, prescriptionMode: "standard" }))]);
       setStructureType(type);
+      setStructureChosen(true);
       setStep(1);
       return;
     }
     setStructureType(type);
+    setStructureChosen(true);
     setStep(4);
+  }
+
+  function resetAdder() {
+    setStructureType("single");
+    setStructureChosen(false);
+    setQueries([""]);
+    setSelectedExercises([null]);
+    setPrescriptions([{ sets: 3, reps: 10, prescriptionMode: "standard" }]);
+    setActiveSlot(0);
+    setStep(0);
+  }
+
+  // Choosing the structure first creates its empty slots.
+  function pickStructureFirst(type: WorkoutStructureType) {
+    const count = workoutStructureSlotCount(type);
+    setStructureType(type);
+    setStructureChosen(true);
+    setSelectedExercises(Array<Exercise | null>(count).fill(null));
+    setQueries(Array<string>(count).fill(""));
+    setPrescriptions(Array.from({ length: count }, (): Partial<WorkoutItem> => ({ sets: 3, reps: 10, prescriptionMode: "standard" })));
+    setActiveSlot(0);
+    setStep(1);
   }
 
   function updatePrescription(index: number, changes: Partial<WorkoutItem>) {
@@ -742,17 +770,21 @@ function ExerciseAdder({
     const exerciseIds = selectedExercises.flatMap((exercise) => exercise ? [exercise.id] : []);
     if (!onAddStructure) return; // A handler unable to retain targets must not silently discard them.
     onAddStructure(structureType, exerciseIds, selectedDay, prescriptions);
-    setStructureType("single");
-    setQueries([""]);
-    setSelectedExercises([null]);
-    setPrescriptions([{ sets: 3, reps: 10, prescriptionMode: "standard" }]);
-    setStep(0);
+    resetAdder();
   }
 
   return (
     <section className="manual-exercise-adder" aria-label={tr(language, "Add exercises", "Agregar ejercicios")}>
       <div className="manual-adder-heading"><strong>{dayLabel(selectedDay)}</strong><span>{tr(language, "Day → exercise → sets → structure → technique", "Día → ejercicio → series → estructura → técnica")}</span></div>
-      {step === 0 && <button type="button" onClick={() => setStep(1)}>{tr(language, "Choose exercises for this day", "Elegir ejercicios para este día")}</button>}
+      {step === 0 && <div className="structure-first">
+        <span>{tr(language, "What do you want to build?", "¿Qué querés armar?")}</span>
+        <div className="structure-choice-grid">
+          {WORKOUT_STRUCTURE_OPTIONS.map((option) => (
+            <button key={option.value} type="button" onClick={() => pickStructureFirst(option.value)}>{localizedOptionLabel(option, language)}</button>
+          ))}
+        </div>
+        <button type="button" onClick={() => setStep(1)}>{tr(language, "Choose exercises for this day", "Elegir ejercicios para este día")}</button>
+      </div>}
       {step === 2 && <div className="member-prescriptions">
         <button type="button" onClick={() => setStep(1)}>{tr(language, "Back", "Volver")}</button>
         {selectedExercises.map((exercise, index) => {
@@ -795,14 +827,14 @@ function ExerciseAdder({
             </button>
             <div>
               <span>{tr(language, "Building", "Armando")}</span>
-              <strong>{structureOption && workoutStructureSlotCount(structureType) === slotCount ? localizedOptionLabel(structureOption, language) : `${slotCount} ${tr(language, "exercises", "ejercicios")}`}</strong>
+              <strong>{structureChosen && structureOption && workoutStructureSlotCount(structureType) === slotCount ? localizedOptionLabel(structureOption, language) : `${slotCount} ${slotCount === 1 ? tr(language, "exercise", "ejercicio") : tr(language, "exercises", "ejercicios")}`}</strong>
             </div>
           </div>
-          {step === 1 && structureOption && workoutStructureSlotCount(structureType) === slotCount && slotCount > 1 && selectedExercises.some((exercise) => !exercise) && (
+          {step === 1 && structureChosen && structureOption && workoutStructureSlotCount(structureType) === slotCount && slotCount > 1 && selectedExercises.some((exercise) => !exercise) && (
             <p className="structure-pending-hint">{tr(language, `${localizedOptionLabel(structureOption, language)} needs ${slotCount} exercises: ${selectedExercises.filter((exercise) => !exercise).length} left to choose.`, `${localizedOptionLabel(structureOption, language)} necesita ${slotCount} ejercicios: faltan ${selectedExercises.filter((exercise) => !exercise).length} por elegir.`)}</p>
           )}
 
-          {step === 1 && <button type="button" disabled={selectedExercises.length >= 4 || selectedExercises.some((exercise) => !exercise)} onClick={() => {
+          {step === 1 && !fixedStructure && <button type="button" disabled={selectedExercises.length >= 4 || selectedExercises.some((exercise) => !exercise)} onClick={() => {
             setSelectedExercises((current) => [...current, null]); setQueries((current) => [...current, ""]);
             setPrescriptions((current) => [...current, { sets: 3, reps: 10, prescriptionMode: "standard" }]); setActiveSlot(selectedExercises.length);
           }}>{tr(language, "Add another exercise", "Agregar otro ejercicio")}</button>}
@@ -832,7 +864,7 @@ function ExerciseAdder({
               const selectedExercise = selectedExercises[index];
               return (
                 <section className={`structure-slot ${activeSlot === index ? "is-active" : ""}`} key={index}>
-                  {step === 1 && selectedExercises.length > 1 && <button type="button" aria-label={`${tr(language, "Remove exercise", "Quitar ejercicio")} ${index + 1}`} onClick={() => removeMember(index)}><Trash2 size={16} /> {tr(language, "Remove", "Quitar")}</button>}
+                  {step === 1 && !fixedStructure && selectedExercises.length > 1 && <button type="button" aria-label={`${tr(language, "Remove exercise", "Quitar ejercicio")} ${index + 1}`} onClick={() => removeMember(index)}><Trash2 size={16} /> {tr(language, "Remove", "Quitar")}</button>}
                   <label className="manual-exercise-search">
                     <span>{String(index + 1).padStart(2, "0")}</span>
                     <Search size={17} />
@@ -918,10 +950,11 @@ function ExerciseAdder({
             disabled={selectedExercises.some((exercise) => !exercise) || !prescriptions.every(isValidManualPrescription)}
             onClick={() => step === 1 ? setStep(2) : addSelectedStructure()}
           >
-            <Plus size={16} /> {step === 1 ? tr(language, "Configure sets and repetitions", "Configurar series y repeticiones") : `${tr(language, "Add", "Agregar")} ${structureOption ? localizedOptionLabel(structureOption, language).toLocaleLowerCase() : structureType}`}
+            <Plus size={16} /> {step === 1 ? tr(language, "Configure sets and repetitions", "Configurar series y repeticiones") : `${tr(language, "Accept and add", "Aceptar y agregar")} ${structureOption ? localizedOptionLabel(structureOption, language).toLocaleLowerCase() : structureType}`}
           </button>
         </>
       ) : null}
+      {step > 0 && <button className="structure-reject" type="button" onClick={resetAdder}><X size={16} /> {tr(language, "Reject", "Rechazar")}</button>}
     </section>
   );
 }

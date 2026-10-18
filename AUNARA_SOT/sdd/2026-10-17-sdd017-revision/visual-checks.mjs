@@ -81,12 +81,12 @@ async function footer(page){await page.locator('footer').scrollIntoViewIfNeeded(
  const f=document.querySelector('footer'),style=getComputedStyle(f),a=await ink(f.querySelector('.footer-brand img')),ac=await ink(f.querySelector('.footer-development-credit img')),slogan=box(f.querySelector('.footer-brand span')),label=box(f.querySelector('.footer-development-credit span')),r=box(f),fixed=document.querySelector('.mobile-workout'),fr=fixed&&getComputedStyle(fixed).display!=='none'&&getComputedStyle(fixed).position==='fixed'?box(fixed):null;
  return {rect:r,padding:[style.paddingTop,style.paddingRight,style.paddingBottom,style.paddingLeft],gap:style.gap,creditMarginTop:parseFloat(getComputedStyle(f.querySelector('.footer-development-credit')).marginTop),minHeight:style.minHeight,bg:style.backgroundColor,a,ac,slogan,label,deltaLogo:Math.abs(a.cx-slogan.x-slogan.w/2),deltaCredit:Math.abs((label.x+ac.right)/2-(r.x+r.w/2)),deltaCreditY:Math.abs(ac.cy-label.y-label.h/2),fixed:fr,legalBottom:box(f.querySelector('.footer-development-credit')).bottom,text:f.innerText,links:[...f.querySelectorAll('a')].map(e=>e.getAttribute('href')),overflow:document.documentElement.scrollWidth-innerWidth};
  });}
-const labels={es:['Inicio','Ingresar','Ayuda / instalación'],en:['Home','Log in','Help / installation']};
+const labels={es:['Ingresar','Ayuda / instalación'],en:['Log in','Help / installation']}; // SDD018: the logo is home; the menu no longer has an Inicio row
 async function drawer(page,auth,lang,tag,baselineItems){
  const trigger=page.locator('.navigation-trigger');let expectedScroll=await page.evaluate(()=>scrollY);await trigger.click();const panel=page.locator('#aunara-navigation');await panel.waitFor();
  await page.screenshot({path:resolve(out,`${engine}-${key}-${tag}-candidate-drawer.png`),timeout:30000});
  const items=await panel.locator('.navigation-row').allTextContents();
- add('C17-03',tag,auth?JSON.stringify(items)===JSON.stringify(baselineItems):JSON.stringify(items)===JSON.stringify(labels[lang]),{items,baselineItems});
+ add('C17-03',tag,auth?JSON.stringify(items)===JSON.stringify(baselineItems.filter(x=>!/^(Inicio \/ rutas|Home \/ routes)$/.test(x))):JSON.stringify(items)===JSON.stringify(labels[lang]),{items,baselineItems});
  const geometry=await panel.evaluate(e=>{const r=e.getBoundingClientRect();return{portal:e.parentElement.parentElement===document.body,overflow:e.scrollWidth-e.clientWidth,modal:e.getAttribute('aria-modal'),locked:document.body.style.overflow,focused:!!document.activeElement.closest('#aunara-navigation')};});
  add('C17-06',tag,geometry.portal&&geometry.overflow<=1&&geometry.modal==='true'&&geometry.locked==='hidden'&&geometry.focused,geometry);
  const toggle=panel.locator('.navigation-head button').filter({hasText:/^(ES|EN)$/});
@@ -102,7 +102,7 @@ async function drawer(page,auth,lang,tag,baselineItems){
  }
  for(const direction of ['Tab','Shift+Tab']){const trace=[];const n=await panel.locator('button,a,select').count();for(let i=0;i<n+2;i++){await page.keyboard.press(direction);trace.push(await page.evaluate(()=>!!document.activeElement.closest('#aunara-navigation')));}add('C17-06 focus trap',tag,trace.every(Boolean),{direction,trace});}
  await page.keyboard.press('Escape');const restored=await page.evaluate(()=>({overflow:document.body.style.overflow,scroll:scrollY}));add('C17-06 Escape',tag,await panel.count()===0&&await trigger.evaluate(e=>e===document.activeElement)&&restored.overflow!=='hidden'&&Math.abs(restored.scroll-expectedScroll)<=2,{expectedScroll,...restored});
- await page.locator('.brand').click();add('C17-06 logo opener',tag,await panel.count()===1);await page.locator('.navigation-close').click();
+ await page.evaluate(()=>scrollTo(0,300));await page.locator('.brand').click();await page.waitForTimeout(150);add('C17-06 logo goes home',tag,(await panel.count())===0&&(await page.evaluate(()=>scrollY))<=2,{});
  if(tag.endsWith('1440')){await trigger.click();await page.locator('.navigation-backdrop').click({position:{x:1,y:1}});add('C17-06 backdrop',tag,await panel.count()===0&&await trigger.evaluate(e=>e===document.activeElement));}
  if(auth){
   const actions=[[/Abrir perfil|Open profile/,'.profile-done','.profile-done'],[/Cuenta \/ privacidad|Account \/ privacy/,'.access-panel','button.access-close'],[/Biblioteca de ejercicios|Exercise library/,'#library-title',null]];
@@ -111,7 +111,7 @@ async function drawer(page,auth,lang,tag,baselineItems){
   await trigger.click();await panel.locator('.workout-trigger').click();await page.locator('.workout-panel').waitFor();add('C17-06 training',tag,await panel.count()===0);await page.locator('.workout-panel .close-button').first().click();
  }
  if(!auth){
-  for(let i=0;i<2;i++){await trigger.click();const entry=panel.locator('.navigation-row').nth(i);if(!(await entry.count())){await page.keyboard.press('Escape');continue;}await entry.click();await page.waitForTimeout(100);const state=await page.evaluate(()=>({hash:location.hash,top:scrollY,targetTop:document.querySelector('#top').getBoundingClientRect().top,access:!!document.querySelector('.access-panel'),open:!!document.querySelector('#aunara-navigation')}));add('C17-03 destination '+i,tag,!state.open&&(i===0?state.hash==='#top'&&Math.abs(state.targetTop)<=2:state.access),state);if(state.access)await page.getByRole('button',{name:/Cerrar acceso|Close access panel/,exact:true}).click();}
+  for(let i=0;i<2;i++){await trigger.click();const entry=panel.locator('.navigation-row').nth(i);if(!(await entry.count())){await page.keyboard.press('Escape');continue;}await entry.click();await page.waitForTimeout(100);const state=await page.evaluate(()=>({hash:location.hash,top:scrollY,targetTop:document.querySelector('#top').getBoundingClientRect().top,access:!!document.querySelector('.access-panel'),open:!!document.querySelector('#aunara-navigation')}));add('C17-03 destination '+i,tag,!state.open&&state.access,state);if(state.access)await page.getByRole('button',{name:/Cerrar acceso|Close access panel/,exact:true}).click();}
  }
 }
 async function consent(page,lang,tag){await page.locator('.navigation-trigger').click();await page.locator('#aunara-navigation .navigation-row').filter({hasText:/Ingresar|Log in|Login/}).first().click();await page.locator('.access-mode').getByRole('button',{name:lang==='es'?/Crear/:/Create/}).click();

@@ -33,3 +33,15 @@
 
 ## Límites
 Sin cambios de contratos de datos, Auth, consentimiento ni publicación. Producción y `main` siguen como estaban.
+
+## Ronda 3 — UAT 18-10 (noche)
+| ID | Hallazgo | Resultado |
+| --- | --- | --- |
+| U18-14 | «Inicio» en el menú no tiene sentido; esa función es la del logo | El **logo del encabezado ahora va al inicio** (arriba del todo) y el menú solo lo abre la hamburguesa. Se quitó «Inicio» (invitado) e «Inicio / rutas» (con acceso). Cambia lo dispuesto en SDD-012 (logo = abrir menú). |
+| U18-15 | El azul del opcional se confunde con el gris | `--optional-consent: #2d7a4d` (verde atenuado; 4,7:1 sobre arena, 5,3:1 sobre blanco). |
+| U18-16 | Crear rutina «arranca en monoserie» | Sin estructura preestablecida: al empezar se muestra «¿Qué querés armar?» con todas las estructuras (o «Elegir ejercicios para este día» para decidir después). El rótulo solo dice «Monoserie» si el usuario la eligió; si no, «1 ejercicio». Con estructura elegida no se pueden agregar ni quitar huecos. |
+| U18-17 | La página «se amplía sola» al entrar a rutinas | Causa medida en WebKit: campos de texto menores a 16 px (Enfoque del día 9 px, introducido por mí en la ronda 1; búsqueda de ejercicio 12,5 px). iOS amplía la página al enfocarlos. Todos los campos quedan en 16 px en móvil; `touch-action: manipulation`. Auditoría posterior: ningún campo < 16 px en inicio, edición de ruta, editor, perfil, onboarding, biblioteca, cuenta e ingreso. |
+| U18-18 | Sin botón de aceptar o rechazar al agregar ejercicio ni en la configuración | **Rechazar** en cada paso (descarta lo armado) y **«Aceptar y agregar <estructura>»** como confirmación final. **Pendiente de aclarar:** «ni mucho menos manual». |
+| U18-19 | «La página se congela, no se mueve» | **No reproducido** en WebKit: tras abrir y cerrar menú, perfil, cuenta, rutina y detalle no queda `overflow:hidden` ni `modal-open` colgados. Hipótesis: la ampliación de iOS (U18-17) con el cuerpo bloqueado por un modal impide desplazar. Abierto hasta la prueba en iPhone. |
+
+Arnés SDD-017 adaptado a la nueva conducta (menú sin «Inicio»; logo lleva al inicio) sin relajar umbrales. **Verificación ronda 3:** `tsc` limpio, **419/419**, build, directorio de ejercicios y 42 pruebas de scripts en verde; harness SDD-017 **250/250** en Chromium y WebKit, bases `/` y `/aunara/` (1000 comprobaciones). Sin verificar: iPhone físico.

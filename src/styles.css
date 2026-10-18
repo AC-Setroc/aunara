@@ -1,5 +1,5 @@
 :root {
-  --optional-consent: #3f5fbf; /* attenuated brand blue; 5.2:1 on sand, 5.8:1 on white */
+  --optional-consent: #2d7a4d; /* attenuated green: 4.7:1 on sand, 5.3:1 on white; clearly apart from ink and grey */
   color: #102421;
   background: #f5f1ea;
   font-family: "Avenir Next", Avenir, "Century Gothic", "Trebuchet MS", sans-serif;
@@ -1856,10 +1856,19 @@ footer > p { margin: 0; text-align: center; color: var(--muted); }
 .profile-tabs button { min-height: 44px; padding: 6px 4px; font-size: .6rem; overflow-wrap: anywhere; }
 /* The day-focus label sat on top of its input. */
 .training-session-day > label { display: grid; gap: 6px; font: 700 9px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .08em; }
-.training-session-day > label input { box-sizing: border-box; width: 100%; min-height: 44px; font: inherit; text-transform: none; letter-spacing: 0; }
+.training-session-day > label input { box-sizing: border-box; width: 100%; min-height: 44px; font-family: inherit; font-size: 16px; font-weight: 400; line-height: 1.3; text-transform: none; letter-spacing: 0; }
 .structure-pending-hint { margin: 8px 0; padding: 10px 12px; border-left: 3px solid var(--blue-600); background: rgba(22,78,223,.08); font-size: .85rem; line-height: 1.4; }
 .track-edit-exercises { width: 100%; min-height: 48px; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--teal-800); border-radius: 999px; background: var(--white); color: var(--teal-800); font: inherit; font-weight: 700; cursor: pointer; }
 @media (max-width: 760px) {
   /* Keep reject / accept and edit / accept visible while the movement list scrolls. */
   .initial-proposal-actions { position: sticky; bottom: -20px; z-index: 2; margin: 0 -2px; padding: 10px 2px 8px; background: var(--paper, #f5f1ea); }
 }
+/* SDD-018 round 3 (UAT 18-10 night) */
+/* iOS Safari zooms the whole page when a field smaller than 16px takes focus, and with a modal open the zoomed page cannot be panned. */
+@media (max-width: 760px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea { font-size: 16px !important; }
+}
+button, a, select, input, label { touch-action: manipulation; }
+.structure-first { display: grid; gap: 10px; }
+.structure-first > span { font: 700 9px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .08em; }
+.structure-reject { width: 100%; min-height: 46px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--ink); background: var(--white); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }

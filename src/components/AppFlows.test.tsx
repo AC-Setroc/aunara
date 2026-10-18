@@ -282,7 +282,7 @@ describe("storage notice and footer integration", () => {
     expect(document.activeElement).toBe(toggle);
     expect(screen.getByRole("dialog", { name: "Navegación" })).toBeTruthy();
     expect([...document.querySelectorAll(".navigation-row")].map(row => row.getAttribute("aria-label") ?? row.textContent)).toEqual([
-      "Inicio / rutas", "Biblioteca de ejercicios", "Abrir perfil", "Entrenamiento de hoy0",
+      "Biblioteca de ejercicios", "Abrir perfil", "Entrenamiento de hoy0",
       "Abrir cuenta y sincronización", "Cuenta / privacidad", "Ayuda / instalación", "Salir",
     ]);
     expect(screen.queryByRole("combobox", { name: /Language|Idioma/ })).toBeNull();
@@ -308,7 +308,8 @@ describe("storage notice and footer integration", () => {
     fireEvent.click(screen.getByRole("button", { name: "Done" }));
     expect(screen.queryByRole("dialog", { name: "Access Aunara anywhere" })).toBeNull();
     openNavigation();
-    expect(screen.getByRole("button", { name: "Home / routes" }).classList.contains("is-active")).toBe(true);
+    expect(screen.queryByRole("button", { name: "Home / routes" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Go to home" })).toBeTruthy();
   });
   it("returns a completed profile to home after a simulated sign-in without opening profile", () => {
     accessMock.overrides = { email: null };
@@ -321,7 +322,8 @@ describe("storage notice and footer integration", () => {
     expect(screen.queryByRole("dialog", { name: "Access Aunara anywhere" })).toBeNull();
     expect(screen.queryByRole("dialog", { name: "My profile" })).toBeNull();
     openNavigation();
-    expect(screen.getByRole("button", { name: "Home / routes" }).classList.contains("is-active")).toBe(true);
+    expect(screen.queryByRole("button", { name: "Home / routes" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Go to home" })).toBeTruthy();
   });
   it("connects auth-error cleanup and explicit recovery without disturbing the guest legal flow", async () => {
     accessMock.overrides = { email: null, status: "error", message: "Simulated auth error" };
@@ -351,7 +353,7 @@ describe("storage notice and footer integration", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: vi.fn().mockResolvedValue([exercise]) }));
     try {
       const first = render(<App />);
-      expect(screen.getByRole("button", { name: "Navegación de Aunara" })).toBeTruthy();
+      expect(screen.getByRole("button", { name: "Ir al inicio" })).toBeTruthy();
       for (const key of [
         "repbook-language", "repbook-profile-name", "repbook-favorites", "repbook-workout",
         "repbook-training-tracks", "repbook-active-track", "repbook-training-tracks-initialized",
@@ -606,7 +608,7 @@ describe("routine exercise controls", () => {
     fireEvent.change(screen.getByLabelText("Repetitions"), { target: { value: "8" } });
     fireEvent.click(screen.getByRole("button", { name: "Choose local structure" }));
     fireEvent.click(screen.getByRole("button", { name: "Single set" }));
-    fireEvent.click(screen.getByRole("button", { name: "Add single set" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept and add single set" }));
     const saved = JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")[0].workout[0];
     expect(saved).toMatchObject({ sets: 4, reps: 8, setPlan: "4 × 8", day: "monday" });
     expect(saved.originalSetPlan).toBeUndefined();
@@ -723,13 +725,13 @@ describe("routine exercise controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Configure sets and repetitions" }));
     fireEvent.click(screen.getByRole("button", { name: "Choose local structure" }));
     fireEvent.click(screen.getByRole("button", { name: "Single set" }));
-    fireEvent.click(screen.getByRole("button", { name: "Add single set" }));
+    fireEvent.click(screen.getByRole("button", { name: "Accept and add single set" }));
 
     expect(onGenerate).not.toHaveBeenCalled();
     expect(onAddExercise).toHaveBeenCalledWith("single", [exercise.id], "wednesday", [expect.objectContaining({ sets: 3, reps: 10 })]);
   });
 
-  it("starts manual building with the day before exercises and structure", () => {
+  it("starts manual building with the day and a free structure choice, with no exercise field yet", () => {
     render(<WorkoutPanel
       language="es"
       items={[]}
@@ -756,8 +758,8 @@ describe("routine exercise controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Empezar a crear" }));
 
     expect(screen.getByRole("button", { name: "Elegir ejercicios para este día" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Monoserie" })).toBeNull();
-    expect(screen.queryByRole("button", { name: "Biserie" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Monoserie" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Biserie" })).toBeTruthy();
     expect(screen.queryByLabelText("Buscar ejercicio 1")).toBeNull();
   });
 
@@ -795,7 +797,7 @@ describe("routine exercise controls", () => {
     fireEvent.change(screen.getByLabelText("Repeticiones para Sentadilla con salto"), { target: { value: "12" } });
     fireEvent.click(screen.getByRole("button", { name: "Elegir estructura local" }));
     fireEvent.click(screen.getByRole("button", { name: "Biserie" }));
-    fireEvent.click(screen.getByRole("button", { name: "Agregar biserie" }));
+    fireEvent.click(screen.getByRole("button", { name: "Aceptar y agregar biserie" }));
 
     expect(onAddStructure).toHaveBeenCalledWith("biset", [exercise.id, pressExercise.id], "monday", [expect.objectContaining({ sets: 4, reps: 12, prescriptionMode: "standard" }), expect.objectContaining({ sets: 3, reps: 10, prescriptionMode: "standard" })]);
   });

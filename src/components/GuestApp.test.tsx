@@ -37,15 +37,17 @@ describe("signed-out home", () => {
     vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true })));
     render(<App />);
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    expect([...document.querySelectorAll(".navigation-row")].map(row => row.textContent)).toEqual(["Inicio", "Ingresar"]);
+    expect([...document.querySelectorAll(".navigation-row")].map(row => row.textContent)).toEqual(["Ingresar"]);
   });
 
-  it("uses the top anchor and keeps help on the existing access panel", () => {
+  it("goes home from the logo, not from the menu, and keeps help on the existing access panel", () => {
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    fireEvent.click(screen.getByRole("link", { name: "Inicio" }));
-    expect(screen.queryByRole("dialog", { name: "Navegación" })).toBeNull();
     expect(document.getElementById("top")).toBeTruthy();
+    const scrollTo = vi.fn();
+    vi.stubGlobal("scrollTo", scrollTo);
+    fireEvent.click(screen.getByRole("button", { name: "Ir al inicio" }));
+    expect(scrollTo).toHaveBeenCalled();
+    expect(screen.queryByRole("dialog", { name: "Navegación" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
     fireEvent.click(screen.getByRole("button", { name: "Ayuda / instalación" }));
     expect(screen.getByRole("button", { name: "Ingresar" })).toBeTruthy();
@@ -54,7 +56,7 @@ describe("signed-out home", () => {
   it("shows only public navigation and hides personal training content", () => {
     render(<App />);
 
-    expect(screen.getByRole("button", { name: "Navegación de Aunara" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Ir al inicio" })).toBeTruthy();
     expect(screen.queryByRole("link", { name: "Inicio" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Ingresar" })).toBeNull();
     expect(screen.queryByLabelText("Idioma")).toBeNull();
@@ -62,9 +64,9 @@ describe("signed-out home", () => {
     expect(row.children).toHaveLength(2);
     expect(row.lastElementChild).toBe(screen.getByRole("button", { name: "Abrir navegación" }));
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    expect(screen.getByRole("link", { name: "Inicio" }).getAttribute("href")).toBe("#top");
+    expect(screen.queryByRole("link", { name: "Inicio" })).toBeNull();
     expect([...document.querySelectorAll(".navigation-row")].map(row => row.textContent)).toEqual([
-      "Inicio", "Ingresar", "Ayuda / instalación",
+      "Ingresar", "Ayuda / instalación",
     ]);
     expect(screen.getByRole("button", { name: "Cambiar a inglés" }).getAttribute("tabindex")).toBe("0");
     expect(screen.queryByRole("combobox")).toBeNull();
