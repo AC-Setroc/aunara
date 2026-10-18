@@ -1,0 +1,3606 @@
+{
+  "at": "2026-10-16T06:34:30.538Z",
+  "base": "/",
+  "rows": [
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-chromium-320-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-chromium-320-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-chromium-320-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-chromium-320-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-chromium-390-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-chromium-390-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-chromium-390-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-chromium-390-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-chromium-1440-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-chromium-1440-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-chromium-1440-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-chromium-1440-en-terms.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 320,
+      "blocked": false,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-320-enabled-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 320,
+      "blocked": false,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-320-enabled-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 320,
+      "blocked": true,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-320-blocked-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 320,
+      "blocked": true,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-320-blocked-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 390,
+      "blocked": false,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-390-enabled-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 390,
+      "blocked": false,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-390-enabled-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 390,
+      "blocked": true,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-390-blocked-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 390,
+      "blocked": true,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-390-blocked-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 1440,
+      "blocked": false,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-1440-enabled-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 1440,
+      "blocked": false,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-1440-enabled-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 1440,
+      "blocked": true,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-1440-blocked-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "chromium",
+      "width": 1440,
+      "blocked": true,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-chromium-1440-blocked-reset-password.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-webkit-320-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-webkit-320-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-webkit-320-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "root-webkit-320-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-webkit-390-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-webkit-390-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-webkit-390-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "root-webkit-390-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-webkit-1440-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-webkit-1440-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-webkit-1440-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "root",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "root-webkit-1440-en-terms.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 320,
+      "blocked": false,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-320-enabled-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 320,
+      "blocked": false,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-320-enabled-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 320,
+      "blocked": true,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-320-blocked-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 320,
+      "blocked": true,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 320,
+        "scroll": 320,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-320-blocked-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 390,
+      "blocked": false,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-390-enabled-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 390,
+      "blocked": false,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-390-enabled-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 390,
+      "blocked": true,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-390-blocked-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 390,
+      "blocked": true,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 390,
+        "scroll": 390,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-390-blocked-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 1440,
+      "blocked": false,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-1440-enabled-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 1440,
+      "blocked": false,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-1440-enabled-reset-password.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 1440,
+      "blocked": true,
+      "kind": "confirm-signup",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-1440-blocked-confirm-signup.png"
+    },
+    {
+      "type": "email",
+      "engine": "webkit",
+      "width": 1440,
+      "blocked": true,
+      "kind": "reset-password",
+      "metrics": {
+        "width": 1440,
+        "scroll": 1440,
+        "images": 0
+      },
+      "contrasts": [
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(6, 63, 67)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "H1",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "H2",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 11.667990076854094
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(255, 255, 255)",
+          "bg": "rgb(22, 78, 223)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 6.584283807609987
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(255, 255, 255)",
+          "ratio": 16.19941109916779
+        },
+        {
+          "tag": "P",
+          "color": "rgb(6, 63, 67)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 10.363795964310528
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        },
+        {
+          "tag": "P",
+          "color": "rgb(16, 36, 33)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 14.388715645790802
+        },
+        {
+          "tag": "A",
+          "color": "rgb(22, 78, 223)",
+          "bg": "rgb(245, 241, 234)",
+          "ratio": 5.848322933402924
+        }
+      ],
+      "file": "email-webkit-1440-blocked-reset-password.png"
+    }
+  ]
+}

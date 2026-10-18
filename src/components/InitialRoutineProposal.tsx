@@ -1,5 +1,6 @@
 import { AlertTriangle, Dumbbell, Pencil, ShieldCheck, UserRound, X } from "lucide-react";
-import { exerciseDisplayName } from "../lib/exercises";
+import { exerciseDisplayName, WEEKDAYS } from "../lib/exercises";
+import { techniqueLabel, repetitionCountSuffix, workTargetLabel } from "../lib/workoutPrescription";
 import { tr } from "../lib/i18n";
 import type { ExerciseReadinessAssessment } from "../lib/wellness";
 import type { Exercise, LanguageCode, MovementRestriction, TrainingTrack } from "../types";
@@ -48,6 +49,10 @@ export function InitialRoutineProposal({
     ? tr(language, "Review your first routine", "Revisá tu primera rutina")
     : tr(language, "Review suggested routine", "Revisá la rutina sugerida");
   const blocked = readiness.level === "professional-review" || readiness.level === "setup";
+  const days = WEEKDAYS.filter((day) => track.trainingDays?.includes(day) || track.workout.some((item) => (item.day ?? "monday") === day));
+  if (!days.length) days.push(...WEEKDAYS.slice(0, Math.max(1, track.daysPerWeek)));
+  const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const dayNamesEs = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
   return (
     <div className="initial-proposal-backdrop">
       <section
@@ -85,8 +90,11 @@ export function InitialRoutineProposal({
             <h3>{tr(language, "Suggested movements", "Movimientos sugeridos")}</h3>
             <span>{track.workout.length}</span>
           </div>
+          {days.map((day) => <section className="proposal-day" key={day} aria-label={tr(language, dayNames[WEEKDAYS.indexOf(day)], dayNamesEs[WEEKDAYS.indexOf(day)])}>
+          <h4>{tr(language, dayNames[WEEKDAYS.indexOf(day)], dayNamesEs[WEEKDAYS.indexOf(day)])}{track.dayLabels?.[day] ? ` · ${track.dayLabels[day]}` : ""}</h4>
+          {!track.workout.some((item) => (item.day ?? "monday") === day) && <p>{tr(language, "No exercises assigned", "Sin ejercicios asignados")}</p>}
           <ol>
-            {track.workout.map((item) => {
+            {track.workout.filter((item) => (item.day ?? "monday") === day).map((item) => {
               const exercise = exerciseMap.get(item.exerciseId);
               return exercise ? (
                 <li key={item.id ?? item.exerciseId}>
@@ -96,12 +104,15 @@ export function InitialRoutineProposal({
                     aria-label={`${tr(language, "View", "Ver")} ${exerciseDisplayName(exercise, language)}`}
                   >
                     <Dumbbell size={15} />
-                    <span><strong>{exerciseDisplayName(exercise, language)}</strong><small>{item.setPlan ?? `${item.sets} × ${item.reps}`}</small></span>
+                    <span><strong>{exerciseDisplayName(exercise, language)}</strong><small>{item.prescriptionMode === "special" && item.specialPrescription
+                      ? `${item.specialPrescription.rounds} × ${techniqueLabel(item.specialPrescription.technique, language)} · ${item.specialPrescription.blocks.map((block) => block.type === "rest" ? `${block.seconds}s ${tr(language, "rest", "descanso")}` : `${workTargetLabel(block, language)}${block.loadValue !== undefined ? ` / ${block.loadValue} ${block.loadType}` : ""}`).join(" → ")} · ${item.specialPrescription.restBetweenRoundsSeconds}s ${tr(language, "between rounds", "entre rondas")}`
+                      : `${item.sets} × ${item.reps}${repetitionCountSuffix(item.repetitionCount, language)}`}</small></span>
                   </button>
                 </li>
               ) : null;
             })}
           </ol>
+          </section>)}
         </div>
 
         {track.adaptations?.length ? (
@@ -179,9 +190,9 @@ export function InitialRoutineProposal({
         </p>
 
         <div className="initial-proposal-actions">
-          <button type="button" className="is-secondary" onClick={onReject}><X size={16} /> {tr(language, "Reject proposal", "Rechazar propuesta")}</button>
-          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Accept and edit", "Aceptar y editar")}</button>
-          <button type="button" className="is-primary" onClick={onAccept} disabled={blocked}><ShieldCheck size={16} /> {tr(language, "Accept routine", "Aceptar rutina")}</button>
+          <button type="button" className="is-secondary" onClick={onReject}><X size={16} /> {tr(language, "Reject", "Rechazar")}</button>
+          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Edit", "Editar")}</button>
+          <button type="button" className="is-primary" onClick={onAccept} disabled={blocked}><ShieldCheck size={16} /> {tr(language, "Accept", "Aceptar")}</button>
         </div>
       </section>
     </div>

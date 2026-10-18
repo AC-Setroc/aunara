@@ -1,0 +1,11 @@
+== N1 sin portal (panel inline dentro del header) ==
+N1 unitario → ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 1 passed (2)
+== N2 preferencias como borrador (sin aplicar al cambiar) ==
+N2 unitario → ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 2 passed (5)
+== N3 sin color en reenviar ==
+restaurado: 0 sucios
+neg-s12-n1 compilado → SDD-012 [chromium neg-s12-n1]: 54/70 PASS; FAIL: S12-01 panel íntegro y en columna (logo) invitado/es/desktop ({"inHeader":true,"y":-117,"bottom":199,"vh":900,"display":"grid","sameX":true,"scrollW":372,"clientW":372,"items":3}); S12-01 panel íntegro y en co
+neg-s12-n3 compilado → SDD-012 [chromium neg-s12-n3]: 68/70 PASS; FAIL: S12-06 reenviar legible sin hover (desktop) ({"normal":{"color":"rgb(255, 255, 255)","bg":"rgb(255, 255, 255)","contrast":1},"hover":{"color":"rgb(255, 255, 255)","bg":"rgb(22, 78, 223)"}}); S12-06 reenviar legi
+control (sdd012-root) → SDD-012 [chromium sdd012-root]: 70/70 PASS

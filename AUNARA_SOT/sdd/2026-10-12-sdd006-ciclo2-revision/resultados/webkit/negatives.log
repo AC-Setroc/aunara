@@ -1,0 +1,26 @@
+== positivo de control sobre el build normal ==
+normal/guest-private → GUARD=GREEN mode=guest-private Inicio / rutas | Ingresar / crear cuenta | Idioma / configuración | Ayuda / instalación   (esperado GREEN)
+normal/float → GUARD=GREEN mode=float overlaps=[]   (esperado GREEN)
+normal/storage-get-only → GUARD=GREEN mode=storage-get-only {"shells":1,"h1":"No se pudo iniciar Aunara","nav":false,"rootKids":1}   (esperado GREEN)
+normal/shells → GUARD=GREEN mode=shells {"shells":1,"h1":"","nav":true,"rootKids":1}   (esperado GREEN)
+
+== negativos ==
+guest-private → GUARD=RED mode=guest-private Inicio / rutas | Biblioteca de ejercicios | Perfil | Ingresar / crear cuenta | Idioma / configuración | Ayuda / instalación   (esperado RED)
+float-overlap → GUARD=RED mode=float overlaps=["RUTA / 02Rendimiento depo","RUTA / 02Rendimiento depo","Actualizar sugerencias"]   (esperado RED)
+e3-static-import → GUARD=RED mode=storage-get-only {"shells":0,"h1":"","nav":false,"rootKids":0}   (esperado RED)
+e3-classification → GUARD=RED mode=storage-get-only {"shells":1,"h1":"No se pudo cargar Aunara","nav":false,"rootKids":1}   (esperado RED)
+e3-duplicate-root → GUARD=RED mode=shells {"shells":2,"h1":"","nav":true,"rootKids":1}   (esperado RED)
+
+== restaurar build normal y confirmar verde ==
+archivos sucios en el worktree (esperado 0): 0
+restored/storage-get-only → GUARD=GREEN mode=storage-get-only {"shells":1,"h1":"No se pudo iniciar Aunara","nav":false,"rootKids":1}   (esperado GREEN)
+restored/shells → GUARD=GREEN mode=shells {"shells":1,"h1":"","nav":true,"rootKids":1}   (esperado GREEN)
+lista de archivos del artifact restaurado idéntica a e4-root
+
+== negativo unitario: targets compartidos en la creación del grupo ==
+shared-targets (esperado rojo):      × removes a member from 3 slots without discarding surviving targets or searches 288ms
+shared-targets (esperado rojo):      × chooses exercises before structure and keeps each target independent when going back 349ms
+shared-targets (esperado rojo): ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+shared-targets (esperado rojo):       Tests  2 failed | 4 passed (6)
+restaurado: 0 sucios
+negatives exit=0

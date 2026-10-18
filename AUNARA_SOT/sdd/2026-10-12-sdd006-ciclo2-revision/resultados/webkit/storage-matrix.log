@@ -1,0 +1,23 @@
+STORAGE MATRIX: 276/276 PASS
+┌──────────────────┬─────┬─────────┬───────┐
+│ (index)          │ app │ blocked │ blank │
+├──────────────────┼─────┼─────────┼───────┤
+│ e4:none          │ 12  │         │       │
+│ e4:get-only      │     │ 12      │       │
+│ e4:set-only      │ 12  │         │       │
+│ e4:get+set       │ 12  │         │       │
+│ e4:getter-throws │ 12  │         │       │
+│ e4:remove-only   │ 12  │         │       │
+│ e4:get+remove    │ 12  │         │       │
+│ e4:all-denied    │ 12  │         │       │
+│ e2:none          │ 12  │         │       │
+│ e2:get-only      │     │         │ 12    │
+│ e2:set-only      │ 12  │         │       │
+│ e2:get+set       │ 12  │         │       │
+│ e2:getter-throws │ 12  │         │       │
+│ e2:remove-only   │ 12  │         │       │
+│ e2:get+remove    │ 12  │         │       │
+│ e2:all-denied    │ 12  │         │       │
+└──────────────────┴─────┴─────────┴───────┘
+peticiones externas bloqueadas (deberían ser 0 o solo fonts/CDN): 0
+storage-matrix exit=0

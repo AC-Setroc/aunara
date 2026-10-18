@@ -1,0 +1,154 @@
+✖ local contact and preserved legal/Auth source contracts (3.908625ms)
+✖ both local email artifacts satisfy bilingual content and link contracts (0.929667ms)
+✔ intended From fixture is exact (not an actual received header) (1.05325ms)
+✖ N1 old controller: disposable copy is rejected and original hashes stay intact (0.744458ms)
+✖ N1 crossed support: disposable copy is rejected and original hashes stay intact (0.71025ms)
+✖ N3 fixed CTA host: disposable copy is rejected and original hashes stay intact (0.673459ms)
+✖ N3 divergent backup: disposable copy is rejected and original hashes stay intact (1.38725ms)
+✖ N4 legal version: disposable copy is rejected and original hashes stay intact (0.663ms)
+✖ N4 consent mutation: disposable copy is rejected and original hashes stay intact (0.680625ms)
+✔ N2 wrong From synthetic fixture is rejected; intended fixture is green (1.282791ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 2
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.013
+
+✖ failing tests:
+
+test at scripts/auth-email-templates.node-test.mjs:143:1
+✖ local contact and preserved legal/Auth source contracts (3.908625ms)
+  AssertionError [ERR_ASSERTION]: controller constant
+      at validateContact (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:25:10)
+      at TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:145:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'import type { RepbookCloudSnapshot } from "./cloudSnapshot";\nimport type { HealthDataConsentStatus, HealthProfile } from "../types";\n\nexport const LEGAL_VERSION = "1.0";\nexport const PRIVACY_EFFECTIVE_DATE = "2026-07-29";\nexport const DATA_CONTROLLER_NAME = "Alejandro Cortés Burgos";\nexport const DATA_CONTROLLER_EMAIL = "alejandro@ac-setroc.com";\n\ninterface PersonalDataExportInput {\n  email: string;\n  consentStatus: HealthDataConsentStatus | null;\n  snapshot: RepbookCloudSnapshot;\n  exportedAt?: string;\n}\n\nexport function stripSensitiveHealthData(profile: HealthProfile): HealthProfile {\n  return {\n    ...profile,\n    healthDataMode: "basic",\n    birthDate: "",\n    ageYears: null,\n    metabolicSex: "unspecified",\n    heightCm: null,\n    currentWeightKg: null,\n    targetWeightKg: null,\n    waistCm: null,\n    bodyFatPercent: null,\n    musclePercent: null,\n    visceralFatLevel: null,\n    activityLevel: "moderate",\n    dietaryPattern: "omnivore",\n    nutritionPlanMode: "simple",\n    macroMealsPerDay: 4,\n    allergies: "",\n    healthNotes: "",\n    preferredIngredients: [],\n    readinessScreen: {\n      confirmed: false,\n      chestPain: false,\n      dizzinessOrFainting: false,\n      medicallySupervisedOnly: false,\n      musculoskeletalConcern: false,\n    },\n    limitations: [],\n  };\n}\n\nexport function buildPersonalDataExport({\n  email,\n  consentStatus,\n  snapshot,\n  exportedAt = new Date().toISOString(),\n}: PersonalDataExportInput) {\n  return {\n    exportVersion: 1 as const,\n    exportedAt,\n    account: {\n      email,\n      healthDataConsent: consentStatus,\n    },\n    data: snapshot,\n  };\n}\n',
+    expected: /export const DATA_CONTROLLER_EMAIL = "admin@aunaratraining\.com";/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:148:1
+✖ both local email artifacts satisfy bilingual content and link contracts (0.929667ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:148:105)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:160:3
+✖ N1 old controller: disposable copy is rejected and original hashes stay intact (0.744458ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:161:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:160:3
+✖ N1 crossed support: disposable copy is rejected and original hashes stay intact (0.71025ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:161:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:160:3
+✖ N3 fixed CTA host: disposable copy is rejected and original hashes stay intact (0.673459ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:161:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:160:3
+✖ N3 divergent backup: disposable copy is rejected and original hashes stay intact (1.38725ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:161:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:160:3
+✖ N4 legal version: disposable copy is rejected and original hashes stay intact (0.663ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:161:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }
+
+test at scripts/auth-email-templates.node-test.mjs:160:3
+✖ N4 consent mutation: disposable copy is rejected and original hashes stay intact (0.680625ms)
+  Error: ENOENT: no such file or directory, open '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+      at async open (node:internal/fs/promises:640:25)
+      at async readFile (node:internal/fs/promises:1287:14)
+      at async file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:80
+      at async Promise.all (index 6)
+      at async readSources (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:21:29)
+      at async TestContext.<anonymous> (file:///private/tmp/aunara-sdd014-candidate/scripts/auth-email-templates.node-test.mjs:161:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/tmp/aunara-sdd014-candidate/supabase/templates/confirm-signup.html'
+  }

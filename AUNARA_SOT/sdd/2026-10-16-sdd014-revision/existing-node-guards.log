@@ -1,0 +1,36 @@
+✔ accepts only a scoped client artifact (10.814292ms)
+✔ rejects a server file even when the client is otherwise valid (5.627292ms)
+✔ accepts the exact AC Setroc wordmark and rejects arbitrary brand files (6.682666ms)
+✔ rejects a root-relative asset path (3.608458ms)
+✔ accepts the client artifact at / (4.266583ms)
+✔ rejects server/index.js at / (4.287334ms)
+✔ rejects src/main.ts at / (3.283041ms)
+✔ rejects .env at / (4.118584ms)
+✔ rejects foreign-origin manifest scope at / (3.766208ms)
+✔ accepts the client artifact at /aunara/ (3.858084ms)
+✔ rejects server/index.js at /aunara/ (3.872834ms)
+✔ rejects src/main.ts at /aunara/ (3.675958ms)
+✔ rejects .env at /aunara/ (3.109542ms)
+✔ rejects foreign-origin manifest scope at /aunara/ (3.195917ms)
+✔ root artifact rejects a leftover project asset reference (3.870625ms)
+✔ rejects unsafe base "" (0.142625ms)
+✔ rejects unsafe base "//other.invalid/" (0.03875ms)
+✔ rejects unsafe base "/../" (0.036416ms)
+✔ rejects unsafe base "/aunara" (0.030791ms)
+✔ rejects unsafe base "https://example.invalid/" (0.03175ms)
+✔ places the Vite app in the Sites client asset directory (8.781625ms)
+✔ precache and cleanup stay within the Aunara project (4.703917ms)
+✔ precache and offline navigation use exactly https://aunaratraining.com/ (1.098791ms)
+✔ never handles another origin or non-GET requests at https://aunaratraining.com/ (1.579583ms)
+✔ precache and offline navigation use exactly https://ac-setroc.github.io/aunara/ (0.887584ms)
+✔ never handles another origin or non-GET requests at https://ac-setroc.github.io/aunara/ (0.745ms)
+✔ project worker never handles a sibling path with the same prefix (0.842ms)
+✔ ignores root-site requests and falls back within project scope (0.756917ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.599583

@@ -1,0 +1,785 @@
+{
+  "summary": "156/156 PASS",
+  "rows": [
+    {
+      "name": "SDD-002 aviso almacenamiento root/es/desktop",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido root/es/desktop",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público root/es/desktop",
+      "pass": true,
+      "detail": "Inicio / rutas | Ingresar / crear cuenta | Ayuda / instalación"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados root/es/desktop",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow root/es/desktop",
+      "pass": true,
+      "detail": "slogan=\"Tu propósito marca el camino.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy root/es/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms root/es/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies root/es/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado root/es/desktop",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado root/es/desktop",
+      "pass": true,
+      "detail": "Inicio / rutas | Biblioteca de ejercicios | Perfil | Cuenta / privacidad | Ayuda / instalación | Salir"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador root/es/desktop",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado root/es/desktop",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación root/es/desktop",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento root/es/mobile",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido root/es/mobile",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público root/es/mobile",
+      "pass": true,
+      "detail": "Inicio / rutas | Ingresar / crear cuenta | Ayuda / instalación"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados root/es/mobile",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow root/es/mobile",
+      "pass": true,
+      "detail": "slogan=\"Tu propósito marca el camino.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy root/es/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms root/es/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies root/es/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado root/es/mobile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado root/es/mobile",
+      "pass": true,
+      "detail": "Inicio / rutas | Biblioteca de ejercicios | Perfil | Cuenta / privacidad | Ayuda / instalación | Salir"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador root/es/mobile",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado root/es/mobile",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación root/es/mobile",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento root/es/narrow",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido root/es/narrow",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público root/es/narrow",
+      "pass": true,
+      "detail": "Inicio / rutas | Ingresar / crear cuenta | Ayuda / instalación"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados root/es/narrow",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow root/es/narrow",
+      "pass": true,
+      "detail": "slogan=\"Tu propósito marca el camino.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy root/es/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms root/es/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies root/es/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado root/es/narrow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado root/es/narrow",
+      "pass": true,
+      "detail": "Inicio / rutas | Biblioteca de ejercicios | Perfil | Cuenta / privacidad | Ayuda / instalación | Salir"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador root/es/narrow",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado root/es/narrow",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación root/es/narrow",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento root/en/desktop",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido root/en/desktop",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público root/en/desktop",
+      "pass": true,
+      "detail": "Home / routes | Login / create account | Help / installation"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados root/en/desktop",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow root/en/desktop",
+      "pass": true,
+      "detail": "slogan=\"Your purpose leads the way.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy root/en/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms root/en/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies root/en/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado root/en/desktop",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado root/en/desktop",
+      "pass": true,
+      "detail": "Home / routes | Exercise library | Profile | Account / privacy | Help / installation | Sign out"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador root/en/desktop",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado root/en/desktop",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación root/en/desktop",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento root/en/mobile",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido root/en/mobile",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público root/en/mobile",
+      "pass": true,
+      "detail": "Home / routes | Login / create account | Help / installation"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados root/en/mobile",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow root/en/mobile",
+      "pass": true,
+      "detail": "slogan=\"Your purpose leads the way.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy root/en/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms root/en/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies root/en/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado root/en/mobile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado root/en/mobile",
+      "pass": true,
+      "detail": "Home / routes | Exercise library | Profile | Account / privacy | Help / installation | Sign out"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador root/en/mobile",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado root/en/mobile",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación root/en/mobile",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento root/en/narrow",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido root/en/narrow",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público root/en/narrow",
+      "pass": true,
+      "detail": "Home / routes | Login / create account | Help / installation"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados root/en/narrow",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow root/en/narrow",
+      "pass": true,
+      "detail": "slogan=\"Your purpose leads the way.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy root/en/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms root/en/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies root/en/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado root/en/narrow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado root/en/narrow",
+      "pass": true,
+      "detail": "Home / routes | Exercise library | Profile | Account / privacy | Help / installation | Sign out"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador root/en/narrow",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado root/en/narrow",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación root/en/narrow",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento aunara/es/desktop",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido aunara/es/desktop",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público aunara/es/desktop",
+      "pass": true,
+      "detail": "Inicio / rutas | Ingresar / crear cuenta | Ayuda / instalación"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados aunara/es/desktop",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow aunara/es/desktop",
+      "pass": true,
+      "detail": "slogan=\"Tu propósito marca el camino.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy aunara/es/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms aunara/es/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies aunara/es/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado aunara/es/desktop",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado aunara/es/desktop",
+      "pass": true,
+      "detail": "Inicio / rutas | Biblioteca de ejercicios | Perfil | Cuenta / privacidad | Ayuda / instalación | Salir"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador aunara/es/desktop",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado aunara/es/desktop",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación aunara/es/desktop",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento aunara/es/mobile",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido aunara/es/mobile",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público aunara/es/mobile",
+      "pass": true,
+      "detail": "Inicio / rutas | Ingresar / crear cuenta | Ayuda / instalación"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados aunara/es/mobile",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow aunara/es/mobile",
+      "pass": true,
+      "detail": "slogan=\"Tu propósito marca el camino.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy aunara/es/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms aunara/es/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies aunara/es/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado aunara/es/mobile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado aunara/es/mobile",
+      "pass": true,
+      "detail": "Inicio / rutas | Biblioteca de ejercicios | Perfil | Cuenta / privacidad | Ayuda / instalación | Salir"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador aunara/es/mobile",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado aunara/es/mobile",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación aunara/es/mobile",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento aunara/es/narrow",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido aunara/es/narrow",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público aunara/es/narrow",
+      "pass": true,
+      "detail": "Inicio / rutas | Ingresar / crear cuenta | Ayuda / instalación"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados aunara/es/narrow",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow aunara/es/narrow",
+      "pass": true,
+      "detail": "slogan=\"Tu propósito marca el camino.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy aunara/es/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms aunara/es/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies aunara/es/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado aunara/es/narrow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado aunara/es/narrow",
+      "pass": true,
+      "detail": "Inicio / rutas | Biblioteca de ejercicios | Perfil | Cuenta / privacidad | Ayuda / instalación | Salir"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador aunara/es/narrow",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado aunara/es/narrow",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación aunara/es/narrow",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento aunara/en/desktop",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido aunara/en/desktop",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público aunara/en/desktop",
+      "pass": true,
+      "detail": "Home / routes | Login / create account | Help / installation"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados aunara/en/desktop",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow aunara/en/desktop",
+      "pass": true,
+      "detail": "slogan=\"Your purpose leads the way.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy aunara/en/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms aunara/en/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies aunara/en/desktop",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado aunara/en/desktop",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado aunara/en/desktop",
+      "pass": true,
+      "detail": "Home / routes | Exercise library | Profile | Account / privacy | Help / installation | Sign out"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador aunara/en/desktop",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado aunara/en/desktop",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación aunara/en/desktop",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento aunara/en/mobile",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido aunara/en/mobile",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público aunara/en/mobile",
+      "pass": true,
+      "detail": "Home / routes | Login / create account | Help / installation"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados aunara/en/mobile",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow aunara/en/mobile",
+      "pass": true,
+      "detail": "slogan=\"Your purpose leads the way.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy aunara/en/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms aunara/en/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies aunara/en/mobile",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado aunara/en/mobile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado aunara/en/mobile",
+      "pass": true,
+      "detail": "Home / routes | Exercise library | Profile | Account / privacy | Help / installation | Sign out"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador aunara/en/mobile",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado aunara/en/mobile",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación aunara/en/mobile",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    },
+    {
+      "name": "SDD-002 aviso almacenamiento aunara/en/narrow",
+      "pass": true,
+      "detail": "shown=true covers=false gone=true reload=0 key=1"
+    },
+    {
+      "name": "CA06-02 menú compartido aunara/en/narrow",
+      "pass": true,
+      "detail": "logo=true/true focusIn=true esc=true back=true burger=true trap=true select=true back2=true"
+    },
+    {
+      "name": "CA06-02 inventario público aunara/en/narrow",
+      "pass": true,
+      "detail": "Home / routes | Login / create account | Help / installation"
+    },
+    {
+      "name": "CA06-03 invitado sin datos privados aunara/en/narrow",
+      "pass": true,
+      "detail": "leak=false"
+    },
+    {
+      "name": "CA06-06 slogan y sin overflow aunara/en/narrow",
+      "pass": true,
+      "detail": "slogan=\"Your purpose leads the way.\" overflow=false"
+    },
+    {
+      "name": "SDD-002 diálogo privacy aunara/en/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo terms aunara/en/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "SDD-002 diálogo cookies aunara/en/narrow",
+      "pass": true,
+      "detail": "visible=true focusIn=true tabIn=true closed=true back=true"
+    },
+    {
+      "name": "consola invitado aunara/en/narrow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "CA06-02 inventario privado aunara/en/narrow",
+      "pass": true,
+      "detail": "Home / routes | Exercise library | Profile | Account / privacy | Help / installation | Sign out"
+    },
+    {
+      "name": "CA06-05 instalación visible en navegador aunara/en/narrow",
+      "pass": true,
+      "detail": "install-title=1"
+    },
+    {
+      "name": "CA06-04 modal de borrado aunara/en/narrow",
+      "pass": true,
+      "detail": "open=true empty=true wrong=true otherLang=true exact=true esc=true reset=\"\" afterLang=\"\" cancel=true calls0=true calls1=true"
+    },
+    {
+      "name": "CA06-05 standalone oculta instalación aunara/en/narrow",
+      "pass": true,
+      "detail": "help=false title=0 btn=0"
+    }
+  ]
+}

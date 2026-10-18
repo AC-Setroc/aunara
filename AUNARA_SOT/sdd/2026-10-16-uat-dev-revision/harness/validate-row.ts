@@ -1,0 +1,12 @@
+import { readFileSync } from "node:fs";
+import { normalizeRepbookSnapshot } from "/home/user/aunara/src/lib/cloudSnapshot";
+const row = JSON.parse(readFileSync(process.argv[2], "utf8"));
+const FALLBACK = { sentinel: true } as any;
+const ok = (p: unknown) => normalizeRepbookSnapshot(p, FALLBACK) !== FALLBACK;
+const p = row.payload;
+console.log("payload valid:", ok(p));
+console.log("tracks=[] valid:", ok({ ...p, tracks: [] }));
+console.log("healthProfile→minimal valid:", ok({ ...p, healthProfile: { ageYears: null, metabolicSex: "unspecified", heightCm: null, currentWeightKg: null, targetWeightKg: null, waistCm: null, activityLevel: "moderate", experience: "beginner", dietaryPattern: "omnivore", allergies: "", healthNotes: "" } }));
+console.log("activeTrackId:", JSON.stringify(p.activeTrackId), "language:", p.language, "profileName:", p.profileName, "checkIns:", JSON.stringify(p.checkIns).slice(0, 60));
+console.log("track keys:", p.tracks[0] && Object.keys(p.tracks[0]).join(","), "| item0:", JSON.stringify(p.tracks[0]?.workout?.[0]).slice(0, 200));
+console.log("profile keys:", Object.keys(p.healthProfile).join(","));

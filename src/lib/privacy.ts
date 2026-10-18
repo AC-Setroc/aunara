@@ -4,7 +4,7 @@ import type { HealthDataConsentStatus, HealthProfile } from "../types";
 export const LEGAL_VERSION = "1.0";
 export const PRIVACY_EFFECTIVE_DATE = "2026-07-29";
 export const DATA_CONTROLLER_NAME = "Alejandro Cortés Burgos";
-export const DATA_CONTROLLER_EMAIL = "alejandro@ac-setroc.com";
+export const DATA_CONTROLLER_EMAIL = "admin@aunaratraining.com";
 
 interface PersonalDataExportInput {
   email: string;

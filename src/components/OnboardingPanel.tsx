@@ -3,7 +3,8 @@ import { type FormEvent, useMemo, useState } from "react";
 import { tr } from "../lib/i18n";
 import { stripSensitiveHealthData } from "../lib/privacy";
 import { adultBirthDateBounds, calculateAgeFromBirthDate } from "../lib/wellness";
-import type { EquipmentPreference, HealthProfile, LanguageCode, TrackFocus } from "../types";
+import { GENERAL_GOALS, SPORT_FOCUSES, type GeneralGoal, type EquipmentPreference, type HealthProfile, type LanguageCode, type SportFocus } from "../types";
+import { trackFocusLabel } from "./TrainingTracks";
 import { ReadinessAndLimitations } from "./ReadinessAndLimitations";
 
 interface OnboardingPanelProps {
@@ -21,6 +22,48 @@ function optionalNumber(value: string): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+// Reading legacy intent never writes a migration or invents a general goal for a sport.
+export function profileGoals(profile: HealthProfile): GeneralGoal[] {
+  if (profile.goals) return profile.goals;
+  return GENERAL_GOALS.includes(profile.primaryGoal as GeneralGoal) ? [profile.primaryGoal as GeneralGoal] : [];
+}
+
+export function profileSport(profile: HealthProfile): SportFocus | null {
+  if (profile.sport !== undefined) return profile.sport;
+  return SPORT_FOCUSES.includes(profile.primaryGoal as SportFocus) ? profile.primaryGoal as SportFocus : null;
+}
+
+export function validTrainingPreferences(profile: HealthProfile): boolean {
+  const goals = profileGoals(profile);
+  return goals.length >= 1 && goals.length <= 3 && new Set(goals).size === goals.length
+    && goals.every((goal) => GENERAL_GOALS.includes(goal))
+    && Number.isInteger(profile.trainingDaysPerWeek) && profile.trainingDaysPerWeek! >= 1 && profile.trainingDaysPerWeek! <= 7
+    && Number.isFinite(profile.sessionMinutes) && profile.sessionMinutes! >= 15 && profile.sessionMinutes! <= 180;
+}
+
+export function GoalPreferences({ language, profile, onChange }: { language: LanguageCode; profile: HealthProfile; onChange: (profile: HealthProfile) => void }) {
+  const goals = profileGoals(profile);
+  return <>
+    <fieldset className="goal-preferences">
+      <legend>{tr(language, "Training goals (choose 1–3)", "Objetivos de entrenamiento (elegí 1–3)")}</legend>
+      {GENERAL_GOALS.map((goal) => <label key={goal}>
+        <input type="checkbox" checked={goals.includes(goal)} disabled={!goals.includes(goal) && goals.length >= 3} onChange={(event) => {
+          const next = event.target.checked ? [...goals, goal] : goals.filter((value) => value !== goal);
+          onChange({ ...profile, goals: next, primaryGoal: next[0] ?? profile.primaryGoal, sport: profileSport(profile) });
+        }} />
+        <span>{trackFocusLabel(goal, language)}</span>
+      </label>)}
+      {!goals.length && <small>{tr(language, "Choose a general goal before saving.", "Elegí un objetivo general antes de guardar.")}</small>}
+    </fieldset>
+    <label className="health-field"><span>{tr(language, "Are you training for a particular sport? (optional)", "¿Entrenás para un deporte en particular? (opcional)")}</span>
+      <select value={profileSport(profile) ?? ""} onChange={(event) => onChange({ ...profile, sport: event.target.value ? event.target.value as SportFocus : null })}>
+        <option value="">{tr(language, "None", "Ninguno")}</option>
+        {SPORT_FOCUSES.map((sport) => <option key={sport} value={sport}>{trackFocusLabel(sport, language)}</option>)}
+      </select>
+    </label>
+  </>;
+}
+
 export function OnboardingPanel({
   language,
   name,
@@ -31,7 +74,7 @@ export function OnboardingPanel({
 }: OnboardingPanelProps) {
   const [draft, setDraft] = useState<HealthProfile>({
     ...profile,
-    primaryGoal: profile.primaryGoal ?? "strength",
+    goals: profile.goals,
     equipmentPreference: profile.equipmentPreference ?? "mixed",
     trainingDaysPerWeek: profile.trainingDaysPerWeek ?? 3,
     sessionMinutes: profile.sessionMinutes ?? 45,
@@ -39,9 +82,7 @@ export function OnboardingPanel({
   });
   const calculatedAge = calculateAgeFromBirthDate(draft.birthDate ?? "");
   const birthDateBounds = adultBirthDateBounds();
-  const basicReady = Boolean(draft.primaryGoal)
-    && Boolean(draft.trainingDaysPerWeek)
-    && Boolean(draft.sessionMinutes);
+  const basicReady = validTrainingPreferences(draft);
   const ready = basicReady && (!healthDataConsent || (
     calculatedAge !== null
     && calculatedAge >= 18
@@ -82,8 +123,8 @@ export function OnboardingPanel({
     event.preventDefault();
     if (!ready) return;
     onComplete(healthDataConsent
-      ? { ...draft, onboardingCompleted: true, healthDataMode: "personalized" }
-      : stripSensitiveHealthData({ ...draft, onboardingCompleted: true }));
+      ? { ...draft, goals: profileGoals(draft), sport: profileSport(draft), onboardingCompleted: true, healthDataMode: "personalized" }
+      : stripSensitiveHealthData({ ...draft, goals: profileGoals(draft), sport: profileSport(draft), onboardingCompleted: true }));
   }
 
   return (
@@ -127,7 +168,9 @@ export function OnboardingPanel({
               />
               <small>{calculatedAge === null
                 ? tr(language, "Used to calculate your age", "Se usa para calcular tu edad")
-                : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
+                : calculatedAge < 18 || calculatedAge > 100
+                  ? tr(language, "You must be between 18 and 100 to personalize with health data.", "Tenés que tener entre 18 y 100 años para personalizar con datos de salud.")
+                  : tr(language, `Calculated age: ${calculatedAge}`, `Edad calculada: ${calculatedAge}`)}</small>
             </label>}
             {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Height", "Estatura")}</span>
@@ -144,20 +187,7 @@ export function OnboardingPanel({
               <input type="number" min="30" max="350" step="0.1" value={draft.targetWeightKg ?? ""} onChange={(event) => update("targetWeightKg", optionalNumber(event.target.value))} />
               <small>kg</small>
             </label>}
-            <label className="health-field">
-              <span>{tr(language, "Primary goal", "Objetivo principal")}</span>
-              <select aria-label={tr(language, "Primary goal", "Objetivo principal")} value={draft.primaryGoal} onChange={(event) => update("primaryGoal", event.target.value as TrackFocus)}>
-                <option value="strength">{tr(language, "Strength", "Fuerza")}</option>
-                <option value="weight-loss">{tr(language, "Weight loss", "Pérdida de peso")}</option>
-                <option value="muscle-gain">{tr(language, "Muscle gain", "Ganancia muscular")}</option>
-                <option value="general-fitness">{tr(language, "General fitness", "Condición física general")}</option>
-                <option value="endurance">{tr(language, "Endurance", "Resistencia")}</option>
-                <option value="mobility">{tr(language, "Mobility", "Movilidad")}</option>
-                <option value="beach-volleyball">{tr(language, "Beach volleyball", "Vóley playa")}</option>
-                <option value="mountain-biking">MTB</option>
-                <option value="swimming">{tr(language, "Swimming", "Natación")}</option>
-              </select>
-            </label>
+            <GoalPreferences language={language} profile={draft} onChange={setDraft} />
             <label className="health-field">
               <span>{tr(language, "Available equipment", "Equipo disponible")}</span>
               <select value={draft.equipmentPreference} onChange={(event) => update("equipmentPreference", event.target.value as EquipmentPreference)}>

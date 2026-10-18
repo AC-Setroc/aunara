@@ -1,0 +1,17 @@
+… root/es/desktop
+… root/es/mobile
+… root/es/narrow
+… root/en/desktop
+… root/en/mobile
+… root/en/narrow
+… aunara/es/desktop
+… aunara/es/mobile
+… aunara/es/narrow
+… aunara/en/desktop
+… aunara/en/mobile
+… aunara/en/narrow
+STARTUP FALLBACK: 84/84 PASS
+
+(node:46037) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/private/tmp/aunara-sdd013-runtime.lDUUmv/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)

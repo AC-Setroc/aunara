@@ -1,0 +1,215 @@
+{
+  "summary": "42/42 PASS",
+  "rows": [
+    {
+      "name": "recovery 0ms root/es/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 651ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms root/es/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 582ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 root/es/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6517ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash root/es/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6526ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback root/es/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6176ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms root/es/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 556ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms root/es/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 563ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 root/es/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6522ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash root/es/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6641ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback root/es/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6210ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms root/en/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 585ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms root/en/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 600ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 root/en/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6238ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash root/en/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6521ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback root/en/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6305ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms root/en/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 566ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms root/en/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 611ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 root/en/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6206ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash root/en/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6226ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback root/en/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6194ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms aunara/es/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 589ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms aunara/es/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 644ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 aunara/es/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6206ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash aunara/es/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6267ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback aunara/es/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6577ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms aunara/es/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 679ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms aunara/es/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 632ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 aunara/es/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6549ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash aunara/es/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6194ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback aunara/es/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6509ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms aunara/en/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 662ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms aunara/en/desktop",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 614ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 aunara/en/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6511ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash aunara/en/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6242ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback aunara/en/desktop",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6552ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 0ms aunara/en/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 603ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "recovery 200ms aunara/en/mobile",
+      "pass": true,
+      "detail": "recovery=true esperado=true userCalls=1 599ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg invalid/expired 401 aunara/en/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6163ms hash=\"#access_token=synthe\" leaked=false error: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+    },
+    {
+      "name": "neg signup hash aunara/en/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=1 6248ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "neg sin callback aunara/en/mobile",
+      "pass": true,
+      "detail": "recovery=false esperado=false userCalls=0 6238ms hash=\"\" leaked=false "
+    },
+    {
+      "name": "consumo único: recarga sin hash no reabre recuperación root",
+      "pass": true,
+      "detail": "again=false"
+    },
+    {
+      "name": "consumo único: recarga sin hash no reabre recuperación aunara",
+      "pass": true,
+      "detail": "again=false"
+    }
+  ]
+}

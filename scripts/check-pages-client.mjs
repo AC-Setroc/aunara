@@ -7,6 +7,7 @@ const STATIC_FILES = new Set([
   "DATASET_LICENSE", "DATASET_NOTICE.md",
   "brand/aunara-training-systems.svg", "brand/aunara-app-icon.svg",
   "brand/aunara-symbol.svg", "brand/aunara-symbol-reverse.svg",
+  "brand/ac-setroc-wordmark.png",
   "icons/aunara-180.png", "icons/aunara-192.png", "icons/aunara-512.png",
   "icons/repbook-180.png", "icons/repbook-192.png", "icons/repbook-512.png",
   "exercise-art/pilot/push-up-aunara-keyframes-v1.png",

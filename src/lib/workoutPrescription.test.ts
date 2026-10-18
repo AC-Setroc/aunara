@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
+import { isValidManualPrescription } from "./workoutPrescription";
+import type { WorkoutItem } from "../types";
 
 describe("workout prescription helpers", () => {
+  it("rejects unknown count units in manual items and blocks, while accepting absent legacy units", () => {
+    const item = { sets: 3, reps: 20 };
+    expect(isValidManualPrescription(item)).toBe(true);
+    expect(isValidManualPrescription({ ...item, repetitionCount: "unknown" } as unknown as WorkoutItem)).toBe(false);
+    expect(isValidManualPrescription({ ...item, prescriptionMode: "special", specialPrescription: { technique: "custom", rounds: 3, restBetweenRoundsSeconds: 0, blocks: [{ id: "synthetic", type: "work", target: "reps", value: 20, repetitionCount: "unknown", loadType: "same" }] } } as unknown as WorkoutItem)).toBe(false);
+  });
   it("defines the required number of exercise slots for grouped structures", async () => {
     const helpers = await import("./workoutPrescription").catch(() => ({}));
     const slotCount = (helpers as { workoutStructureSlotCount?: (type: string) => number }).workoutStructureSlotCount;

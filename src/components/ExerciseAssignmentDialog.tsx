@@ -42,6 +42,7 @@ export function ExerciseAssignmentDialog({
     .map((item) => ({
       track,
       itemId: item.id ?? item.exerciseId,
+      grouped: Boolean(item.structure && item.structure.size > 1),
       day: item.day ?? track.trainingDays?.[0] ?? "monday" as Weekday,
     }))), [exercise.id, tracks]);
 
@@ -90,7 +91,10 @@ export function ExerciseAssignmentDialog({
                 <span><MapPin size={15} /><strong>{placement.track.name}</strong> · {dayLabel(placement.day)}</span>
                 <button
                   type="button"
-                  onClick={() => onRemove(placement.track.id, placement.itemId)}
+                  onClick={() => {
+                    if (placement.grouped && !window.confirm(tr(language, "Remove this member and dissolve its group? Other members keep their history.", "¿Quitar este miembro y desarmar su grupo? Los demás conservan su historial."))) return;
+                    onRemove(placement.track.id, placement.itemId);
+                  }}
                   aria-label={`${tr(language, "Remove from", "Quitar de")} ${placement.track.name}, ${dayLabel(placement.day)}`}
                 >
                   <Trash2 size={15} /> {tr(language, "Remove", "Quitar")}

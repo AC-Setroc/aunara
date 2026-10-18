@@ -29,6 +29,7 @@ tan pronto existan hechos confirmados suficientes.
 ## Contactos mínimos a mantener
 
 - Responsable de privacidad: Alejandro Cortés Burgos —
-  alejandro@ac-setroc.com.
-- Contactos de seguridad y soporte de Supabase y del proveedor de hosting.
+  admin@aunaratraining.com.
+- Contactos de seguridad y soporte de Supabase, GitHub Pages y GoDaddy
+  (dominio y DNS).
 - Asesor jurídico colombiano para calificar incidentes materiales.

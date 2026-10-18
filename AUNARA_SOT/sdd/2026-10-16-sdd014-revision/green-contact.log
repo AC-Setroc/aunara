@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/aunara-sdd014-candidate
+
+
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  01:22:10
+   Duration  1.12s (transform 53ms, setup 0ms, import 210ms, tests 182ms, environment 627ms)
+

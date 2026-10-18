@@ -1,0 +1,1372 @@
+STAGE launch
+STAGE launched
+STAGE context e4 root es desktop none
+STAGE page e4 root es desktop none
+STAGE page-ready
+STAGE goto e4 root es desktop none
+STAGE page-close e4 root es desktop none
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop get-only
+STAGE page e4 root es desktop get-only
+STAGE page-ready
+STAGE goto e4 root es desktop get-only
+STAGE page-close e4 root es desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop set-only
+STAGE page e4 root es desktop set-only
+STAGE page-ready
+STAGE goto e4 root es desktop set-only
+STAGE page-close e4 root es desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop get+set
+STAGE page e4 root es desktop get+set
+STAGE page-ready
+STAGE goto e4 root es desktop get+set
+STAGE page-close e4 root es desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop getter-throws
+STAGE page e4 root es desktop getter-throws
+STAGE page-ready
+STAGE goto e4 root es desktop getter-throws
+STAGE page-close e4 root es desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop remove-only
+STAGE page e4 root es desktop remove-only
+STAGE page-ready
+STAGE goto e4 root es desktop remove-only
+STAGE page-close e4 root es desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop get+remove
+STAGE page e4 root es desktop get+remove
+STAGE page-ready
+STAGE goto e4 root es desktop get+remove
+STAGE page-close e4 root es desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 root es desktop all-denied
+STAGE page e4 root es desktop all-denied
+STAGE page-ready
+STAGE goto e4 root es desktop all-denied
+STAGE page-close e4 root es desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile none
+STAGE page e4 root es mobile none
+STAGE page-ready
+STAGE goto e4 root es mobile none
+STAGE page-close e4 root es mobile none
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile get-only
+STAGE page e4 root es mobile get-only
+STAGE page-ready
+STAGE goto e4 root es mobile get-only
+STAGE page-close e4 root es mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile set-only
+STAGE page e4 root es mobile set-only
+STAGE page-ready
+STAGE goto e4 root es mobile set-only
+STAGE page-close e4 root es mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile get+set
+STAGE page e4 root es mobile get+set
+STAGE page-ready
+STAGE goto e4 root es mobile get+set
+STAGE page-close e4 root es mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile getter-throws
+STAGE page e4 root es mobile getter-throws
+STAGE page-ready
+STAGE goto e4 root es mobile getter-throws
+STAGE page-close e4 root es mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile remove-only
+STAGE page e4 root es mobile remove-only
+STAGE page-ready
+STAGE goto e4 root es mobile remove-only
+STAGE page-close e4 root es mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile get+remove
+STAGE page e4 root es mobile get+remove
+STAGE page-ready
+STAGE goto e4 root es mobile get+remove
+STAGE page-close e4 root es mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 root es mobile all-denied
+STAGE page e4 root es mobile all-denied
+STAGE page-ready
+STAGE goto e4 root es mobile all-denied
+STAGE page-close e4 root es mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow none
+STAGE page e4 root es narrow none
+STAGE page-ready
+STAGE goto e4 root es narrow none
+STAGE page-close e4 root es narrow none
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow get-only
+STAGE page e4 root es narrow get-only
+STAGE page-ready
+STAGE goto e4 root es narrow get-only
+STAGE page-close e4 root es narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow set-only
+STAGE page e4 root es narrow set-only
+STAGE page-ready
+STAGE goto e4 root es narrow set-only
+STAGE page-close e4 root es narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow get+set
+STAGE page e4 root es narrow get+set
+STAGE page-ready
+STAGE goto e4 root es narrow get+set
+STAGE page-close e4 root es narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow getter-throws
+STAGE page e4 root es narrow getter-throws
+STAGE page-ready
+STAGE goto e4 root es narrow getter-throws
+STAGE page-close e4 root es narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow remove-only
+STAGE page e4 root es narrow remove-only
+STAGE page-ready
+STAGE goto e4 root es narrow remove-only
+STAGE page-close e4 root es narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow get+remove
+STAGE page e4 root es narrow get+remove
+STAGE page-ready
+STAGE goto e4 root es narrow get+remove
+STAGE page-close e4 root es narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 root es narrow all-denied
+STAGE page e4 root es narrow all-denied
+STAGE page-ready
+STAGE goto e4 root es narrow all-denied
+STAGE page-close e4 root es narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop none
+STAGE page e4 root en desktop none
+STAGE page-ready
+STAGE goto e4 root en desktop none
+STAGE page-close e4 root en desktop none
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop get-only
+STAGE page e4 root en desktop get-only
+STAGE page-ready
+STAGE goto e4 root en desktop get-only
+STAGE page-close e4 root en desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop set-only
+STAGE page e4 root en desktop set-only
+STAGE page-ready
+STAGE goto e4 root en desktop set-only
+STAGE page-close e4 root en desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop get+set
+STAGE page e4 root en desktop get+set
+STAGE page-ready
+STAGE goto e4 root en desktop get+set
+STAGE page-close e4 root en desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop getter-throws
+STAGE page e4 root en desktop getter-throws
+STAGE page-ready
+STAGE goto e4 root en desktop getter-throws
+STAGE page-close e4 root en desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop remove-only
+STAGE page e4 root en desktop remove-only
+STAGE page-ready
+STAGE goto e4 root en desktop remove-only
+STAGE page-close e4 root en desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop get+remove
+STAGE page e4 root en desktop get+remove
+STAGE page-ready
+STAGE goto e4 root en desktop get+remove
+STAGE page-close e4 root en desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 root en desktop all-denied
+STAGE page e4 root en desktop all-denied
+STAGE page-ready
+STAGE goto e4 root en desktop all-denied
+STAGE page-close e4 root en desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile none
+STAGE page e4 root en mobile none
+STAGE page-ready
+STAGE goto e4 root en mobile none
+STAGE page-close e4 root en mobile none
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile get-only
+STAGE page e4 root en mobile get-only
+STAGE page-ready
+STAGE goto e4 root en mobile get-only
+STAGE page-close e4 root en mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile set-only
+STAGE page e4 root en mobile set-only
+STAGE page-ready
+STAGE goto e4 root en mobile set-only
+STAGE page-close e4 root en mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile get+set
+STAGE page e4 root en mobile get+set
+STAGE page-ready
+STAGE goto e4 root en mobile get+set
+STAGE page-close e4 root en mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile getter-throws
+STAGE page e4 root en mobile getter-throws
+STAGE page-ready
+STAGE goto e4 root en mobile getter-throws
+STAGE page-close e4 root en mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile remove-only
+STAGE page e4 root en mobile remove-only
+STAGE page-ready
+STAGE goto e4 root en mobile remove-only
+STAGE page-close e4 root en mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile get+remove
+STAGE page e4 root en mobile get+remove
+STAGE page-ready
+STAGE goto e4 root en mobile get+remove
+STAGE page-close e4 root en mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 root en mobile all-denied
+STAGE page e4 root en mobile all-denied
+STAGE page-ready
+STAGE goto e4 root en mobile all-denied
+STAGE page-close e4 root en mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow none
+STAGE page e4 root en narrow none
+STAGE page-ready
+STAGE goto e4 root en narrow none
+STAGE page-close e4 root en narrow none
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow get-only
+STAGE page e4 root en narrow get-only
+STAGE page-ready
+STAGE goto e4 root en narrow get-only
+STAGE page-close e4 root en narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow set-only
+STAGE page e4 root en narrow set-only
+STAGE page-ready
+STAGE goto e4 root en narrow set-only
+STAGE page-close e4 root en narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow get+set
+STAGE page e4 root en narrow get+set
+STAGE page-ready
+STAGE goto e4 root en narrow get+set
+STAGE page-close e4 root en narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow getter-throws
+STAGE page e4 root en narrow getter-throws
+STAGE page-ready
+STAGE goto e4 root en narrow getter-throws
+STAGE page-close e4 root en narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow remove-only
+STAGE page e4 root en narrow remove-only
+STAGE page-ready
+STAGE goto e4 root en narrow remove-only
+STAGE page-close e4 root en narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow get+remove
+STAGE page e4 root en narrow get+remove
+STAGE page-ready
+STAGE goto e4 root en narrow get+remove
+STAGE page-close e4 root en narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 root en narrow all-denied
+STAGE page e4 root en narrow all-denied
+STAGE page-ready
+STAGE goto e4 root en narrow all-denied
+STAGE page-close e4 root en narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop none
+STAGE page e4 aunara es desktop none
+STAGE page-ready
+STAGE goto e4 aunara es desktop none
+STAGE page-close e4 aunara es desktop none
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop get-only
+STAGE page e4 aunara es desktop get-only
+STAGE page-ready
+STAGE goto e4 aunara es desktop get-only
+STAGE page-close e4 aunara es desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop set-only
+STAGE page e4 aunara es desktop set-only
+STAGE page-ready
+STAGE goto e4 aunara es desktop set-only
+STAGE page-close e4 aunara es desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop get+set
+STAGE page e4 aunara es desktop get+set
+STAGE page-ready
+STAGE goto e4 aunara es desktop get+set
+STAGE page-close e4 aunara es desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop getter-throws
+STAGE page e4 aunara es desktop getter-throws
+STAGE page-ready
+STAGE goto e4 aunara es desktop getter-throws
+STAGE page-close e4 aunara es desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop remove-only
+STAGE page e4 aunara es desktop remove-only
+STAGE page-ready
+STAGE goto e4 aunara es desktop remove-only
+STAGE page-close e4 aunara es desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop get+remove
+STAGE page e4 aunara es desktop get+remove
+STAGE page-ready
+STAGE goto e4 aunara es desktop get+remove
+STAGE page-close e4 aunara es desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es desktop all-denied
+STAGE page e4 aunara es desktop all-denied
+STAGE page-ready
+STAGE goto e4 aunara es desktop all-denied
+STAGE page-close e4 aunara es desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile none
+STAGE page e4 aunara es mobile none
+STAGE page-ready
+STAGE goto e4 aunara es mobile none
+STAGE page-close e4 aunara es mobile none
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile get-only
+STAGE page e4 aunara es mobile get-only
+STAGE page-ready
+STAGE goto e4 aunara es mobile get-only
+STAGE page-close e4 aunara es mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile set-only
+STAGE page e4 aunara es mobile set-only
+STAGE page-ready
+STAGE goto e4 aunara es mobile set-only
+STAGE page-close e4 aunara es mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile get+set
+STAGE page e4 aunara es mobile get+set
+STAGE page-ready
+STAGE goto e4 aunara es mobile get+set
+STAGE page-close e4 aunara es mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile getter-throws
+STAGE page e4 aunara es mobile getter-throws
+STAGE page-ready
+STAGE goto e4 aunara es mobile getter-throws
+STAGE page-close e4 aunara es mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile remove-only
+STAGE page e4 aunara es mobile remove-only
+STAGE page-ready
+STAGE goto e4 aunara es mobile remove-only
+STAGE page-close e4 aunara es mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile get+remove
+STAGE page e4 aunara es mobile get+remove
+STAGE page-ready
+STAGE goto e4 aunara es mobile get+remove
+STAGE page-close e4 aunara es mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es mobile all-denied
+STAGE page e4 aunara es mobile all-denied
+STAGE page-ready
+STAGE goto e4 aunara es mobile all-denied
+STAGE page-close e4 aunara es mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow none
+STAGE page e4 aunara es narrow none
+STAGE page-ready
+STAGE goto e4 aunara es narrow none
+STAGE page-close e4 aunara es narrow none
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow get-only
+STAGE page e4 aunara es narrow get-only
+STAGE page-ready
+STAGE goto e4 aunara es narrow get-only
+STAGE page-close e4 aunara es narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow set-only
+STAGE page e4 aunara es narrow set-only
+STAGE page-ready
+STAGE goto e4 aunara es narrow set-only
+STAGE page-close e4 aunara es narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow get+set
+STAGE page e4 aunara es narrow get+set
+STAGE page-ready
+STAGE goto e4 aunara es narrow get+set
+STAGE page-close e4 aunara es narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow getter-throws
+STAGE page e4 aunara es narrow getter-throws
+STAGE page-ready
+STAGE goto e4 aunara es narrow getter-throws
+STAGE page-close e4 aunara es narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow remove-only
+STAGE page e4 aunara es narrow remove-only
+STAGE page-ready
+STAGE goto e4 aunara es narrow remove-only
+STAGE page-close e4 aunara es narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow get+remove
+STAGE page e4 aunara es narrow get+remove
+STAGE page-ready
+STAGE goto e4 aunara es narrow get+remove
+STAGE page-close e4 aunara es narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara es narrow all-denied
+STAGE page e4 aunara es narrow all-denied
+STAGE page-ready
+STAGE goto e4 aunara es narrow all-denied
+STAGE page-close e4 aunara es narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop none
+STAGE page e4 aunara en desktop none
+STAGE page-ready
+STAGE goto e4 aunara en desktop none
+STAGE page-close e4 aunara en desktop none
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop get-only
+STAGE page e4 aunara en desktop get-only
+STAGE page-ready
+STAGE goto e4 aunara en desktop get-only
+STAGE page-close e4 aunara en desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop set-only
+STAGE page e4 aunara en desktop set-only
+STAGE page-ready
+STAGE goto e4 aunara en desktop set-only
+STAGE page-close e4 aunara en desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop get+set
+STAGE page e4 aunara en desktop get+set
+STAGE page-ready
+STAGE goto e4 aunara en desktop get+set
+STAGE page-close e4 aunara en desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop getter-throws
+STAGE page e4 aunara en desktop getter-throws
+STAGE page-ready
+STAGE goto e4 aunara en desktop getter-throws
+STAGE page-close e4 aunara en desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop remove-only
+STAGE page e4 aunara en desktop remove-only
+STAGE page-ready
+STAGE goto e4 aunara en desktop remove-only
+STAGE page-close e4 aunara en desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop get+remove
+STAGE page e4 aunara en desktop get+remove
+STAGE page-ready
+STAGE goto e4 aunara en desktop get+remove
+STAGE page-close e4 aunara en desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en desktop all-denied
+STAGE page e4 aunara en desktop all-denied
+STAGE page-ready
+STAGE goto e4 aunara en desktop all-denied
+STAGE page-close e4 aunara en desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile none
+STAGE page e4 aunara en mobile none
+STAGE page-ready
+STAGE goto e4 aunara en mobile none
+STAGE page-close e4 aunara en mobile none
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile get-only
+STAGE page e4 aunara en mobile get-only
+STAGE page-ready
+STAGE goto e4 aunara en mobile get-only
+STAGE page-close e4 aunara en mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile set-only
+STAGE page e4 aunara en mobile set-only
+STAGE page-ready
+STAGE goto e4 aunara en mobile set-only
+STAGE page-close e4 aunara en mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile get+set
+STAGE page e4 aunara en mobile get+set
+STAGE page-ready
+STAGE goto e4 aunara en mobile get+set
+STAGE page-close e4 aunara en mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile getter-throws
+STAGE page e4 aunara en mobile getter-throws
+STAGE page-ready
+STAGE goto e4 aunara en mobile getter-throws
+STAGE page-close e4 aunara en mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile remove-only
+STAGE page e4 aunara en mobile remove-only
+STAGE page-ready
+STAGE goto e4 aunara en mobile remove-only
+STAGE page-close e4 aunara en mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile get+remove
+STAGE page e4 aunara en mobile get+remove
+STAGE page-ready
+STAGE goto e4 aunara en mobile get+remove
+STAGE page-close e4 aunara en mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en mobile all-denied
+STAGE page e4 aunara en mobile all-denied
+STAGE page-ready
+STAGE goto e4 aunara en mobile all-denied
+STAGE page-close e4 aunara en mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow none
+STAGE page e4 aunara en narrow none
+STAGE page-ready
+STAGE goto e4 aunara en narrow none
+STAGE page-close e4 aunara en narrow none
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow get-only
+STAGE page e4 aunara en narrow get-only
+STAGE page-ready
+STAGE goto e4 aunara en narrow get-only
+STAGE page-close e4 aunara en narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow set-only
+STAGE page e4 aunara en narrow set-only
+STAGE page-ready
+STAGE goto e4 aunara en narrow set-only
+STAGE page-close e4 aunara en narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow get+set
+STAGE page e4 aunara en narrow get+set
+STAGE page-ready
+STAGE goto e4 aunara en narrow get+set
+STAGE page-close e4 aunara en narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow getter-throws
+STAGE page e4 aunara en narrow getter-throws
+STAGE page-ready
+STAGE goto e4 aunara en narrow getter-throws
+STAGE page-close e4 aunara en narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow remove-only
+STAGE page e4 aunara en narrow remove-only
+STAGE page-ready
+STAGE goto e4 aunara en narrow remove-only
+STAGE page-close e4 aunara en narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow get+remove
+STAGE page e4 aunara en narrow get+remove
+STAGE page-ready
+STAGE goto e4 aunara en narrow get+remove
+STAGE page-close e4 aunara en narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e4 aunara en narrow all-denied
+STAGE page e4 aunara en narrow all-denied
+STAGE page-ready
+STAGE goto e4 aunara en narrow all-denied
+STAGE page-close e4 aunara en narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop none
+STAGE page e2 root es desktop none
+STAGE page-ready
+STAGE goto e2 root es desktop none
+STAGE page-close e2 root es desktop none
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop get-only
+STAGE page e2 root es desktop get-only
+STAGE page-ready
+STAGE goto e2 root es desktop get-only
+STAGE page-close e2 root es desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop set-only
+STAGE page e2 root es desktop set-only
+STAGE page-ready
+STAGE goto e2 root es desktop set-only
+STAGE page-close e2 root es desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop get+set
+STAGE page e2 root es desktop get+set
+STAGE page-ready
+STAGE goto e2 root es desktop get+set
+STAGE page-close e2 root es desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop getter-throws
+STAGE page e2 root es desktop getter-throws
+STAGE page-ready
+STAGE goto e2 root es desktop getter-throws
+STAGE page-close e2 root es desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop remove-only
+STAGE page e2 root es desktop remove-only
+STAGE page-ready
+STAGE goto e2 root es desktop remove-only
+STAGE page-close e2 root es desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop get+remove
+STAGE page e2 root es desktop get+remove
+STAGE page-ready
+STAGE goto e2 root es desktop get+remove
+STAGE page-close e2 root es desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 root es desktop all-denied
+STAGE page e2 root es desktop all-denied
+STAGE page-ready
+STAGE goto e2 root es desktop all-denied
+STAGE page-close e2 root es desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile none
+STAGE page e2 root es mobile none
+STAGE page-ready
+STAGE goto e2 root es mobile none
+STAGE page-close e2 root es mobile none
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile get-only
+STAGE page e2 root es mobile get-only
+STAGE page-ready
+STAGE goto e2 root es mobile get-only
+STAGE page-close e2 root es mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile set-only
+STAGE page e2 root es mobile set-only
+STAGE page-ready
+STAGE goto e2 root es mobile set-only
+STAGE page-close e2 root es mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile get+set
+STAGE page e2 root es mobile get+set
+STAGE page-ready
+STAGE goto e2 root es mobile get+set
+STAGE page-close e2 root es mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile getter-throws
+STAGE page e2 root es mobile getter-throws
+STAGE page-ready
+STAGE goto e2 root es mobile getter-throws
+STAGE page-close e2 root es mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile remove-only
+STAGE page e2 root es mobile remove-only
+STAGE page-ready
+STAGE goto e2 root es mobile remove-only
+STAGE page-close e2 root es mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile get+remove
+STAGE page e2 root es mobile get+remove
+STAGE page-ready
+STAGE goto e2 root es mobile get+remove
+STAGE page-close e2 root es mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 root es mobile all-denied
+STAGE page e2 root es mobile all-denied
+STAGE page-ready
+STAGE goto e2 root es mobile all-denied
+STAGE page-close e2 root es mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow none
+STAGE page e2 root es narrow none
+STAGE page-ready
+STAGE goto e2 root es narrow none
+STAGE page-close e2 root es narrow none
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow get-only
+STAGE page e2 root es narrow get-only
+STAGE page-ready
+STAGE goto e2 root es narrow get-only
+STAGE page-close e2 root es narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow set-only
+STAGE page e2 root es narrow set-only
+STAGE page-ready
+STAGE goto e2 root es narrow set-only
+STAGE page-close e2 root es narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow get+set
+STAGE page e2 root es narrow get+set
+STAGE page-ready
+STAGE goto e2 root es narrow get+set
+STAGE page-close e2 root es narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow getter-throws
+STAGE page e2 root es narrow getter-throws
+STAGE page-ready
+STAGE goto e2 root es narrow getter-throws
+STAGE page-close e2 root es narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow remove-only
+STAGE page e2 root es narrow remove-only
+STAGE page-ready
+STAGE goto e2 root es narrow remove-only
+STAGE page-close e2 root es narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow get+remove
+STAGE page e2 root es narrow get+remove
+STAGE page-ready
+STAGE goto e2 root es narrow get+remove
+STAGE page-close e2 root es narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 root es narrow all-denied
+STAGE page e2 root es narrow all-denied
+STAGE page-ready
+STAGE goto e2 root es narrow all-denied
+STAGE page-close e2 root es narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop none
+STAGE page e2 root en desktop none
+STAGE page-ready
+STAGE goto e2 root en desktop none
+STAGE page-close e2 root en desktop none
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop get-only
+STAGE page e2 root en desktop get-only
+STAGE page-ready
+STAGE goto e2 root en desktop get-only
+STAGE page-close e2 root en desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop set-only
+STAGE page e2 root en desktop set-only
+STAGE page-ready
+STAGE goto e2 root en desktop set-only
+STAGE page-close e2 root en desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop get+set
+STAGE page e2 root en desktop get+set
+STAGE page-ready
+STAGE goto e2 root en desktop get+set
+STAGE page-close e2 root en desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop getter-throws
+STAGE page e2 root en desktop getter-throws
+STAGE page-ready
+STAGE goto e2 root en desktop getter-throws
+STAGE page-close e2 root en desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop remove-only
+STAGE page e2 root en desktop remove-only
+STAGE page-ready
+STAGE goto e2 root en desktop remove-only
+STAGE page-close e2 root en desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop get+remove
+STAGE page e2 root en desktop get+remove
+STAGE page-ready
+STAGE goto e2 root en desktop get+remove
+STAGE page-close e2 root en desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 root en desktop all-denied
+STAGE page e2 root en desktop all-denied
+STAGE page-ready
+STAGE goto e2 root en desktop all-denied
+STAGE page-close e2 root en desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile none
+STAGE page e2 root en mobile none
+STAGE page-ready
+STAGE goto e2 root en mobile none
+STAGE page-close e2 root en mobile none
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile get-only
+STAGE page e2 root en mobile get-only
+STAGE page-ready
+STAGE goto e2 root en mobile get-only
+STAGE page-close e2 root en mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile set-only
+STAGE page e2 root en mobile set-only
+STAGE page-ready
+STAGE goto e2 root en mobile set-only
+STAGE page-close e2 root en mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile get+set
+STAGE page e2 root en mobile get+set
+STAGE page-ready
+STAGE goto e2 root en mobile get+set
+STAGE page-close e2 root en mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile getter-throws
+STAGE page e2 root en mobile getter-throws
+STAGE page-ready
+STAGE goto e2 root en mobile getter-throws
+STAGE page-close e2 root en mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile remove-only
+STAGE page e2 root en mobile remove-only
+STAGE page-ready
+STAGE goto e2 root en mobile remove-only
+STAGE page-close e2 root en mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile get+remove
+STAGE page e2 root en mobile get+remove
+STAGE page-ready
+STAGE goto e2 root en mobile get+remove
+STAGE page-close e2 root en mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 root en mobile all-denied
+STAGE page e2 root en mobile all-denied
+STAGE page-ready
+STAGE goto e2 root en mobile all-denied
+STAGE page-close e2 root en mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow none
+STAGE page e2 root en narrow none
+STAGE page-ready
+STAGE goto e2 root en narrow none
+STAGE page-close e2 root en narrow none
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow get-only
+STAGE page e2 root en narrow get-only
+STAGE page-ready
+STAGE goto e2 root en narrow get-only
+STAGE page-close e2 root en narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow set-only
+STAGE page e2 root en narrow set-only
+STAGE page-ready
+STAGE goto e2 root en narrow set-only
+STAGE page-close e2 root en narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow get+set
+STAGE page e2 root en narrow get+set
+STAGE page-ready
+STAGE goto e2 root en narrow get+set
+STAGE page-close e2 root en narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow getter-throws
+STAGE page e2 root en narrow getter-throws
+STAGE page-ready
+STAGE goto e2 root en narrow getter-throws
+STAGE page-close e2 root en narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow remove-only
+STAGE page e2 root en narrow remove-only
+STAGE page-ready
+STAGE goto e2 root en narrow remove-only
+STAGE page-close e2 root en narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow get+remove
+STAGE page e2 root en narrow get+remove
+STAGE page-ready
+STAGE goto e2 root en narrow get+remove
+STAGE page-close e2 root en narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 root en narrow all-denied
+STAGE page e2 root en narrow all-denied
+STAGE page-ready
+STAGE goto e2 root en narrow all-denied
+STAGE page-close e2 root en narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop none
+STAGE page e2 aunara es desktop none
+STAGE page-ready
+STAGE goto e2 aunara es desktop none
+STAGE page-close e2 aunara es desktop none
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop get-only
+STAGE page e2 aunara es desktop get-only
+STAGE page-ready
+STAGE goto e2 aunara es desktop get-only
+STAGE page-close e2 aunara es desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop set-only
+STAGE page e2 aunara es desktop set-only
+STAGE page-ready
+STAGE goto e2 aunara es desktop set-only
+STAGE page-close e2 aunara es desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop get+set
+STAGE page e2 aunara es desktop get+set
+STAGE page-ready
+STAGE goto e2 aunara es desktop get+set
+STAGE page-close e2 aunara es desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop getter-throws
+STAGE page e2 aunara es desktop getter-throws
+STAGE page-ready
+STAGE goto e2 aunara es desktop getter-throws
+STAGE page-close e2 aunara es desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop remove-only
+STAGE page e2 aunara es desktop remove-only
+STAGE page-ready
+STAGE goto e2 aunara es desktop remove-only
+STAGE page-close e2 aunara es desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop get+remove
+STAGE page e2 aunara es desktop get+remove
+STAGE page-ready
+STAGE goto e2 aunara es desktop get+remove
+STAGE page-close e2 aunara es desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es desktop all-denied
+STAGE page e2 aunara es desktop all-denied
+STAGE page-ready
+STAGE goto e2 aunara es desktop all-denied
+STAGE page-close e2 aunara es desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile none
+STAGE page e2 aunara es mobile none
+STAGE page-ready
+STAGE goto e2 aunara es mobile none
+STAGE page-close e2 aunara es mobile none
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile get-only
+STAGE page e2 aunara es mobile get-only
+STAGE page-ready
+STAGE goto e2 aunara es mobile get-only
+STAGE page-close e2 aunara es mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile set-only
+STAGE page e2 aunara es mobile set-only
+STAGE page-ready
+STAGE goto e2 aunara es mobile set-only
+STAGE page-close e2 aunara es mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile get+set
+STAGE page e2 aunara es mobile get+set
+STAGE page-ready
+STAGE goto e2 aunara es mobile get+set
+STAGE page-close e2 aunara es mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile getter-throws
+STAGE page e2 aunara es mobile getter-throws
+STAGE page-ready
+STAGE goto e2 aunara es mobile getter-throws
+STAGE page-close e2 aunara es mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile remove-only
+STAGE page e2 aunara es mobile remove-only
+STAGE page-ready
+STAGE goto e2 aunara es mobile remove-only
+STAGE page-close e2 aunara es mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile get+remove
+STAGE page e2 aunara es mobile get+remove
+STAGE page-ready
+STAGE goto e2 aunara es mobile get+remove
+STAGE page-close e2 aunara es mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es mobile all-denied
+STAGE page e2 aunara es mobile all-denied
+STAGE page-ready
+STAGE goto e2 aunara es mobile all-denied
+STAGE page-close e2 aunara es mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow none
+STAGE page e2 aunara es narrow none
+STAGE page-ready
+STAGE goto e2 aunara es narrow none
+STAGE page-close e2 aunara es narrow none
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow get-only
+STAGE page e2 aunara es narrow get-only
+STAGE page-ready
+STAGE goto e2 aunara es narrow get-only
+STAGE page-close e2 aunara es narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow set-only
+STAGE page e2 aunara es narrow set-only
+STAGE page-ready
+STAGE goto e2 aunara es narrow set-only
+STAGE page-close e2 aunara es narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow get+set
+STAGE page e2 aunara es narrow get+set
+STAGE page-ready
+STAGE goto e2 aunara es narrow get+set
+STAGE page-close e2 aunara es narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow getter-throws
+STAGE page e2 aunara es narrow getter-throws
+STAGE page-ready
+STAGE goto e2 aunara es narrow getter-throws
+STAGE page-close e2 aunara es narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow remove-only
+STAGE page e2 aunara es narrow remove-only
+STAGE page-ready
+STAGE goto e2 aunara es narrow remove-only
+STAGE page-close e2 aunara es narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow get+remove
+STAGE page e2 aunara es narrow get+remove
+STAGE page-ready
+STAGE goto e2 aunara es narrow get+remove
+STAGE page-close e2 aunara es narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara es narrow all-denied
+STAGE page e2 aunara es narrow all-denied
+STAGE page-ready
+STAGE goto e2 aunara es narrow all-denied
+STAGE page-close e2 aunara es narrow all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop none
+STAGE page e2 aunara en desktop none
+STAGE page-ready
+STAGE goto e2 aunara en desktop none
+STAGE page-close e2 aunara en desktop none
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop get-only
+STAGE page e2 aunara en desktop get-only
+STAGE page-ready
+STAGE goto e2 aunara en desktop get-only
+STAGE page-close e2 aunara en desktop get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop set-only
+STAGE page e2 aunara en desktop set-only
+STAGE page-ready
+STAGE goto e2 aunara en desktop set-only
+STAGE page-close e2 aunara en desktop set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop get+set
+STAGE page e2 aunara en desktop get+set
+STAGE page-ready
+STAGE goto e2 aunara en desktop get+set
+STAGE page-close e2 aunara en desktop get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop getter-throws
+STAGE page e2 aunara en desktop getter-throws
+STAGE page-ready
+STAGE goto e2 aunara en desktop getter-throws
+STAGE page-close e2 aunara en desktop getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop remove-only
+STAGE page e2 aunara en desktop remove-only
+STAGE page-ready
+STAGE goto e2 aunara en desktop remove-only
+STAGE page-close e2 aunara en desktop remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop get+remove
+STAGE page e2 aunara en desktop get+remove
+STAGE page-ready
+STAGE goto e2 aunara en desktop get+remove
+STAGE page-close e2 aunara en desktop get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en desktop all-denied
+STAGE page e2 aunara en desktop all-denied
+STAGE page-ready
+STAGE goto e2 aunara en desktop all-denied
+STAGE page-close e2 aunara en desktop all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile none
+STAGE page e2 aunara en mobile none
+STAGE page-ready
+STAGE goto e2 aunara en mobile none
+STAGE page-close e2 aunara en mobile none
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile get-only
+STAGE page e2 aunara en mobile get-only
+STAGE page-ready
+STAGE goto e2 aunara en mobile get-only
+STAGE page-close e2 aunara en mobile get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile set-only
+STAGE page e2 aunara en mobile set-only
+STAGE page-ready
+STAGE goto e2 aunara en mobile set-only
+STAGE page-close e2 aunara en mobile set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile get+set
+STAGE page e2 aunara en mobile get+set
+STAGE page-ready
+STAGE goto e2 aunara en mobile get+set
+STAGE page-close e2 aunara en mobile get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile getter-throws
+STAGE page e2 aunara en mobile getter-throws
+STAGE page-ready
+STAGE goto e2 aunara en mobile getter-throws
+STAGE page-close e2 aunara en mobile getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile remove-only
+STAGE page e2 aunara en mobile remove-only
+STAGE page-ready
+STAGE goto e2 aunara en mobile remove-only
+STAGE page-close e2 aunara en mobile remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile get+remove
+STAGE page e2 aunara en mobile get+remove
+STAGE page-ready
+STAGE goto e2 aunara en mobile get+remove
+STAGE page-close e2 aunara en mobile get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en mobile all-denied
+STAGE page e2 aunara en mobile all-denied
+STAGE page-ready
+STAGE goto e2 aunara en mobile all-denied
+STAGE page-close e2 aunara en mobile all-denied
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow none
+STAGE page e2 aunara en narrow none
+STAGE page-ready
+STAGE goto e2 aunara en narrow none
+STAGE page-close e2 aunara en narrow none
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow get-only
+STAGE page e2 aunara en narrow get-only
+STAGE page-ready
+STAGE goto e2 aunara en narrow get-only
+STAGE page-close e2 aunara en narrow get-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow set-only
+STAGE page e2 aunara en narrow set-only
+STAGE page-ready
+STAGE goto e2 aunara en narrow set-only
+STAGE page-close e2 aunara en narrow set-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow get+set
+STAGE page e2 aunara en narrow get+set
+STAGE page-ready
+STAGE goto e2 aunara en narrow get+set
+STAGE page-close e2 aunara en narrow get+set
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow getter-throws
+STAGE page e2 aunara en narrow getter-throws
+STAGE page-ready
+STAGE goto e2 aunara en narrow getter-throws
+STAGE page-close e2 aunara en narrow getter-throws
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow remove-only
+STAGE page e2 aunara en narrow remove-only
+STAGE page-ready
+STAGE goto e2 aunara en narrow remove-only
+STAGE page-close e2 aunara en narrow remove-only
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow get+remove
+STAGE page e2 aunara en narrow get+remove
+STAGE page-ready
+STAGE goto e2 aunara en narrow get+remove
+STAGE page-close e2 aunara en narrow get+remove
+STAGE context-close
+STAGE closed
+STAGE context e2 aunara en narrow all-denied
+STAGE page e2 aunara en narrow all-denied
+STAGE page-ready
+STAGE goto e2 aunara en narrow all-denied
+STAGE page-close e2 aunara en narrow all-denied
+STAGE context-close
+STAGE closed
+STORAGE MATRIX: 276/276 PASS
+┌──────────────────┬─────┬─────────┬───────┐
+│ (index)          │ app │ blocked │ blank │
+├──────────────────┼─────┼─────────┼───────┤
+│ e4:none          │ 12  │         │       │
+│ e4:get-only      │     │ 12      │       │
+│ e4:set-only      │ 12  │         │       │
+│ e4:get+set       │ 12  │         │       │
+│ e4:getter-throws │ 12  │         │       │
+│ e4:remove-only   │ 12  │         │       │
+│ e4:get+remove    │ 12  │         │       │
+│ e4:all-denied    │ 12  │         │       │
+│ e2:none          │ 12  │         │       │
+│ e2:get-only      │     │         │ 12    │
+│ e2:set-only      │ 12  │         │       │
+│ e2:get+set       │ 12  │         │       │
+│ e2:getter-throws │ 12  │         │       │
+│ e2:remove-only   │ 12  │         │       │
+│ e2:get+remove    │ 12  │         │       │
+│ e2:all-denied    │ 12  │         │       │
+└──────────────────┴─────┴─────────┴───────┘
+peticiones externas bloqueadas (deberían ser 0 o solo fonts/CDN): 0
+
+(node:31641) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/private/tmp/aunara-sdd013-runtime.lDUUmv/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)

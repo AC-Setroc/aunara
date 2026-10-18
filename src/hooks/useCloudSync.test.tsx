@@ -2,7 +2,7 @@
 
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { StrictMode } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createRepbookSnapshot } from "../lib/cloudSnapshot";
 import { passwordRecoverySignalFor, type supabaseClient } from "../lib/supabaseClient";
 
@@ -15,6 +15,11 @@ const { signUp, signInWithPassword, signOut, verifyOtp, resend, resetPasswordFor
   resetPasswordForEmail: vi.fn(),
   updateUser: vi.fn(),
   invoke: vi.fn(),
+}));
+
+const { load, save } = vi.hoisted(() => ({ load: vi.fn(), save: vi.fn() }));
+vi.mock("../lib/cloudStore", () => ({
+  createCloudStore: () => ({ load, save, recordConsent: vi.fn().mockResolvedValue(undefined) }),
 }));
 
 let authStateHandler: ((event: string, session: any) => void) | undefined;
@@ -160,6 +165,8 @@ beforeEach(() => {
   passwordRecoverySignalFor(testClient).clear();
   vi.clearAllMocks();
   authStateHandler = undefined;
+  load.mockResolvedValue({ status: "absent" });
+  save.mockResolvedValue(undefined);
   signUp.mockResolvedValue({
     data: {
       session: null,
@@ -182,7 +189,494 @@ beforeEach(() => {
   invoke.mockResolvedValue({ data: {}, error: null });
 });
 
+describe("remote validation gate (SDD-016)", () => {
+  const user = (id = "user-a") => ({ id, email: `${id}@example.invalid`, user_metadata: { health_data_consent: "granted" } });
+  const present = (payload: unknown) => ({ status: "present", payload });
+  const invalidPayloads: [string, unknown][] = [
+    ["empty sport", { ...snapshot, healthProfile: { ...snapshot.healthProfile, sport: "" } }],
+    ["structure position at size", { ...snapshot, tracks: [{ id: "track", name: "Track", kind: "goal", focus: "strength", equipment: "bodyweight", sessionMinutes: 45, daysPerWeek: 3, workout: [{ exerciseId: "0514", sets: 3, reps: 10, structure: { id: "s", type: "superset", position: 2, size: 2 } }] }] }],
+    ["null", null], ["false", false], ["zero", 0], ["empty string", ""],
+    ["unknown version", { ...snapshot, schemaVersion: 2 }],
+    ["nested invalid", { ...snapshot, checkIns: [{ id: "ci", date: "2026-10-16", energy: "high" }] }],
+  ];
+  const tick = async () => { await act(async () => { await vi.advanceTimersByTimeAsync(1000); }); };
+  const emit = async (id = "user-a") => { await act(async () => { authStateHandler?.("USER_UPDATED", { user: user(id) }); }); };
+  function mount(local = snapshot) {
+    const onRemote = vi.fn();
+    const hook = renderHook(({ value }) => useCloudSync({ snapshot: value, onRemoteSnapshot: onRemote, client: testClient }), { initialProps: { value: local } });
+    return { ...hook, onRemote };
+  }
+  beforeEach(() => { vi.useFakeTimers(); });
+  afterEach(() => { vi.useRealTimers(); });
+
+  it.each(invalidPayloads)("blocks %s through local edits, debounce and clearAuthError", async (_name, payload) => {
+    load.mockResolvedValue(present(payload));
+    const localBefore = JSON.stringify(snapshot);
+    const h = mount();
+    await emit();
+    expect(h.result.current.status).toBe("error");
+    expect(h.result.current.message).toContain("no se sobrescribió");
+    expect(h.onRemote).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+    act(() => h.result.current.clearAuthError());
+    h.rerender({ value: { ...snapshot, profileName: "Local edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).not.toHaveBeenCalled();
+    expect(h.onRemote).not.toHaveBeenCalled();
+    expect(JSON.stringify(snapshot)).toBe(localBefore);
+  });
+
+  it("uses neutral English copy, not a guessed corruption or version cause", async () => {
+    load.mockResolvedValue(present(null));
+    const h = mount({ ...snapshot, language: "en" });
+    await emit();
+    expect(h.result.current.message).toBe("We could not read the cloud copy. It was not overwritten. Your local data is still available on this device.");
+  });
+
+  it("accepts a valid identical local object and a genuinely absent row", async () => {
+    load.mockResolvedValueOnce(present(snapshot));
+    const h = mount();
+    await emit();
+    expect(h.result.current.status).toBe("synced");
+    expect(h.onRemote).toHaveBeenCalledWith(snapshot);
+    expect(save).not.toHaveBeenCalled();
+    load.mockResolvedValueOnce({ status: "absent" });
+    await emit();
+    expect(save).toHaveBeenCalledExactlyOnceWith("user-a", snapshot);
+    expect(h.result.current.status).toBe("synced");
+  });
+
+  it("keeps local data and blocks edits after a transport error", async () => {
+    load.mockRejectedValueOnce(new Error("transport unavailable"));
+    const h = mount();
+    await emit();
+    h.rerender({ value: { ...snapshot, profileName: "Local edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(h.result.current.message).toBe("transport unavailable");
+    expect(h.onRemote).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+  });
+
+  it("closes a successful cycle and cancels its pending timer before a rejected rebootstrap", async () => {
+    load.mockResolvedValueOnce(present(snapshot));
+    const h = mount();
+    await emit();
+    expect(h.result.current.status).toBe("synced");
+    h.rerender({ value: { ...snapshot, profileName: "Pending edit" } });
+    expect(h.result.current.status).toBe("syncing");
+    load.mockResolvedValue(present(null));
+    await emit();
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).not.toHaveBeenCalled();
+    h.rerender({ value: { ...snapshot, profileName: "Another edit" } });
+    await tick();
+    expect(save).not.toHaveBeenCalled();
+    expect(h.onRemote).toHaveBeenCalledTimes(1);
+  });
+
+  it("blocks while retry is pending, stays blocked on invalid retry, then recovers on valid retry", async () => {
+    load.mockResolvedValue(present(null));
+    const h = mount();
+    await emit();
+    let resolve!: (value: unknown) => void;
+    load.mockReturnValueOnce(new Promise(done => { resolve = done; }));
+    await emit();
+    h.rerender({ value: { ...snapshot, profileName: "Pending retry edit" } });
+    await tick();
+    expect(save).not.toHaveBeenCalled();
+    await act(async () => { resolve(present(null)); });
+    expect(h.result.current.status).toBe("error");
+    await emit();
+    expect(h.result.current.status).toBe("error");
+    load.mockResolvedValueOnce(present({ ...snapshot, profileName: "Valid remote" }));
+    await emit();
+    expect(h.result.current.status).toBe("synced");
+    expect(h.onRemote).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ profileName: "Valid remote" }));
+    h.rerender({ value: { ...snapshot, profileName: "Recovered edit" } });
+    await tick();
+    expect(save).toHaveBeenCalledExactlyOnceWith("user-a", expect.objectContaining({ profileName: "Recovered edit" }));
+  });
+
+  it("isolates blocked A → working B → blocked A without inherited data or eligibility", async () => {
+    load.mockResolvedValueOnce(present(null));
+    const h = mount();
+    await emit("user-a");
+    expect(h.result.current.status).toBe("error");
+    const localB = { ...snapshot, profileName: "Device B" };
+    h.rerender({ value: localB });
+    load.mockResolvedValueOnce({ status: "absent" });
+    await emit("user-b");
+    expect(h.result.current.status).toBe("synced");
+    expect(save).toHaveBeenCalledExactlyOnceWith("user-b", localB);
+    h.rerender({ value: { ...localB, profileName: "B pending" } });
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-a");
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(h.onRemote).not.toHaveBeenCalled();
+  });
+
+  it("ignores a late read of A while B is blocked", async () => {
+    let resolveA!: (value: unknown) => void;
+    load.mockReturnValueOnce(new Promise(done => { resolveA = done; }));
+    const h = mount();
+    await emit("user-a");
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-b");
+    await act(async () => { resolveA(present(snapshot)); });
+    h.rerender({ value: { ...snapshot, profileName: "B edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).not.toHaveBeenCalled();
+    expect(h.onRemote).not.toHaveBeenCalled();
+  });
+
+  it("ignores an already-sent A save completing after B rejects its remote", async () => {
+    let resolveSave!: () => void;
+    save.mockReturnValueOnce(new Promise<void>(done => { resolveSave = done; }));
+    const h = mount();
+    await emit("user-a");
+    expect(save).toHaveBeenCalledTimes(1);
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-b");
+    await act(async () => { resolveSave(); });
+    h.rerender({ value: { ...snapshot, profileName: "B edit" } });
+    await tick();
+    expect(h.result.current.status).toBe("error");
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(save.mock.calls[0][0]).toBe("user-a");
+  });
+
+  it.each(["resolve", "reject"] as const)("ignores an already-sent A debounce %s after B rejects its remote", async (completion) => {
+    load.mockResolvedValueOnce(present(snapshot));
+    const h = mount();
+    await emit("user-a");
+    let resolveSave!: () => void;
+    let rejectSave!: (error: Error) => void;
+    save.mockReturnValueOnce(new Promise<void>((resolve, reject) => { resolveSave = resolve; rejectSave = reject; }));
+    h.rerender({ value: { ...snapshot, profileName: "A pending" } });
+    await tick();
+    expect(save).toHaveBeenCalledTimes(1);
+    load.mockResolvedValueOnce(present(null));
+    await emit("user-b");
+    const blockedMessage = h.result.current.message;
+    await act(async () => {
+      if (completion === "resolve") resolveSave();
+      else rejectSave(new Error("stale A failure"));
+    });
+    expect(h.result.current.status).toBe("error");
+    expect(h.result.current.message).toBe(blockedMessage);
+    h.rerender({ value: { ...snapshot, profileName: "B edit" } });
+    await tick();
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(save.mock.calls[0][0]).toBe("user-a");
+  });
+});
+
 describe("password account access", () => {
+  const account = { name: "Test guest", email: "Guest+tag@sub.example.com", password: "MiXeD-Password", acceptedLegal: true, healthDataConsent: false };
+  function hook(language: "es" | "en" = "es") {
+    return renderHook(({ locale }) => useCloudSync({ snapshot: { ...snapshot, language: locale }, onRemoteSnapshot: vi.fn(), client: testClient }), { initialProps: { locale: language } });
+  }
+  function deferred<T>() {
+    let resolve!: (value: T) => void;
+    const promise = new Promise<T>((done) => { resolve = done; });
+    return { promise, resolve };
+  }
+
+  it("clears only auth errors and translates visible errors when language changes", async () => {
+    signInWithPassword.mockResolvedValueOnce({ error: { code: "invalid_credentials", message: "Raw server error" } });
+    const { result, rerender } = hook();
+    await act(() => result.current.signIn(account));
+    expect(result.current.message).toBe("Tu correo o contraseña no coinciden con los datos registrados. Intentá de nuevo o recuperá tu contraseña");
+    expect(result.current.authErrorKind).toBe("credentials");
+    rerender({ locale: "en" });
+    expect(result.current.message).toBe("Your email or password do not match the registered details. Try again or recover your password");
+    expect(result.current.authErrorKind).toBe("credentials");
+    act(() => result.current.clearAuthError());
+    expect(result.current.message).toBeUndefined();
+    expect(result.current.authErrorKind).toBeUndefined();
+    expect(result.current.status).toBe("local");
+  });
+
+  it.each(["createAccount", "signIn"] as const)("does not revive a late %s error or strand pending state", async (action) => {
+    const request = deferred<any>();
+    (action === "createAccount" ? signUp : signInWithPassword).mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current[action](account); });
+    expect(result.current.status).toBe("syncing");
+    act(() => result.current.clearAuthError());
+    expect(result.current.status).toBe("syncing");
+    await act(async () => { request.resolve({ error: { code: "invalid_credentials", message: "old" }, data: {} }); await pending; });
+    expect(result.current.message).toBeUndefined();
+    expect(result.current.status).toBe("local");
+  });
+
+  it.each(["createAccount", "verifyAccount", "resendVerification", "requestPasswordReset", "updatePassword"] as const)("does not expose a login action for credentials from %s", async (action) => {
+    const fn = { createAccount: signUp, verifyAccount: verifyOtp, resendVerification: resend, requestPasswordReset: resetPasswordForEmail, updatePassword: updateUser }[action];
+    fn.mockResolvedValueOnce({ data: {}, error: { code: "invalid_credentials" } });
+    const { result } = hook();
+    await act(async () => {
+      if (action === "createAccount") await result.current.createAccount(account);
+      else if (action === "verifyAccount") await result.current.verifyAccount({ email: account.email, token: "123456" });
+      else await result.current[action](action === "updatePassword" ? account.password : account.email);
+    });
+    expect(result.current.status).toBe("error");
+    expect(result.current.authErrorKind).toBeUndefined();
+  });
+
+  it.each(["es", "en"] as const)("keeps a legitimate signup conflict after neutral recovery (%s)", async (language) => {
+    signUp.mockResolvedValueOnce({ data: { session: null, user: { identities: [] } }, error: null });
+    const { result } = hook(language);
+    await act(() => result.current.createAccount(account));
+    expect(result.current.existingAccountEmail).toBe(account.email);
+    expect(resetPasswordForEmail).not.toHaveBeenCalled();
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(result.current.existingAccountEmail).toBe(account.email);
+    expect(result.current.message).toBe(language === "es"
+      ? "Solicitud de recuperación procesada. Esto no confirma que el correo se haya enviado o entregado. Si recibís las instrucciones, revisá tu bandeja de entrada y spam. Si no llegan, podés intentar nuevamente más tarde."
+      : "Recovery request processed. This does not confirm that an email was sent or delivered. If you receive the instructions, check your inbox and spam folder. If they do not arrive, you can try again later.");
+    expect(signInWithPassword).not.toHaveBeenCalled();
+    expect(signUp).toHaveBeenCalledOnce();
+  });
+
+  it("translates only recovery feedback and preserves a subsequent legitimate local success", async () => {
+    const { result, rerender } = hook("es");
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(result.current.message).toContain("Solicitud de recuperación procesada.");
+    rerender({ locale: "en" });
+    expect(result.current.message).toContain("Recovery request processed.");
+    rerender({ locale: "es" });
+    expect(result.current.message).toContain("Solicitud de recuperación procesada.");
+    await act(() => result.current.resendVerification(account.email));
+    const success = result.current.message;
+    expect(success).toContain("Si la cuenta está pendiente");
+    expect(result.current.passwordRecoveryState).toBe("requested");
+    rerender({ locale: "en" });
+    expect(result.current.message).toBe(success);
+  });
+
+  it("does not let an older error replace a newer auth success", async () => {
+    const request = deferred<any>();
+    signInWithPassword.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.signIn(account); });
+    act(() => result.current.clearAuthError());
+    await act(() => result.current.requestPasswordReset(account.email));
+    const current = result.current.message;
+    await act(async () => { request.resolve({ error: { code: "invalid_credentials" } }); await pending; });
+    expect(result.current.message).toBe(current);
+    expect(result.current.passwordRecoveryState).toBe("requested");
+    expect(result.current.status).toBe("local");
+  });
+
+  it("preserves an old legitimate success, pending verification and recovery", async () => {
+    const request = deferred<any>();
+    signUp.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.createAccount(account); });
+    act(() => result.current.clearAuthError());
+    await act(async () => { request.resolve({ data: { session: null, user: { identities: [{}] } }, error: null }); await pending; });
+    const message = result.current.message;
+    act(() => result.current.clearAuthError());
+    expect(result.current.pendingVerification).toEqual({ name: account.name, email: account.email });
+    expect(result.current.message).toBe(message);
+    await act(() => result.current.requestPasswordReset(account.email));
+    const recovery = result.current.message;
+    act(() => result.current.clearAuthError());
+    expect(result.current.message).toBe(recovery);
+    expect(result.current.passwordRecoveryState).toBe("requested");
+    expect(result.current.message).not.toMatch(/sent you|Te enviamos/);
+  });
+
+  it("preserves sync errors, sync pending state, session and remote data", async () => {
+    const remote = vi.fn();
+    const request = deferred<any>();
+    load.mockReturnValueOnce(request.promise);
+    const { result } = renderHook(() => useCloudSync({ snapshot, onRemoteSnapshot: remote, client: testClient }));
+    await waitFor(() => expect(authStateHandler).toBeDefined());
+    act(() => authStateHandler?.("SIGNED_IN", { user: { id: "test-user", email: account.email } }));
+    act(() => result.current.clearAuthError());
+    expect(result.current.status).toBe("syncing");
+    await act(async () => { request.resolve({ status: "present", payload: snapshot }); });
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    const calls = remote.mock.calls.length;
+    act(() => result.current.clearAuthError());
+    expect(result.current.email).toBe(account.email);
+    expect(remote.mock.calls.length).toBe(calls);
+    load.mockRejectedValueOnce(new Error("sync-original-error"));
+    act(() => authStateHandler?.("SIGNED_IN", { user: { id: "other-user", email: account.email } }));
+    await waitFor(() => expect(result.current.message).toBe("sync-original-error"));
+    act(() => result.current.clearAuthError());
+    expect(result.current.message).toBe("sync-original-error");
+    expect(result.current.status).toBe("error");
+  });
+
+  it("returns to synced when a change is reverted inside the debounce window, without an extra save", async () => {
+    // SDD-011 H-01: snapshot A → B → A within 800 ms used to leave status stuck in "syncing" with no save scheduled.
+    const { result, rerender } = hook("es");
+    await waitFor(() => expect(authStateHandler).toBeDefined());
+    act(() => authStateHandler?.("SIGNED_IN", { user: { id: "debounce-user", email: account.email } }));
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    const savesAfterBootstrap = save.mock.calls.length;
+
+    rerender({ locale: "en" });
+    expect(result.current.status).toBe("syncing");
+    rerender({ locale: "es" });
+    expect(result.current.status).toBe("synced");
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    expect(save.mock.calls.length).toBe(savesAfterBootstrap);
+    expect(result.current.status).toBe("synced");
+
+    // A change that is not reverted still saves once and ends synced.
+    rerender({ locale: "en" });
+    expect(result.current.status).toBe("syncing");
+    await waitFor(() => expect(save.mock.calls.length).toBe(savesAfterBootstrap + 1), { timeout: 2000 });
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+  });
+
+  describe("sensitive health data follows the consent status (SDD-011 H-02)", () => {
+    const sensitive = { ...snapshot, healthProfile: { ...snapshot.healthProfile, healthNotes: "rodilla derecha" }, checkIns: [{ id: "ci-1", date: "2026-10-05", weightKg: 81.5, sleepHours: 7, energy: 4, stress: 2, notes: "" }] };
+    const userWith = (consent: string | undefined, id = "consent-user") => ({ id, email: account.email, user_metadata: consent === undefined ? {} : { health_data_consent: consent } });
+    const lastSaved = () => save.mock.calls[save.mock.calls.length - 1][1];
+
+    it("uploads health data and check-ins only with granted consent", async () => {
+      for (const [consent, expectsData] of [["granted", true], ["declined", false], ["revoked", false], [undefined, false]] as const) {
+        vi.clearAllMocks(); load.mockResolvedValue({ status: "absent" }); save.mockResolvedValue(undefined);
+        const { result, unmount } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: vi.fn(), client: testClient }));
+        await waitFor(() => expect(authStateHandler).toBeDefined());
+        act(() => authStateHandler?.("SIGNED_IN", { user: userWith(consent) }));
+        await waitFor(() => expect(result.current.status).toBe("synced"));
+        expect(save).toHaveBeenCalledTimes(1);
+        const payload = lastSaved();
+        expect(payload.healthProfile.healthNotes).toBe(expectsData ? "rodilla derecha" : "");
+        expect(payload.healthProfile.heightCm).toBe(expectsData ? 180 : null);
+        expect(payload.checkIns).toHaveLength(expectsData ? 1 : 0);
+        expect(payload.healthProfile.experience).toBe("intermediate");
+        unmount();
+      }
+    });
+
+    it("keeps the device's health data when the remote arrives without consent, then cleans the server copy", async () => {
+      const remote = { ...sensitive, profileName: "Otro", healthProfile: { ...sensitive.healthProfile, healthNotes: "subido antes del fix" } };
+      load.mockResolvedValue({ status: "present", payload: remote });
+      const onRemote = vi.fn();
+      const { result } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: onRemote, client: testClient }));
+      await waitFor(() => expect(authStateHandler).toBeDefined());
+      act(() => authStateHandler?.("SIGNED_IN", { user: userWith("declined") }));
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(onRemote).toHaveBeenCalledTimes(1);
+      expect(onRemote.mock.calls[0][0].profileName).toBe("Otro");
+      expect(onRemote.mock.calls[0][0].healthProfile.healthNotes).toBe("rodilla derecha");
+      expect(onRemote.mock.calls[0][0].checkIns).toHaveLength(1);
+      // The legacy server copy still carries health data: the next save must withhold it.
+      await waitFor(() => expect(save).toHaveBeenCalledTimes(1), { timeout: 2000 });
+      expect(lastSaved().healthProfile.healthNotes).toBe("");
+      expect(lastSaved().checkIns).toEqual([]);
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+    });
+
+    it("removes health data from the server when consent is revoked and restores it when granted again", async () => {
+      const { result } = renderHook(() => useCloudSync({ snapshot: sensitive, onRemoteSnapshot: vi.fn(), client: testClient }));
+      await waitFor(() => expect(authStateHandler).toBeDefined());
+      act(() => authStateHandler?.("SIGNED_IN", { user: userWith("granted") }));
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(lastSaved().healthProfile.healthNotes).toBe("rodilla derecha");
+      const savesBefore = save.mock.calls.length;
+
+      act(() => authStateHandler?.("USER_UPDATED", { user: userWith("revoked") }));
+      await waitFor(() => expect(save.mock.calls.length).toBeGreaterThan(savesBefore), { timeout: 3000 });
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(lastSaved().healthProfile.healthNotes).toBe("");
+      expect(lastSaved().healthProfile.heightCm).toBeNull();
+      expect(lastSaved().checkIns).toEqual([]);
+      expect(lastSaved().healthProfile.experience).toBe("intermediate");
+      const savesAfterRevoke = save.mock.calls.length;
+
+      load.mockResolvedValue({ status: "present", payload: lastSaved() });
+      act(() => authStateHandler?.("USER_UPDATED", { user: userWith("granted") }));
+      await waitFor(() => expect(save.mock.calls.length).toBeGreaterThan(savesAfterRevoke), { timeout: 3000 });
+      await waitFor(() => expect(result.current.status).toBe("synced"));
+      expect(lastSaved().healthProfile.healthNotes).toBe("rodilla derecha");
+      expect(lastSaved().checkIns).toHaveLength(1);
+    });
+  });
+
+  it("blocks duplicate pending recovery requests without cancelling the first", async () => {
+    const request = deferred<any>();
+    resetPasswordForEmail.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.requestPasswordReset(account.email); });
+    await act(() => result.current.requestPasswordReset(account.email));
+    act(() => result.current.clearAuthError());
+    expect(resetPasswordForEmail).toHaveBeenCalledOnce();
+    await act(async () => { request.resolve({ error: null }); await pending; });
+    expect(result.current.passwordRecoveryState).toBe("requested");
+  });
+
+  it("releases recovery pending after a rejected transport promise with safe feedback", async () => {
+    resetPasswordForEmail.mockRejectedValueOnce(new Error("RAW TRANSPORT DETAILS"));
+    const { result } = hook();
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(result.current.status).toBe("error");
+    expect(result.current.message).not.toContain("RAW");
+    await act(() => result.current.requestPasswordReset(account.email));
+    expect(resetPasswordForEmail).toHaveBeenCalledTimes(2);
+    expect(result.current.passwordRecoveryState).toBe("requested");
+  });
+
+  it("does not discard a legitimate old sign-in session after clearing an auth generation", async () => {
+    const request = deferred<any>();
+    signInWithPassword.mockReturnValueOnce(request.promise);
+    const { result } = hook();
+    await act(async () => { await Promise.resolve(); });
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.signIn(account); });
+    act(() => result.current.clearAuthError());
+    await act(async () => {
+      authStateHandler?.("SIGNED_IN", { user: { id: "legitimate-user", email: account.email } });
+      request.resolve({ error: null });
+      await pending;
+    });
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    expect(result.current.email).toBe(account.email);
+    expect(signOut).not.toHaveBeenCalled();
+  });
+
+  const actions = ["createAccount", "signIn", "verifyAccount", "resendVerification", "requestPasswordReset", "updatePassword"] as const;
+  it.each(actions.flatMap((action) => (["es", "en"] as const).flatMap((language) => [true, false].map((known) => ({ action, language, known })))))("uses safe $language copy for $action (known=$known)", async ({ action, language, known }) => {
+    const fn = { createAccount: signUp, signIn: signInWithPassword, verifyAccount: verifyOtp, resendVerification: resend, requestPasswordReset: resetPasswordForEmail, updatePassword: updateUser }[action];
+    fn.mockResolvedValueOnce({ data: {}, error: { code: known ? "over_email_send_rate_limit" : "internal_weird", message: "SENSITIVE RAW ERROR" } });
+    const { result } = hook(language);
+    await act(async () => {
+      if (action === "createAccount" || action === "signIn") await result.current[action](account);
+      else if (action === "verifyAccount") await result.current.verifyAccount({ email: account.email, token: "123456" });
+      else await result.current[action](action === "updatePassword" ? account.password : account.email);
+    });
+    expect(result.current.status).toBe("error");
+    expect(result.current.message).not.toContain("SENSITIVE RAW");
+    expect(result.current.message).toContain(known ? (language === "es" ? "demasiados intentos" : "Too many attempts") : (language === "es" ? "No pudimos" : "We could not"));
+  });
+
+  it("uses the current language for an error that completes after a language change", async () => {
+    const request = deferred<any>();
+    signInWithPassword.mockReturnValueOnce(request.promise);
+    const { result, rerender } = hook("en");
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.signIn(account); });
+    rerender({ locale: "es" });
+    await act(async () => { request.resolve({ error: { code: "email_not_confirmed" } }); await pending; });
+    expect(result.current.message).toBe("Confirmá tu correo antes de ingresar.");
+  });
   it("creates an account with password and profile name metadata", async () => {
     const { result } = renderHook(() => useCloudSync({
       snapshot,
@@ -299,7 +793,8 @@ describe("password account access", () => {
       { redirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).href },
     );
     expect((result.current as any).passwordRecoveryState).toBe("requested");
-    expect(result.current.message).toContain("recuperar");
+    expect(result.current.existingAccountEmail).toBeNull();
+    expect(result.current.message).toBe("Solicitud de recuperación procesada. Esto no confirma que el correo se haya enviado o entregado. Si recibís las instrucciones, revisá tu bandeja de entrada y spam. Si no llegan, podés intentar nuevamente más tarde.");
   });
 
   it("accepts a new password after returning from the recovery email", async () => {

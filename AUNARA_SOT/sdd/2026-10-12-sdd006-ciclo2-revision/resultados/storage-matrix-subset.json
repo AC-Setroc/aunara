@@ -1,0 +1,595 @@
+{
+  "summary": "24/24 PASS",
+  "rows": [
+    {
+      "name": "e4/root/es/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/root/es/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/root/es/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/root/en/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/root/en/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/root/en/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/aunara/es/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/aunara/es/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/aunara/es/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"No se pudo iniciar Aunara\" shells=1 buttons=ES|EN|Recargar"
+    },
+    {
+      "name": "e4/aunara/en/desktop/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/aunara/en/mobile/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e4/aunara/en/narrow/get-only",
+      "pass": true,
+      "detail": "blocked \"Aunara could not start\" shells=1 buttons=ES|EN|Reload"
+    },
+    {
+      "name": "e2/root/es/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/es/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/es/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/en/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/en/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/root/en/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/es/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/es/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/es/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/en/desktop/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/en/mobile/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    },
+    {
+      "name": "e2/aunara/en/narrow/get-only",
+      "pass": true,
+      "detail": "control E2 esperado blank, obtenido blank"
+    }
+  ],
+  "results": [
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "No se pudo iniciar Aunara",
+      "text": "Este navegador no permite leer el almacenamiento. Revisá los permisos del sitio ",
+      "shells": 1,
+      "lang_attr": "es",
+      "buttons": [
+        "ES",
+        "EN",
+        "Recargar"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e4",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blocked",
+      "title": "Aunara could not start",
+      "text": "This browser does not allow storage to be read. Check the site permissions and r",
+      "shells": 1,
+      "lang_attr": "en",
+      "buttons": [
+        "ES",
+        "EN",
+        "Reload"
+      ],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "root",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "es",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "desktop",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "mobile",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    },
+    {
+      "build": "e2",
+      "base": "aunara",
+      "lang": "en",
+      "vp": "narrow",
+      "variant": "get-only",
+      "outcome": "blank",
+      "title": "",
+      "text": "",
+      "shells": 0,
+      "lang_attr": "",
+      "buttons": [],
+      "console": [
+        "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "pageerror: SecurityError: Blocked"
+      ],
+      "external": 0
+    }
+  ]
+}

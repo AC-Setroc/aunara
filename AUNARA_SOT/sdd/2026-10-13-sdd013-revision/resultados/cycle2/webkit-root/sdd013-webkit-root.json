@@ -1,0 +1,1847 @@
+{
+  "engine": "webkit",
+  "base": "/",
+  "summary": "362/368 PASS; FAIL: matrix block session-es-1440 (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n); matrix block session-es-390 (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n); matrix block session-es-320 (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n); matrix block session-en-1440 (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n); matrix block session-en-390 (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n); matrix block session-en-320 (TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n)",
+  "rows": [
+    {
+      "name": "S13-02 header guest-es-1440",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"burger\":{\"x\":1338.40625,\"y\":18.484375,\"w\":44,\"h\":44,\"right\":1382.40625},\"img\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Abrir navegación guest-es-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Abrir navegación guest-es-1440",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Abrir navegación guest-es-1440",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Abrir navegación guest-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Abrir navegación guest-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical guest-es-1440",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":635.5592041015625,\"y\":691,\"w\":170,\"h\":39.8125,\"right\":805.5592041015625,\"bottom\":730.8125},\"cx\":720.1118356805099,\"cy\":710.3470856741573,\"left\":639.5855198910361,\"right\":800.6381514699835,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":717.5226440429688,\"y\":833.8125,\"w\":112,\"h\":30.484375,\"right\":829.5226440429688,\"bottom\":864.296875},\"cx\":773.8180985884233,\"cy\":847.6690340909091,\"left\":722.2499167702415,\"right\":825.3862804066051,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":634.25,\"y\":740.8125,\"w\":171.5,\"h\":17,\"right\":805.75,\"bottom\":757.8125},\"label\":{\"x\":614.661865234375,\"y\":841.046875,\"w\":93.15625,\"h\":16,\"right\":707.818115234375,\"bottom\":857.046875},\"footer\":{\"x\":0,\"y\":654,\"w\":1440,\"h\":246.296875,\"right\":1440,\"bottom\":900.296875},\"deltaA\":0.11183568050989834,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02407282049011883,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal guest-es-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover guest-es-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus guest-es-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling guest-es-1440",
+      "pass": true,
+      "detail": "{\"scroll\":475,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 backdrop restore guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-05 visual normal guest-es-1440",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual hover guest-es-1440",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual focus guest-es-1440",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 mandatory blocks guest-es-1440",
+      "pass": true,
+      "detail": "requests=0"
+    },
+    {
+      "name": "S13-05 no optional signup guest-es-1440",
+      "pass": true,
+      "detail": "[{\"email\":\"fixture@example.invalid\",\"password\":\"Synthetic-Password-2026\",\"data\":{\"display_name\":\"Synthetic athlete\",\"language\":\"es\",\"accepted_legal_version\":\"1.0\",\"accepted_legal_at\":\"2026-10-15T01:48:46.201Z\",\"accepted_legal_event_id\":\"0005a5bb-8c06-481d-a03a-1b85c82bd3f9\",\"health_data_consent\":\"declined\",\"health_data_consent_version\":\"1.0\",\"health_data_consent_at\":\"2026-10-15T01:48:46.201Z\",\"health_data_consent_event_id\":\"4a1b17ca-c09a-4561-ae8d-f96a969d3c44\"},\"gotrue_meta_security\":{},\"code_c"
+    },
+    {
+      "name": "S13-04 reduced motion guest-es-1440",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 guest anchor guest-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-08 clean console guest-es-1440",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "S13-02 header guest-es-390",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":10,\"y\":12.5,\"w\":168,\"h\":44,\"right\":178},\"burger\":{\"x\":336,\"y\":12.5,\"w\":44,\"h\":44,\"right\":380},\"img\":{\"x\":10,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":178},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Abrir navegación guest-es-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Abrir navegación guest-es-390",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Abrir navegación guest-es-390",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Abrir navegación guest-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Abrir navegación guest-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical guest-es-390",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":110.55921173095703,\"y\":542.984375,\"w\":170,\"h\":39.8125,\"right\":280.55921173095703,\"bottom\":582.796875},\"cx\":195.1118433099044,\"cy\":562.3314606741573,\"left\":114.58552752043072,\"right\":275.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":192.52267456054688,\"y\":713.796875,\"w\":112,\"h\":30.484375,\"right\":304.5226745605469,\"bottom\":744.28125},\"cx\":248.81812910600144,\"cy\":727.6534090909091,\"left\":197.2499472878196,\"right\":300.38631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":109.25,\"y\":592.796875,\"w\":171.5,\"h\":17,\"right\":280.75,\"bottom\":609.796875},\"label\":{\"x\":89.66187286376953,\"y\":721.03125,\"w\":93.15624237060547,\"h\":16,\"right\":182.818115234375,\"bottom\":737.03125},\"footer\":{\"x\":0,\"y\":507.984375,\"w\":390,\"h\":336.296875,\"right\":390,\"bottom\":844.28125},\"deltaA\":0.11184330990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02409189397639011,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal guest-es-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover guest-es-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus guest-es-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling guest-es-390",
+      "pass": true,
+      "detail": "{\"scroll\":454,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-05 visual normal guest-es-390",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual hover guest-es-390",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual focus guest-es-390",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 mandatory blocks guest-es-390",
+      "pass": true,
+      "detail": "requests=0"
+    },
+    {
+      "name": "S13-05 no optional signup guest-es-390",
+      "pass": true,
+      "detail": "[{\"email\":\"fixture@example.invalid\",\"password\":\"Synthetic-Password-2026\",\"data\":{\"display_name\":\"Synthetic athlete\",\"language\":\"es\",\"accepted_legal_version\":\"1.0\",\"accepted_legal_at\":\"2026-10-15T01:49:00.688Z\",\"accepted_legal_event_id\":\"7d4b23f4-e29d-4acb-a0be-8a5c8aa2628f\",\"health_data_consent\":\"declined\",\"health_data_consent_version\":\"1.0\",\"health_data_consent_at\":\"2026-10-15T01:49:00.688Z\",\"health_data_consent_event_id\":\"caf24d7d-d2bf-4970-a992-433480d4c4d9\"},\"gotrue_meta_security\":{},\"code_c"
+    },
+    {
+      "name": "S13-04 reduced motion guest-es-390",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 guest anchor guest-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-08 clean console guest-es-390",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "S13-02 header guest-es-320",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":10,\"y\":12.5,\"w\":168,\"h\":44,\"right\":178},\"burger\":{\"x\":266,\"y\":12.5,\"w\":44,\"h\":44,\"right\":310},\"img\":{\"x\":10,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":178},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara guest-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Abrir navegación guest-es-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Abrir navegación guest-es-320",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Abrir navegación guest-es-320",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Inicio\",\"Ingresar / crear cuenta\",\"Ayuda / instalación\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Abrir navegación guest-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Abrir navegación guest-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ingresar / crear cuenta\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Inicio\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical guest-es-320",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":75.55921173095703,\"y\":542.984375,\"w\":170,\"h\":39.8125,\"right\":245.55921173095703,\"bottom\":582.796875},\"cx\":160.1118433099044,\"cy\":562.3314606741573,\"left\":79.58552752043072,\"right\":240.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":157.52267456054688,\"y\":713.796875,\"w\":112,\"h\":30.484375,\"right\":269.5226745605469,\"bottom\":744.28125},\"cx\":213.81812910600144,\"cy\":727.6534090909091,\"left\":162.2499472878196,\"right\":265.38631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":74.25,\"y\":592.796875,\"w\":171.5,\"h\":17,\"right\":245.75,\"bottom\":609.796875},\"label\":{\"x\":54.6618766784668,\"y\":721.03125,\"w\":93.15625,\"h\":16,\"right\":147.8181266784668,\"bottom\":737.03125},\"footer\":{\"x\":0,\"y\":507.984375,\"w\":320,\"h\":336.296875,\"right\":320,\"bottom\":844.28125},\"deltaA\":0.11184330990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.024093801325022923,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal guest-es-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover guest-es-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus guest-es-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling guest-es-320",
+      "pass": true,
+      "detail": "{\"scroll\":454,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-05 visual normal guest-es-320",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual hover guest-es-320",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual focus guest-es-320",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 mandatory blocks guest-es-320",
+      "pass": true,
+      "detail": "requests=0"
+    },
+    {
+      "name": "S13-05 no optional signup guest-es-320",
+      "pass": true,
+      "detail": "[{\"email\":\"fixture@example.invalid\",\"password\":\"Synthetic-Password-2026\",\"data\":{\"display_name\":\"Synthetic athlete\",\"language\":\"es\",\"accepted_legal_version\":\"1.0\",\"accepted_legal_at\":\"2026-10-15T01:49:34.226Z\",\"accepted_legal_event_id\":\"48940e38-cf67-4d51-94c1-b04c473b1a28\",\"health_data_consent\":\"declined\",\"health_data_consent_version\":\"1.0\",\"health_data_consent_at\":\"2026-10-15T01:49:34.226Z\",\"health_data_consent_event_id\":\"52a1e050-9376-4e62-b6a4-42bf4843c00c\"},\"gotrue_meta_security\":{},\"code_c"
+    },
+    {
+      "name": "S13-04 reduced motion guest-es-320",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 guest anchor guest-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-08 clean console guest-es-320",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "S13-02 header guest-en-1440",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"burger\":{\"x\":1338.40625,\"y\":18.484375,\"w\":44,\"h\":44,\"right\":1382.40625},\"img\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Aunara navigation guest-en-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Aunara navigation guest-en-1440",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Aunara navigation guest-en-1440",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Home\",\"Login / create account\",\"Help / installation\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Aunara navigation guest-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Aunara navigation guest-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Open navigation guest-en-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Open navigation guest-en-1440",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Open navigation guest-en-1440",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Home\",\"Login / create account\",\"Help / installation\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Open navigation guest-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Open navigation guest-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical guest-en-1440",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":635.5592041015625,\"y\":691,\"w\":170,\"h\":39.8125,\"right\":805.5592041015625,\"bottom\":730.8125},\"cx\":720.1118356805099,\"cy\":710.3470856741573,\"left\":639.5855198910361,\"right\":800.6381514699835,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":709.7726440429688,\"y\":833.8125,\"w\":112,\"h\":30.484375,\"right\":821.7726440429688,\"bottom\":864.296875},\"cx\":766.0680985884233,\"cy\":847.6690340909091,\"left\":714.4999167702415,\"right\":817.6362804066051,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":640.125,\"y\":740.8125,\"w\":159.734375,\"h\":17,\"right\":799.859375,\"bottom\":757.8125},\"label\":{\"x\":622.411865234375,\"y\":841.046875,\"w\":77.65625,\"h\":16,\"right\":700.068115234375,\"bottom\":857.046875},\"footer\":{\"x\":0,\"y\":654,\"w\":1440,\"h\":246.296875,\"right\":1440,\"bottom\":900.296875},\"deltaA\":0.11964818050989834,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02407282049011883,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal guest-en-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover guest-en-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus guest-en-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling guest-en-1440",
+      "pass": true,
+      "detail": "{\"scroll\":475,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 backdrop restore guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-05 visual normal guest-en-1440",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual hover guest-en-1440",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual focus guest-en-1440",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 mandatory blocks guest-en-1440",
+      "pass": true,
+      "detail": "requests=0"
+    },
+    {
+      "name": "S13-05 no optional signup guest-en-1440",
+      "pass": true,
+      "detail": "[{\"email\":\"fixture@example.invalid\",\"password\":\"Synthetic-Password-2026\",\"data\":{\"display_name\":\"Synthetic athlete\",\"language\":\"en\",\"accepted_legal_version\":\"1.0\",\"accepted_legal_at\":\"2026-10-15T01:50:07.566Z\",\"accepted_legal_event_id\":\"086f53e7-9209-4e1e-8fbc-b750bea0d4bf\",\"health_data_consent\":\"declined\",\"health_data_consent_version\":\"1.0\",\"health_data_consent_at\":\"2026-10-15T01:50:07.566Z\",\"health_data_consent_event_id\":\"442c287f-3041-44a5-b134-ad56ff415e93\"},\"gotrue_meta_security\":{},\"code_c"
+    },
+    {
+      "name": "S13-04 reduced motion guest-en-1440",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 guest anchor guest-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-08 clean console guest-en-1440",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "S13-02 header guest-en-390",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":10,\"y\":12.5,\"w\":168,\"h\":44,\"right\":178},\"burger\":{\"x\":336,\"y\":12.5,\"w\":44,\"h\":44,\"right\":380},\"img\":{\"x\":10,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":178},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Aunara navigation guest-en-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Aunara navigation guest-en-390",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Aunara navigation guest-en-390",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Home\",\"Login / create account\",\"Help / installation\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Aunara navigation guest-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Aunara navigation guest-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Open navigation guest-en-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Open navigation guest-en-390",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Open navigation guest-en-390",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Home\",\"Login / create account\",\"Help / installation\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Open navigation guest-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Open navigation guest-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical guest-en-390",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":110.55921173095703,\"y\":570.984375,\"w\":170,\"h\":39.8125,\"right\":280.55921173095703,\"bottom\":610.796875},\"cx\":195.1118433099044,\"cy\":590.3314606741573,\"left\":114.58552752043072,\"right\":275.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":184.77267456054688,\"y\":713.796875,\"w\":112,\"h\":30.484375,\"right\":296.7726745605469,\"bottom\":744.28125},\"cx\":241.06812910600144,\"cy\":727.6534090909091,\"left\":189.4999472878196,\"right\":292.63631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":115.125,\"y\":620.796875,\"w\":159.734375,\"h\":17,\"right\":274.859375,\"bottom\":637.796875},\"label\":{\"x\":97.41187286376953,\"y\":721.03125,\"w\":77.65624237060547,\"h\":16,\"right\":175.068115234375,\"bottom\":737.03125},\"footer\":{\"x\":0,\"y\":535.984375,\"w\":390,\"h\":308.296875,\"right\":390,\"bottom\":844.28125},\"deltaA\":0.11965580990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02409189397639011,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal guest-en-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover guest-en-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus guest-en-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling guest-en-390",
+      "pass": true,
+      "detail": "{\"scroll\":454,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-05 visual normal guest-en-390",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual hover guest-en-390",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual focus guest-en-390",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 mandatory blocks guest-en-390",
+      "pass": true,
+      "detail": "requests=0"
+    },
+    {
+      "name": "S13-05 no optional signup guest-en-390",
+      "pass": true,
+      "detail": "[{\"email\":\"fixture@example.invalid\",\"password\":\"Synthetic-Password-2026\",\"data\":{\"display_name\":\"Synthetic athlete\",\"language\":\"en\",\"accepted_legal_version\":\"1.0\",\"accepted_legal_at\":\"2026-10-15T01:50:29.654Z\",\"accepted_legal_event_id\":\"c3236815-ac1f-4140-94e0-852bf9815aee\",\"health_data_consent\":\"declined\",\"health_data_consent_version\":\"1.0\",\"health_data_consent_at\":\"2026-10-15T01:50:29.654Z\",\"health_data_consent_event_id\":\"1f5d85b5-ecfe-4e4f-ad98-c965177ad51c\"},\"gotrue_meta_security\":{},\"code_c"
+    },
+    {
+      "name": "S13-04 reduced motion guest-en-390",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 guest anchor guest-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-08 clean console guest-en-390",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "S13-02 header guest-en-320",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":10,\"y\":12.5,\"w\":168,\"h\":44,\"right\":178},\"burger\":{\"x\":266,\"y\":12.5,\"w\":44,\"h\":44,\"right\":310},\"img\":{\"x\":10,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":178},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Aunara navigation guest-en-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Aunara navigation guest-en-320",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Aunara navigation guest-en-320",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Home\",\"Login / create account\",\"Help / installation\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Aunara navigation guest-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Aunara navigation guest-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Open navigation guest-en-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Open navigation guest-en-320",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Open navigation guest-en-320",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Home\",\"Login / create account\",\"Help / installation\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Open navigation guest-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Open navigation guest-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Login / create account\"},{\"in\":true,\"select\":false,\"tag\":\"A\",\"label\":\"Home\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical guest-en-320",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":75.55921173095703,\"y\":570.984375,\"w\":170,\"h\":39.8125,\"right\":245.55921173095703,\"bottom\":610.796875},\"cx\":160.1118433099044,\"cy\":590.3314606741573,\"left\":79.58552752043072,\"right\":240.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":149.77267456054688,\"y\":713.796875,\"w\":112,\"h\":30.484375,\"right\":261.7726745605469,\"bottom\":744.28125},\"cx\":206.06812910600144,\"cy\":727.6534090909091,\"left\":154.4999472878196,\"right\":257.63631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":80.125,\"y\":620.796875,\"w\":159.734375,\"h\":17,\"right\":239.859375,\"bottom\":637.796875},\"label\":{\"x\":62.4118766784668,\"y\":721.03125,\"w\":77.65625,\"h\":16,\"right\":140.0681266784668,\"bottom\":737.03125},\"footer\":{\"x\":0,\"y\":535.984375,\"w\":320,\"h\":308.296875,\"right\":320,\"bottom\":844.28125},\"deltaA\":0.11965580990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.024093801325022923,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal guest-en-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover guest-en-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus guest-en-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling guest-en-320",
+      "pass": true,
+      "detail": "{\"scroll\":454,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-05 visual normal guest-en-320",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual hover guest-en-320",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 visual focus guest-en-320",
+      "pass": true,
+      "detail": "{\"border\":0,\"radius\":0,\"bg\":\"rgba(0, 0, 0, 0)\",\"color\":\"rgb(6, 63, 67)\",\"teal\":\"#063f43\",\"opacity\":\"1\",\"contrast\":10.363795964310528,\"required\":false,\"checked\":false,\"association\":1,\"checks\":2}"
+    },
+    {
+      "name": "S13-05 mandatory blocks guest-en-320",
+      "pass": true,
+      "detail": "requests=0"
+    },
+    {
+      "name": "S13-05 no optional signup guest-en-320",
+      "pass": true,
+      "detail": "[{\"email\":\"fixture@example.invalid\",\"password\":\"Synthetic-Password-2026\",\"data\":{\"display_name\":\"Synthetic athlete\",\"language\":\"en\",\"accepted_legal_version\":\"1.0\",\"accepted_legal_at\":\"2026-10-15T01:50:54.844Z\",\"accepted_legal_event_id\":\"6cb8c588-9a9a-426e-b064-939169397390\",\"health_data_consent\":\"declined\",\"health_data_consent_version\":\"1.0\",\"health_data_consent_at\":\"2026-10-15T01:50:54.844Z\",\"health_data_consent_event_id\":\"3ec71298-e9e8-4890-8668-93c5f5903000\"},\"gotrue_meta_security\":{},\"code_c"
+    },
+    {
+      "name": "S13-04 reduced motion guest-en-320",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 guest anchor guest-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-08 clean console guest-en-320",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "S13-02 header session-es-1440",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"burger\":{\"x\":1338.40625,\"y\":18.484375,\"w\":44,\"h\":44,\"right\":1382.40625},\"img\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara session-es-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara session-es-1440",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara session-es-1440",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara session-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara session-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Abrir navegación session-es-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Abrir navegación session-es-1440",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Abrir navegación session-es-1440",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Abrir navegación session-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Abrir navegación session-es-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical session-es-1440",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":635.5592041015625,\"y\":651.015625,\"w\":170,\"h\":39.8125,\"right\":805.5592041015625,\"bottom\":690.828125},\"cx\":720.1118356805099,\"cy\":670.3627106741573,\"left\":639.5855198910361,\"right\":800.6381514699835,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":717.5226440429688,\"y\":833.828125,\"w\":112,\"h\":30.484375,\"right\":829.5226440429688,\"bottom\":864.3125},\"cx\":773.8180985884233,\"cy\":847.6846590909091,\"left\":722.2499167702415,\"right\":825.3862804066051,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":634.25,\"y\":700.828125,\"w\":171.5,\"h\":17,\"right\":805.75,\"bottom\":717.828125},\"label\":{\"x\":614.661865234375,\"y\":841.0625,\"w\":93.15625,\"h\":16,\"right\":707.818115234375,\"bottom\":857.0625},\"footer\":{\"x\":0,\"y\":614.015625,\"w\":1440,\"h\":286.296875,\"right\":1440,\"bottom\":900.3125},\"deltaA\":0.11183568050989834,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02407282049011883,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal session-es-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover session-es-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus session-es-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling session-es-1440",
+      "pass": true,
+      "detail": "{\"scroll\":713,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 backdrop restore session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-07 deletion baseline session-es-1440",
+      "pass": true,
+      "detail": "{\"before\":{\"box\":[510,290.671875,420,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"868px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]},\"after\":{\"box\":[510,290.671875,420,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"868px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]}}"
+    },
+    {
+      "name": "S13-04 reduced motion session-es-1440",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 profile destination session-es-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "matrix block session-es-1440",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header session-es-390",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":14,\"y\":12.5,\"w\":168,\"h\":44,\"right\":182},\"burger\":{\"x\":332,\"y\":12.5,\"w\":44,\"h\":44,\"right\":376},\"img\":{\"x\":14,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":182},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara session-es-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara session-es-390",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara session-es-390",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara session-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara session-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Abrir navegación session-es-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Abrir navegación session-es-390",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Abrir navegación session-es-390",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Abrir navegación session-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Abrir navegación session-es-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical session-es-390",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":110.55921173095703,\"y\":374.5625,\"w\":170,\"h\":39.8125,\"right\":280.55921173095703,\"bottom\":414.375},\"cx\":195.1118433099044,\"cy\":393.9095856741573,\"left\":114.58552752043072,\"right\":275.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":192.52267456054688,\"y\":629.375,\"w\":112,\"h\":30.484375,\"right\":304.5226745605469,\"bottom\":659.859375},\"cx\":248.81812910600144,\"cy\":643.2315340909091,\"left\":197.2499472878196,\"right\":300.38631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":109.25,\"y\":424.375,\"w\":171.5,\"h\":17,\"right\":280.75,\"bottom\":441.375},\"label\":{\"x\":89.66187286376953,\"y\":636.609375,\"w\":93.15624237060547,\"h\":16,\"right\":182.818115234375,\"bottom\":652.609375},\"footer\":{\"x\":0,\"y\":339.5625,\"w\":390,\"h\":420.296875,\"right\":390,\"bottom\":759.859375},\"deltaA\":0.11184330990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02409189397639011,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal session-es-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover session-es-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus session-es-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling session-es-390",
+      "pass": true,
+      "detail": "{\"scroll\":692,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-07 deletion baseline session-es-390",
+      "pass": true,
+      "detail": "{\"before\":{\"box\":[16,262.671875,358,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]},\"after\":{\"box\":[16,262.671875,358,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]}}"
+    },
+    {
+      "name": "S13-04 reduced motion session-es-390",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 profile destination session-es-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "matrix block session-es-390",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header session-es-320",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":14,\"y\":12.5,\"w\":168,\"h\":44,\"right\":182},\"burger\":{\"x\":262,\"y\":12.5,\"w\":44,\"h\":44,\"right\":306},\"img\":{\"x\":14,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":182},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Navegación de Aunara session-es-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Navegación de Aunara session-es-320",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Navegación de Aunara session-es-320",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Navegación de Aunara session-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Navegación de Aunara session-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Abrir navegación session-es-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Abrir navegación session-es-320",
+      "pass": true,
+      "detail": "Cerrar navegación"
+    },
+    {
+      "name": "S13-03 destinations Abrir navegación session-es-320",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Abrir navegación session-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Abrir navegación session-es-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Salir\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Ayuda / instalación\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cuenta / privacidad\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir cuenta y sincronización\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Entrenamiento de hoy0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Abrir perfil\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Biblioteca de ejercicios\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Inicio / rutas\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Cerrar navegación\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical session-es-320",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":75.55921173095703,\"y\":374.515625,\"w\":170,\"h\":39.8125,\"right\":245.55921173095703,\"bottom\":414.328125},\"cx\":160.1118433099044,\"cy\":393.8627106741573,\"left\":79.58552752043072,\"right\":240.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":157.52267456054688,\"y\":629.328125,\"w\":112,\"h\":30.484375,\"right\":269.5226745605469,\"bottom\":659.8125},\"cx\":213.81812910600144,\"cy\":643.1846590909091,\"left\":162.2499472878196,\"right\":265.38631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":74.25,\"y\":424.328125,\"w\":171.5,\"h\":17,\"right\":245.75,\"bottom\":441.328125},\"label\":{\"x\":54.6618766784668,\"y\":636.5625,\"w\":93.15625,\"h\":16,\"right\":147.8181266784668,\"bottom\":652.5625},\"footer\":{\"x\":0,\"y\":339.515625,\"w\":320,\"h\":420.296875,\"right\":320,\"bottom\":759.8125},\"deltaA\":0.11184330990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.024093801325022923,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal session-es-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover session-es-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus session-es-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Tu propósito marca el camino.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Política de privacidad\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Términos de uso\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies y almacenamiento\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Desarrollado por\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Datos de ejercicios © Hasan Emir Yıldırım, MIT. Material visual © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling session-es-320",
+      "pass": true,
+      "detail": "{\"scroll\":705,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-07 deletion baseline session-es-320",
+      "pass": true,
+      "detail": "{\"before\":{\"box\":[16,256.671875,288,342.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]},\"after\":{\"box\":[16,256.671875,288,342.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancelar\",\"disabled\":false},{\"label\":\"Eliminar mi cuenta permanentemente\",\"disabled\":true}]}}"
+    },
+    {
+      "name": "S13-04 reduced motion session-es-320",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 profile destination session-es-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "matrix block session-es-320",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header session-en-1440",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"burger\":{\"x\":1338.40625,\"y\":18.484375,\"w\":44,\"h\":44,\"right\":1382.40625},\"img\":{\"x\":57.59375,\"y\":17.78125,\"w\":194,\"h\":45.421875,\"right\":251.59375},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Aunara navigation session-en-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Aunara navigation session-en-1440",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Aunara navigation session-en-1440",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Exercise library\",\"Profile\",\"Today’s workout0\",\"Synced\",\"Account / privacy\",\"Help / installation\",\"Sign out\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Aunara navigation session-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Aunara navigation session-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Open navigation session-en-1440",
+      "pass": true,
+      "detail": "{\"x\":1070,\"y\":0,\"w\":370,\"h\":900,\"bottom\":900,\"vh\":900,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Open navigation session-en-1440",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Open navigation session-en-1440",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Exercise library\",\"Profile\",\"Today’s workout0\",\"Synced\",\"Account / privacy\",\"Help / installation\",\"Sign out\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Open navigation session-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Open navigation session-en-1440",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical session-en-1440",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":635.5592041015625,\"y\":650.578125,\"w\":170,\"h\":39.8125,\"right\":805.5592041015625,\"bottom\":690.390625},\"cx\":720.1118356805099,\"cy\":669.9252106741573,\"left\":639.5855198910361,\"right\":800.6381514699835,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":709.7726440429688,\"y\":833.390625,\"w\":112,\"h\":30.484375,\"right\":821.7726440429688,\"bottom\":863.875},\"cx\":766.0680985884233,\"cy\":847.2471590909091,\"left\":714.4999167702415,\"right\":817.6362804066051,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":640.125,\"y\":700.390625,\"w\":159.734375,\"h\":17,\"right\":799.859375,\"bottom\":717.390625},\"label\":{\"x\":622.411865234375,\"y\":840.625,\"w\":77.65625,\"h\":16,\"right\":700.068115234375,\"bottom\":856.625},\"footer\":{\"x\":0,\"y\":613.578125,\"w\":1440,\"h\":286.296875,\"right\":1440,\"bottom\":899.875},\"deltaA\":0.11964818050989834,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02407282049011883,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal session-en-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover session-en-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus session-en-1440",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling session-en-1440",
+      "pass": true,
+      "detail": "{\"scroll\":713,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 backdrop restore session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-07 deletion baseline session-en-1440",
+      "pass": true,
+      "detail": "{\"before\":{\"box\":[510,310.328125,420,291.328125],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"868px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancel\",\"disabled\":false},{\"label\":\"Delete my account permanently\",\"disabled\":true}]},\"after\":{\"box\":[510,310.328125,420,291.328125],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"868px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancel\",\"disabled\":false},{\"label\":\"Delete my account permanently\",\"disabled\":true}]}}"
+    },
+    {
+      "name": "S13-04 reduced motion session-en-1440",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 profile destination session-en-1440",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "matrix block session-en-1440",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header session-en-390",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":14,\"y\":12.5,\"w\":168,\"h\":44,\"right\":182},\"burger\":{\"x\":332,\"y\":12.5,\"w\":44,\"h\":44,\"right\":376},\"img\":{\"x\":14,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":182},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Aunara navigation session-en-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Aunara navigation session-en-390",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Aunara navigation session-en-390",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Exercise library\",\"Profile\",\"Today’s workout0\",\"Synced\",\"Account / privacy\",\"Help / installation\",\"Sign out\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Aunara navigation session-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Aunara navigation session-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Open navigation session-en-390",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":390,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Open navigation session-en-390",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Open navigation session-en-390",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Exercise library\",\"Profile\",\"Today’s workout0\",\"Synced\",\"Account / privacy\",\"Help / installation\",\"Sign out\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Open navigation session-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Open navigation session-en-390",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical session-en-390",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":110.55921173095703,\"y\":402.609375,\"w\":170,\"h\":39.8125,\"right\":280.55921173095703,\"bottom\":442.421875},\"cx\":195.1118433099044,\"cy\":421.9564606741573,\"left\":114.58552752043072,\"right\":275.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":184.77267456054688,\"y\":629.421875,\"w\":112,\"h\":30.484375,\"right\":296.7726745605469,\"bottom\":659.90625},\"cx\":241.06812910600144,\"cy\":643.2784090909091,\"left\":189.4999472878196,\"right\":292.63631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":115.125,\"y\":452.421875,\"w\":159.734375,\"h\":17,\"right\":274.859375,\"bottom\":469.421875},\"label\":{\"x\":97.41187286376953,\"y\":636.65625,\"w\":77.65624237060547,\"h\":16,\"right\":175.068115234375,\"bottom\":652.65625},\"footer\":{\"x\":0,\"y\":367.609375,\"w\":390,\"h\":392.296875,\"right\":390,\"bottom\":759.90625},\"deltaA\":0.11965580990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.02409189397639011,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal session-en-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover session-en-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus session-en-390",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling session-en-390",
+      "pass": true,
+      "detail": "{\"scroll\":692,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-07 deletion baseline session-en-390",
+      "pass": true,
+      "detail": "{\"before\":{\"box\":[16,262.671875,358,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancel\",\"disabled\":false},{\"label\":\"Delete my account permanently\",\"disabled\":true}]},\"after\":{\"box\":[16,262.671875,358,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancel\",\"disabled\":false},{\"label\":\"Delete my account permanently\",\"disabled\":true}]}}"
+    },
+    {
+      "name": "S13-04 reduced motion session-en-390",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 profile destination session-en-390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "matrix block session-en-390",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "S13-02 header session-en-320",
+      "pass": true,
+      "detail": "{\"logo\":{\"x\":14,\"y\":12.5,\"w\":168,\"h\":44,\"right\":182},\"burger\":{\"x\":262,\"y\":12.5,\"w\":44,\"h\":44,\"right\":306},\"img\":{\"x\":14,\"y\":14.828125,\"w\":168,\"h\":39.34375,\"right\":182},\"visible\":true,\"controls\":2,\"src\":\"/brand/aunara-training-systems.svg\",\"overflow\":0}"
+    },
+    {
+      "name": "S13-01 Aunara navigation session-en-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Aunara navigation session-en-320",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Aunara navigation session-en-320",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Exercise library\",\"Profile\",\"Today’s workout0\",\"Synced\",\"Account / privacy\",\"Help / installation\",\"Sign out\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Aunara navigation session-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Aunara navigation session-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-01 Open navigation session-en-320",
+      "pass": true,
+      "detail": "{\"x\":0,\"y\":0,\"w\":320,\"h\":843.984375,\"bottom\":843.984375,\"vh\":844,\"header\":false,\"overflow\":0,\"aria\":\"true\"}"
+    },
+    {
+      "name": "S13-04 opening focus Open navigation session-en-320",
+      "pass": true,
+      "detail": "Close navigation"
+    },
+    {
+      "name": "S13-03 destinations Open navigation session-en-320",
+      "pass": true,
+      "detail": "[\"Home / routes\",\"Exercise library\",\"Profile\",\"Today’s workout0\",\"Synced\",\"Account / privacy\",\"Help / installation\",\"Sign out\"]"
+    },
+    {
+      "name": "S13-04 Tab includes select Open navigation session-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"}]}"
+    },
+    {
+      "name": "S13-04 Shift+Tab includes select Open navigation session-en-320",
+      "pass": true,
+      "detail": "{\"contained\":true,\"selectSeen\":true,\"trace\":[{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Sign out\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Help / installation\"},{\"in\":true,\"select\":true,\"tag\":\"SELECT\",\"label\":\"ESEN\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Account / privacy\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open account and synchronization\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Today’s workout0\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Open profile\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Exercise library\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Home / routes\"},{\"in\":true,\"select\":false,\"tag\":\"BUTTON\",\"label\":\"Close navigation\"}]}"
+    },
+    {
+      "name": "S13-03 localized select session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 language stays open session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-04 Escape restore session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-03 same trigger lists session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-06 optical session-en-320",
+      "pass": true,
+      "detail": "{\"a\":{\"bounds\":[18,737,7,165],\"natural\":[760,178],\"box\":{\"x\":75.55921173095703,\"y\":402.921875,\"w\":170,\"h\":39.8125,\"right\":245.55921173095703,\"bottom\":442.734375},\"cx\":160.1118433099044,\"cy\":422.2689606741573,\"left\":79.58552752043072,\"right\":240.6381590993781,\"src\":\"/brand/aunara-training-systems.svg\"},\"ac\":{\"bounds\":[104,2372,134,475],\"natural\":[2464,671],\"box\":{\"x\":149.77267456054688,\"y\":629.734375,\"w\":112,\"h\":30.484375,\"right\":261.7726745605469,\"bottom\":660.21875},\"cx\":206.06812910600144,\"cy\":643.5909090909091,\"left\":154.4999472878196,\"right\":257.63631092418325,\"src\":\"/brand/ac-setroc-wordmark.png\"},\"slogan\":{\"x\":80.125,\"y\":452.734375,\"w\":159.734375,\"h\":17,\"right\":239.859375,\"bottom\":469.734375},\"label\":{\"x\":62.4118766784668,\"y\":636.96875,\"w\":77.65625,\"h\":16,\"right\":140.0681266784668,\"bottom\":652.96875},\"footer\":{\"x\":0,\"y\":367.921875,\"w\":320,\"h\":392.296875,\"right\":320,\"bottom\":760.21875},\"deltaA\":0.11965580990440117,\"deltaAC\":1.377840909090878,\"deltaCredit\":0.024093801325022923,\"horizontal\":true,\"legal\":3,\"overflow\":0}"
+    },
+    {
+      "name": "S13-06 contrast normal session-en-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast hover session-en-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-06 contrast focus session-en-320",
+      "pass": true,
+      "detail": "[{\"label\":\"Your purpose leads the way.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Privacy policy\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Terms of use\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Cookies and storage\",\"fg\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":11.667990076854094},{\"label\":\"Developed by\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Exercise data © Hasan Emir Yıldırım, MIT. Visual media © Gym visual.\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948},{\"label\":\"Gym visual\",\"fg\":\"rgb(105, 117, 112)\",\"bg\":\"rgb(255, 255, 255)\",\"ratio\":4.795464493984948}]"
+    },
+    {
+      "name": "S13-01 short scrolling session-en-320",
+      "pass": true,
+      "detail": "{\"scroll\":692,\"client\":400,\"overflow\":\"auto\"}"
+    },
+    {
+      "name": "S13-04 close restore session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "S13-07 deletion baseline session-en-320",
+      "pass": true,
+      "detail": "{\"before\":{\"box\":[16,262.671875,288,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancel\",\"disabled\":false},{\"label\":\"Delete my account permanently\",\"disabled\":true}]},\"after\":{\"box\":[16,262.671875,288,330.65625],\"padding\":\"24px\",\"radius\":\"28px\",\"background\":\"rgb(245, 241, 234)\",\"border\":\"1px solid rgb(180, 35, 24)\",\"maxHeight\":\"811.999939px\",\"backdrop\":{\"display\":\"grid\",\"padding\":\"16px\",\"placeItems\":\"center\"},\"buttons\":[{\"label\":\"Cancel\",\"disabled\":false},{\"label\":\"Delete my account permanently\",\"disabled\":true}]}}"
+    },
+    {
+      "name": "S13-04 reduced motion session-en-320",
+      "pass": true,
+      "detail": "{\"transition\":\"0.00001s\",\"animation\":\"0.00001s\",\"transform\":\"none\",\"animationName\":\"none\"}"
+    },
+    {
+      "name": "S13-03 profile destination session-en-320",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "matrix block session-en-320",
+      "pass": false,
+      "detail": "TimeoutError: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.workout-panel') to be visible\u001b[22m\n"
+    },
+    {
+      "name": "S13-03 gates blocked=false installed=false",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-03 gates blocked=false installed=true",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Salir\"]"
+    },
+    {
+      "name": "S13-03 gates blocked=true installed=false",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Ayuda / instalación\",\"Salir\"]"
+    },
+    {
+      "name": "S13-03 gates blocked=true installed=true",
+      "pass": true,
+      "detail": "[\"Inicio / rutas\",\"Biblioteca de ejercicios\",\"Perfil\",\"Entrenamiento de hoy0\",\"Sincronizado\",\"Cuenta / privacidad\",\"Salir\"]"
+    }
+  ]
+}

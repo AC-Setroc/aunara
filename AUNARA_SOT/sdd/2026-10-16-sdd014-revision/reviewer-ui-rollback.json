@@ -1,0 +1,366 @@
+{
+  "at": "2026-10-16T06:33:26.312Z",
+  "base": "/aunara/",
+  "rows": [
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-chromium-320-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-chromium-320-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-chromium-320-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 320,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-chromium-320-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-chromium-390-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-chromium-390-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-chromium-390-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 390,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-chromium-390-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-chromium-1440-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-chromium-1440-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-chromium-1440-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "chromium",
+      "width": 1440,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-chromium-1440-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-webkit-320-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-webkit-320-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-webkit-320-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 320,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 298,
+        "scroll": 298,
+        "page": 320,
+        "viewport": 320
+      },
+      "file": "rollback-webkit-320-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-webkit-390-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-webkit-390-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-webkit-390-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 390,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 368,
+        "scroll": 368,
+        "page": 390,
+        "viewport": 390
+      },
+      "file": "rollback-webkit-390-en-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "es",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-webkit-1440-es-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "es",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-webkit-1440-es-terms.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "en",
+      "kind": "privacy",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-webkit-1440-en-privacy.png"
+    },
+    {
+      "type": "legal",
+      "label": "rollback",
+      "engine": "webkit",
+      "width": 1440,
+      "lang": "en",
+      "kind": "terms",
+      "metrics": {
+        "width": 838,
+        "scroll": 838,
+        "page": 1440,
+        "viewport": 1440
+      },
+      "file": "rollback-webkit-1440-en-terms.png"
+    }
+  ]
+}

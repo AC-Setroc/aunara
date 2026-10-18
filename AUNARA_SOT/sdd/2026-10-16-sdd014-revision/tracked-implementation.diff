@@ -1,0 +1,99 @@
+diff --git a/docs/compliance/README.md b/docs/compliance/README.md
+index 48ccf65..863cbd7 100644
+--- a/docs/compliance/README.md
++++ b/docs/compliance/README.md
+@@ -1,6 +1,6 @@
+ # Aunara — registro de privacidad y cumplimiento
+ 
+-Estado: versión personal de UAT. Registro actualizado el 2026-10-12 (SDD-010);
++Estado: versión personal de UAT. Canal de privacidad actualizado localmente el 2026-10-16 (SDD-014);
+ política y términos siguen en la versión 1.0 del 2026-07-29.
+ 
+ Este registro acompaña los controles visibles en la aplicación. No sustituye
+@@ -12,11 +12,14 @@ legales.
+ ## Responsable configurado
+ 
+ - Responsable: Alejandro Cortés Burgos, Colombia.
+-- Canal de privacidad: alejandro@ac-setroc.com.
++- Canal de privacidad: admin@aunaratraining.com.
+ - Política y términos: versión 1.0, vigentes desde 2026-07-29.
+-- El canal de privacidad se mantiene en `alejandro@ac-setroc.com` por decisión del
+-  Operator del 2026-10-12; se actualizará cuando el correo del dominio propio esté
+-  activo. Ese cambio requerirá revisar este registro y el aviso en pantalla.
++- Por decisión del Operator del 2026-10-16, el canal de privacidad pasa a
++  `admin@aunaratraining.com` en este candidato local y en el aviso que consume la
++  constante. Sustituye la decisión provisional del 2026-10-12; no cambia al
++  responsable ni la versión jurídica. La existencia del correo del dominio propio
++  fue reportada por el Operator, no verificada mediante envío. Activación de
++  plantillas/SMTP y publicación permanecen fuera de esta entrega local.
+ 
+ Si la identidad comercial o el responsable cambian, deben actualizarse antes
+ de recoger nuevas aceptaciones. Un cambio material requiere aviso nuevo y,
+diff --git a/docs/compliance/incident-response.md b/docs/compliance/incident-response.md
+index 7ecf86a..6a7b3ad 100644
+--- a/docs/compliance/incident-response.md
++++ b/docs/compliance/incident-response.md
+@@ -29,7 +29,7 @@ tan pronto existan hechos confirmados suficientes.
+ ## Contactos mínimos a mantener
+ 
+ - Responsable de privacidad: Alejandro Cortés Burgos —
+-  alejandro@ac-setroc.com.
++  admin@aunaratraining.com.
+ - Contactos de seguridad y soporte de Supabase, GitHub Pages y GoDaddy
+   (dominio y DNS).
+ - Asesor jurídico colombiano para calificar incidentes materiales.
+diff --git a/docs/compliance/retention-and-rights.md b/docs/compliance/retention-and-rights.md
+index 5952541..1810f77 100644
+--- a/docs/compliance/retention-and-rights.md
++++ b/docs/compliance/retention-and-rights.md
+@@ -22,7 +22,7 @@ El centro de privacidad permite:
+ - borrar el contenido guardado;
+ - eliminar permanentemente la cuenta.
+ 
+-Las solicitudes adicionales se reciben en alejandro@ac-setroc.com. Debe
++Las solicitudes adicionales se reciben en admin@aunaratraining.com. Debe
+ verificarse la identidad sin pedir más datos de los necesarios y registrarse:
+ fecha de ingreso, identidad verificada, alcance, acciones tomadas y fecha de
+ respuesta.
+diff --git a/src/components/LegalPanel.test.tsx b/src/components/LegalPanel.test.tsx
+index 71dcc93..32bcf35 100644
+--- a/src/components/LegalPanel.test.tsx
++++ b/src/components/LegalPanel.test.tsx
+@@ -92,12 +92,23 @@ describe("legal documents", () => {
+ 
+     expect(screen.getByRole("heading", { name: "Política de privacidad" })).toBeTruthy();
+     expect(screen.getByText(/Alejandro Cortés Burgos/)).toBeTruthy();
+-    expect(screen.getByText(/alejandro@ac-setroc\.com/)).toBeTruthy();
++    expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
+     expect(screen.getAllByText(/datos sensibles/i).length).toBeGreaterThan(0);
+     expect(screen.getByText(/São Paulo, Brasil/i)).toBeTruthy();
+     expect(screen.getByText(/Superintendencia de Industria y Comercio/i)).toBeTruthy();
+   });
+ 
++  it.each([
++    ["es", "privacy"], ["en", "privacy"],
++    ["es", "terms"], ["en", "terms"],
++  ] as const)("shows the privacy controller contact, not support (%s/%s)", (language, document) => {
++    render(<LegalPanel language={language} document={document} onClose={vi.fn()} />);
++    expect(screen.getByText(/admin@aunaratraining\.com/)).toBeTruthy();
++    expect(screen.queryByText(/alejandro@ac-setroc\.com|soporte@|support@/)).toBeNull();
++    expect(screen.getByText(/1\.0.*2026-07-29/)).toBeTruthy();
++    expect(screen.queryByRole("checkbox")).toBeNull();
++  });
++
+   it("shows service limits and returns to the previous screen", () => {
+     const onClose = vi.fn();
+     render(<LegalPanel language="es" document="terms" onClose={onClose} />);
+diff --git a/src/lib/privacy.ts b/src/lib/privacy.ts
+index ffa8d9d..e897afc 100644
+--- a/src/lib/privacy.ts
++++ b/src/lib/privacy.ts
+@@ -4,7 +4,7 @@ import type { HealthDataConsentStatus, HealthProfile } from "../types";
+ export const LEGAL_VERSION = "1.0";
+ export const PRIVACY_EFFECTIVE_DATE = "2026-07-29";
+ export const DATA_CONTROLLER_NAME = "Alejandro Cortés Burgos";
+-export const DATA_CONTROLLER_EMAIL = "alejandro@ac-setroc.com";
++export const DATA_CONTROLLER_EMAIL = "admin@aunaratraining.com";
+ 
+ interface PersonalDataExportInput {
+   email: string;

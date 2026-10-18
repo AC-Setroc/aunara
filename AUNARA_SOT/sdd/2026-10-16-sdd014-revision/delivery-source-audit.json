@@ -1,0 +1,17 @@
+{
+  "role": "delivery-local",
+  "sourceCount": 117,
+  "sourceUnchanged": true,
+  "manifestSha256": "12ff41305825c61f54c7416474c11b94bee438faf2e6ddec2e61b31ef5417344",
+  "changedTrackedImplementation": [
+    "docs/compliance/README.md",
+    "docs/compliance/incident-response.md",
+    "docs/compliance/retention-and-rights.md",
+    "src/components/LegalPanel.test.tsx",
+    "src/lib/privacy.ts"
+  ],
+  "reviewRows": [48, 24],
+  "sensitiveMatches": 0,
+  "stage": "precommit; repeat delivery-audit.mjs --head after commit to verify all 117 committed blobs",
+  "remoteActions": false
+}

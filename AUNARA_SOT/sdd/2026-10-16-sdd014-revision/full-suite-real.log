@@ -1,0 +1,22 @@
+
+> repbook@0.1.0 test
+> vitest run --maxWorkers=2 && node --test scripts/prepare-sites-dist.node-test.mjs
+
+
+ RUN  v4.1.10 /private/tmp/aunara-sdd014-candidate
+
+
+ Test Files  25 passed (25)
+      Tests  371 passed (371)
+   Start at  01:22:12
+   Duration  11.24s (transform 1.06s, setup 0ms, import 3.25s, tests 11.03s, environment 5.78s)
+
+✔ places the Vite app in the Sites client asset directory (11.101291ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.02

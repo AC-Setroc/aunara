@@ -2,6 +2,7 @@ import { Activity, ArrowRight, CalendarDays, Dumbbell, Pencil, Plus, RefreshCw, 
 import { useState } from "react";
 import { WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
+import { NumberInput } from "./NumberInput";
 import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack, Weekday } from "../types";
 
 export interface NewTrackInput {
@@ -24,6 +25,8 @@ interface TrainingTracksProps {
   onGenerate: (trackId: string) => void;
   onDelete: (trackId: string) => void;
   onEdit?: (trackId: string, changes: Partial<TrainingTrack>) => void;
+  /** Opens the route's exercises in edit mode (add, replace, remove). */
+  onEditWorkout?: (trackId: string) => void;
 }
 
 const GOAL_OPTIONS: { value: TrackFocus; label: string }[] = [
@@ -86,6 +89,7 @@ export function TrainingTracks({
   onGenerate,
   onDelete,
   onEdit,
+  onEditWorkout,
 }: TrainingTracksProps) {
   const [creatorOpen, setCreatorOpen] = useState(false);
   const [editingTrack, setEditingTrack] = useState<TrainingTrack | null>(null);
@@ -158,7 +162,7 @@ export function TrainingTracks({
 
         <button className="new-track-card" type="button" onClick={() => setCreatorOpen(true)}>
           <Plus size={24} />
-          <strong>{tr(language, "Add another track", "Agregar otra ruta")}</strong>
+          <strong>{tr(language, "Add route", "Agregar ruta")}</strong>
           <span>{tr(language, "Goal or sport", "Meta o deporte")}</span>
         </button>
       </div>
@@ -188,6 +192,10 @@ export function TrainingTracks({
             onEdit?.(editingTrack.id, changes);
             setEditingTrack(null);
           }}
+          onEditWorkout={onEditWorkout ? () => {
+            onEditWorkout(editingTrack.id);
+            setEditingTrack(null);
+          } : undefined}
         />
       )}
 
@@ -241,9 +249,10 @@ interface TrackCreatorProps {
   onCreate: (input: NewTrackInput) => void;
   initialTrack?: TrainingTrack;
   onSave?: (changes: Partial<TrainingTrack>) => void;
+  onEditWorkout?: () => void;
 }
 
-function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: TrackCreatorProps) {
+function TrackCreator({ language, onClose, onCreate, initialTrack, onSave, onEditWorkout }: TrackCreatorProps) {
   const [kind, setKind] = useState<TrackKind>(initialTrack?.kind ?? "goal");
   const [focus, setFocus] = useState<TrackFocus>(initialTrack?.focus ?? "strength");
   const [name, setName] = useState(initialTrack?.name ?? "");
@@ -295,8 +304,8 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
     <div className="track-modal-backdrop" role="presentation" onMouseDown={onClose}>
       <form className="track-creator" onSubmit={submit} onMouseDown={(event) => event.stopPropagation()}>
         <button className="close-button inline" type="button" onClick={onClose} aria-label={tr(language, "Close track creator", "Cerrar creación de ruta")}><X size={20} /></button>
-        <p className="eyebrow">{tr(language, "New training track", "Nueva ruta de entrenamiento")}</p>
-        <h3>{tr(language, "What are we training for?", "¿Para qué vamos a entrenar?")}</h3>
+        <p className="eyebrow">{editing ? tr(language, "Training track", "Ruta de entrenamiento") : tr(language, "New training track", "Nueva ruta de entrenamiento")}</p>
+        <h3>{editing ? tr(language, "Edit route", "Editar ruta") : tr(language, "What are we training for?", "¿Para qué vamos a entrenar?")}</h3>
 
         <div className="kind-switch" role="group" aria-label="Track type">
           <button className={kind === "goal" ? "is-active" : ""} type="button" onClick={() => chooseKind("goal")}>
@@ -341,14 +350,13 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
           </label>
           <label className="creator-field">
             <span>{tr(language, "Session minutes", "Minutos por sesión")}</span>
-            <input
+            <NumberInput
               aria-label={tr(language, "Session minutes", "Minutos por sesión")}
-              type="number"
               min={15}
               max={240}
               step={5}
               value={sessionMinutes}
-              onChange={(event) => setSessionMinutes(Number(event.target.value))}
+              onValue={setSessionMinutes}
             />
           </label>
         </div>
@@ -370,6 +378,12 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
             ))}
           </div>
         </fieldset>
+
+        {editing && onEditWorkout && (
+          <button className="track-edit-exercises" type="button" onClick={onEditWorkout}>
+            <Pencil size={16} /> {tr(language, "Edit exercises", "Editar ejercicios")}
+          </button>
+        )}
 
         <button className="create-track-button" type="submit">
           <Dumbbell size={18} /> {

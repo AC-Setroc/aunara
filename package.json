@@ -9,7 +9,7 @@
     "build:exercise-directory": "node scripts/build-bilingual-exercise-directory.mjs",
     "check:exercise-directory": "node scripts/build-bilingual-exercise-directory.mjs --check",
     "typecheck": "tsc -b --pretty false",
-    "test": "vitest run --maxWorkers=2 && node --test scripts/prepare-sites-dist.node-test.mjs",
+    "test": "vitest run --maxWorkers=2 && node --test scripts/prepare-sites-dist.node-test.mjs scripts/auth-email-templates.node-test.mjs",
     "test:exercise-directory": "node --test scripts/build-bilingual-exercise-directory.node-test.mjs"
   },
   "dependencies": {

@@ -1,0 +1,358 @@
+{
+  "build": "sdd012-root",
+  "base": "/",
+  "browser": "chromium",
+  "summary": "70/70 PASS",
+  "rows": [
+    {
+      "name": "S12-02 hamburguesa última y logo primero invitado/es/desktop",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":58,\"right\":248},{\"cls\":\"guest-nav\",\"x\":256,\"right\":1330},{\"cls\":\"navigation-trigger\",\"x\":1338,\"right\":1382}],\"maxX\":1338,\"burgerX\":1338,\"logoX\":58,\"mi"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar invitado/es/desktop",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) invitado/es/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":292,\"bottom\":608,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/es/desktop (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Ingresar / crear cuenta|Ayuda / instalación"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) invitado/es/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":292,\"bottom\":608,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/es/desktop (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Ingresar / crear cuenta|Ayuda / instalación"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel invitado/es/desktop",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-03 entrada Ingresar del menú abre el acceso invitado/es/desktop",
+      "pass": true,
+      "detail": "access=1"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero invitado/es/mobile",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":10,\"right\":56},{\"cls\":\"guest-nav\",\"x\":64,\"right\":328},{\"cls\":\"navigation-trigger\",\"x\":336,\"right\":380}],\"maxX\":336,\"burgerX\":336,\"logoX\":10,\"minX\":10,"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar invitado/es/mobile",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) invitado/es/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":266,\"bottom\":578,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/es/mobile (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Ingresar / crear cuenta|Ayuda / instalación"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) invitado/es/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":266,\"bottom\":578,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/es/mobile (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Ingresar / crear cuenta|Ayuda / instalación"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel invitado/es/mobile",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-03 entrada Ingresar del menú abre el acceso invitado/es/mobile",
+      "pass": true,
+      "detail": "access=1"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero invitado/en/desktop",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":58,\"right\":248},{\"cls\":\"guest-nav\",\"x\":256,\"right\":1330},{\"cls\":\"navigation-trigger\",\"x\":1338,\"right\":1382}],\"maxX\":1338,\"burgerX\":1338,\"logoX\":58,\"mi"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar invitado/en/desktop",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) invitado/en/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":292,\"bottom\":608,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/en/desktop (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Login / create account|Help / installation"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) invitado/en/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":292,\"bottom\":608,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/en/desktop (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Login / create account|Help / installation"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel invitado/en/desktop",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-03 entrada Ingresar del menú abre el acceso invitado/en/desktop",
+      "pass": true,
+      "detail": "access=1"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero invitado/en/mobile",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":10,\"right\":56},{\"cls\":\"guest-nav\",\"x\":64,\"right\":328},{\"cls\":\"navigation-trigger\",\"x\":336,\"right\":380}],\"maxX\":336,\"burgerX\":336,\"logoX\":10,\"minX\":10,"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar invitado/en/mobile",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) invitado/en/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":266,\"bottom\":578,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/en/mobile (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Login / create account|Help / installation"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) invitado/en/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":266,\"bottom\":578,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":3}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta invitado/en/mobile (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Login / create account|Help / installation"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel invitado/en/mobile",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-03 entrada Ingresar del menú abre el acceso invitado/en/mobile",
+      "pass": true,
+      "detail": "access=1"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero sesión/es/desktop",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":58,\"right\":248},{\"cls\":\"\",\"x\":256,\"right\":1330},{\"cls\":\"navigation-trigger\",\"x\":1338,\"right\":1382}],\"maxX\":1338,\"burgerX\":1338,\"logoX\":58,\"minX\":58,\"l"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar sesión/es/desktop",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) sesión/es/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":214,\"bottom\":686,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/es/desktop (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Biblioteca de ejercicios|Perfil|Cuenta / privacidad|Ayuda / instalación|Salir"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) sesión/es/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":214,\"bottom\":686,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/es/desktop (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Biblioteca de ejercicios|Perfil|Cuenta / privacidad|Ayuda / instalación|Salir"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel sesión/es/desktop",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-05 un control de experiencia, persiste al instante, inválido no persiste, Listo conserva sesión/es/desktop",
+      "pass": true,
+      "detail": "exp=1 stored1=intermediate body=0 days0→3 warn=1 save=0 final=intermediate/4"
+    },
+    {
+      "name": "S12-04 Salir en el perfil sesión/es/desktop",
+      "pass": true,
+      "detail": "salir=1 closed=true logouts=1 guest=true"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero sesión/es/mobile",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":14,\"right\":60},{\"cls\":\"\",\"x\":68,\"right\":324},{\"cls\":\"navigation-trigger\",\"x\":332,\"right\":376}],\"maxX\":332,\"burgerX\":332,\"logoX\":14,\"minX\":14,\"langInBa"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar sesión/es/mobile",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) sesión/es/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":188,\"bottom\":656,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/es/mobile (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Biblioteca de ejercicios|Perfil|Cuenta / privacidad|Ayuda / instalación|Salir"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) sesión/es/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":188,\"bottom\":656,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/es/mobile (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Inicio / rutas|Biblioteca de ejercicios|Perfil|Cuenta / privacidad|Ayuda / instalación|Salir"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel sesión/es/mobile",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-05 un control de experiencia, persiste al instante, inválido no persiste, Listo conserva sesión/es/mobile",
+      "pass": true,
+      "detail": "exp=1 stored1=intermediate body=0 days0→3 warn=1 save=0 final=intermediate/4"
+    },
+    {
+      "name": "S12-04 Salir en el perfil sesión/es/mobile",
+      "pass": true,
+      "detail": "salir=1 closed=true logouts=1 guest=true"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero sesión/en/desktop",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":58,\"right\":248},{\"cls\":\"\",\"x\":256,\"right\":1330},{\"cls\":\"navigation-trigger\",\"x\":1338,\"right\":1382}],\"maxX\":1338,\"burgerX\":1338,\"logoX\":58,\"minX\":58,\"l"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar sesión/en/desktop",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) sesión/en/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":214,\"bottom\":686,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/en/desktop (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Exercise library|Profile|Account / privacy|Help / installation|Sign out"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) sesión/en/desktop",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":214,\"bottom\":686,\"vh\":900,\"display\":\"grid\",\"sameX\":true,\"scrollW\":372,\"clientW\":372,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/en/desktop (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Exercise library|Profile|Account / privacy|Help / installation|Sign out"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel sesión/en/desktop",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-05 un control de experiencia, persiste al instante, inválido no persiste, Listo conserva sesión/en/desktop",
+      "pass": true,
+      "detail": "exp=1 stored1=intermediate body=0 days0→3 warn=1 save=0 final=intermediate/4"
+    },
+    {
+      "name": "S12-04 Salir en el perfil sesión/en/desktop",
+      "pass": true,
+      "detail": "salir=1 closed=true logouts=1 guest=true"
+    },
+    {
+      "name": "S12-02 hamburguesa última y logo primero sesión/en/mobile",
+      "pass": true,
+      "detail": "{\"first\":\"brand\",\"last\":\"navigation-trigger\",\"xs\":[{\"cls\":\"brand\",\"x\":14,\"right\":60},{\"cls\":\"\",\"x\":68,\"right\":324},{\"cls\":\"navigation-trigger\",\"x\":332,\"right\":376}],\"maxX\":332,\"burgerX\":332,\"logoX\":14,\"minX\":14,\"langInBa"
+    },
+    {
+      "name": "S12-03 banner sin idioma ni Ingresar sesión/en/mobile",
+      "pass": true,
+      "detail": "lang=0 guest=0"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (logo) sesión/en/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":188,\"bottom\":656,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/en/mobile (logo)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Exercise library|Profile|Account / privacy|Help / installation|Sign out"
+    },
+    {
+      "name": "S12-01 panel íntegro y en columna (hamburguesa) sesión/en/mobile",
+      "pass": true,
+      "detail": "{\"inHeader\":false,\"y\":188,\"bottom\":656,\"vh\":844,\"display\":\"grid\",\"sameX\":true,\"scrollW\":310,\"clientW\":310,\"items\":6}"
+    },
+    {
+      "name": "S12-03 panel con selector de idioma y entrada de cuenta sesión/en/mobile (hamburguesa)",
+      "pass": true,
+      "detail": "select=1 labels=Home / routes|Exercise library|Profile|Account / privacy|Help / installation|Sign out"
+    },
+    {
+      "name": "S12-03 cambio de idioma dentro del panel sesión/en/mobile",
+      "pass": true,
+      "detail": "open=1 translated=true"
+    },
+    {
+      "name": "S12-05 un control de experiencia, persiste al instante, inválido no persiste, Listo conserva sesión/en/mobile",
+      "pass": true,
+      "detail": "exp=1 stored1=intermediate body=0 days0→3 warn=1 save=0 final=intermediate/4"
+    },
+    {
+      "name": "S12-04 Salir en el perfil sesión/en/mobile",
+      "pass": true,
+      "detail": "salir=1 closed=true logouts=1 guest=true"
+    },
+    {
+      "name": "S12-06 reenviar legible sin hover (desktop)",
+      "pass": true,
+      "detail": "{\"normal\":{\"color\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"contrast\":11.67},\"hover\":{\"color\":\"rgb(255, 255, 255)\",\"bg\":\"rgb(22, 78, 223)\"}}"
+    },
+    {
+      "name": "S12-06 reenviar legible sin hover (mobile)",
+      "pass": true,
+      "detail": "{\"normal\":{\"color\":\"rgb(6, 63, 67)\",\"bg\":\"rgb(255, 255, 255)\",\"contrast\":11.67},\"hover\":{\"color\":\"rgb(255, 255, 255)\",\"bg\":\"rgb(22, 78, 223)\"}}"
+    }
+  ]
+}
