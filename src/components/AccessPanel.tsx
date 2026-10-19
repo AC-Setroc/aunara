@@ -27,7 +27,7 @@ export interface CloudAccessState {
   email: string | null;
   status: "local" | "syncing" | "synced" | "error";
   message?: string;
-  authErrorKind?: "credentials";
+  authErrorKind?: "credentials" | "user_not_found" | "invalid_password";
   pendingVerification?: PendingVerification | null;
   existingAccountEmail?: string | null;
   passwordRecoveryState?: "requested" | "ready" | null;
@@ -53,7 +53,7 @@ export interface PendingVerification {
 }
 
 export type PasswordSignInInput = Pick<CreateAccountInput, "email" | "password">;
-export type AccessMode = "create" | "sign-in";
+export type AccessMode = "create" | "sign-in" | "help";
 
 interface AccessPanelProps {
   language?: LanguageCode;
@@ -251,9 +251,41 @@ export function AccessPanel({
         className="access-panel"
         role="dialog"
         aria-modal="true"
-        aria-label={tr(language, "Access Aunara anywhere", "Accedé a Aunara desde cualquier lugar")}
+        aria-label={mode === "help" ? tr(language, "Help and installation", "Ayuda e instalación") : tr(language, "Access Aunara anywhere", "Accedé a Aunara desde cualquier lugar")}
         onMouseDown={(event) => event.stopPropagation()}
       >
+        {mode === "help" ? (
+          <>
+            <div className="access-heading">
+              <div className="access-mark"><Download size={25} /></div>
+              <div>
+                <p className="eyebrow">{tr(language, "Help & Installation", "Ayuda e instalación")}</p>
+                <h2>{tr(language, "One app. Both phones.", "Una app para ambos teléfonos.")}</h2>
+              </div>
+              <button className="close-button inline" type="button" onClick={onClose} aria-label={tr(language, "Close", "Cerrar")}><X size={20} /></button>
+            </div>
+            <section className="access-section" aria-labelledby="install-title">
+              {installGuide === "installed" && (
+                <div className="install-ready"><Check size={18} /> {tr(language, "Installed on this device", "Instalada en este dispositivo")}</div>
+              )}
+              {onInstall && installGuide !== "installed" && (
+                <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Aunara now", "Instalar Aunara ahora")}</button>
+              )}
+              <div className="install-guides">
+                <article>
+                  <div className="install-device-badge"><Apple size={18} /></div>
+                  <div><strong>iPhone</strong><p>{tr(language, "Open Aunara in Safari, tap the Share button (square with arrow), then select “Add to Home Screen”.", "Abrí Aunara en Safari, tocá el botón Compartir (cuadrado con flecha) y elegí “Agregar a pantalla de inicio”.")}</p></div>
+                </article>
+                <article>
+                  <div className="install-device-badge"><Bot size={18} /></div>
+                  <div><strong>Android</strong><p>{tr(language, "Open Aunara in Chrome, tap the menu (three dots) and select “Add to Home screen” or “Install app”.", "Abrí Aunara en Chrome, tocá el menú (tres puntos) y elegí “Agregar a pantalla principal” o “Instalar aplicación”.")}</p></div>
+                </article>
+              </div>
+              {installGuide === "desktop" && <p>{tr(language, "On desktop, look for an install icon in the browser address bar.", "En computadoras, buscá el ícono de instalación en la barra de direcciones del navegador.")}</p>}
+            </section>
+          </>
+        ) : (
+          <>
         <div className="access-heading">
           <div className="access-mark"><Cloud size={25} /></div>
           <div>
@@ -398,7 +430,7 @@ export function AccessPanel({
               )}
               <label>
                 <span>{tr(language, "Email address", "Correo electrónico")}</span>
-                <span><Mail size={17} /><input ref={emailInput} type="text" inputMode="email" value={email} onChange={(event) => { setEmail(event.target.value); setEmailInvalid(false); }} onInvalid={(event) => { event.preventDefault(); setEmailInvalid(true); emailInput.current?.focus(); }} placeholder="you@example.com" autoComplete="email" required aria-invalid={emailInvalid} aria-describedby={emailInvalid ? "access-email-error" : undefined} /></span>
+                <span><Mail size={17} /><input ref={emailInput} type="text" inputMode="email" value={email} onChange={(event) => { setEmail(event.target.value.toLowerCase().trim()); setEmailInvalid(false); }} onInvalid={(event) => { event.preventDefault(); setEmailInvalid(true); emailInput.current?.focus(); }} autoCapitalize="none" autoCorrect="off" spellCheck={false} placeholder="you@example.com" autoComplete="email" required aria-invalid={emailInvalid} aria-describedby={emailInvalid ? "access-email-error" : undefined} /></span>
               </label>
               {emailInvalid && <small id="access-email-error" className="access-message is-error" role="alert">{tr(language, "Enter a complete public email address, such as you@example.com, without spaces.", "Ingresá un correo público completo, como vos@example.com, sin espacios.")}</small>}
               <label>
@@ -460,7 +492,17 @@ export function AccessPanel({
               )}
               <button type="submit" disabled={cloud.status === "syncing" || (mode === "create" && !acceptedLegal)}>{mode === "create" ? tr(language, "Create my account", "Crear mi cuenta") : tr(language, "Sign in", "Ingresar")}</button>
               {mode === "sign-in" && <button className="verification-resend" type="button" onClick={() => requestRecovery()} disabled={cloud.status === "syncing"}>{tr(language, "Recover password", "Recuperar contraseña")}</button>}
-              {mode === "sign-in" && cloud.authErrorKind === "credentials" && cloud.status === "error" ? (
+              {mode === "sign-in" && cloud.status === "error" && cloud.authErrorKind === "user_not_found" ? (
+                <small className="access-message is-error" role="alert">
+                  {tr(language, "No account was found with this email. You can check the address or ", "No encontramos una cuenta con este correo. Podés revisar si está bien escrito o ")}
+                  <button className="auth-recovery-action" type="button" onClick={() => changeMode("create")}>{tr(language, "create your account", "creá tu cuenta")}</button>
+                </small>
+              ) : mode === "sign-in" && cloud.status === "error" && cloud.authErrorKind === "invalid_password" ? (
+                <small className="access-message is-error" role="alert">
+                  {tr(language, "The password entered is incorrect. Try again or ", "La contraseña ingresada no es correcta. Intentá de nuevo o ")}
+                  <button className="auth-recovery-action" type="button" onClick={() => requestRecovery()}>{tr(language, "recover your password", "recuperá tu contraseña")}</button>
+                </small>
+              ) : mode === "sign-in" && cloud.status === "error" && cloud.authErrorKind === "credentials" ? (
                 <small className="access-message is-error" role="alert">
                   {tr(language, "Your email or password do not match the registered details. Try again or ", "Tu correo o contraseña no coinciden con los datos registrados. Intentá de nuevo o ")}
                   <button className="auth-recovery-action" type="button" onClick={() => requestRecovery()}>{tr(language, "recover your password", "recuperá tu contraseña")}</button>
@@ -534,24 +576,26 @@ export function AccessPanel({
           </section>
         )}
 
-        {installGuide !== "installed" && <section className="access-section" aria-labelledby="install-title">
-          <p className="section-kicker">{tr(language, cloud.email ? "03 / Install" : "02 / Install", cloud.email ? "03 / Instalación" : "02 / Instalación")}</p>
-          <h3 id="install-title">{tr(language, "One app. Both phones.", "Una app para ambos teléfonos.")}</h3>
-          {onInstall && (
-            <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Aunara now", "Instalar Aunara ahora")}</button>
-          )}
-          <div className="install-guides">
-            <article className={installGuide === "android" ? "is-current" : ""}>
-              <Bot size={20} />
-              <div><strong>Android</strong><p>{tr(language, "Open Aunara in Chrome, tap the menu, then choose “Install app” or “Add to Home screen”.", "Abrí Aunara en Chrome, tocá el menú y elegí “Instalar aplicación” o “Agregar a pantalla principal”.")}</p></div>
-            </article>
-            <article className={installGuide === "ios" ? "is-current" : ""}>
-              <Apple size={20} />
-              <div><strong>iPhone</strong><p>{tr(language, "Open Aunara in Safari, tap Share, then choose “Add to Home Screen”.", "Abrí Aunara en Safari, tocá Compartir y elegí “Agregar a pantalla de inicio”.")}</p></div>
-            </article>
-          </div>
-          {installGuide === "desktop" && <p>{tr(language, "On desktop, look for an install action in your browser menu or address bar. Availability depends on the browser. If absent, keep using Aunara in this tab. Installation does not guarantee all content is available offline.", "En escritorio, buscá la opción de instalar en el menú o la barra de tu navegador. Depende del navegador. Si no aparece, podés seguir usando Aunara en esta pestaña. Instalar no garantiza que todo el contenido esté disponible sin conexión.")}</p>}
-        </section>}
+        {(Boolean(cloud.email) || !cloud.configured) && installGuide !== "installed" && (
+          <section className="access-section" aria-labelledby="install-title">
+            <p className="section-kicker">{tr(language, cloud.email ? "03 / Install" : "02 / Install", cloud.email ? "03 / Instalación" : "02 / Instalación")}</p>
+            <h3 id="install-title">{tr(language, "One app. Both phones.", "Una app para ambos teléfonos.")}</h3>
+            {onInstall && (
+              <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Aunara now", "Instalar Aunara ahora")}</button>
+            )}
+            <div className="install-guides">
+              <article className={installGuide === "android" ? "is-current" : ""}>
+                <Bot size={20} />
+                <div><strong>Android</strong><p>{tr(language, "Open Aunara in Chrome, tap the menu, then choose “Install app” or “Add to Home screen”.", "Abrí Aunara en Chrome, tocá el menú y elegí “Instalar aplicación” o “Agregar a pantalla principal”.")}</p></div>
+              </article>
+              <article className={installGuide === "ios" ? "is-current" : ""}>
+                <Apple size={20} />
+                <div><strong>iPhone</strong><p>{tr(language, "Open Aunara in Safari, tap Share, then choose “Add to Home Screen”.", "Abrí Aunara en Safari, tocá Compartir y elegí “Agregar a pantalla de inicio”.")}</p></div>
+              </article>
+            </div>
+            {installGuide === "desktop" && <p>{tr(language, "On desktop, look for an install action in your browser menu or address bar. Availability depends on the browser. If absent, keep using Aunara in this tab. Installation does not guarantee all content is available offline.", "En escritorio, buscá la opción de instalar en el menú o la barra de tu navegador. Depende del navegador. Si no aparece, podés seguir usando Aunara en esta pestaña. Instalar no garantiza que todo el contenido esté disponible sin conexión.")}</p>}
+          </section>
+        )}
 
         <p className="access-privacy">{tr(language, "Health information stays private to the signed-in account. Aunara never uses the public exercise library to expose personal data.", "Tu información de salud permanece privada en tu cuenta. Aunara nunca usa la biblioteca pública de ejercicios para exponer datos personales.")}</p>
         <div className="access-legal-links">
@@ -559,6 +603,8 @@ export function AccessPanel({
           <button type="button" onClick={() => onOpenLegal?.("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
         </div>
         <button className="profile-done" type="button" onClick={onClose}>{tr(language, "Done", "Listo")}</button>
+        </>
+        )}
       </aside>
     </div>
   );

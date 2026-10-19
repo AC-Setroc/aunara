@@ -78,10 +78,16 @@ describe("signed-out home", () => {
     expect(screen.getByRole("heading", { name: /A body ready.*for what matters most/i })).toBeTruthy();
   });
 
-  it("keeps both phone installation guides inside the login panel", () => {
+  it("keeps phone installation guides in the help panel, separate from login", () => {
     render(<App />);
 
     openLogin();
+    expect(screen.queryByText("Android")).toBeNull();
+    expect(screen.queryByText("iPhone")).toBeNull();
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
+    fireEvent.click(screen.getByRole("button", { name: "Ayuda / instalación" }));
     expect(screen.getByText("Android")).toBeTruthy();
     expect(screen.getByText("iPhone")).toBeTruthy();
   });

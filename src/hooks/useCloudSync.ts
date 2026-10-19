@@ -142,7 +142,7 @@ export function useCloudSync({
     pendingAuth.current = operation;
     return operation;
   }, [setStatus, setMessage]);
-  const failAuth = useCallback((operation: ReturnType<typeof beginAuth>, failure: AuthFailure, fromSignIn = false) => {
+  const failAuth = useCallback((operation: ReturnType<typeof beginAuth>, failure: AuthFailure, authErrorKindOverride?: CloudAccessState["authErrorKind"]) => {
     if (operation.generation !== authGeneration.current) {
       // Release only this operation's pending state; never overwrite a newer sync/action.
       if (pendingAuth.current === operation) setStatus(operation.previousStatus === "syncing" ? "local" : operation.previousStatus);
@@ -153,7 +153,7 @@ export function useCloudSync({
     setMessage(undefined);
     authFailureRef.current = failure;
     setAuthFailure(failure);
-    setAuthErrorKind(fromSignIn && failure === "credentials" ? "credentials" : undefined);
+    setAuthErrorKind(authErrorKindOverride);
   }, [setStatus, setMessage]);
   const clearAuthError = useCallback(() => {
     authGeneration.current += 1;
@@ -162,7 +162,27 @@ export function useCloudSync({
       if (statusRef.current === "error") setStatus("local");
     }
   }, [setStatus, setMessage]);
-  const [pendingVerification, setPendingVerification] = useState<PendingVerification | null>(null);
+  const PENDING_VERIFICATION_KEY = "aunara-pending-verification";
+  const [pendingVerification, setPendingVerificationState] = useState<PendingVerification | null>(() => {
+    try {
+      const stored = localStorage.getItem(PENDING_VERIFICATION_KEY);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+  const setPendingVerification = useCallback((value: PendingVerification | null) => {
+    setPendingVerificationState(value);
+    try {
+      if (value) {
+        localStorage.setItem(PENDING_VERIFICATION_KEY, JSON.stringify(value));
+      } else {
+        localStorage.removeItem(PENDING_VERIFICATION_KEY);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
   const [existingAccountEmail, setExistingAccountEmail] = useState<string | null>(null);
   const [passwordRecoveryState, setPasswordRecoveryState] = useState<"requested" | "ready" | null>(null);
   const recoveryUserId = useRef<string | null>(null);
@@ -528,7 +548,16 @@ export function useCloudSync({
       password,
     });
     if (error) {
-      failAuth(operation, classifyAuthError(error), true);
+      let kind: "credentials" | "user_not_found" | "invalid_password" = "credentials";
+      const msg = (error.message || "").toLowerCase();
+      if (error.code === "user_not_found" || msg.includes("user not found") || msg.includes("no user")) {
+        kind = "user_not_found";
+      } else if (error.code === "invalid_password" || msg.includes("wrong password")) {
+        kind = "invalid_password";
+      } else {
+        kind = "credentials";
+      }
+      failAuth(operation, classifyAuthError(error), kind);
       return;
     }
     setExistingAccountEmail(null);

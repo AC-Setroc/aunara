@@ -123,16 +123,16 @@ describe("access and installation panel", () => {
     expect(handlers.onRequestPasswordReset).not.toHaveBeenCalled();
   });
 
-  it.each(["Guest+tag@sub.example.com", "  Guest@Example.COM  "])("trims public email %s while preserving local part and password case", (email) => {
+  it.each(["Guest+tag@sub.example.com", "  Guest@Example.COM  "])("normalizes public email %s to lowercase while preserving password case", (email) => {
     const handlers = access();
     fireEvent.change(screen.getByLabelText("Email address"), { target: { value: email } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: " MiXeD-Password " } });
     fireEvent.click(screen.getByRole("checkbox", { name: /I accept the Terms/ }));
     fireEvent.click(screen.getByRole("button", { name: "Create my account" }));
-    expect(handlers.onCreateAccount).toHaveBeenCalledWith(expect.objectContaining({ email: email.trim(), password: " MiXeD-Password " }));
+    expect(handlers.onCreateAccount).toHaveBeenCalledWith(expect.objectContaining({ email: email.trim().toLowerCase(), password: " MiXeD-Password " }));
     fireEvent.click(screen.getByRole("button", { name: "I already have an account" }));
     fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
-    expect(handlers.onSignIn).toHaveBeenCalledWith({ email: email.trim(), password: " MiXeD-Password " });
+    expect(handlers.onSignIn).toHaveBeenCalledWith({ email: email.trim().toLowerCase(), password: " MiXeD-Password " });
   });
 
   it("clears only on an effective mode change, preserving values and both consents", () => {
@@ -147,7 +147,7 @@ describe("access and installation panel", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     expect(handlers.onClearAuthError).toHaveBeenCalledTimes(2);
     expect((screen.getByLabelText("Name") as HTMLInputElement).value).toBe("Test guest");
-    expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("Guest@example.com");
+    expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("guest@example.com");
     expect((screen.getByLabelText("Password") as HTMLInputElement).value).toBe("MiXeD-Password");
     expect((screen.getByRole("checkbox", { name: /I accept the Terms/ }) as HTMLInputElement).checked).toBe(true);
     expect((screen.getByRole("checkbox", { name: /I authorize Aunara/ }) as HTMLInputElement).checked).toBe(true);
@@ -168,7 +168,7 @@ describe("access and installation panel", () => {
     fireEvent.change(screen.getByLabelText(language === "es" ? "Nombre" : "Name"), { target: { value: "" } });
     expect(screen.queryByRole("button", { name: recoveryName })).toBeNull();
     expect(handlers.onRequestPasswordReset).toHaveBeenCalledTimes(1);
-    expect(handlers.onRequestPasswordReset).toHaveBeenLastCalledWith("Guest+tag@sub.example.com");
+    expect(handlers.onRequestPasswordReset).toHaveBeenLastCalledWith("guest+tag@sub.example.com");
     expect(handlers.onCreateAccount).not.toHaveBeenCalled();
     expect(handlers.onSignIn).not.toHaveBeenCalled();
   });
@@ -199,7 +199,7 @@ describe("access and installation panel", () => {
     expect(document.activeElement).toBe(screen.getByLabelText(language === "es" ? "Correo electrónico" : "Email address"));
     fireEvent.change(screen.getByLabelText(language === "es" ? "Correo electrónico" : "Email address"), { target: { value: " Guest+tag@sub.example.com " } });
     fireEvent.click(action);
-    expect(handlers.onRequestPasswordReset).toHaveBeenCalledExactlyOnceWith("Guest+tag@sub.example.com");
+    expect(handlers.onRequestPasswordReset).toHaveBeenCalledExactlyOnceWith("guest+tag@sub.example.com");
     expect(handlers.onSignIn).not.toHaveBeenCalled();
     expect(handlers.onCreateAccount).not.toHaveBeenCalled();
   });

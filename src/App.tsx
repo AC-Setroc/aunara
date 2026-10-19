@@ -220,6 +220,18 @@ function App() {
     onSignedOut: clearSignedOutProfile,
   });
 
+  const lastAuthUser = useRef<string | null>(null);
+  useEffect(() => {
+    if (!cloud.email) {
+      lastAuthUser.current = null;
+      return;
+    }
+    if (lastAuthUser.current && lastAuthUser.current !== cloud.email) {
+      clearSignedOutProfile();
+    }
+    lastAuthUser.current = cloud.email;
+  }, [cloud.email, clearSignedOutProfile]);
+
   useEffect(() => {
     if (cloud.passwordRecoveryState !== "ready") return;
     setAccessMode("sign-in");
@@ -292,7 +304,7 @@ function App() {
   const activeTrack = tracks.find((track) => track.id === activeTrackId) ?? tracks[0];
   const latestCheckIn = checkIns[0];
   const workout = activeTrack?.workout ?? [];
-  const workoutIds = useMemo(() => new Set(tracks.flatMap((track) => track.workout.map((item) => item.exerciseId))), [tracks]);
+  const workoutIds = useMemo(() => new Set(tracks.flatMap((track) => (track.workout ?? []).map((item) => item.exerciseId))), [tracks]);
   const exerciseMap = useMemo(() => new Map(exercises.map((exercise) => [exercise.id, exercise])), [exercises]);
   const preferenceFilteredExercises = useMemo(
     () => libraryEquipmentPreference === "bodyweight" ? exercises.filter(isEquipmentFreeExercise) : exercises,
@@ -661,13 +673,13 @@ function App() {
     }}>
       <header className="site-header">
         <NavigationMenu language={language} entries={[
-          { label: tr(language, "Home / routes", "Inicio / rutas"), action: () => setAppSection("home") },
           ...(canUseTraining ? [
+            { label: tr(language, "Routes", "Rutas"), action: () => setAppSection("home") },
             { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), action: () => setAppSection("library") },
             { label: tr(language, "Profile", "Perfil"), action: () => setProfileOpen(true) },
           ] : []),
           { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), action: () => openAccess("sign-in") },
-          ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => openAccess("sign-in") }] : []),
+          ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => openAccess("help") }] : []),
           ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), action: () => { void cloud.signOut(); } }] : []),
         ]}
         controls={<>
@@ -706,15 +718,29 @@ function App() {
             )}
         </>}
         panelContent={
-          <label className="language-select">
-            <Languages size={16} />
-            <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
-            <select value={language} onChange={(event) => setLanguage(event.target.value as LanguageCode)}>
-              {LANGUAGE_OPTIONS.map((option) => (
-                <option key={option.code} value={option.code}>{option.label}</option>
-              ))}
-            </select>
-          </label>
+          <div className="language-panel-control">
+            <button
+              type="button"
+              className="language-toggle"
+              onClick={() => setLanguage(language === "es" ? "en" : "es")}
+              aria-label={tr(language, "Switch to English", "Cambiar a inglés")}
+            >
+              <Languages size={18} />
+              <span>{language === "es" ? "English" : "Español"}</span>
+            </button>
+            <label className="language-select sr-only">
+              <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
+              <select
+                value={language}
+                onChange={(event) => setLanguage(event.target.value as LanguageCode)}
+                aria-label={tr(language, "Language", "Idioma")}
+              >
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <option key={option.code} value={option.code}>{option.label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
         } />
       </header>
 
@@ -942,11 +968,11 @@ function App() {
           <button type="button" onClick={() => setLegalDocument("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
           <button type="button" onClick={() => setLegalDocument("cookies")}>{tr(language, "Cookies and storage", "Cookies y almacenamiento")}</button>
         </div>
+        {canUseTraining && <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>}
         <div className="footer-development-credit">
           <span>{tr(language, "Developed by", "Desarrollado por")}</span>
           <img src={`${import.meta.env.BASE_URL}brand/ac-setroc-wordmark.png`} alt="AC Setroc" width="2464" height="671" />
         </div>
-        {canUseTraining && <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>}
       </footer>
 
       {canUseTraining && <button className="mobile-workout" type="button" onClick={() => {
@@ -1047,6 +1073,7 @@ function App() {
           installGuide={installGuide}
           dataSummary={{ profile: hasProfileSummary(cloudSnapshot), routes: tracks.length, favorites: favoriteIds.length, checkIns: checkIns.length, health: healthProfile.healthDataMode === "personalized" }}
           onCreateAccount={(input) => {
+            clearSignedOutProfile();
             setProfileName(input.name);
             void cloud.createAccount(input);
           }}

@@ -302,12 +302,12 @@ describe("storage notice and footer integration", () => {
     expect(screen.queryByRole("button", { name: "Recover password" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "I already have an account" }));
     fireEvent.click(screen.getByRole("button", { name: "Recover password" }));
-    expect(accessMock.requestPasswordReset).toHaveBeenCalledExactlyOnceWith("Guest+tag@sub.example.com");
+    expect(accessMock.requestPasswordReset).toHaveBeenCalledExactlyOnceWith("guest+tag@sub.example.com");
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     fireEvent.click(screen.getAllByRole("button", { name: "Terms of use" })[0]);
     expect(screen.getByRole("heading", { name: "Terms of use" })).toBeTruthy();
     fireEvent.keyDown(screen.getByRole("button", { name: "Close legal document" }), { key: "Escape" });
-    expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("  Guest+tag@sub.example.com  ");
+    expect((screen.getByLabelText("Email address") as HTMLInputElement).value).toBe("guest+tag@sub.example.com");
     expect((screen.getByRole("checkbox", { name: /I accept the Terms/ }) as HTMLInputElement).checked).toBe(false);
   });
   it("keeps the complete app and all nine stored states usable with global storage denied", async () => {

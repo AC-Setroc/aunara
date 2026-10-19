@@ -756,14 +756,25 @@ function ExerciseAdder({
             {target === "reps" && <label>{tr(language, "Repetition count", "Conteo de repeticiones")}<select aria-label={`${tr(language, "Repetition count for", "Conteo de repeticiones para")} ${name}`} value={prescription.repetitionCount ?? "total"} onChange={(event) => updatePrescription(index, { repetitionCount: event.target.value as WorkoutItem["repetitionCount"] })}><option value="total">{tr(language, "Total", "Total")}</option><option value="per-side">{tr(language, "Per side", "Por lado")}</option></select></label>}
           </fieldset>;
         })}
-        <button type="button" disabled={!prescriptions.every(isValidManualPrescription)} onClick={() => setStep(3)}>{tr(language, "Choose local structure", "Elegir estructura local")}</button>
+        <div className="manual-adder-actions">
+          <button className="is-primary" type="button" disabled={!prescriptions.every(isValidManualPrescription)} onClick={addSelectedStructure}>
+            {selectedExercises.length === 1 ? tr(language, "Save exercise to routine", "Guardar ejercicio en la rutina") : tr(language, "Save exercises to routine", "Guardar ejercicios en la rutina")}
+          </button>
+          <button className="is-secondary" type="button" disabled={!prescriptions.every(isValidManualPrescription)} onClick={() => setStep(3)}>
+            {tr(language, "Choose local structure", "Elegir estructura local")}
+          </button>
+        </div>
       </div>}
       {step === 3 ? (
         <div className="structure-choice">
-          <button type="button" onClick={() => setStep(2)}>{tr(language, "Back", "Volver")}</button>
-          <div>
-            <span>{tr(language, "Add to the routine", "Agregar a la rutina")}</span>
-            <strong>{tr(language, "Choose a training structure", "Elegí una estructura de trabajo")}</strong>
+          <div className="structure-choice-heading">
+            <button type="button" onClick={() => setStep(2)}>
+              <ChevronLeft size={16} /> {tr(language, "Back", "Volver")}
+            </button>
+            <div>
+              <span>{tr(language, "Add to the routine", "Agregar a la rutina")}</span>
+              <strong>{tr(language, "Choose a training structure", "Elegí una estructura de trabajo")}</strong>
+            </div>
           </div>
           <div className="structure-choice-grid">
             {WORKOUT_STRUCTURE_OPTIONS.map((option) => (
