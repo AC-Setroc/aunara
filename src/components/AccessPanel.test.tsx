@@ -301,6 +301,7 @@ describe("access and installation panel", () => {
 
   it("explains how to install Aunara on both Android and iPhone", () => {
     render(<AccessPanel
+      initialMode="help"
       cloud={{ configured: false, email: null, status: "local" }}
       profileName="Alejandro"
       installGuide="android"
@@ -313,7 +314,6 @@ describe("access and installation panel", () => {
 
     expect(screen.getByText("Android")).toBeTruthy();
     expect(screen.getByText("iPhone")).toBeTruthy();
-    expect(screen.getByText("Cloud setup is being prepared.")).toBeTruthy();
   });
 
   it("creates a password account with the person's name and email", () => {
@@ -648,5 +648,61 @@ describe("access and installation panel", () => {
     expect(onChangeHealthConsent).toHaveBeenCalledWith("revoked");
     expect(onDeleteData).toHaveBeenCalledOnce();
     expect(onDeleteAccount).toHaveBeenCalledOnce();
+  });
+
+  it("clears pending verification and switches to create form from verification screen or login error", () => {
+    const onClearPendingVerification = vi.fn();
+    const { rerender } = render(<AccessPanel
+      cloud={{
+        configured: true,
+        email: null,
+        status: "local",
+        pendingVerification: {
+          name: "Alejandro",
+          email: "ac_setroc@icloud.com",
+        },
+      }}
+      profileName="Alejandro"
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClearPendingVerification={onClearPendingVerification}
+      onClose={vi.fn()}
+    />);
+
+    expect(screen.getByText("ac_setroc@icloud.com")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Register with a different email|Registrarme con otro correo/i })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /Register with a different email|Registrarme con otro correo/i }));
+    expect(onClearPendingVerification).toHaveBeenCalled();
+
+    // Now test switching to create from login error when user_not_found
+    rerender(<AccessPanel
+      initialMode="sign-in"
+      cloud={{
+        configured: true,
+        email: null,
+        status: "error",
+        authErrorKind: "user_not_found",
+        pendingVerification: {
+          name: "Alejandro",
+          email: "ac_setroc@icloud.com",
+        },
+      }}
+      profileName="Alejandro"
+      installGuide="desktop"
+      onCreateAccount={vi.fn()}
+      onSignIn={vi.fn()}
+      onSignOut={vi.fn()}
+      onInstall={null}
+      onClearPendingVerification={onClearPendingVerification}
+      onClose={vi.fn()}
+    />);
+
+    const createAction = screen.getByRole("button", { name: /create your account|creá tu cuenta/i });
+    expect(createAction).toBeTruthy();
+    fireEvent.click(createAction);
+    expect(onClearPendingVerification).toHaveBeenCalledTimes(3);
   });
 });

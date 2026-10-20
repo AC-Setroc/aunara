@@ -2,7 +2,8 @@ import { Activity, ArrowRight, CalendarDays, Dumbbell, Pencil, Plus, RefreshCw, 
 import { useState } from "react";
 import { WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
-import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack, Weekday } from "../types";
+import type { EquipmentPreference, LanguageCode, TrackCreationMode, TrackFocus, TrackKind, TrainingTrack, Weekday, WeeklyCheckIn } from "../types";
+import { WeeklyCheckInSection } from "./WeeklyCheckInSection";
 
 export interface NewTrackInput {
   name: string;
@@ -24,6 +25,10 @@ interface TrainingTracksProps {
   onGenerate: (trackId: string) => void;
   onDelete: (trackId: string) => void;
   onEdit?: (trackId: string, changes: Partial<TrainingTrack>) => void;
+  checkIns?: WeeklyCheckIn[];
+  onAddCheckIn?: (checkIn: WeeklyCheckIn) => void;
+  healthDataConsent?: boolean;
+  onRequestHealthConsent?: () => void;
 }
 
 const GOAL_OPTIONS: { value: TrackFocus; label: string }[] = [
@@ -86,6 +91,10 @@ export function TrainingTracks({
   onGenerate,
   onDelete,
   onEdit,
+  checkIns,
+  onAddCheckIn,
+  healthDataConsent,
+  onRequestHealthConsent,
 }: TrainingTracksProps) {
   const [creatorOpen, setCreatorOpen] = useState(false);
   const [editingTrack, setEditingTrack] = useState<TrainingTrack | null>(null);
@@ -93,7 +102,7 @@ export function TrainingTracks({
   const plannedDays = tracks.reduce((sum, track) => sum + track.daysPerWeek, 0);
 
   return (
-    <section className="tracks-section" aria-labelledby="tracks-title">
+    <section id="training-routes" className="tracks-section" aria-labelledby="tracks-title">
       <div className="tracks-heading">
         <div>
           <p className="eyebrow">{tr(language, "One profile / multiple priorities", "Un perfil / múltiples prioridades")}</p>
@@ -166,6 +175,16 @@ export function TrainingTracks({
       <p className="track-guidance">
         {tr(language, "Suggestions are a starting point. Keep the tracks distinct, but review the combined weekly load and adjust around practice, matches, and recovery.", "Las sugerencias son un punto de partida. Mantené las rutas separadas, revisá la carga semanal combinada y ajustá según prácticas, partidos y recuperación.")}
       </p>
+
+      {checkIns && onAddCheckIn && (
+        <WeeklyCheckInSection
+          language={language}
+          checkIns={checkIns}
+          onAddCheckIn={onAddCheckIn}
+          healthDataConsent={healthDataConsent}
+          onRequestHealthConsent={onRequestHealthConsent}
+        />
+      )}
 
       {creatorOpen && (
         <TrackCreator
@@ -347,8 +366,11 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
               min={15}
               max={240}
               step={5}
-              value={sessionMinutes}
-              onChange={(event) => setSessionMinutes(Number(event.target.value))}
+              value={sessionMinutes === 0 ? "" : sessionMinutes}
+              onChange={(event) => {
+                const clean = event.target.value.replace(/^0+(?=\d)/, "");
+                setSessionMinutes(clean === "" ? 0 : Number(clean));
+              }}
             />
           </label>
         </div>

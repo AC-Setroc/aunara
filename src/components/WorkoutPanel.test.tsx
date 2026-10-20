@@ -15,12 +15,13 @@ function setup() {
   return { onAddStructure, adder: within(screen.getByRole("region", { name: "Add exercises" })) };
 }
 describe("independent manual prescriptions", () => {
-  it.each([2, 3])("removes a member from %i slots without discarding surviving targets or searches", (count) => {
+  it.each([2, 3])("creates a %i-exercise structure without discarding targets", (count) => {
     const { adder, onAddStructure } = setup();
-    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
-    for (let index = 0; index < count; index += 1) {
-      if (index) fireEvent.click(adder.getByRole("button", { name: "Add another exercise" }));
-      fireEvent.click(adder.getByRole("button", { name: `Select ${["Synthetic Press", "Synthetic Push-Up", "Synthetic Climber"][index]} as exercise ${index + 1}` }));
+    fireEvent.click(adder.getByRole("button", { name: count === 2 ? "Bi-set" : "Tri-set" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
+    fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Push-Up as exercise 2" }));
+    if (count === 3) {
+      fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Climber as exercise 3" }));
     }
     fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
     fireEvent.change(adder.getByLabelText("Repetitions for Synthetic Press"), { target: { value: "8" } });
@@ -28,51 +29,40 @@ describe("independent manual prescriptions", () => {
       fireEvent.change(adder.getByLabelText("Repetitions for Synthetic Climber"), { target: { value: "20" } });
       fireEvent.change(adder.getByLabelText("Repetition count for Synthetic Climber"), { target: { value: "per-side" } });
     }
-    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
     fireEvent.click(adder.getByRole("button", { name: "Back" }));
-    fireEvent.click(adder.getByRole("button", { name: "Back" }));
-    fireEvent.change(adder.getByLabelText("Search exercise 2"), { target: { value: "" } });
-    expect((adder.getByRole("button", { name: "Configure sets and repetitions" }) as HTMLButtonElement).disabled).toBe(true);
-    fireEvent.click(adder.getByRole("button", { name: "Remove exercise 2" }));
     expect((adder.getByLabelText("Search exercise 1") as HTMLInputElement).value).toBe("Synthetic Press");
-    if (count === 3) expect((adder.getByLabelText("Search exercise 2") as HTMLInputElement).value).toBe("Synthetic Climber");
-    else expect(adder.queryByRole("button", { name: "Remove exercise 1" })).toBeNull();
+    expect((adder.getByLabelText("Search exercise 2") as HTMLInputElement).value).toBe("Synthetic Push-Up");
+    if (count === 3) {
+      expect((adder.getByLabelText("Search exercise 3") as HTMLInputElement).value).toBe("Synthetic Climber");
+    }
     fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
-    expect((adder.getByLabelText(count === 2 ? "Repetitions" : "Repetitions for Synthetic Press") as HTMLInputElement).value).toBe("8");
+    expect((adder.getByLabelText("Repetitions for Synthetic Press") as HTMLInputElement).value).toBe("8");
     if (count === 3) {
       expect((adder.getByLabelText("Repetitions for Synthetic Climber") as HTMLInputElement).value).toBe("20");
       expect((adder.getByLabelText("Repetition count for Synthetic Climber") as HTMLSelectElement).value).toBe("per-side");
     }
-    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
-    const structure = count === 2 ? "Single set" : "Bi-set";
-    expect((adder.getByRole("button", { name: structure }) as HTMLButtonElement).disabled).toBe(false);
-    fireEvent.click(adder.getByRole("button", { name: structure }));
-    fireEvent.click(adder.getByRole("button", { name: count === 2 ? "Add single set" : "Add bi-set" }));
-    expect(onAddStructure).toHaveBeenCalledWith(count === 2 ? "single" : "biset", count === 2 ? [exercises[0].id] : [exercises[0].id, exercises[2].id], "monday", count === 2 ? [expect.objectContaining({ reps: 8 })] : [expect.objectContaining({ reps: 8 }), expect.objectContaining({ reps: 20 })]);
+    fireEvent.click(adder.getByRole("button", { name: "Save and continue" }));
+    expect(onAddStructure).toHaveBeenCalledWith(
+      count === 2 ? "biset" : "triset",
+      count === 2 ? [exercises[0].id, exercises[1].id] : [exercises[0].id, exercises[1].id, exercises[2].id],
+      "monday",
+      count === 2
+        ? [expect.objectContaining({ reps: 8 }), expect.objectContaining({ reps: 10 })]
+        : [expect.objectContaining({ reps: 8 }), expect.objectContaining({ reps: 10 }), expect.objectContaining({ reps: 20 })],
+    );
   });
-  it("chooses exercises before structure and keeps each target independent when going back", () => {
+  it("selects structure first, chooses exercises and custom targets", () => {
     const { adder, onAddStructure } = setup();
-    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
     fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
-    fireEvent.click(adder.getByRole("button", { name: "Add another exercise" }));
     fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Push-Up as exercise 2" }));
-    fireEvent.click(adder.getByRole("button", { name: "Add another exercise" }));
     fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Climber as exercise 3" }));
     fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
     fireEvent.change(adder.getByLabelText("Repetitions for Synthetic Press"), { target: { value: "8" } });
     fireEvent.change(adder.getByLabelText("Target for Synthetic Push-Up"), { target: { value: "technical-failure" } });
     fireEvent.change(adder.getByLabelText("Repetitions for Synthetic Climber"), { target: { value: "20" } });
     fireEvent.change(adder.getByLabelText("Repetition count for Synthetic Climber"), { target: { value: "per-side" } });
-    fireEvent.click(adder.getByRole("button", { name: "Choose local structure" }));
-    expect((adder.getByRole("button", { name: "Bi-set" }) as HTMLButtonElement).disabled).toBe(true);
-    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
-    const climber = within(adder.getByRole("group", { name: "Synthetic Climber" }));
-    fireEvent.click(climber.getByRole("checkbox"));
-    expect((climber.getByLabelText("Repetition count for block 1") as HTMLSelectElement).value).toBe("per-side");
-    fireEvent.click(climber.getByRole("checkbox"));
-    fireEvent.click(adder.getByRole("button", { name: "Back" }));
-    fireEvent.click(adder.getByRole("button", { name: "Tri-set" }));
-    fireEvent.click(adder.getByRole("button", { name: "Add tri-set" }));
+    fireEvent.click(adder.getByRole("button", { name: "Save and continue" }));
     expect(onAddStructure).toHaveBeenCalledWith("triset", exercises.map((exercise) => exercise.id), "monday", [
       expect.objectContaining({ reps: 8, prescriptionMode: "standard" }),
       expect.objectContaining({ prescriptionMode: "special", specialPrescription: expect.objectContaining({ blocks: [expect.objectContaining({ target: "technical-failure" })] }) }),
@@ -81,11 +71,11 @@ describe("independent manual prescriptions", () => {
   });
   it("does not advance with invalid individual prescription", () => {
     const { adder, onAddStructure } = setup();
-    fireEvent.click(adder.getByRole("button", { name: "Choose exercises for this day" }));
+    fireEvent.click(adder.getByRole("button", { name: "Single set" }));
     fireEvent.click(adder.getByRole("button", { name: "Select Synthetic Press as exercise 1" }));
     fireEvent.click(adder.getByRole("button", { name: "Configure sets and repetitions" }));
     fireEvent.change(adder.getByLabelText("Sets"), { target: { value: "0" } });
-    expect((adder.getByRole("button", { name: "Choose local structure" }) as HTMLButtonElement).disabled).toBe(true);
+    expect((adder.getByRole("button", { name: "Save and continue" }) as HTMLButtonElement).disabled).toBe(true);
     expect(onAddStructure).not.toHaveBeenCalled();
   });
   it.each(["en", "es"] as const)("retains per-side count across standard/special editing and displays it in %s summaries", (language) => {
@@ -100,6 +90,186 @@ describe("independent manual prescriptions", () => {
     fireEvent.click(screen.getByRole("button", { name: language === "en" ? "Standard sets" : "Reps. por serie" }));
     expect((screen.getByLabelText(language === "en" ? "Repetition count for Synthetic Climber" : "Conteo de repeticiones para Synthetic Climber") as HTMLSelectElement).value).toBe("per-side");
     fireEvent.click(screen.getByRole("button", { name: language === "en" ? "Back to routine" : "Volver a la rutina" }));
-    expect(screen.getByText(language === "en" ? "1 × 20 per side" : "1 × 20 por lado")).toBeTruthy();
+    expect(screen.getAllByText(language === "en" ? "1 × 20 per side" : "1 × 20 por lado").length).toBeGreaterThan(0);
+  });
+
+  it("handles day and block accordion collapsing and switching cleanly in edit mode", () => {
+    const mondayItem1: WorkoutItem = { id: "m1", exerciseId: exercises[0].id, sets: 3, reps: 10, day: "monday", prescriptionMode: "standard" };
+    const mondayItem2: WorkoutItem = { id: "m2", exerciseId: exercises[1].id, sets: 4, reps: 8, day: "monday", prescriptionMode: "standard" };
+    const wednesdayItem1: WorkoutItem = { id: "w1", exerciseId: exercises[2].id, sets: 3, reps: 12, day: "wednesday", prescriptionMode: "standard" };
+    const items = [mondayItem1, mondayItem2, wednesdayItem1];
+    const track: TrainingTrack = {
+      id: "track-multi",
+      name: "Multi Day Track",
+      kind: "goal",
+      focus: "strength",
+      equipment: "mixed",
+      sessionMinutes: 45,
+      daysPerWeek: 2,
+      trainingDays: ["monday", "wednesday"],
+      creationMode: "suggested",
+      workout: items,
+    };
+
+    render(
+      <WorkoutPanel
+        language="es"
+        initialMode="edit"
+        items={items}
+        exercises={exercises}
+        exerciseMap={new Map(exercises.map((ex) => [ex.id, ex]))}
+        track={track}
+        onClose={vi.fn()}
+        onUpdate={vi.fn()}
+        onUpdateItem={vi.fn()}
+        onRemove={vi.fn()}
+        onSwap={vi.fn()}
+        onClear={vi.fn()}
+        onGenerate={vi.fn()}
+        onAddStructure={vi.fn()}
+        onOpenExercise={vi.fn()}
+        onOpenProfile={vi.fn()}
+        analysis={{ tone: "ready", headline: "Headline", points: [] }}
+      />
+    );
+
+    // Verify day accordions: Monday is open by default, Wednesday is closed
+    const dayTitles = screen.getAllByRole("heading", { level: 2 });
+    const mondaySummary = screen.getAllByText("Lunes").find((el) => el.classList.contains("routine-day-title"))?.closest("summary");
+    const wednesdaySummary = screen.getAllByText("Miércoles").find((el) => el.classList.contains("routine-day-title"))?.closest("summary");
+    expect(mondaySummary).toBeTruthy();
+    expect(wednesdaySummary).toBeTruthy();
+
+    const mondayDetails = mondaySummary!.closest("details");
+    const wednesdayDetails = wednesdaySummary!.closest("details");
+    expect(mondayDetails?.hasAttribute("open")).toBe(true);
+    expect(wednesdayDetails?.hasAttribute("open")).toBe(false);
+
+    // Inside Monday: Blocks are closed by default
+    const blockA = within(mondayDetails!).getByText("Bloque A").closest("details");
+    const blockB = within(mondayDetails!).getByText("Bloque B").closest("details");
+    expect(blockA?.hasAttribute("open")).toBe(false);
+    expect(blockB?.hasAttribute("open")).toBe(false);
+
+    // Expanding Bloque A opens only Bloque A
+    const blockASummary = within(mondayDetails!).getByText("Bloque A").closest("summary");
+    fireEvent.click(blockASummary!);
+    expect(blockA?.hasAttribute("open")).toBe(true);
+    expect(blockB?.hasAttribute("open")).toBe(false);
+
+    // Clicking "Listo con este bloque" collapses Bloque A
+    const doneBlockButton = within(blockA!).getByRole("button", { name: "Listo con este bloque" });
+    fireEvent.click(doneBlockButton);
+    expect(blockA?.hasAttribute("open")).toBe(false);
+
+    // Switching to Wednesday closes Monday and opens Wednesday
+    fireEvent.click(wednesdaySummary!);
+    expect(mondayDetails?.hasAttribute("open")).toBe(false);
+    expect(wednesdayDetails?.hasAttribute("open")).toBe(true);
+
+    // Check that "+ Agregar ejercicio o bloque" is available in the open day
+    expect(within(wednesdayDetails!).getByRole("button", { name: "Agregar ejercicio o bloque" })).toBeTruthy();
+
+    // Check footer buttons
+    expect(screen.getByRole("button", { name: "Finalizar edición" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Vaciar entrenamiento" })).toBeTruthy();
+  });
+
+  it("does not display redundant day header or day picker buttons inside exercise adder when editing a day", () => {
+    const track: TrainingTrack = {
+      id: "track-test",
+      name: "Ruta",
+      kind: "goal",
+      focus: "strength",
+      equipment: "mixed",
+      sessionMinutes: 45,
+      daysPerWeek: 2,
+      trainingDays: ["monday", "tuesday"],
+      workout: [
+        { id: "item-1", exerciseId: exercises[0].id, day: "monday", sets: 3, reps: 10, prescriptionMode: "standard" },
+      ],
+    };
+
+    render(
+      <WorkoutPanel
+        language="es"
+        initialMode="edit"
+        items={track.workout}
+        exercises={exercises}
+        exerciseMap={new Map(exercises.map((ex) => [ex.id, ex]))}
+        track={track}
+        onClose={vi.fn()}
+        onUpdate={vi.fn()}
+        onUpdateItem={vi.fn()}
+        onRemove={vi.fn()}
+        onSwap={vi.fn()}
+        onClear={vi.fn()}
+        onGenerate={vi.fn()}
+        onAddStructure={vi.fn()}
+        onOpenExercise={vi.fn()}
+        onOpenProfile={vi.fn()}
+        analysis={{ tone: "ready", headline: "Headline", points: [] }}
+      />
+    );
+
+    // Open adder in Monday accordion
+    const addBtn = screen.getAllByRole("button", { name: "Agregar ejercicio o bloque" })[0];
+    fireEvent.click(addBtn);
+
+    const adder = screen.getByRole("region", { name: "Agregar ejercicios" });
+    expect(adder).toBeTruthy();
+
+    // Verify there is NO compact-day-picker inside the adder when editing a day
+    expect(adder.querySelector(".compact-day-picker")).toBeNull();
+    // Verify there is NO redundant day title inside the adder heading
+    const adderHeading = adder.querySelector(".manual-adder-heading");
+    expect(adderHeading?.querySelector("strong")).toBeNull();
+  });
+
+  it("strips leading zeroes in exercise adder prescription numeric inputs", () => {
+    render(
+      <WorkoutPanel
+        language="es"
+        initialMode="edit"
+        items={[]}
+        exercises={exercises}
+        exerciseMap={new Map(exercises.map((ex) => [ex.id, ex]))}
+        track={{
+          id: "track-test",
+          name: "Ruta",
+          kind: "goal",
+          focus: "strength",
+          equipment: "mixed",
+          sessionMinutes: 45,
+          daysPerWeek: 1,
+          trainingDays: ["monday"],
+          creationMode: "manual",
+          workout: [],
+        }}
+        onClose={vi.fn()}
+        onUpdate={vi.fn()}
+        onUpdateItem={vi.fn()}
+        onRemove={vi.fn()}
+        onSwap={vi.fn()}
+        onClear={vi.fn()}
+        onGenerate={vi.fn()}
+        onAddStructure={vi.fn()}
+        onOpenExercise={vi.fn()}
+        onOpenProfile={vi.fn()}
+        analysis={{ tone: "ready", headline: "Headline", points: [] }}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Monoserie" }));
+    fireEvent.click(screen.getByRole("button", { name: "Seleccionar Synthetic Press como ejercicio 1" }));
+    fireEvent.click(screen.getByRole("button", { name: "Configurar series y repeticiones" }));
+
+    const repsInput = screen.getByLabelText("Repeticiones") as HTMLInputElement;
+    fireEvent.change(repsInput, { target: { value: "030" } });
+    expect(repsInput.value).toBe("30");
+
+    const setsInput = screen.getByLabelText("Series") as HTMLInputElement;
+    fireEvent.change(setsInput, { target: { value: "04" } });
+    expect(setsInput.value).toBe("4");
   });
 });

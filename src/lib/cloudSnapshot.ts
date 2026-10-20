@@ -315,11 +315,53 @@ export function outboundSnapshot(snapshot: RepbookCloudSnapshot, policy: Sensiti
   return policy.consentGranted ? snapshot : withholdSensitiveData(snapshot);
 }
 
+export function reconcileTracks(localTracks: TrainingTrack[], remoteTracks: TrainingTrack[]): TrainingTrack[] {
+  if (!remoteTracks || !remoteTracks.length) return localTracks ?? [];
+  if (!localTracks || !localTracks.length) return remoteTracks;
+
+  const remoteTrackMap = new Map(remoteTracks.map((t) => [t.id, t]));
+  const reconciled: TrainingTrack[] = [];
+
+  for (const localTrack of localTracks) {
+    const remoteTrack = remoteTrackMap.get(localTrack.id);
+    if (!remoteTrack) {
+      reconciled.push(localTrack);
+    } else {
+      const remoteIds = new Set((remoteTrack.workout ?? []).map((item) => item.id ?? item.exerciseId));
+      const unsyncedLocalItems = (localTrack.workout ?? []).filter((item) => !remoteIds.has(item.id ?? item.exerciseId));
+
+      if (unsyncedLocalItems.length === 0 && (!localTrack.trainingDays || localTrack.trainingDays.every((d) => remoteTrack.trainingDays?.includes(d)))) {
+        reconciled.push(remoteTrack);
+      } else {
+        const combinedWorkout = unsyncedLocalItems.length > 0
+          ? [...(remoteTrack.workout ?? []), ...unsyncedLocalItems]
+          : (remoteTrack.workout ?? []);
+        const usedDays = combinedWorkout.map((w) => w.day ?? "monday");
+        const trainingDays = Array.from(new Set([...(remoteTrack.trainingDays ?? localTrack.trainingDays ?? []), ...usedDays]));
+        reconciled.push({
+          ...remoteTrack,
+          trainingDays,
+          workout: combinedWorkout,
+          dayLabels: { ...(remoteTrack.dayLabels ?? {}), ...(localTrack.dayLabels ?? {}) },
+        });
+      }
+      remoteTrackMap.delete(localTrack.id);
+    }
+  }
+
+  for (const remainingRemoteTrack of remoteTrackMap.values()) {
+    reconciled.push(remainingRemoteTrack);
+  }
+
+  return reconciled;
+}
+
 /**
  * How a remote snapshot is applied on this device. Without consent the server never holds sensitive data, so the
  * device keeps its own. With consent the remote wins, unless it carries no sensitive data while the device does, or
  * it would downgrade a personalized device to basic mode: such a remote was written while consent was withheld and
  * must not erase the person's local health data nor their authorization just given.
+ * In all cases, tracks are merged so unsynced local exercises and routes are never wiped out by stale remote rows.
  */
 export function reconcileRemoteSnapshot(
   local: RepbookCloudSnapshot,
@@ -330,9 +372,18 @@ export function reconcileRemoteSnapshot(
   const downgradesMode = local.healthProfile.healthDataMode === "personalized" && remote.healthProfile.healthDataMode !== "personalized";
   const keepLocalSensitiveData = !policy.consentGranted
     || (remoteWithoutData && (carriesSensitiveData(local) || downgradesMode));
-  if (!keepLocalSensitiveData) return remote;
+
+  const reconciledTracks = reconcileTracks(local.tracks ?? [], remote.tracks ?? []);
+
+  if (!keepLocalSensitiveData) {
+    return {
+      ...remote,
+      tracks: reconciledTracks,
+    };
+  }
   return {
     ...remote,
+    tracks: reconciledTracks,
     healthProfile: { ...remote.healthProfile, ...sensitiveProjection(local.healthProfile), healthDataMode: local.healthProfile.healthDataMode },
     checkIns: local.checkIns,
   };
@@ -368,6 +419,49 @@ export function normalizeRepbookSnapshot(
   return valid ? candidate as unknown as RepbookCloudSnapshot : fallback;
 }
 
+export const DEFAULT_HEALTH_PROFILE: HealthProfile = {
+  onboardingCompleted: false,
+  primaryGoal: "strength",
+  equipmentPreference: "mixed",
+  trainingDaysPerWeek: 3,
+  sessionMinutes: 45,
+  birthDate: "",
+  ageYears: null,
+  metabolicSex: "unspecified",
+  heightCm: null,
+  currentWeightKg: null,
+  targetWeightKg: null,
+  waistCm: null,
+  activityLevel: "moderate",
+  experience: "beginner",
+  dietaryPattern: "omnivore",
+  nutritionPlanMode: "simple",
+  macroMealsPerDay: 4,
+  allergies: "",
+  healthNotes: "",
+  readinessScreen: {
+    confirmed: false,
+    chestPain: false,
+    dizzinessOrFainting: false,
+    medicallySupervisedOnly: false,
+    musculoskeletalConcern: false,
+  },
+  limitations: [],
+};
+
+export function createEmptyUserSnapshot(language: LanguageCode, profileName = ""): RepbookCloudSnapshot {
+  return createRepbookSnapshot({
+    profileName,
+    language,
+    favoriteIds: [],
+    tracks: [],
+    activeTrackId: "",
+    healthProfile: DEFAULT_HEALTH_PROFILE,
+    checkIns: [],
+    tracksInitialized: false,
+  });
+}
+
 export function selectBootstrapSnapshot(
   local: RepbookCloudSnapshot,
   remote: RepbookCloudSnapshot | null,
@@ -376,3 +470,4 @@ export function selectBootstrapSnapshot(
     ? { action: "use-remote", snapshot: remote }
     : { action: "upload-local", snapshot: local };
 }
+

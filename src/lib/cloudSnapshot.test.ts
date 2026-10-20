@@ -348,4 +348,34 @@ describe("sensitive health data and consent (SDD-011 H-02)", () => {
     const emptyDevice = { ...local, healthProfile: withholdSensitiveData(local).healthProfile, checkIns: [] };
     expect(reconcileRemoteSnapshot(emptyDevice, strippedRemote, policy(true))).toEqual(strippedRemote);
   });
+
+  it("preserves unsynced local workout items and days when reconciling remote tracks", () => {
+    const localTrack: TrainingTrack = {
+      id: "track-1",
+      name: "Mi ruta",
+      kind: "goal",
+      focus: "strength",
+      equipment: "mixed",
+      sessionMinutes: 45,
+      daysPerWeek: 3,
+      trainingDays: ["monday", "tuesday"],
+      workout: [
+        { id: "item-1", exerciseId: "0001", day: "monday", sets: 3, reps: 10, setPlan: "3 × 10", prescriptionMode: "standard" },
+        { id: "item-2", exerciseId: "0002", day: "tuesday", sets: 3, reps: 12, setPlan: "3 × 12", prescriptionMode: "standard" },
+      ],
+    };
+    const staleRemoteTrack: TrainingTrack = {
+      ...localTrack,
+      trainingDays: ["monday"],
+      workout: [
+        { id: "item-1", exerciseId: "0001", day: "monday", sets: 3, reps: 10, setPlan: "3 × 10", prescriptionMode: "standard" },
+      ],
+    };
+    const localSnapshot = { ...local, tracks: [localTrack] };
+    const remoteSnapshot = { ...local, tracks: [staleRemoteTrack] };
+    const reconciled = reconcileRemoteSnapshot(localSnapshot, remoteSnapshot, policy(true));
+    expect(reconciled.tracks[0].workout).toHaveLength(2);
+    expect(reconciled.tracks[0].workout.map((w) => w.day)).toEqual(["monday", "tuesday"]);
+    expect(reconciled.tracks[0].trainingDays).toContain("tuesday");
+  });
 });

@@ -37,14 +37,14 @@ describe("signed-out home", () => {
     render(<App />);
 
     expect(screen.getByRole("button", { name: "Navegación de Aunara" })).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Inicio" })).toBeTruthy();
+    expect(screen.queryByRole("link", { name: "Inicio" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Ingresar" })).toBeNull();
-    expect(screen.queryByLabelText("Idioma")).toBeNull();
+    expect(screen.getByRole("button", { name: "Cambiar a inglés" })).toBeTruthy();
     const row = document.querySelector(".site-header .shared-navigation")!;
     expect(row.lastElementChild).toBe(screen.getByRole("button", { name: "Abrir navegación" }));
     fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
     expect(screen.getByRole("button", { name: "Ingresar / crear cuenta" })).toBeTruthy();
-    expect(screen.getByLabelText("Idioma")).toBeTruthy();
+    expect(screen.queryByLabelText("Idioma")).toBeNull();
     expect(screen.queryByRole("button", { name: "Idioma / configuración" })).toBeNull();
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("button", { name: "Sign up" })).toBeNull();
@@ -58,23 +58,16 @@ describe("signed-out home", () => {
   it("uses Spanish as the default instruction language", () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    expect((screen.getByLabelText("Idioma") as HTMLSelectElement).value).toBe("es");
-    expect(screen.getByRole("option", { name: "ES" })).toBeTruthy();
-    expect(screen.getByRole("option", { name: "EN" })).toBeTruthy();
-    expect(screen.getAllByRole("option")).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Cambiar a inglés" }).textContent?.trim()).toBe("ES");
     expect(screen.getByRole("heading", { name: /Un cuerpo preparado.*para todo lo que te importa/i })).toBeTruthy();
   });
 
-  it("changes the public interface to English from inside the menu", () => {
+  it("changes the public interface to English via the header language toggle", () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Abrir navegación" }));
-    fireEvent.change(screen.getByLabelText("Idioma"), { target: { value: "en" } });
+    fireEvent.click(screen.getByRole("button", { name: "Cambiar a inglés" }));
 
-    expect(screen.getByRole("dialog", { name: "Navigation" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Login / create account" })).toBeTruthy();
-    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.getByRole("button", { name: "Switch to Spanish" }).textContent?.trim()).toBe("EN");
     expect(screen.getByRole("heading", { name: /A body ready.*for what matters most/i })).toBeTruthy();
   });
 

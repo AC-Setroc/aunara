@@ -9,11 +9,13 @@ interface NavigationMenuProps {
   entries: { label: string; action: () => void }[];
   /** Header controls rendered between the logo and the hamburger (the hamburger stays the last control). */
   controls?: ReactNode;
-  /** Controls that live inside the menu panel, before the destinations (e.g. the language selector). */
+  /** Controls that live inside the menu panel, before the destinations. */
   panelContent?: ReactNode;
+  /** Single click toggle for language in header banner. */
+  onToggleLanguage?: () => void;
 }
 
-export function NavigationMenu({ language, entries, controls, panelContent }: NavigationMenuProps) {
+export function NavigationMenu({ language, entries, controls, panelContent, onToggleLanguage }: NavigationMenuProps) {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement | null>(null);
   const panel_ = useRef<HTMLDivElement>(null);
@@ -63,6 +65,16 @@ export function NavigationMenu({ language, entries, controls, panelContent }: Na
       <img className="brand-symbol" src={`${import.meta.env.BASE_URL}brand/aunara-symbol.svg`} alt="" aria-hidden="true" />
     </button>
     {controls}
+    {onToggleLanguage && (
+      <button
+        className="header-language-toggle"
+        type="button"
+        onClick={onToggleLanguage}
+        aria-label={tr(language, "Switch to Spanish", "Cambiar a inglés")}
+      >
+        {language.toUpperCase()}
+      </button>
+    )}
     <button className="navigation-trigger" type="button" aria-label={tr(language, "Open navigation", "Abrir navegación")} aria-expanded={open} aria-controls="aunara-navigation" onClick={(event) => toggle(event.currentTarget)}><Menu size={22} /></button>
     {panel}
   </div>;

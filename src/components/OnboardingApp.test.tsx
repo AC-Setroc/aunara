@@ -3,12 +3,19 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+let mockOnboardingCompleted = false;
+
 vi.mock("../hooks/useCloudSync", () => ({
   useCloudSync: () => ({
     configured: true,
     email: "new-athlete@example.com",
     status: "synced",
     healthDataConsent: "granted",
+    get onboardingCompleted() { return mockOnboardingCompleted; },
+    completeOnboarding: vi.fn().mockImplementation(() => {
+      mockOnboardingCompleted = true;
+      return Promise.resolve();
+    }),
     pendingVerification: null,
     createAccount: vi.fn(),
     verifyAccount: vi.fn(),
@@ -40,6 +47,7 @@ const exercise = {
 
 beforeEach(() => {
   localStorage.clear();
+  mockOnboardingCompleted = false;
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
     ok: true,
     json: vi.fn().mockResolvedValue([exercise]),
@@ -84,7 +92,7 @@ describe("mandatory starting profile", () => {
 
     expect(await screen.findByRole("dialog", { name: "Revisá tu primera rutina" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Aceptar rutina" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Aceptar y editar" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Editar" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Rechazar propuesta" })).toBeTruthy();
     expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useStoredState<T>(key: string, initialValue: T) {
   const [value, setValue] = useState<T>(() => {
@@ -10,6 +10,18 @@ export function useStoredState<T>(key: string, initialValue: T) {
     }
   });
 
+  const setStoredValue = useCallback((action: React.SetStateAction<T>) => {
+    setValue((current) => {
+      const next = typeof action === "function" ? (action as (prev: T) => T)(current) : action;
+      try {
+        window.localStorage.setItem(key, JSON.stringify(next));
+      } catch {
+        // Keep the current visit's React state when persistence is unavailable.
+      }
+      return next;
+    });
+  }, [key]);
+
   useEffect(() => {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
@@ -18,5 +30,5 @@ export function useStoredState<T>(key: string, initialValue: T) {
     }
   }, [key, value]);
 
-  return [value, setValue] as const;
+  return [value, setStoredValue] as const;
 }

@@ -184,14 +184,14 @@ export function InitialRoutineProposal({
         <p className="initial-proposal-note">
           {tr(
             language,
-            "You can accept it as is, accept it and edit every movement, or reject it and create another route later.",
-            "Podés aceptarla tal como está, aceptarla y editar cada movimiento, o rechazarla y crear otra ruta después.",
+            "You can accept it as is, edit every movement, or reject it and create another route later.",
+            "Podés aceptarla tal como está, editar cada movimiento, o rechazarla y crear otra ruta después.",
           )}
         </p>
 
         <div className="initial-proposal-actions">
           <button type="button" className="is-secondary" onClick={onReject}><X size={16} /> {tr(language, "Reject proposal", "Rechazar propuesta")}</button>
-          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Accept and edit", "Aceptar y editar")}</button>
+          <button type="button" className="is-secondary" onClick={onEdit} disabled={blocked}><Pencil size={16} /> {tr(language, "Edit", "Editar")}</button>
           <button type="button" className="is-primary" onClick={onAccept} disabled={blocked}><ShieldCheck size={16} /> {tr(language, "Accept routine", "Aceptar rutina")}</button>
         </div>
       </section>

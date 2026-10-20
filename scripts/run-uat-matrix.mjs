@@ -62,6 +62,12 @@ async function runUATForEngine(engineName, engine) {
     } else {
       logFail("1b. Wordmark en cabecera móvil", "El wordmark está oculto en la cabecera móvil");
     }
+    const principleText = await page.$eval(".hero-note span", el => el.textContent).catch(() => null);
+    if (principleText && principleText.trim() === "PRINCIPIO AUNARA" && !principleText.includes("01")) {
+      logPass("1c. Principio Aunara sin / 01", `El texto es exactamente '${principleText.trim()}' sin '/ 01'`);
+    } else {
+      logFail("1c. Principio Aunara sin / 01", `El texto es '${principleText}'`);
+    }
     await page.screenshot({ path: join(evidenceDir, `${engineName}-01-landing-guest.png`) });
 
     // 2. Menú de navegación simétrico y selector de idioma segmentado
@@ -84,11 +90,12 @@ async function runUATForEngine(engineName, engine) {
       logFail("2b. Menú de invitado sin rutas", "Se detectó opción de rutas en el menú de invitado");
     }
 
-    const langToggle = await page.$(".language-toggle");
+    const langToggle = await page.$(".header-language-toggle");
     if (langToggle) {
-      logPass("2c. Botón de idioma de un solo clic", "El selector de idioma es un botón de un solo clic (.language-toggle)");
+      const txt = await langToggle.textContent();
+      logPass("2c. Botón de idioma en banner", `Ubicado a la izquierda del menú de hamburguesa, muestra '${txt?.trim()}' (.header-language-toggle)`);
     } else {
-      logFail("2c. Botón de idioma de un solo clic", "No se encontró el botón de idioma (.language-toggle)");
+      logFail("2c. Botón de idioma en banner", "No se encontró el botón .header-language-toggle en el banner");
     }
     await page.screenshot({ path: join(evidenceDir, `${engineName}-02-drawer-menu.png`) });
 
@@ -125,6 +132,38 @@ async function runUATForEngine(engineName, engine) {
       logFail("4a. Login sin sección de instalación", "Se detectó la guía de instalación en el panel de autenticación");
     }
 
+    const cloudKicker = await page.$eval(".section-kicker", el => el.textContent).catch(() => null);
+    if (cloudKicker && !cloudKicker.includes("01")) {
+      logPass("4b. Kicker Cuenta en la nube sin 01", `El kicker es '${cloudKicker.trim()}' sin numeración '01 /'`);
+    } else {
+      logFail("4b. Kicker Cuenta en la nube sin 01", `El kicker contiene: '${cloudKicker}'`);
+    }
+
+    const hasListoBtn = await page.$(".access-panel button:has-text('Listo'), .profile-done");
+    if (!hasListoBtn) {
+      logPass("4c. Ausencia de botón Listo al pie", "No existe botón 'Listo' al pie del panel de acceso");
+    } else {
+      logFail("4c. Ausencia de botón Listo al pie", "Se encontró botón 'Listo' al pie del modal");
+    }
+
+    const createModeBtn = await page.$("button:has-text('Crear cuenta')");
+    if (createModeBtn) {
+      await createModeBtn.click();
+      await page.waitForTimeout(300);
+      const optionalBoxBorder = await page.evaluate(() => {
+        const span = document.querySelector(".optional-health-consent span");
+        if (!span) return null;
+        const style = window.getComputedStyle(span);
+        return { border: style.border, display: style.display, height: style.height };
+      });
+      if (optionalBoxBorder && (optionalBoxBorder.border.includes("none") || optionalBoxBorder.border.startsWith("0px"))) {
+        logPass("4d. Texto de salud opcional sin recuadro", "El texto opcional de salud no tiene recuadro/borde artificial");
+      } else {
+        logFail("4d. Texto de salud opcional sin recuadro", `Borde detectado: ${JSON.stringify(optionalBoxBorder)}`);
+      }
+      await page.screenshot({ path: join(evidenceDir, `${engineName}-04-create-unboxed.png`) });
+    }
+
     const alreadyHaveAccountBtn = await page.waitForSelector("button:has-text('Ya tengo una cuenta')", { timeout: 3000 });
     await alreadyHaveAccountBtn.click();
     await page.waitForTimeout(300);
@@ -133,9 +172,9 @@ async function runUATForEngine(engineName, engine) {
     await emailInput.fill("  UsuarioPrueba@Dominio.COM  ");
     const emailVal = await emailInput.inputValue();
     if (emailVal === "usuarioprueba@dominio.com") {
-      logPass("4. Correo forzado a minúsculas", `El input normalizó automáticamente '${emailVal}'`);
+      logPass("4e. Correo forzado a minúsculas", `El input normalizó automáticamente '${emailVal}'`);
     } else {
-      logFail("4. Correo forzado a minúsculas", `El valor quedó '${emailVal}'`);
+      logFail("4e. Correo forzado a minúsculas", `El valor quedó '${emailVal}'`);
     }
 
     const passwordInput = await page.waitForSelector("input[type='password']", { timeout: 3000 });
@@ -155,6 +194,23 @@ async function runUATForEngine(engineName, engine) {
       logPass("5. Validación login", "El flujo de autenticación procesó el intento");
     }
     await page.screenshot({ path: join(evidenceDir, `${engineName}-05-login-error-actions.png`) });
+
+    // 5b. Al hacer clic en 'creá tu cuenta', abre el formulario de registro con el correo prellenado y sin pantalla de verificación pendiente
+    const createFromErrorBtn = await page.$(".auth-recovery-action:has-text('creá tu cuenta')");
+    if (createFromErrorBtn) {
+      await createFromErrorBtn.click();
+      await page.waitForTimeout(400);
+      const nameInput = await page.$("input[autocomplete='name']");
+      const emailInCreate = await page.$eval("input[inputmode='email']", el => el.value).catch(() => "");
+      const isCreateFormVisible = Boolean(nameInput);
+      const isNotVerificationScreen = !(await page.$(".account-verification"));
+      if (isCreateFormVisible && isNotVerificationScreen && emailInCreate === "usuarioprueba@dominio.com") {
+        logPass("5b. Transición a crear cuenta desde error", `Abre el formulario de registro con correo prellenado '${emailInCreate}' sin bloquear por verificación previa`);
+      } else {
+        logFail("5b. Transición a crear cuenta desde error", `Visible: ${isCreateFormVisible}, NoVerif: ${isNotVerificationScreen}, Email: '${emailInCreate}'`);
+      }
+      await page.screenshot({ path: join(evidenceDir, `${engineName}-05b-create-from-error.png`) });
+    }
 
     // Cerrar panel de login
     const closeAccess = await page.waitForSelector(".access-heading .close-button, .access-panel .close-button", { timeout: 3000 });

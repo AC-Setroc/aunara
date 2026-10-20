@@ -3,6 +3,7 @@ import {
   Bot,
   Check,
   Cloud,
+  CloudOff,
   Download,
   Eye,
   EyeOff,
@@ -32,6 +33,8 @@ export interface CloudAccessState {
   existingAccountEmail?: string | null;
   passwordRecoveryState?: "requested" | "ready" | null;
   healthDataConsent?: HealthDataConsentStatus | null;
+  syncDisabled?: boolean;
+  onboardingCompleted?: boolean;
 }
 
 export interface CreateAccountInput {
@@ -48,7 +51,7 @@ export interface VerifyAccountInput {
 }
 
 export interface PendingVerification {
-  name: string;
+  name?: string;
   email: string;
 }
 
@@ -64,6 +67,7 @@ interface AccessPanelProps {
   onVerifyAccount?: (input: VerifyAccountInput) => void;
   onResendVerification?: (email: string) => void;
   onUseExistingAccount?: () => void;
+  onClearPendingVerification?: () => void;
   onClearAuthError?: () => void;
   onRequestPasswordReset?: (email: string) => void;
   onUpdatePassword?: (password: string) => void;
@@ -77,6 +81,7 @@ interface AccessPanelProps {
   onEditData?: () => void;
   onChangeHealthConsent?: (status: HealthDataConsentStatus) => void;
   onDeleteData?: () => void;
+  onResumeSync?: () => void;
   onDeleteAccount?: () => void;
   dataSummary?: { profile: boolean; routes: number; favorites: number; checkIns: number; health: boolean };
 }
@@ -106,6 +111,7 @@ export function AccessPanel({
   onCreateAccount,
   onResendVerification,
   onUseExistingAccount,
+  onClearPendingVerification,
   onClearAuthError,
   onRequestPasswordReset,
   onUpdatePassword,
@@ -119,10 +125,14 @@ export function AccessPanel({
   onEditData,
   onChangeHealthConsent,
   onDeleteData,
+  onResumeSync,
   onDeleteAccount,
   dataSummary,
 }: AccessPanelProps) {
   const [mode, setMode] = useState<AccessMode>(initialMode);
+  useEffect(() => {
+    setMode(initialMode);
+  }, [initialMode]);
   const [name, setName] = useState(() => {
     const normalizedProfileName = profileName.trim().toLocaleLowerCase();
     return normalizedProfileName === "my profile" || normalizedProfileName === "mi perfil"
@@ -154,7 +164,10 @@ export function AccessPanel({
   }
 
   function changeMode(nextMode: AccessMode) {
-    if (nextMode === mode) return;
+    if (nextMode === "create") {
+      onClearPendingVerification?.();
+    }
+    if (nextMode === mode && (!cloud.pendingVerification || nextMode !== "create")) return;
     setMode(nextMode);
     setEmailInvalid(false);
     onClearAuthError?.();
@@ -287,7 +300,9 @@ export function AccessPanel({
         ) : (
           <>
         <div className="access-heading">
-          <div className="access-mark"><Cloud size={25} /></div>
+          <div className={`access-mark ${cloud.healthDataConsent === "granted" && !cloud.syncDisabled ? "is-synced" : "is-disconnected"}`}>
+            {cloud.healthDataConsent === "granted" && !cloud.syncDisabled ? <Cloud size={25} /> : <CloudOff size={25} />}
+          </div>
           <div>
             <p className="eyebrow">{tr(language, "Private account / any device", "Cuenta privada / cualquier dispositivo")}</p>
             <h2>{tr(language, "Use Aunara anywhere", "Usá Aunara donde querás")}</h2>
@@ -296,7 +311,7 @@ export function AccessPanel({
         </div>
 
         <section className="access-section" aria-labelledby="cloud-access-title">
-          <p className="section-kicker">{tr(language, "01 / Cloud account", "01 / Cuenta en la nube")}</p>
+          <p className="section-kicker">{tr(language, "Cloud account", "Cuenta en la nube")}</p>
           <h3 id="cloud-access-title">{tr(language, "Your data follows your sign-in.", "Tus datos viajan con tu cuenta.")}</h3>
           {!cloud.configured ? (
             <div className="access-status is-local">
@@ -394,11 +409,11 @@ export function AccessPanel({
               {emailInvalid && <small id="access-email-error" className="access-message is-error" role="alert">{tr(language, "Enter a complete public email address, such as you@example.com, without spaces.", "Ingresá un correo público completo, como vos@example.com, sin espacios.")}</small>}
               {accessMessage && <small className={`access-message is-${cloud.status}`} role="status">{accessMessage}</small>}
             </div>
-          ) : cloud.pendingVerification ? (
+          ) : (mode === "create" && cloud.pendingVerification) ? (
             <div className="access-login account-verification">
               <div className="verification-account">
                 <span>{tr(language, "Account created for", "Cuenta creada para")}</span>
-                <strong>{cloud.pendingVerification.name}</strong>
+                {cloud.pendingVerification.name && <strong>{cloud.pendingVerification.name}</strong>}
                 <small>{cloud.pendingVerification.email}</small>
               </div>
               <p>{tr(
@@ -414,6 +429,31 @@ export function AccessPanel({
               >
                 {tr(language, "Resend confirmation email", "Reenviar correo de confirmación")}
               </button>
+              <div className="verification-actions">
+                <button
+                  className="verification-action-primary"
+                  type="button"
+                  onClick={() => {
+                    const verifiedEmail = cloud.pendingVerification?.email ?? "";
+                    onClearPendingVerification?.();
+                    if (verifiedEmail) setEmail(verifiedEmail);
+                    changeMode("sign-in");
+                  }}
+                >
+                  {tr(language, "Already confirmed your email? Sign in here", "¿Ya confirmaste tu correo? Ingresá acá")}
+                </button>
+                <button
+                  className="verification-action-secondary"
+                  type="button"
+                  onClick={() => {
+                    onClearPendingVerification?.();
+                    setEmail("");
+                    changeMode("create");
+                  }}
+                >
+                  {tr(language, "Register with a different email", "Registrarme con otro correo")}
+                </button>
+              </div>
               {cloud.message && <small className={`access-message is-${cloud.status}`}>{cloud.message}</small>}
             </div>
           ) : (
@@ -464,7 +504,7 @@ export function AccessPanel({
                     <span>{tr(language, "I accept the", "Acepto los")}</span>
                     <button type="button" onClick={() => onOpenLegal?.("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
                     <span>{tr(language, "and confirm I read the", "y confirmo que leí la")}</span>
-                    <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>.
+                    <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
                   </label>
                   <label className="optional-health-consent">
                     <input
@@ -515,7 +555,7 @@ export function AccessPanel({
 
         {cloud.email && (
           <section className="access-section privacy-center" aria-labelledby="privacy-center-title">
-            <p className="section-kicker">{tr(language, "02 / Privacy center", "02 / Centro de privacidad")}</p>
+            <p className="section-kicker">{tr(language, "Privacy center", "Centro de privacidad")}</p>
             <h3 id="privacy-center-title">{tr(language, "Your data. Your decisions.", "Tus datos. Tus decisiones.")}</h3>
             <div className="privacy-summary" aria-label={tr(language, "Stored data summary", "Resumen de datos guardados")}>
               <strong>{tr(language, "Stored in your own context", "Guardado en tu propio contexto")}</strong>
@@ -526,7 +566,7 @@ export function AccessPanel({
                 {Boolean(dataSummary?.checkIns) && <li>{tr(language, "Weekly check-ins", "Registros semanales")}: {dataSummary?.checkIns}</li>}
                 {dataSummary?.health && cloud.healthDataConsent === "granted" && <li>{tr(language, "Authorized health context", "Contexto de salud autorizado")}</li>}
               </ul>
-              <p>{statusLabel(language, cloud.status)}. {tr(language, "This device stores your working copy; configured account synchronization can store it in the cloud.", "Este dispositivo guarda tu copia de trabajo; la sincronización de la cuenta configurada puede guardarla en la nube.")}</p>
+              <p>{cloud.syncDisabled ? tr(language, "Cloud sync is disabled on this device", "Sincronización en la nube desactivada en este dispositivo") : statusLabel(language, cloud.status)}. {tr(language, "This device stores your working copy; configured account synchronization can store it in the cloud.", "Este dispositivo guarda tu copia de trabajo; la sincronización de la cuenta configurada puede guardarla en la nube.")}</p>
               <p>{cloud.healthDataConsent === "granted" ? tr(language, "Health authorization: granted", "Autorización de salud: otorgada") : tr(language, "Health authorization: not granted", "Autorización de salud: no otorgada")}</p>
             </div>
             <p>{tr(
@@ -542,7 +582,11 @@ export function AccessPanel({
               ) : (
                 <button type="button" onClick={() => onChangeHealthConsent?.("granted")}><Check size={16} /> {tr(language, "Authorize health-data use", "Autorizar uso de datos de salud")}</button>
               )}
-              <button className="is-danger" type="button" onClick={onDeleteData}><Trash2 size={16} /> {tr(language, "Delete my stored data", "Eliminar mis datos guardados")}</button>
+              {cloud.syncDisabled ? (
+                <button type="button" onClick={onResumeSync}><Cloud size={16} /> {tr(language, "Resume cloud sync", "Reanudar sincronización")}</button>
+              ) : (
+                <button className="is-danger" type="button" onClick={onDeleteData}><Trash2 size={16} /> {tr(language, "Delete my stored data", "Eliminar mis datos guardados")}</button>
+              )}
             </div>
             <button ref={deletionTrigger} className="account-deletion-trigger" type="button" onClick={() => { setDeleteSubmitted(false); setDeleteOpen(true); }}>{tr(language, "Delete account permanently", "Eliminar cuenta permanentemente")}</button>
             {deleteOpen && <div className="account-deletion-backdrop">
@@ -576,33 +620,11 @@ export function AccessPanel({
           </section>
         )}
 
-        {(Boolean(cloud.email) || !cloud.configured) && installGuide !== "installed" && (
-          <section className="access-section" aria-labelledby="install-title">
-            <p className="section-kicker">{tr(language, cloud.email ? "03 / Install" : "02 / Install", cloud.email ? "03 / Instalación" : "02 / Instalación")}</p>
-            <h3 id="install-title">{tr(language, "One app. Both phones.", "Una app para ambos teléfonos.")}</h3>
-            {onInstall && (
-              <button className="install-action" type="button" onClick={onInstall}><Download size={17} /> {tr(language, "Install Aunara now", "Instalar Aunara ahora")}</button>
-            )}
-            <div className="install-guides">
-              <article className={installGuide === "android" ? "is-current" : ""}>
-                <Bot size={20} />
-                <div><strong>Android</strong><p>{tr(language, "Open Aunara in Chrome, tap the menu, then choose “Install app” or “Add to Home screen”.", "Abrí Aunara en Chrome, tocá el menú y elegí “Instalar aplicación” o “Agregar a pantalla principal”.")}</p></div>
-              </article>
-              <article className={installGuide === "ios" ? "is-current" : ""}>
-                <Apple size={20} />
-                <div><strong>iPhone</strong><p>{tr(language, "Open Aunara in Safari, tap Share, then choose “Add to Home Screen”.", "Abrí Aunara en Safari, tocá Compartir y elegí “Agregar a pantalla de inicio”.")}</p></div>
-              </article>
-            </div>
-            {installGuide === "desktop" && <p>{tr(language, "On desktop, look for an install action in your browser menu or address bar. Availability depends on the browser. If absent, keep using Aunara in this tab. Installation does not guarantee all content is available offline.", "En escritorio, buscá la opción de instalar en el menú o la barra de tu navegador. Depende del navegador. Si no aparece, podés seguir usando Aunara en esta pestaña. Instalar no garantiza que todo el contenido esté disponible sin conexión.")}</p>}
-          </section>
-        )}
-
         <p className="access-privacy">{tr(language, "Health information stays private to the signed-in account. Aunara never uses the public exercise library to expose personal data.", "Tu información de salud permanece privada en tu cuenta. Aunara nunca usa la biblioteca pública de ejercicios para exponer datos personales.")}</p>
         <div className="access-legal-links">
           <button type="button" onClick={() => onOpenLegal?.("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
           <button type="button" onClick={() => onOpenLegal?.("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
         </div>
-        <button className="profile-done" type="button" onClick={onClose}>{tr(language, "Done", "Listo")}</button>
         </>
         )}
       </aside>

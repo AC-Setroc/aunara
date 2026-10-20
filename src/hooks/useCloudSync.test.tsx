@@ -19,7 +19,7 @@ const { signUp, signInWithPassword, signOut, verifyOtp, resend, resetPasswordFor
 
 const { load, save } = vi.hoisted(() => ({ load: vi.fn(), save: vi.fn() }));
 vi.mock("../lib/cloudStore", () => ({
-  createCloudStore: () => ({ load, save, recordConsent: vi.fn().mockResolvedValue(undefined) }),
+  createCloudStore: () => ({ load, save, recordConsent: vi.fn().mockResolvedValue(undefined), remove: vi.fn().mockResolvedValue(undefined) }),
 }));
 
 let authStateHandler: ((event: string, session: any) => void) | undefined;
@@ -162,6 +162,7 @@ describe("verified recovery around mount", () => {
 });
 
 beforeEach(() => {
+  localStorage.clear();
   passwordRecoverySignalFor(testClient).clear();
   vi.clearAllMocks();
   authStateHandler = undefined;
@@ -684,5 +685,79 @@ describe("password account access", () => {
 
     expect(invoke).toHaveBeenCalledWith("delete-my-account");
     expect(onSignedOut).toHaveBeenCalledOnce();
+  });
+
+  it("marks onboarding completed in auth user metadata", async () => {
+    const authenticatedClient = {
+      ...testClient,
+      auth: {
+        ...testClient.auth,
+        getSession: vi.fn().mockResolvedValue({
+          data: { session: { user: { id: "user-1", email: "alejandro@example.com", user_metadata: { onboarding_completed: false } } } },
+        }),
+      },
+    } as unknown as NonNullable<typeof supabaseClient>;
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: authenticatedClient,
+    }));
+
+    await waitFor(() => expect(result.current.email).toBe("alejandro@example.com"));
+    expect(result.current.onboardingCompleted).toBe(false);
+
+    updateUser.mockResolvedValueOnce({
+      data: { user: { id: "user-1", email: "alejandro@example.com", user_metadata: { onboarding_completed: true } } },
+      error: null,
+    });
+    await act(() => result.current.completeOnboarding());
+
+    expect(updateUser).toHaveBeenCalledWith(expect.objectContaining({
+      data: expect.objectContaining({ onboarding_completed: true }),
+    }));
+    expect(result.current.onboardingCompleted).toBe(true);
+  });
+
+  it("manages syncDisabled lifecycle: deleteStoredData disables, resumeSync and signIn re-enable", async () => {
+    const authenticatedClient = {
+      ...testClient,
+      auth: {
+        ...testClient.auth,
+        getSession: vi.fn().mockResolvedValue({
+          data: { session: { user: { id: "user-sync", email: "sync@example.com", user_metadata: {} } } },
+          error: null,
+        }),
+        updateUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+        signInWithPassword: vi.fn().mockResolvedValue({
+          data: { user: { id: "user-sync", email: "sync@example.com" }, session: {} },
+          error: null,
+        }),
+      },
+    } as unknown as NonNullable<typeof supabaseClient>;
+
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: vi.fn(),
+      client: authenticatedClient,
+    }));
+
+    await waitFor(() => expect(result.current.email).toBe("sync@example.com"));
+    expect(result.current.syncDisabled).toBe(false);
+
+    await act(() => result.current.deleteStoredData());
+    expect(result.current.syncDisabled).toBe(true);
+    expect(localStorage.getItem("aunara-sync-disabled")).toBe("true");
+
+    await act(() => result.current.resumeSync());
+    expect(result.current.syncDisabled).toBe(false);
+    expect(localStorage.getItem("aunara-sync-disabled")).toBeNull();
+
+    // Re-disable, then test signIn resets it
+    await act(() => result.current.deleteStoredData());
+    expect(result.current.syncDisabled).toBe(true);
+
+    await act(() => result.current.signIn({ email: "sync@example.com", password: "Password123!" }));
+    expect(result.current.syncDisabled).toBe(false);
+    expect(localStorage.getItem("aunara-sync-disabled")).toBeNull();
   });
 });

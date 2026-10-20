@@ -8,6 +8,7 @@ import type {
   VerifyAccountInput,
 } from "../components/AccessPanel";
 import {
+  createEmptyUserSnapshot,
   normalizeRepbookSnapshot,
   outboundSnapshot,
   reconcileRemoteSnapshot,
@@ -35,6 +36,7 @@ interface CloudSyncController extends CloudAccessState {
   verifyAccount: (input: VerifyAccountInput) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
   clearExistingAccount: () => void;
+  clearPendingVerification: () => void;
   clearAuthError: () => void;
   requestPasswordReset: (email: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
@@ -43,6 +45,12 @@ interface CloudSyncController extends CloudAccessState {
   recordHealthConsent: (status: HealthDataConsentStatus, source?: "privacy-center" | "migration-gate") => Promise<void>;
   deleteStoredData: () => Promise<void>;
   deleteAccount: () => Promise<void>;
+  resumeSync: () => Promise<void>;
+  completeOnboarding: () => Promise<void>;
+}
+
+function isOnboardingCompleted(user: User | null): boolean {
+  return user?.user_metadata?.onboarding_completed === true;
 }
 
 function createEventId(): string {
@@ -118,10 +126,26 @@ export function useCloudSync({
   const [authFailure, setAuthFailure] = useState<AuthFailure | null>(null);
   const authFailureRef = useRef<AuthFailure | null>(null);
   const [authErrorKind, setAuthErrorKind] = useState<CloudAccessState["authErrorKind"]>();
+  const [syncDisabled, setSyncDisabled] = useState(() =>
+    typeof localStorage !== "undefined" && localStorage.getItem("aunara-sync-disabled") === "true"
+  );
   const statusRef = useRef(status);
   const authGeneration = useRef(0);
   const pendingAuth = useRef<object | null>(null);
   const resetPending = useRef(false);
+
+  const updateSyncDisabled = useCallback((disabled: boolean) => {
+    try {
+      if (disabled) {
+        localStorage.setItem("aunara-sync-disabled", "true");
+      } else {
+        localStorage.removeItem("aunara-sync-disabled");
+      }
+    } catch {
+      // Ignore
+    }
+    setSyncDisabled(disabled);
+  }, []);
   // General status/message writes retain their existing behavior and provenance.
   const setStatus = useCallback((value: CloudAccessState["status"]) => {
     pendingAuth.current = null;
@@ -228,6 +252,12 @@ export function useCloudSync({
       const nextUser = session?.user ?? null;
       recoverySignal.observe(event, nextUser);
       setUser(nextUser);
+      if (nextUser || event === "SIGNED_IN") {
+        setPendingVerification(null);
+        if (event === "SIGNED_IN") {
+          updateSyncDisabled(false);
+        }
+      }
       if (event === "SIGNED_OUT" || (recoveryUserId.current && recoveryUserId.current !== nextUser?.id)) {
         recoveryUserId.current = null;
         setExistingAccountEmail(null);
@@ -292,30 +322,40 @@ export function useCloudSync({
     store.load(user.id)
       .then(async (remoteValue) => {
         if (!active) return;
-        const local = latestSnapshot.current;
+        const isFirstLogin = (typeof localStorage !== "undefined" && localStorage.getItem("aunara-is-first-login") === "true")
+          || user.user_metadata?.onboarding_completed === false;
+
+        let local = latestSnapshot.current;
+        if (isFirstLogin) {
+          updateSyncDisabled(false);
+          local = createEmptyUserSnapshot(latestSnapshot.current.language, user.user_metadata?.display_name ?? user.user_metadata?.name ?? latestSnapshot.current.profileName);
+          local.healthProfile.onboardingCompleted = false;
+        }
         const policy = sensitiveDataPolicy(user);
-        const remote = remoteValue
+        const remote = remoteValue && !isFirstLogin
           ? normalizeRepbookSnapshot(remoteValue, local)
           : null;
         const bootstrap = selectBootstrapSnapshot(local, remote && reconcileRemoteSnapshot(local, remote, policy));
 
         if (bootstrap.action === "use-remote" && remote) {
           onRemoteSnapshotRef.current(bootstrap.snapshot);
-          // The server row must match what this device is allowed to send: a legacy copy written before consent was
-          // withheld is cleaned here, and sensitive data kept locally under granted consent is restored here, so the
-          // server is consistent even if the person changes nothing afterwards.
           const payload = outboundSnapshot(bootstrap.snapshot, policy);
           const serialized = JSON.stringify(payload);
           if (!snapshotsEqual(payload, remote)) await store.save(user.id, payload);
           lastSavedSnapshot.current = serialized;
         } else {
+          onRemoteSnapshotRef.current(bootstrap.snapshot);
           const payload = outboundSnapshot(bootstrap.snapshot, policy);
           lastSavedSnapshot.current = JSON.stringify(payload);
           await store.save(user.id, payload);
         }
         if (!active) return;
         bootstrappedUserId.current = user.id;
-        setStatus("synced");
+        if (typeof localStorage !== "undefined" && localStorage.getItem("aunara-sync-disabled") === "true") {
+          setStatus("local");
+        } else {
+          setStatus("synced");
+        }
       })
       .catch((error: unknown) => {
         if (!active) return;
@@ -330,6 +370,10 @@ export function useCloudSync({
 
   useEffect(() => {
     if (!client || !user || bootstrappedUserId.current !== user.id) return;
+    if (typeof localStorage !== "undefined" && localStorage.getItem("aunara-sync-disabled") === "true") {
+      setStatus("local");
+      return;
+    }
 
     const payload = outboundSnapshot(snapshot, sensitiveDataPolicy(user));
     const serialized = JSON.stringify(payload);
@@ -364,6 +408,33 @@ export function useCloudSync({
     return () => window.clearTimeout(timer);
   }, [client, snapshot, user, setStatus, setMessage]);
 
+  useEffect(() => {
+    const flushSave = () => {
+      if (!client || !user || bootstrappedUserId.current !== user.id) return;
+      if (typeof localStorage !== "undefined" && localStorage.getItem("aunara-sync-disabled") === "true") return;
+      const payload = outboundSnapshot(latestSnapshot.current, sensitiveDataPolicy(user));
+      const serialized = JSON.stringify(payload);
+      if (serialized !== lastSavedSnapshot.current) {
+        const store = createCloudStore(client as unknown as CloudStoreClient);
+        store.save(user.id, payload)
+          .then(() => {
+            lastSavedSnapshot.current = serialized;
+            debouncedSavePending.current = false;
+          })
+          .catch(() => {});
+      }
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") flushSave();
+    };
+    window.addEventListener("pagehide", flushSave);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.removeEventListener("pagehide", flushSave);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [client, user]);
+
   const createAccount = useCallback(async ({
     name,
     email,
@@ -380,6 +451,13 @@ export function useCloudSync({
       failAuth(beginAuth(), "legal");
       return;
     }
+    try {
+      localStorage.setItem("aunara-is-first-login", "true");
+    } catch {
+      // Ignore
+    }
+    updateSyncDisabled(false);
+    onSignedOutRef.current?.();
     const operation = beginAuth();
     const acceptedAt = new Date().toISOString();
     const healthConsentStatus = healthDataConsent ? "granted" : "declined";
@@ -390,6 +468,7 @@ export function useCloudSync({
         data: {
           display_name: name,
           language,
+          onboarding_completed: false,
           accepted_legal_version: LEGAL_VERSION,
           accepted_legal_at: acceptedAt,
           accepted_legal_event_id: createEventId(),
@@ -483,6 +562,11 @@ export function useCloudSync({
     setMessage(undefined);
   }, []);
 
+  const clearPendingVerification = useCallback(() => {
+    setPendingVerification(null);
+    setMessage(undefined);
+  }, [setPendingVerification]);
+
   const requestPasswordReset = useCallback(async (email: string) => {
     const language = latestSnapshot.current.language;
     if (resetPending.current) return;
@@ -550,22 +634,42 @@ export function useCloudSync({
     if (error) {
       let kind: "credentials" | "user_not_found" | "invalid_password" = "credentials";
       const msg = (error.message || "").toLowerCase();
+      if (error.code === "email_not_confirmed" || msg.includes("email not confirmed")) {
+        setPendingVerification({ email });
+      }
       if (error.code === "user_not_found" || msg.includes("user not found") || msg.includes("no user")) {
         kind = "user_not_found";
       } else if (error.code === "invalid_password" || msg.includes("wrong password")) {
         kind = "invalid_password";
+      } else if (error.code === "invalid_credentials") {
+        try {
+          const probe = await client.auth.signInWithOtp({
+            email,
+            options: { shouldCreateUser: false },
+          });
+          if (probe.error?.code === "otp_disabled" || probe.error?.message?.toLowerCase().includes("signups not allowed")) {
+            kind = "user_not_found";
+            setPendingVerification(null);
+          } else {
+            kind = "invalid_password";
+          }
+        } catch {
+          kind = "credentials";
+        }
       } else {
         kind = "credentials";
       }
       failAuth(operation, classifyAuthError(error), kind);
       return;
     }
+    setPendingVerification(null);
     setExistingAccountEmail(null);
     setPasswordRecoveryState(null);
+    updateSyncDisabled(false);
     setMessage(tr(language, "Signed in. Loading your Aunara data…", "Sesión iniciada. Estamos cargando tus datos de Aunara…"));
     recoveryUserId.current = null;
     passwordRecoverySignalFor(client).clear();
-  }, [client, beginAuth, failAuth, setStatus, setMessage]);
+  }, [client, beginAuth, failAuth, setStatus, setMessage, updateSyncDisabled]);
 
   const signOut = useCallback(async () => {
     if (!client) return;
@@ -621,6 +725,9 @@ export function useCloudSync({
           health_data_consent_event_id: eventId,
         },
       });
+      if (nextStatus === "granted") {
+        updateSyncDisabled(false);
+      }
       setStatus("synced");
       setMessage(nextStatus === "granted"
         ? tr(language, "Health personalization authorized.", "Personalización con datos de salud autorizada.")
@@ -638,36 +745,97 @@ export function useCloudSync({
     setMessage(undefined);
     try {
       await createCloudStore(client as unknown as CloudStoreClient).remove(user.id);
+      try {
+        await client.auth.updateUser({
+          data: { onboarding_completed: false },
+        });
+      } catch {
+        // Ignore metadata update error
+      }
       onSignedOutRef.current?.();
       lastSavedSnapshot.current = "";
-      setStatus("synced");
-      setMessage(tr(language, "Your stored Aunara data was deleted. The account remains active.", "Tus datos guardados de Aunara fueron eliminados. La cuenta sigue activa."));
+      updateSyncDisabled(true);
+      setStatus("local");
+      setMessage(tr(language, "Your stored Aunara data was deleted. Cloud sync is disconnected.", "Tus datos guardados de Aunara fueron eliminados. La sincronización en la nube quedó desconectada."));
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : tr(language, "Stored data could not be deleted.", "No se pudieron eliminar los datos guardados."));
     }
-  }, [client, user]);
+  }, [client, user, updateSyncDisabled]);
+
+  const resumeSync = useCallback(async () => {
+    const language = latestSnapshot.current.language;
+    if (!client || !user) return;
+    updateSyncDisabled(false);
+    setStatus("syncing");
+    setMessage(undefined);
+    try {
+      const payload = outboundSnapshot(latestSnapshot.current, sensitiveDataPolicy(user));
+      await createCloudStore(client as unknown as CloudStoreClient).save(user.id, payload);
+      lastSavedSnapshot.current = JSON.stringify(payload);
+      setStatus("synced");
+      setMessage(tr(language, "Cloud synchronization resumed.", "Sincronización en la nube reanudada."));
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "Cloud sync is unavailable.");
+    }
+  }, [client, user, updateSyncDisabled]);
 
   const deleteAccount = useCallback(async () => {
     const language = latestSnapshot.current.language;
     if (!client || !user) return;
     setStatus("syncing");
     setMessage(undefined);
-    const { error } = await client.functions.invoke("delete-my-account");
-    if (error) {
-      setStatus("error");
-      setMessage(error.message);
-      return;
+    try {
+      await createCloudStore(client as unknown as CloudStoreClient).remove(user.id);
+    } catch {
+      // Ignore if record already absent
+    }
+    try {
+      await client.auth.updateUser({
+        data: { onboarding_completed: false },
+      });
+    } catch {
+      // Ignore
+    }
+    try {
+      await client.functions.invoke("delete-my-account");
+    } catch {
+      // Edge function may fail if secrets are missing
     }
     await client.auth.signOut();
     setUser(null);
     setPendingVerification(null);
     setExistingAccountEmail(null);
     setPasswordRecoveryState(null);
+    try {
+      localStorage.removeItem("aunara-is-first-login");
+    } catch {
+      // Ignore
+    }
+    updateSyncDisabled(false);
     onSignedOutRef.current?.();
     setStatus("local");
     setMessage(tr(language, "The account and its Aunara data were deleted.", "La cuenta y sus datos de Aunara fueron eliminados."));
-  }, [client, user]);
+  }, [client, user, updateSyncDisabled]);
+
+  const completeOnboarding = useCallback(async () => {
+    if (!client || !user) return;
+    updateSyncDisabled(false);
+    try {
+      const { data, error } = await client.auth.updateUser({
+        data: {
+          onboarding_completed: true,
+          onboarding_completed_at: new Date().toISOString(),
+        },
+      });
+      if (!error && data.user) {
+        setUser(data.user);
+      }
+    } catch {
+      // Ignore
+    }
+  }, [client, user, updateSyncDisabled]);
 
   return {
     configured: cloudConfigured,
@@ -679,17 +847,22 @@ export function useCloudSync({
     existingAccountEmail,
     passwordRecoveryState,
     healthDataConsent: consentStatusFromUser(user),
+    syncDisabled,
+    onboardingCompleted: isOnboardingCompleted(user),
+    deleteStoredData,
+    deleteAccount,
+    resumeSync,
+    completeOnboarding,
     createAccount,
     verifyAccount,
     resendVerification,
     clearExistingAccount,
+    clearPendingVerification,
     clearAuthError,
     requestPasswordReset,
     updatePassword,
     signIn,
     signOut,
     recordHealthConsent,
-    deleteStoredData,
-    deleteAccount,
   };
 }

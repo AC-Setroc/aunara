@@ -2,6 +2,7 @@ import {
   ArrowDown,
   BookOpen,
   Cloud,
+  CloudOff,
   Dumbbell,
   Heart,
   House,
@@ -56,7 +57,7 @@ import type { EquipmentPreference, Exercise, HealthDataConsentStatus, HealthProf
 
 const PAGE_SIZE = 48;
 type WorkoutPanelMode = "view" | "edit" | "training";
-type AppSection = "home" | "library";
+type AppSection = "home" | "library" | "routes";
 type ExerciseOrigin = "library" | "proposal" | "workout";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -113,6 +114,14 @@ const LANGUAGE_OPTIONS: { code: LanguageCode; label: string }[] = [
   { code: "en", label: "EN" },
 ];
 
+function isFirstLoginStored(): boolean {
+  try {
+    return localStorage.getItem("aunara-is-first-login") === "true";
+  } catch {
+    return false;
+  }
+}
+
 function App() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loadingError, setLoadingError] = useState("");
@@ -130,12 +139,25 @@ function App() {
   const [workoutOpen, setWorkoutOpen] = useState(false);
   const [workoutPanelMode, setWorkoutPanelMode] = useState<WorkoutPanelMode>("view");
   const [profileOpen, setProfileOpen] = useState(false);
-  const [accessOpen, setAccessOpen] = useState(false);
+  const [accessOpen, setAccessOpen] = useState(() => {
+    try {
+      return Boolean(localStorage.getItem("aunara-pending-verification"));
+    } catch {
+      return false;
+    }
+  });
   const [legalDocument, setLegalDocument] = useState<LegalDocument | null>(null);
   const legalTriggerRef = useRef<HTMLElement | null>(null);
   const [initialProposal, setInitialProposal] = useState<TrainingTrack | null>(null);
   const [trackProposal, setTrackProposal] = useState<TrainingTrack | null>(null);
-  const [accessMode, setAccessMode] = useState<AccessMode>("create");
+  const [accessMode, setAccessMode] = useState<AccessMode>(() => {
+    try {
+      if (localStorage.getItem("aunara-pending-verification")) return "create";
+      return "sign-in";
+    } catch {
+      return "sign-in";
+    }
+  });
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installGuide, setInstallGuide] = useState<InstallGuide>(() => {
     const navigatorWithStandalone = navigator as Navigator & { standalone?: boolean };
@@ -153,6 +175,153 @@ function App() {
   const [tracksInitialized, setTracksInitialized] = useStoredState<boolean>("repbook-training-tracks-initialized", false);
   const [healthProfile, setHealthProfile] = useStoredState<HealthProfile>("repbook-health-profile", DEFAULT_HEALTH_PROFILE);
   const [checkIns, setCheckIns] = useStoredState<WeeklyCheckIn[]>("repbook-weekly-checkins", []);
+
+  const navigateToSection = useCallback((section: AppSection) => {
+    setAppSection(section);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section, overlay: null }, "");
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showWorkout = useCallback((mode: WorkoutPanelMode = "view") => {
+    setWorkoutPanelMode(mode);
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "workout" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setWorkoutOpen(true);
+  }, [appSection]);
+
+  const closeWorkout = useCallback(() => {
+    setWorkoutOpen(false);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "workout") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showProfile = useCallback(() => {
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "profile" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setProfileOpen(true);
+  }, [appSection]);
+
+  const closeProfile = useCallback(() => {
+    setProfileOpen(false);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "profile") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showAccess = useCallback((mode: AccessMode) => {
+    setAccessMode(mode);
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "access" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setAccessOpen(true);
+  }, [appSection]);
+
+  const closeAccess = useCallback(() => {
+    setAccessOpen(false);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "access") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showLegal = useCallback((doc: LegalDocument) => {
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "legal" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setLegalDocument(doc);
+  }, [appSection]);
+
+  const closeLegal = useCallback(() => {
+    setLegalDocument(null);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "legal") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showExercise = useCallback((exercise: Exercise, origin: ExerciseOrigin) => {
+    setSelectedExerciseOrigin(origin);
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "exercise" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setSelectedExercise(exercise);
+  }, [appSection]);
+
+  const closeSelectedExercise = useCallback(() => {
+    setSelectedExercise(null);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "exercise") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showAssignment = useCallback((exercise: Exercise) => {
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "assignment" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setAssignmentExercise(exercise);
+  }, [appSection]);
+
+  const closeAssignmentExercise = useCallback(() => {
+    setAssignmentExercise(null);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "assignment") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
 
   const cloudSnapshot = useMemo(() => createRepbookSnapshot({
     profileName,
@@ -195,7 +364,7 @@ function App() {
   ]);
 
   const clearSignedOutProfile = useCallback(() => {
-    setProfileName("Mi perfil");
+    setProfileName("");
     setLanguage("es");
     setFavoriteIds([]);
     setTracks([]);
@@ -203,6 +372,23 @@ function App() {
     setHealthProfile(DEFAULT_HEALTH_PROFILE);
     setCheckIns([]);
     setTracksInitialized(false);
+    try {
+      localStorage.removeItem("repbook-health-profile");
+      localStorage.removeItem("repbook-training-tracks");
+      localStorage.removeItem("repbook-active-track");
+      localStorage.removeItem("repbook-favorites");
+      localStorage.removeItem("repbook-favorite-exercises");
+      localStorage.removeItem("repbook-weekly-checkins");
+      localStorage.removeItem("repbook-training-tracks-initialized");
+      localStorage.removeItem("repbook-profile-name");
+      localStorage.removeItem("repbook-workout");
+      localStorage.removeItem("aunara-pending-verification");
+      localStorage.removeItem("aunara-active-screen");
+      localStorage.removeItem("aunara-is-first-login");
+      localStorage.removeItem("aunara-sync-disabled");
+    } catch {
+      // Ignore storage errors
+    }
   }, [
     setActiveTrackId,
     setCheckIns,
@@ -237,13 +423,23 @@ function App() {
     setAccessMode("sign-in");
     setAccessOpen(true);
   }, [cloud.passwordRecoveryState]);
+
+  useEffect(() => {
+    if (!cloud.pendingVerification) return;
+    setAccessMode("create");
+    setAccessOpen(true);
+  }, [cloud.pendingVerification]);
   const hasAppAccess = !cloud.configured || Boolean(cloud.email);
   const consentRequired = cloud.configured
     && Boolean(cloud.email)
     && cloud.healthDataConsent == null;
   const onboardingRequired = cloud.configured
     && Boolean(cloud.email)
-    && healthProfile.onboardingCompleted !== true;
+    && (
+      cloud.onboardingCompleted === false
+      || (healthProfile.onboardingCompleted !== true && cloud.onboardingCompleted !== true)
+      || isFirstLoginStored()
+    );
   const canUseTraining = hasAppAccess && !onboardingRequired && !consentRequired;
   const previousEmail = useRef(cloud.email);
   useEffect(() => {
@@ -259,6 +455,13 @@ function App() {
       previousEmail.current = cloud.email;
     }
   }, [cloud.email, cloud.passwordRecoveryState]);
+
+  useEffect(() => {
+    if (cloud.pendingVerification && !cloud.email) {
+      setAccessMode("create");
+      setAccessOpen(true);
+    }
+  }, [cloud.pendingVerification, cloud.email]);
 
   useEffect(() => {
     if (language !== "en" && language !== "es") {
@@ -282,6 +485,140 @@ function App() {
     return () => {
       window.removeEventListener("beforeinstallprompt", captureInstallPrompt);
       window.removeEventListener("appinstalled", markInstalled);
+    };
+  }, []);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("aunara-active-screen");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.appSection === "home" || parsed.appSection === "library" || parsed.appSection === "routes") {
+          setAppSection(parsed.appSection);
+        }
+        if (typeof parsed.profileOpen === "boolean") setProfileOpen(parsed.profileOpen);
+        if (typeof parsed.workoutOpen === "boolean") setWorkoutOpen(parsed.workoutOpen);
+        if (parsed.workoutPanelMode === "view" || parsed.workoutPanelMode === "edit" || parsed.workoutPanelMode === "training") {
+          setWorkoutPanelMode(parsed.workoutPanelMode);
+        }
+        if (typeof parsed.activeTrackId === "string" && parsed.activeTrackId) {
+          setActiveTrackId(parsed.activeTrackId);
+        }
+        if (typeof parsed.accessOpen === "boolean") setAccessOpen(parsed.accessOpen);
+        if (parsed.accessMode === "create" || parsed.accessMode === "sign-in" || parsed.accessMode === "help") {
+          setAccessMode(parsed.accessMode);
+        }
+        if (parsed.selectedExerciseId) {
+          const ex = exercises.find((item) => item.id === parsed.selectedExerciseId);
+          if (ex) setSelectedExercise(ex);
+        }
+      }
+    } catch {
+      // Ignore
+    }
+  }, [exercises, setActiveTrackId]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.history) return;
+
+    if (window.location.hash && window.location.hash.includes("access_token")) {
+      try {
+        window.history.replaceState({ aunara: true, guard: true }, "", window.location.pathname + window.location.search);
+      } catch {
+        // Ignore
+      }
+    }
+
+    if (!window.history.state?.aunara) {
+      try {
+        window.history.replaceState({ aunara: true, guard: true }, "");
+        window.history.pushState({ aunara: true, section: appSection, overlay: null }, "");
+      } catch {
+        // Ignore
+      }
+    }
+
+    const handlePopState = (event: PopStateEvent) => {
+      if (!event.state || event.state.guard) {
+        try {
+          window.history.pushState({ aunara: true, section: "home", overlay: null }, "");
+        } catch {
+          // Ignore
+        }
+        setLegalDocument(null);
+        setAssignmentExercise(null);
+        setSelectedExercise(null);
+        setWorkoutOpen(false);
+        setProfileOpen(false);
+        setAccessOpen(false);
+        setAppSection("home");
+        return;
+      }
+
+      const state = event.state as {
+        aunara?: boolean;
+        section?: AppSection;
+        overlay?: string | null;
+      };
+
+      if (state.aunara) {
+        if (state.overlay !== "legal") setLegalDocument(null);
+        if (state.overlay !== "assignment") setAssignmentExercise(null);
+        if (state.overlay !== "exercise") setSelectedExercise(null);
+        if (state.overlay !== "workout") setWorkoutOpen(false);
+        if (state.overlay !== "profile") setProfileOpen(false);
+        if (state.overlay !== "access") setAccessOpen(false);
+        if (state.section) setAppSection(state.section);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  const activeScreenRef = useRef({
+    appSection,
+    profileOpen,
+    workoutOpen,
+    workoutPanelMode,
+    activeTrackId,
+    accessOpen,
+    accessMode,
+    selectedExerciseId: selectedExercise?.id ?? null,
+  });
+  useEffect(() => {
+    activeScreenRef.current = {
+      appSection,
+      profileOpen,
+      workoutOpen,
+      workoutPanelMode,
+      activeTrackId,
+      accessOpen,
+      accessMode,
+      selectedExerciseId: selectedExercise?.id ?? null,
+    };
+  }, [appSection, profileOpen, workoutOpen, workoutPanelMode, activeTrackId, accessOpen, accessMode, selectedExercise]);
+
+  useEffect(() => {
+    const handleSave = () => {
+      try {
+        localStorage.setItem("aunara-active-screen", JSON.stringify(activeScreenRef.current));
+      } catch {
+        // Ignore
+      }
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        handleSave();
+      }
+    };
+    window.addEventListener("pagehide", handleSave);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.removeEventListener("pagehide", handleSave);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 
@@ -375,7 +712,7 @@ function App() {
     }
     const generated = generateAdaptiveTrackWorkout(
       exercises,
-      initialTrack,
+      { ...initialTrack, dailyExerciseCount: 5 },
       healthProfile.limitations ?? [],
     );
     setInitialProposal({
@@ -435,7 +772,10 @@ function App() {
   function appendExerciseToTrack(trackId: string, exerciseId: string, day: Weekday, allowDuplicate = true) {
     setTracks((current) => current.map((track) => {
       if (track.id !== trackId || (!allowDuplicate && track.workout.some((item) => item.exerciseId === exerciseId))) return track;
-      return { ...track, workout: [...track.workout, buildWorkoutItem(exerciseId, day)] };
+      const trainingDays = track.trainingDays?.includes(day)
+        ? track.trainingDays
+        : [...(track.trainingDays ?? []), day];
+      return { ...track, trainingDays, workout: [...track.workout, buildWorkoutItem(exerciseId, day)] };
     }));
   }
 
@@ -460,12 +800,22 @@ function App() {
       position,
       size: exerciseIds.length,
     }), ...prescriptions[position], setPlan: `${prescriptions[position]?.sets ?? 3} × ${prescriptions[position]?.reps ?? 10}` }));
-    updateActiveWorkout((current) => [...current, ...additions]);
+    setTracks((current) => current.map((track) => {
+      if (track.id !== activeTrack.id) return track;
+      const trainingDays = track.trainingDays?.includes(day)
+        ? track.trainingDays
+        : [...(track.trainingDays ?? []), day];
+      return {
+        ...track,
+        trainingDays,
+        workout: [...track.workout, ...additions],
+      };
+    }));
   }
 
   function addToWorkout(exerciseId: string) {
     const exercise = exerciseMap.get(exerciseId);
-    if (exercise) setAssignmentExercise(exercise);
+    if (exercise) showAssignment(exercise);
   }
 
   function removeExerciseFromTrack(trackId: string, itemId: string) {
@@ -507,8 +857,7 @@ function App() {
 
   function openTrack(trackId: string) {
     selectTrack(trackId);
-    setWorkoutPanelMode("view");
-    setWorkoutOpen(true);
+    showWorkout("view");
   }
 
   function generateRoutine(trackId: string) {
@@ -519,8 +868,7 @@ function App() {
       ? { ...candidate, workout: generated.workout, adaptations: generated.adaptations }
       : candidate));
     selectTrack(trackId);
-    setWorkoutPanelMode("view");
-    setWorkoutOpen(true);
+    showWorkout("view");
   }
 
   function createTrack(input: NewTrackInput) {
@@ -544,8 +892,7 @@ function App() {
     }
     setTracks((current) => [...current, track]);
     setActiveTrackId(id);
-    setWorkoutPanelMode("edit");
-    setWorkoutOpen(true);
+    showWorkout("edit");
   }
 
   function acceptTrackProposal(openForEditing: boolean) {
@@ -555,8 +902,7 @@ function App() {
     setActiveTrackId(trackProposal.id);
     setTrackProposal(null);
     if (openForEditing) {
-      setWorkoutPanelMode("edit");
-      setWorkoutOpen(true);
+      showWorkout("edit");
     }
   }
 
@@ -569,8 +915,7 @@ function App() {
     setTracksInitialized(true);
     setInitialProposal(null);
     if (openForEditing) {
-      setWorkoutPanelMode("edit");
-      setWorkoutOpen(true);
+      showWorkout("edit");
     }
   }
 
@@ -590,17 +935,15 @@ function App() {
     const result = removeTrainingTrack(tracks, activeTrackId, trackId);
     setTracks(result.tracks);
     setActiveTrackId(result.activeTrackId);
-    setWorkoutOpen(false);
+    closeWorkout();
   }
 
   function openExerciseFromWorkout(exercise: Exercise) {
-    setSelectedExerciseOrigin("workout");
-    setSelectedExercise(exercise);
+    showExercise(exercise, "workout");
   }
 
   function openExercise(exercise: Exercise, origin: ExerciseOrigin) {
-    setSelectedExerciseOrigin(origin);
-    setSelectedExercise(exercise);
+    showExercise(exercise, origin);
   }
 
   function saveWeeklyCheckIn(checkIn: WeeklyCheckIn) {
@@ -619,15 +962,22 @@ function App() {
   }
 
   function openAccess(mode: AccessMode) {
-    setAccessMode(mode);
-    setAccessOpen(true);
+    showAccess(mode);
   }
 
   function updateHealthProfile(profile: HealthProfile) {
+    try {
+      localStorage.removeItem("aunara-is-first-login");
+    } catch {
+      // Ignore
+    }
     setHealthProfile(profile);
+    if (profile.onboardingCompleted) {
+      void cloud.completeOnboarding();
+    }
     const refreshProposal = (proposal: TrainingTrack | null): TrainingTrack | null => {
       if (!proposal || proposal.creationMode === "manual") return proposal;
-      const generated = generateAdaptiveTrackWorkout(exercises, proposal, profile.limitations ?? []);
+      const generated = generateAdaptiveTrackWorkout(exercises, { ...proposal, dailyExerciseCount: 5 }, profile.limitations ?? []);
       return {
         ...proposal,
         workout: generated.workout,
@@ -672,79 +1022,53 @@ function App() {
       }
     }}>
       <header className="site-header">
-        <NavigationMenu language={language} entries={[
-          ...(canUseTraining ? [
-            { label: tr(language, "Routes", "Rutas"), action: () => setAppSection("home") },
-            { label: tr(language, "Exercise library", "Biblioteca de ejercicios"), action: () => setAppSection("library") },
-            { label: tr(language, "Profile", "Perfil"), action: () => setProfileOpen(true) },
-          ] : []),
-          { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), action: () => openAccess("sign-in") },
-          ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => openAccess("help") }] : []),
-          ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), action: () => { void cloud.signOut(); } }] : []),
-        ]}
-        controls={<>
-
-            {hasAppAccess ? (
-              <nav aria-label={tr(language, "App controls", "Controles de la app")}>
-                <button className={`sync-trigger is-${cloud.status}`} type="button" onClick={() => openAccess("create")} aria-label={tr(language, "Open account and synchronization", "Abrir cuenta y sincronización")}>
-                  <Cloud size={17} />
-                  <span>{cloud.email ? tr(language, "Synced", "Sincronizado") : tr(language, "Account", "Cuenta")}</span>
-                </button>
-                {!onboardingRequired && <button className="profile-trigger" type="button" onClick={() => setProfileOpen(true)} aria-label={tr(language, "Open profile", "Abrir perfil")}>
-                  <UserRound size={17} />
-                  <span>{profileName.trim() || tr(language, "My profile", "Mi perfil")}</span>
-                </button>}
-                {!onboardingRequired && <div className="section-navigation" aria-label={tr(language, "Main sections", "Secciones principales")}>
-                  <button className={appSection === "home" ? "is-active" : ""} type="button" onClick={() => setAppSection("home")}>
-                    <House size={16} /> {tr(language, "Home", "Inicio")}
-                  </button>
-                  <button className={appSection === "library" ? "is-active" : ""} type="button" onClick={() => setAppSection("library")}>
-                    <BookOpen size={16} /> {tr(language, "Exercises", "Ejercicios")}
-                  </button>
-                </div>}
-                {!onboardingRequired && <button className="workout-trigger" type="button" onClick={() => {
-                  setWorkoutPanelMode("view");
-                  setWorkoutOpen(true);
-                }}>
-                  <Dumbbell size={18} />
-                  <span>{activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")}</span>
-                  <strong>{workout.length}</strong>
-                </button>}
-              </nav>
-            ) : (
-              <nav className="guest-nav" aria-label={tr(language, "Public controls", "Controles públicos")}>
-                <a className="guest-home-link" href="#top">{tr(language, "Home", "Inicio")}</a>
-              </nav>
-            )}
-        </>}
-        panelContent={
-          <div className="language-panel-control">
-            <button
-              type="button"
-              className="language-toggle"
-              onClick={() => setLanguage(language === "es" ? "en" : "es")}
-              aria-label={tr(language, "Switch to English", "Cambiar a inglés")}
-            >
-              <Languages size={18} />
-              <span>{language === "es" ? "English" : "Español"}</span>
-            </button>
-            <label className="language-select sr-only">
-              <span className="sr-only">{tr(language, "Language", "Idioma")}</span>
-              <select
-                value={language}
-                onChange={(event) => setLanguage(event.target.value as LanguageCode)}
-                aria-label={tr(language, "Language", "Idioma")}
+        <NavigationMenu
+          language={language}
+          onToggleLanguage={() => setLanguage(language === "es" ? "en" : "es")}
+          entries={[
+            ...(appSection !== "home" ? [
+              {
+                label: tr(language, "Home", "Inicio"),
+                action: () => {
+                  navigateToSection("home");
+                },
+              },
+            ] : []),
+            ...(canUseTraining ? [
+              { label: tr(language, "Profile", "Perfil"), action: () => showProfile() },
+              {
+                label: tr(language, "Exercise library", "Biblioteca de ejercicios"),
+                action: () => {
+                  navigateToSection("library");
+                },
+              },
+              {
+                label: tr(language, "Routes", "Rutas"),
+                action: () => {
+                  navigateToSection("routes");
+                },
+              },
+            ] : []),
+            { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), action: () => showAccess("sign-in") },
+            ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => showAccess("help") }] : []),
+            ...(cloud.email ? [{ label: tr(language, "Sign out", "Salir"), action: () => { void cloud.signOut(); } }] : []),
+          ]}
+          controls={
+            cloud.email ? (
+              <button
+                className={`header-sync-trigger ${cloud.healthDataConsent === "granted" && !cloud.syncDisabled && cloud.status !== "error" ? "is-synced" : "is-disconnected"}`}
+                type="button"
+                onClick={() => showAccess("sign-in")}
+                aria-label={tr(language, "Open account and synchronization", "Abrir cuenta y sincronización")}
               >
-                {LANGUAGE_OPTIONS.map((option) => (
-                  <option key={option.code} value={option.code}>{option.label}</option>
-                ))}
-              </select>
-            </label>
-          </div>
-        } />
+                {cloud.healthDataConsent === "granted" && !cloud.syncDisabled && cloud.status !== "error" ? <Cloud size={20} /> : <CloudOff size={20} />}
+              </button>
+            ) : null
+          }
+        />
       </header>
 
-      <StorageNotice language={language} onLearnMore={() => setLegalDocument("cookies")} />
+      <StorageNotice language={language} onLearnMore={() => showLegal("cookies")} />
 
       <main id="top">
         {appSection === "home" && <section className="hero" aria-labelledby="hero-title">
@@ -760,13 +1084,24 @@ function App() {
             </p>
           </div>
           <div className="hero-note">
-            <span>{tr(language, "AUNARA PRINCIPLE / 01", "PRINCIPIO AUNARA / 01")}</span>
+            <span>{tr(language, "AUNARA PRINCIPLE", "PRINCIPIO AUNARA")}</span>
             <p>{tr(language, "Understand what you do and why. Review every proposal, adjust it to your context, and keep your history under your control.", "Entendé lo que hacés y por qué. Revisá cada propuesta, ajustala a tu contexto y mantené tu historia bajo tu control.")}</p>
             {hasAppAccess && <ArrowDown size={20} />}
+            {canUseTraining && (
+              <button
+                type="button"
+                className="hero-routes-cta"
+                onClick={() => {
+                  navigateToSection("routes");
+                }}
+              >
+                {tr(language, "Go to training routes", "Ir a rutas de entrenamiento")}
+              </button>
+            )}
           </div>
         </section>}
 
-        {appSection === "home" && canUseTraining && exercises.length > 0 && (
+        {appSection === "routes" && canUseTraining && exercises.length > 0 && (
           <TrainingTracks
             language={language}
             tracks={tracks}
@@ -776,6 +1111,16 @@ function App() {
             onGenerate={generateRoutine}
             onDelete={deleteTrack}
             onEdit={editTrack}
+            checkIns={checkIns}
+            onAddCheckIn={saveWeeklyCheckIn}
+            healthDataConsent={cloud.healthDataConsent === "granted"}
+            onRequestHealthConsent={() => {
+              if (cloud.email) {
+                void cloud.recordHealthConsent("granted", "privacy-center");
+              } else {
+                showAccess("create");
+              }
+            }}
           />
         )}
 
@@ -912,7 +1257,7 @@ function App() {
             setCheckIns([]);
             void cloud.recordHealthConsent("declined", "migration-gate");
           }}
-          onOpenPrivacy={() => setLegalDocument("privacy")}
+          onOpenPrivacy={() => showLegal("privacy")}
         />
       )}
 
@@ -923,8 +1268,11 @@ function App() {
           profile={healthProfile}
           healthDataConsent={cloud.healthDataConsent === "granted"}
           onRequestHealthConsent={() => {
-            setAccessMode("create");
-            setAccessOpen(true);
+            if (cloud.email) {
+              void cloud.recordHealthConsent("granted", "privacy-center");
+            } else {
+              showAccess("create");
+            }
           }}
           onComplete={updateHealthProfile}
         />
@@ -941,7 +1289,7 @@ function App() {
           onAccept={() => acceptInitialProposal(false)}
           onEdit={() => acceptInitialProposal(true)}
           onReject={rejectInitialProposal}
-          onReviewHealth={() => setProfileOpen(true)}
+          onReviewHealth={() => showProfile()}
         />
       )}
 
@@ -957,18 +1305,18 @@ function App() {
           onAccept={() => acceptTrackProposal(false)}
           onEdit={() => acceptTrackProposal(true)}
           onReject={() => setTrackProposal(null)}
-          onReviewHealth={() => setProfileOpen(true)}
+          onReviewHealth={() => showProfile()}
         />
       )}
 
       <footer>
         <div className="footer-brand"><img src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" /><span>{tr(language, "Your purpose leads the way.", "Tu propósito marca el camino.")}</span></div>
         <div className="footer-legal">
-          <button type="button" onClick={() => setLegalDocument("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
-          <button type="button" onClick={() => setLegalDocument("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
-          <button type="button" onClick={() => setLegalDocument("cookies")}>{tr(language, "Cookies and storage", "Cookies y almacenamiento")}</button>
+          <button type="button" onClick={() => showLegal("privacy")}>{tr(language, "Privacy policy", "Política de privacidad")}</button>
+          <button type="button" onClick={() => showLegal("terms")}>{tr(language, "Terms of use", "Términos de uso")}</button>
+          <button type="button" onClick={() => showLegal("cookies")}>{tr(language, "Cookies and storage", "Cookies y almacenamiento")}</button>
         </div>
-        {canUseTraining && <p>{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>}
+        <p className="sr-only">{tr(language, "Exercise data", "Datos de ejercicios")} © Hasan Emir Yıldırım, MIT. {tr(language, "Visual media", "Material visual")} © <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">Gym visual</a>.</p>
         <div className="footer-development-credit">
           <span>{tr(language, "Developed by", "Desarrollado por")}</span>
           <img src={`${import.meta.env.BASE_URL}brand/ac-setroc-wordmark.png`} alt="AC Setroc" width="2464" height="671" />
@@ -976,8 +1324,7 @@ function App() {
       </footer>
 
       {canUseTraining && <button className="mobile-workout" type="button" onClick={() => {
-        setWorkoutPanelMode("view");
-        setWorkoutOpen(true);
+        showWorkout("view");
       }}>
         <Dumbbell size={19} /> {activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")} <strong>{workout.length}</strong>
       </button>}
@@ -989,7 +1336,7 @@ function App() {
           origin={selectedExerciseOrigin}
           isFavorite={favorites.has(selectedExercise.id)}
           inWorkout={workoutIds.has(selectedExercise.id)}
-          onClose={() => setSelectedExercise(null)}
+          onClose={closeSelectedExercise}
           onToggleFavorite={() => toggleFavorite(selectedExercise.id)}
           onAdd={() => addToWorkout(selectedExercise.id)}
         />
@@ -1000,7 +1347,7 @@ function App() {
           language={language}
           exercise={assignmentExercise}
           tracks={tracks}
-          onClose={() => setAssignmentExercise(null)}
+          onClose={closeAssignmentExercise}
           onAdd={(trackId, day) => appendExerciseToTrack(trackId, assignmentExercise.id, day)}
           onRemove={removeExerciseFromTrack}
         />
@@ -1008,7 +1355,7 @@ function App() {
 
       {canUseTraining && workoutOpen && activeTrack && routineAnalysis && (
         <>
-          <button className="panel-backdrop" type="button" onClick={() => setWorkoutOpen(false)} aria-label={tr(language, "Close workout", "Cerrar entrenamiento")} />
+          <button className="panel-backdrop" type="button" onClick={closeWorkout} aria-label={tr(language, "Close workout", "Cerrar entrenamiento")} />
           <WorkoutPanel
             language={language}
             items={workout}
@@ -1016,7 +1363,7 @@ function App() {
             exercises={exercises}
             track={activeTrack}
             initialMode={workoutPanelMode}
-            onClose={() => setWorkoutOpen(false)}
+            onClose={closeWorkout}
             onUpdate={updateWorkout}
             onUpdateItem={updateWorkoutItemFields}
             onSetDayLabel={setTrainingDayLabel}
@@ -1030,8 +1377,8 @@ function App() {
             onOpenExercise={openExerciseFromWorkout}
             analysis={routineAnalysis}
             onOpenProfile={() => {
-              setWorkoutOpen(false);
-              setProfileOpen(true);
+              closeWorkout();
+              showProfile();
             }}
             restrictedMovements={restrictedMovements}
           />
@@ -1053,14 +1400,17 @@ function App() {
           onSignOut={cloud.email ? () => { void cloud.signOut(); } : undefined}
           onAddCheckIn={saveWeeklyCheckIn}
           onOpenTrack={(trackId) => {
-            setProfileOpen(false);
+            closeProfile();
             openTrack(trackId);
           }}
-          onClose={() => setProfileOpen(false)}
+          onClose={closeProfile}
           onRequestHealthConsent={() => {
-            setProfileOpen(false);
-            setAccessMode("create");
-            setAccessOpen(true);
+            if (cloud.email) {
+              void cloud.recordHealthConsent("granted", "privacy-center");
+            } else {
+              closeProfile();
+              showAccess("create");
+            }
           }}
         />
       )}
@@ -1069,7 +1419,7 @@ function App() {
         <AccessPanel
           language={language}
           cloud={cloud}
-          profileName={profileName}
+          profileName={cloud.email ? profileName : "Mi perfil"}
           installGuide={installGuide}
           dataSummary={{ profile: hasProfileSummary(cloudSnapshot), routes: tracks.length, favorites: favoriteIds.length, checkIns: checkIns.length, health: healthProfile.healthDataMode === "personalized" }}
           onCreateAccount={(input) => {
@@ -1080,19 +1430,21 @@ function App() {
           onVerifyAccount={(input) => void cloud.verifyAccount(input)}
           onResendVerification={(email) => void cloud.resendVerification(email)}
           onUseExistingAccount={cloud.clearExistingAccount}
+          onClearPendingVerification={cloud.clearPendingVerification}
           onClearAuthError={cloud.clearAuthError}
           onRequestPasswordReset={(email) => void cloud.requestPasswordReset(email)}
           onUpdatePassword={(password) => void cloud.updatePassword(password)}
           onSignIn={(input) => void cloud.signIn(input)}
           onSignOut={cloud.signOut}
-          onOpenLegal={setLegalDocument}
+          onOpenLegal={showLegal}
           onExportData={exportPersonalData}
           onEditData={() => {
-            setAccessOpen(false);
-            if (healthProfile.onboardingCompleted) setProfileOpen(true);
+            closeAccess();
+            if (healthProfile.onboardingCompleted) showProfile();
           }}
           onChangeHealthConsent={changeHealthConsent}
           onDeleteData={() => void cloud.deleteStoredData()}
+          onResumeSync={() => void cloud.resumeSync()}
           onDeleteAccount={() => {
             void cloud.deleteAccount();
           }}
@@ -1100,7 +1452,7 @@ function App() {
             installPrompt.prompt().finally(() => setInstallPrompt(null));
           } : null}
           initialMode={accessMode}
-          onClose={() => setAccessOpen(false)}
+          onClose={closeAccess}
         />
       )}
 
@@ -1109,7 +1461,7 @@ function App() {
           language={language}
           document={legalDocument}
           returnFocusTo={legalTriggerRef.current}
-          onClose={() => setLegalDocument(null)}
+          onClose={closeLegal}
         />
       )}
     </div>

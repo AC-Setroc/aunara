@@ -1,6 +1,7 @@
 import {
   Activity,
   CalendarDays,
+  ChevronDown,
   Droplets,
   Dumbbell,
   Heart,
@@ -14,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { DecimalInput } from "./DecimalInput";
 import { searchFoodData, type FoodSearchResult } from "../lib/foodData";
 import { tr } from "../lib/i18n";
 import {
@@ -57,8 +59,9 @@ function preferencesFrom(healthProfile: HealthProfile): HealthProfile {
 }
 
 function optionalNumber(value: string): number | null {
-  if (!value.trim()) return null;
-  const parsed = Number(value);
+  const clean = value.replace(",", ".").replace(/^0+(?=\d)/, "").trim();
+  if (!clean || clean === ".") return null;
+  const parsed = Number(clean);
   return Number.isFinite(parsed) ? parsed : null;
 }
 
@@ -83,7 +86,25 @@ export function ProfilePanel({
   healthDataConsent = true,
   onRequestHealthConsent,
 }: ProfilePanelProps) {
-  const [tab, setTab] = useState<ProfileTab>("overview");
+  const [overviewOpen, setOverviewOpen] = useState(true);
+  const [bodyOpen, setBodyOpen] = useState(false);
+
+  function toggleOverview() {
+    setOverviewOpen((prev) => {
+      const next = !prev;
+      if (next) setBodyOpen(false);
+      return next;
+    });
+  }
+
+  function toggleBody() {
+    setBodyOpen((prev) => {
+      const next = !prev;
+      if (next) setOverviewOpen(false);
+      return next;
+    });
+  }
+
   const [preferences, setPreferences] = useState<HealthProfile>(() => preferencesFrom(healthProfile));
   // The stored profile is the single source of truth (SDD-012 / UAT13-22): any outside change replaces the local
   // copy, which only exists so an out-of-range value can stay on screen without being persisted.
@@ -94,16 +115,6 @@ export function ProfilePanel({
   const [foodError, setFoodError] = useState("");
   const [showMealOptions, setShowMealOptions] = useState(false);
   const [showRecipeIdeas, setShowRecipeIdeas] = useState(false);
-  const [checkInSaved, setCheckInSaved] = useState(false);
-  const [checkIn, setCheckIn] = useState<WeeklyCheckIn>(() => ({
-    id: today(),
-    date: today(),
-    weightKg: healthProfile.currentWeightKg,
-    sleepHours: null,
-    energy: 3,
-    stress: 3,
-    notes: "",
-  }));
   const plannedSessions = tracks.reduce((sum, track) => sum + track.daysPerWeek, 0);
   const wellness = useMemo(() => createWellnessSummary(healthProfile, language), [healthProfile, language]);
   const macroPlan = useMemo(() => createMacroPlan(healthProfile), [healthProfile]);
@@ -153,13 +164,6 @@ export function ProfilePanel({
     });
   }
 
-  function saveCheckIn(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const saved = { ...checkIn, id: checkIn.date };
-    onAddCheckIn(saved);
-    setCheckInSaved(true);
-  }
-
   async function searchFoods(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFoodError("");
@@ -184,96 +188,109 @@ export function ProfilePanel({
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="profile-heading">
-          <div className="profile-avatar"><UserRound size={28} /></div>
-          <div>
-            <p className="eyebrow">{tr(language, "Private field file / 01", "Ficha privada / 01")}</p>
-            <h2>{tr(language, "My profile", "Mi perfil")}</h2>
+          <div className="profile-avatar"><UserRound size={24} /></div>
+          <div className="profile-heading-copy">
+            <p className="eyebrow">{tr(language, "Private file", "Ficha privada")}</p>
+            <h2>{tr(language, "Profile", "Perfil")}</h2>
           </div>
           <button className="close-button inline" type="button" onClick={onClose} aria-label={tr(language, "Close profile", "Cerrar perfil")}><X size={20} /></button>
         </div>
 
-        <nav className="profile-tabs" aria-label={tr(language, "Profile sections", "Secciones del perfil")}>
-          <button type="button" className={tab === "overview" ? "is-active" : ""} onClick={() => setTab("overview")}>{tr(language, "Overview", "Resumen")}</button>
-          <button type="button" className={tab === "body" ? "is-active" : ""} onClick={() => setTab("body")}>{tr(language, "Body and health", "Cuerpo y salud")}</button>
-          <button type="button" className={tab === "checkin" ? "is-active" : ""} onClick={() => setTab("checkin")}>{tr(language, "Weekly check-in", "Registro semanal")}</button>
-        </nav>
-
-        {tab !== "overview" && !healthDataConsent && (
-          <div className="profile-consent-required">
-            <ShieldCheck size={24} />
-            <h3>{tr(language, "Health authorization is optional", "La autorización de salud es opcional")}</h3>
-            <p>{tr(
-              language,
-              "Body measurements, symptoms, limitations, nutrition preferences and weekly wellbeing check-ins remain unavailable in basic mode.",
-              "Las medidas corporales, síntomas, limitaciones, preferencias nutricionales y registros semanales de bienestar permanecen desactivados en el modo básico.",
-            )}</p>
-            <button type="button" onClick={onRequestHealthConsent}>{tr(language, "Authorize health personalization", "Autorizar personalización de salud")}</button>
-          </div>
-        )}
-
-        {tab === "overview" && (
-          <div className="profile-tab-panel">
-            <label className="profile-name-field">
-              <span>{tr(language, "Profile name", "Nombre del perfil")}</span>
-              <input value={name} onChange={(event) => onNameChange(event.target.value)} placeholder={tr(language, "My profile", "Mi perfil")} />
-            </label>
-
-            <div className="profile-training-preferences">
-              <h3>{tr(language, "Training preferences", "Preferencias de entrenamiento")}</h3>
-              <GoalPreferences language={language} profile={preferences} onChange={setPreferences} />
-              <div className="health-form-grid">
-                <label className="health-field"><span>{tr(language, "Available equipment", "Equipo disponible")}</span><select value={preferences.equipmentPreference ?? "mixed"} onChange={(event) => applyPreferences({ ...preferences, equipmentPreference: event.target.value as HealthProfile["equipmentPreference"] })}><option value="mixed">{tr(language, "Mixed", "Mixto")}</option><option value="bodyweight">{tr(language, "Bodyweight only", "Solo autocarga")}</option><option value="any">{tr(language, "All equipment", "Todo el equipo")}</option></select></label>
-                <label className="health-field"><span>{tr(language, "Training experience", "Experiencia entrenando")}</span><select value={preferences.experience} onChange={(event) => applyPreferences({ ...preferences, experience: event.target.value as HealthProfile["experience"] })}><option value="beginner">{tr(language, "Beginner", "Principiante")}</option><option value="intermediate">{tr(language, "Intermediate", "Intermedio")}</option><option value="advanced">{tr(language, "Advanced", "Avanzado")}</option></select></label>
-                <label className="health-field"><span>{tr(language, "Training days per week", "Días de entrenamiento por semana")}</span><input type="number" min="1" max="7" required value={preferences.trainingDaysPerWeek ?? ""} onChange={(event) => applyPreferences({ ...preferences, trainingDaysPerWeek: optionalNumber(event.target.value) ?? undefined })} /></label>
-                <label className="health-field"><span>{tr(language, "Minutes per session", "Minutos por sesión")}</span><input type="number" min="15" max="180" required value={preferences.sessionMinutes ?? ""} onChange={(event) => applyPreferences({ ...preferences, sessionMinutes: optionalNumber(event.target.value) ?? undefined })} /></label>
+        <div className="profile-accordions">
+        <div className="profile-accordion">
+          <button
+            type="button"
+            className={`profile-accordion-toggle ${overviewOpen ? "is-open" : ""}`}
+            aria-expanded={overviewOpen}
+            onClick={toggleOverview}
+          >
+            <span className="profile-accordion-title">{tr(language, "Overview", "Resumen")}</span>
+            <ChevronDown size={18} className={`profile-accordion-chevron ${overviewOpen ? "is-rotated" : ""}`} />
+          </button>
+          {overviewOpen && (
+            <div className="profile-accordion-content">
+              <div className="profile-training-preferences">
+                <h3>{tr(language, "Training preferences", "Preferencias de entrenamiento")}</h3>
+                <GoalPreferences language={language} profile={preferences} onChange={setPreferences} />
+                <div className="health-form-grid">
+                  <label className="health-field"><span>{tr(language, "Available equipment", "Equipo disponible")}</span><select value={preferences.equipmentPreference ?? "mixed"} onChange={(event) => applyPreferences({ ...preferences, equipmentPreference: event.target.value as HealthProfile["equipmentPreference"] })}><option value="mixed">{tr(language, "Mixed", "Mixto")}</option><option value="bodyweight">{tr(language, "Bodyweight only", "Solo autocarga")}</option><option value="any">{tr(language, "All equipment", "Todo el equipo")}</option></select></label>
+                  <label className="health-field"><span>{tr(language, "Training experience", "Experiencia entrenando")}</span><select value={preferences.experience} onChange={(event) => applyPreferences({ ...preferences, experience: event.target.value as HealthProfile["experience"] })}><option value="beginner">{tr(language, "Beginner", "Principiante")}</option><option value="intermediate">{tr(language, "Intermediate", "Intermedio")}</option><option value="advanced">{tr(language, "Advanced", "Avanzado")}</option></select></label>
+                  <label className="health-field"><span>{tr(language, "Training days per week", "Días de entrenamiento por semana")}</span><input type="number" min="1" max="7" required value={preferences.trainingDaysPerWeek ?? ""} onChange={(event) => applyPreferences({ ...preferences, trainingDaysPerWeek: optionalNumber(event.target.value) ?? undefined })} /></label>
+                  <label className="health-field"><span>{tr(language, "Minutes per session", "Minutos por sesión")}</span><input type="number" min="15" max="180" required value={preferences.sessionMinutes ?? ""} onChange={(event) => applyPreferences({ ...preferences, sessionMinutes: optionalNumber(event.target.value) ?? undefined })} /></label>
+                </div>
+                <p>{tr(language, "Changes are saved as you make them and do not change your existing routes. New suggestions use the first goal; combination rules are pending review.", "Los cambios se guardan al instante y no cambian tus rutas existentes. Las nuevas propuestas usan el primer objetivo; las reglas de combinación están pendientes de revisión.")}</p>
+                {!validTrainingPreferences(preferences) && <small role="status">{tr(language, "Choose at least one goal, between 1 and 7 days and between 15 and 180 minutes: values outside those ranges are not saved.", "Elegí al menos un objetivo, entre 1 y 7 días y entre 15 y 180 minutos: los valores fuera de rango no se guardan.")}</small>}
               </div>
-              <p>{tr(language, "Changes are saved as you make them and do not change your existing routes. New suggestions use the first goal; combination rules are pending review.", "Los cambios se guardan al instante y no cambian tus rutas existentes. Las nuevas propuestas usan el primer objetivo; las reglas de combinación están pendientes de revisión.")}</p>
-              {!validTrainingPreferences(preferences) && <small role="status">{tr(language, "Choose at least one goal, between 1 and 7 days and between 15 and 180 minutes: values outside those ranges are not saved.", "Elegí al menos un objetivo, entre 1 y 7 días y entre 15 y 180 minutos: los valores fuera de rango no se guardan.")}</small>}
-            </div>
 
-            <div className="profile-stats">
-              <div><Dumbbell size={18} /><strong>{tracks.length}</strong><span>{tr(language, "training tracks", "rutas de entrenamiento")}</span></div>
-              <div><CalendarDays size={18} /><strong>{plannedSessions}</strong><span>{tr(language, "weekly sessions", "sesiones semanales")}</span></div>
-              <div><Heart size={18} /><strong>{favoriteCount}</strong><span>{tr(language, "saved exercises", "ejercicios guardados")}</span></div>
-            </div>
-
-            <div className="health-snapshot">
-              <div>
-                <p className="section-kicker">{tr(language, "Body context", "Contexto corporal")}</p>
-                <strong>{healthProfile.currentWeightKg ? `${healthProfile.currentWeightKg} kg` : tr(language, "Not set", "Sin registrar")}</strong>
-                <span>{wellness.bmi ? `${tr(language, "BMI", "IMC")} ${wellness.bmi.value} kg/m²` : tr(language, "Add height and weight", "Agregá estatura y peso")}</span>
+              <div className="profile-stats">
+                <div><Dumbbell size={18} /><strong>{tracks.length}</strong><span>{tr(language, "training tracks", "rutas de entrenamiento")}</span></div>
+                <div><CalendarDays size={18} /><strong>{plannedSessions}</strong><span>{tr(language, "weekly sessions", "sesiones semanales")}</span></div>
+                <div><Heart size={18} /><strong>{favoriteCount}</strong><span>{tr(language, "saved exercises", "ejercicios guardados")}</span></div>
               </div>
-              <div>
-                <p className="section-kicker">{tr(language, "Latest recovery", "Recuperación reciente")}</p>
-                <strong>{checkIns[0]?.sleepHours ? `${checkIns[0].sleepHours} h ${tr(language, "sleep", "de sueño")}` : tr(language, "No check-in", "Sin registro")}</strong>
-                <span>{checkIns[0] ? `${tr(language, "Energy", "Energía")} ${checkIns[0].energy}/5 · ${tr(language, "Stress", "Estrés")} ${checkIns[0].stress}/5` : tr(language, "Log your week", "Registrá tu semana")}</span>
+
+              <div className="health-snapshot">
+                <div className="health-snapshot-grid">
+                  <div className="health-snapshot-item">
+                    <p className="section-kicker">{tr(language, "Body context", "Contexto corporal")}</p>
+                    <strong>{healthProfile.currentWeightKg ? `${healthProfile.currentWeightKg} kg` : tr(language, "Not set", "Sin registrar")}</strong>
+                    <span>{wellness.bmi ? `${tr(language, "BMI", "IMC")} ${wellness.bmi.value} kg/m²` : tr(language, "Add height and weight", "Agregá estatura y peso")}</span>
+                  </div>
+                  <div className="health-snapshot-item">
+                    <p className="section-kicker">{tr(language, "Latest recovery", "Recuperación reciente")}</p>
+                    <strong>{checkIns[0]?.sleepHours ? `${checkIns[0].sleepHours} h ${tr(language, "sleep", "de sueño")}` : tr(language, "No check-in", "Sin registro")}</strong>
+                    <span>{checkIns[0] ? `${tr(language, "Energy", "Energía")} ${checkIns[0].energy}/5 · ${tr(language, "Stress", "Estrés")} ${checkIns[0].stress}/5` : tr(language, "Log your week", "Registrá tu semana")}</span>
+                  </div>
+                </div>
+                <button className="health-snapshot-cta" type="button" onClick={toggleBody}>{tr(language, "Complete health context", "Completar contexto de salud")} <Ruler size={15} /></button>
               </div>
-              <button type="button" onClick={() => setTab("body")}>{tr(language, "Complete health context", "Completar contexto de salud")} <Ruler size={15} /></button>
-            </div>
 
-            <div className="profile-priorities">
-              <p className="section-kicker">{tr(language, "Training priorities", "Prioridades de entrenamiento")}</p>
-              {tracks.length ? tracks.map((track) => (
-                <button key={track.id} type="button" onClick={() => onOpenTrack(track.id)}>
-                  <span>{track.kind === "sport" ? <Trophy size={16} /> : <Activity size={16} />}</span>
-                  <span><strong>{track.name}</strong><small>{trackFocusLabel(track.focus, language)} · {track.daysPerWeek}× {tr(language, "weekly", "por semana")}</small></span>
-                  <em>{track.id === activeTrackId ? tr(language, "Active", "Activa") : tr(language, "Open", "Abrir")}</em>
-                </button>
-              )) : <p className="profile-empty">{tr(language, "No training tracks yet. Add one from the Training Tracks section.", "Todavía no tenés rutas. Agregá una desde la sección Rutas de entrenamiento.")}</p>}
+              <div className="profile-priorities">
+                <p className="section-kicker">{tr(language, "Training priorities", "Prioridades de entrenamiento")}</p>
+                {tracks.length ? tracks.map((track) => (
+                  <button key={track.id} type="button" onClick={() => onOpenTrack(track.id)}>
+                    <span>{track.kind === "sport" ? <Trophy size={16} /> : <Activity size={16} />}</span>
+                    <span><strong>{track.name}</strong><small>{trackFocusLabel(track.focus, language)} · {track.daysPerWeek}× {tr(language, "weekly", "por semana")}</small></span>
+                    <em>{track.id === activeTrackId ? tr(language, "Active", "Activa") : tr(language, "Open", "Abrir")}</em>
+                  </button>
+                )) : <p className="profile-empty">{tr(language, "No training tracks yet. Add one from the Training Tracks section.", "Todavía no tenés rutas. Agregá una desde la sección Rutas de entrenamiento.")}</p>}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        {healthDataConsent && tab === "body" && (
-          <div className="profile-tab-panel">
-            <div className="profile-section-intro">
-              <p className="section-kicker">{tr(language, "Body & health context", "Contexto de cuerpo y salud")}</p>
-              <h3>{tr(language, "Better inputs. Better explanations.", "Mejores datos. Mejores explicaciones.")}</h3>
-              <p>{tr(language, "These details add context to routine and nutrition guidance. They do not create a diagnosis or a single “ideal” weight.", "Estos datos dan contexto a la rutina y la orientación nutricional. No generan un diagnóstico ni un único peso “ideal”.")}</p>
-            </div>
+        <div className="profile-accordion">
+          <button
+            type="button"
+            className="profile-accordion-toggle"
+            aria-expanded={bodyOpen}
+            onClick={toggleBody}
+          >
+            <span>{tr(language, "Body and health", "Cuerpo y salud")}</span>
+            <ChevronDown size={18} className={bodyOpen ? "is-rotated" : ""} />
+          </button>
+          {bodyOpen && (
+            <div className="profile-accordion-content">
+              {!healthDataConsent ? (
+                <div className="profile-consent-required">
+                  <ShieldCheck size={24} />
+                  <h3>{tr(language, "Health authorization is optional", "La autorización de salud es opcional")}</h3>
+                  <p>{tr(
+                    language,
+                    "Body measurements, symptoms, limitations, nutrition preferences and weekly wellbeing check-ins remain unavailable in basic mode.",
+                    "Las medidas corporales, síntomas, limitaciones, preferencias nutricionales y registros semanales de bienestar permanecen desactivados en el modo básico.",
+                  )}</p>
+                  <button type="button" onClick={onRequestHealthConsent}>{tr(language, "Authorize health personalization", "Autorizar personalización de salud")}</button>
+                </div>
+              ) : (
+                <>
+                  <div className="profile-section-intro">
+                    <p className="section-kicker">{tr(language, "Body & health context", "Contexto de cuerpo y salud")}</p>
+                    <h3>{tr(language, "Better inputs. Better explanations.", "Mejores datos. Mejores explicaciones.")}</h3>
+                    <p>{tr(language, "These details add context to routine and nutrition guidance. They do not create a diagnosis or a single “ideal” weight.", "Estos datos dan contexto a la rutina y la orientación nutricional. No generan un diagnóstico ni un único peso “ideal”.")}</p>
+                  </div>
 
             <div className="health-form-grid">
-              <label className="health-field">
+              <label className="health-field is-full">
                 <span>{tr(language, "Date of birth", "Fecha de nacimiento")}</span>
                 <input
                   aria-label={tr(language, "Date of birth", "Fecha de nacimiento")}
@@ -338,67 +355,7 @@ export function ProfilePanel({
                 <p>{tr(language, "BMI does not distinguish bone, muscle, fat distribution, body frame, or training history. It is only a rough numerical ratio—not a diagnosis. Interpret it with body composition, waist trend, performance, recovery, how you feel, and professional assessment when needed.", "El IMC no distingue masa ósea, músculo, distribución de grasa, contextura ni historial de entrenamiento. Es solo una relación numérica aproximada, no un diagnóstico. Interpretalo junto con composición corporal, tendencia de cintura, rendimiento, recuperación, cómo te sentís y valoración profesional cuando sea necesario.")}</p>
               </div>
             </div>
-          </div>
-        )}
 
-        {healthDataConsent && tab === "checkin" && (
-          <div className="profile-tab-panel">
-            <div className="profile-section-intro">
-              <p className="section-kicker">{tr(language, "Weekly field note", "Nota semanal")}</p>
-              <h3>{tr(language, "Recovery changes the plan.", "La recuperación cambia el plan.")}</h3>
-              <p>{tr(language, "One calm check-in per week is more useful than reacting to daily fluctuations.", "Un registro tranquilo por semana aporta más que reaccionar a variaciones diarias.")}</p>
-            </div>
-
-            <form className="checkin-form" onSubmit={saveCheckIn}>
-              <label className="health-field">
-                <span>{tr(language, "Date", "Fecha")}</span>
-                <input type="date" value={checkIn.date} onChange={(event) => {
-                  setCheckInSaved(false);
-                  setCheckIn((current) => ({ ...current, date: event.target.value }));
-                }} />
-              </label>
-              <NumericField label={tr(language, "Weight", "Peso")} accessibleLabel={tr(language, "Check-in weight in kilograms", "Peso del registro en kilogramos")} value={checkIn.weightKg} unit="kg" min={30} max={350} step="0.1" onChange={(value) => {
-                setCheckInSaved(false);
-                setCheckIn((current) => ({ ...current, weightKg: value }));
-              }} />
-              <NumericField label={tr(language, "Average sleep", "Sueño promedio")} accessibleLabel={tr(language, "Average sleep hours", "Horas promedio de sueño")} value={checkIn.sleepHours} unit={tr(language, "hours", "horas")} min={0} max={14} step="0.1" onChange={(value) => {
-                setCheckInSaved(false);
-                setCheckIn((current) => ({ ...current, sleepHours: value }));
-              }} />
-              <RangeField label={tr(language, "Energy", "Energía")} value={checkIn.energy} low={tr(language, "Drained", "Agotado/a")} high={tr(language, "Excellent", "Excelente")} onChange={(value) => {
-                setCheckInSaved(false);
-                setCheckIn((current) => ({ ...current, energy: value }));
-              }} />
-              <RangeField label={tr(language, "Stress", "Estrés")} value={checkIn.stress} low={tr(language, "Low", "Bajo")} high={tr(language, "High", "Alto")} onChange={(value) => {
-                setCheckInSaved(false);
-                setCheckIn((current) => ({ ...current, stress: value }));
-              }} />
-              <label className="health-field checkin-notes">
-                <span>{tr(language, "Notes", "Notas")}</span>
-                <textarea value={checkIn.notes} onChange={(event) => {
-                  setCheckInSaved(false);
-                  setCheckIn((current) => ({ ...current, notes: event.target.value }));
-                }} placeholder={tr(language, "Soreness, match load, travel, pain, or anything that changed the week.", "Molestias, partidos, viajes, dolor o cualquier cosa que haya cambiado tu semana.")} />
-              </label>
-              <button className="save-checkin" type="submit">{checkInSaved ? tr(language, "Check-in saved", "Registro guardado") : tr(language, "Save weekly check-in", "Guardar registro semanal")}</button>
-            </form>
-
-            {checkIns.length > 0 && (
-              <div className="checkin-history">
-                <p className="section-kicker">{tr(language, "Recent notes", "Registros recientes")}</p>
-                {checkIns.slice(0, 4).map((item) => (
-                  <div key={item.id}>
-                    <strong>{item.date}</strong>
-                    <span>{item.weightKg ? `${item.weightKg} kg` : tr(language, "No weight", "Sin peso")} · {item.sleepHours ? `${item.sleepHours} h ${tr(language, "sleep", "de sueño")}` : tr(language, "No sleep", "Sin sueño")} · {tr(language, "Energy", "Energía")} {item.energy}/5</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {healthDataConsent && tab === "body" && (
-          <div className="profile-tab-panel">
             <div className="profile-section-intro">
               <p className="section-kicker">{tr(language, "Nutrition companion", "Acompañamiento nutricional")}</p>
               <h3>{tr(language, "Ranges, not rigid prescriptions.", "Rangos, no prescripciones rígidas.")}</h3>
@@ -700,8 +657,12 @@ export function ProfilePanel({
             )}
 
             <p className="profile-note">{tr(language, "Food searches are sent to the USDA FoodData Central service. Your personal information stays on this device unless you sign in to your private cloud account.", "Las búsquedas de alimentos se envían al servicio USDA FoodData Central. Tu información personal permanece privada en tu cuenta.")}</p>
-          </div>
-        )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+        </div>
 
         <div className="profile-actions">
           {onSignOut && <button className="profile-signout" type="button" onClick={() => { onClose(); onSignOut(); }}>{tr(language, "Sign out", "Salir")}</button>}
@@ -723,20 +684,17 @@ interface NumericFieldProps {
   onChange: (value: number | null) => void;
 }
 
-function NumericField({ label, accessibleLabel, value, unit, min, max, step = "1", onChange }: NumericFieldProps) {
+function NumericField({ label, accessibleLabel, value, unit, min, max, onChange }: NumericFieldProps) {
   return (
     <label className="health-field numeric-field">
       <span>{label}</span>
       <span className="numeric-input">
-        <input
-          aria-label={accessibleLabel ?? label}
-          type="number"
-          inputMode="decimal"
-          value={value ?? ""}
+        <DecimalInput
+          ariaLabel={accessibleLabel ?? label}
+          value={value}
           min={min}
           max={max}
-          step={step}
-          onChange={(event) => onChange(optionalNumber(event.target.value))}
+          onChange={onChange}
         />
         <small>{unit}</small>
       </span>

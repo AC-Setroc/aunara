@@ -1,5 +1,6 @@
 import { Activity, Dumbbell, HeartPulse, ShieldCheck } from "lucide-react";
 import { type FormEvent, useMemo, useState } from "react";
+import { DecimalInput } from "./DecimalInput";
 import { tr } from "../lib/i18n";
 import { stripSensitiveHealthData } from "../lib/privacy";
 import { adultBirthDateBounds, calculateAgeFromBirthDate } from "../lib/wellness";
@@ -17,8 +18,9 @@ interface OnboardingPanelProps {
 }
 
 function optionalNumber(value: string): number | null {
-  if (!value.trim()) return null;
-  const parsed = Number(value);
+  const clean = value.replace(",", ".").replace(/^0+(?=\d)/, "").trim();
+  if (!clean || clean === ".") return null;
+  const parsed = Number(clean);
   return Number.isFinite(parsed) ? parsed : null;
 }
 
@@ -46,13 +48,20 @@ export function GoalPreferences({ language, profile, onChange }: { language: Lan
   return <>
     <fieldset className="goal-preferences">
       <legend>{tr(language, "Training goals (choose 1–3)", "Objetivos de entrenamiento (elegí 1–3)")}</legend>
-      {GENERAL_GOALS.map((goal) => <label key={goal}>
-        <input type="checkbox" checked={goals.includes(goal)} disabled={!goals.includes(goal) && goals.length >= 3} onChange={(event) => {
-          const next = event.target.checked ? [...goals, goal] : goals.filter((value) => value !== goal);
-          onChange({ ...profile, goals: next, primaryGoal: next[0] ?? profile.primaryGoal, sport: profileSport(profile) });
-        }} />
-        <span>{trackFocusLabel(goal, language)}</span>
-      </label>)}
+      <div className="goal-options-grid">
+        {GENERAL_GOALS.map((goal) => {
+          const isChecked = goals.includes(goal);
+          return (
+            <label key={goal} className={`goal-option-pill ${isChecked ? "is-checked" : ""}`}>
+              <input type="checkbox" checked={isChecked} disabled={!isChecked && goals.length >= 3} onChange={(event) => {
+                const next = event.target.checked ? [...goals, goal] : goals.filter((value) => value !== goal);
+                onChange({ ...profile, goals: next, primaryGoal: next[0] ?? profile.primaryGoal, sport: profileSport(profile) });
+              }} />
+              <span>{trackFocusLabel(goal, language)}</span>
+            </label>
+          );
+        })}
+      </div>
       {!goals.length && <small>{tr(language, "Choose a general goal before saving.", "Elegí un objetivo general antes de guardar.")}</small>}
     </fieldset>
     <label className="health-field"><span>{tr(language, "Are you training for a particular sport? (optional)", "¿Entrenás para un deporte en particular? (opcional)")}</span>
@@ -172,17 +181,17 @@ export function OnboardingPanel({
             </label>}
             {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Height", "Estatura")}</span>
-              <input aria-label={tr(language, "Height in centimeters", "Estatura en centímetros")} type="number" min="100" max="250" value={draft.heightCm ?? ""} onChange={(event) => update("heightCm", optionalNumber(event.target.value))} required />
+              <DecimalInput ariaLabel={tr(language, "Height in centimeters", "Estatura en centímetros")} min={100} max={250} value={draft.heightCm} onChange={(val) => update("heightCm", val)} required />
               <small>cm</small>
             </label>}
             {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Current weight", "Peso actual")}</span>
-              <input aria-label={tr(language, "Current weight in kilograms", "Peso actual en kilogramos")} type="number" min="30" max="350" step="0.1" value={draft.currentWeightKg ?? ""} onChange={(event) => update("currentWeightKg", optionalNumber(event.target.value))} required />
+              <DecimalInput ariaLabel={tr(language, "Current weight in kilograms", "Peso actual en kilogramos")} min={30} max={350} value={draft.currentWeightKg} onChange={(val) => update("currentWeightKg", val)} required />
               <small>kg</small>
             </label>}
             {healthDataConsent && <label className="health-field">
               <span>{tr(language, "Goal weight (optional)", "Meta de peso (opcional)")}</span>
-              <input type="number" min="30" max="350" step="0.1" value={draft.targetWeightKg ?? ""} onChange={(event) => update("targetWeightKg", optionalNumber(event.target.value))} />
+              <DecimalInput min={30} max={350} value={draft.targetWeightKg} onChange={(val) => update("targetWeightKg", val)} />
               <small>kg</small>
             </label>}
             <GoalPreferences language={language} profile={draft} onChange={setDraft} />

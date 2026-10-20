@@ -254,7 +254,7 @@ export const WEEKDAYS: Weekday[] = [
 
 export function generateTrackWorkout(
   exercises: Exercise[],
-  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[] },
+  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[]; dailyExerciseCount?: number },
 ): WorkoutItem[] {
   const eligible = track.equipment === "bodyweight"
     ? exercises.filter(isEquipmentFreeExercise)
@@ -278,28 +278,55 @@ export function generateTrackWorkout(
   }
   const prescription = TRACK_PRESCRIPTIONS[track.focus] ?? { sets: 3, reps: 10 };
 
-  return preferredNames
+  const eligibleExercises = preferredNames
     .map((name) => eligible.find((exercise) => exercise.name === name))
-    .filter((exercise): exercise is Exercise => Boolean(exercise))
-    .map((exercise, index) => {
-      const sets = track.focus === "beach-volleyball" && index === preferredNames.length - 1
-        ? 2
-        : prescription.sets;
-      const fallbackDayCount = Math.max(1, Math.min(7, track.daysPerWeek ?? 1));
-      const trainingDays = track.trainingDays?.length
-        ? track.trainingDays
-        : WEEKDAYS.slice(0, fallbackDayCount);
-      return {
-        id: `${track.focus}-${exercise.id}-${index}`,
-        exerciseId: exercise.id,
-        sets,
-        reps: prescription.reps,
-        day: trainingDays[index % trainingDays.length],
-        setPlan: `${sets} × ${prescription.reps}`,
-        loadKg: null,
-        loadHistory: [],
-      };
+    .filter((exercise): exercise is Exercise => Boolean(exercise));
+
+  const fallbackDayCount = Math.max(1, Math.min(7, track.daysPerWeek ?? 1));
+  const trainingDays = track.trainingDays?.length
+    ? track.trainingDays
+    : WEEKDAYS.slice(0, fallbackDayCount);
+
+  if (track.dailyExerciseCount && track.dailyExerciseCount > 0 && trainingDays.length > 0) {
+    const dailyCount = Math.min(eligibleExercises.length, Math.max(4, Math.min(6, track.dailyExerciseCount)));
+    const result: WorkoutItem[] = [];
+    trainingDays.forEach((day, dayIndex) => {
+      for (let i = 0; i < dailyCount; i++) {
+        const exIndex = (dayIndex * 2 + i) % eligibleExercises.length;
+        const exercise = eligibleExercises[exIndex];
+        const sets = track.focus === "beach-volleyball" && i === dailyCount - 1
+          ? 2
+          : prescription.sets;
+        result.push({
+          id: `${track.focus}-${exercise.id}-${day}-${i}`,
+          exerciseId: exercise.id,
+          sets,
+          reps: prescription.reps,
+          day,
+          setPlan: `${sets} × ${prescription.reps}`,
+          loadKg: null,
+          loadHistory: [],
+        });
+      }
     });
+    return result;
+  }
+
+  return eligibleExercises.map((exercise, index) => {
+    const sets = track.focus === "beach-volleyball" && index === eligibleExercises.length - 1
+      ? 2
+      : prescription.sets;
+    return {
+      id: `${track.focus}-${exercise.id}-${index}`,
+      exerciseId: exercise.id,
+      sets,
+      reps: prescription.reps,
+      day: trainingDays[index % trainingDays.length],
+      setPlan: `${sets} × ${prescription.reps}`,
+      loadKg: null,
+      loadHistory: [],
+    };
+  });
 }
 
 const MOVEMENT_PATTERNS: Array<[MovementRestriction, RegExp]> = [
@@ -342,7 +369,7 @@ function replacementScore(candidate: Exercise, excluded: Exercise): number {
 
 export function generateAdaptiveTrackWorkout(
   exercises: Exercise[],
-  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[] },
+  track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[]; dailyExerciseCount?: number },
   limitations: TrainingLimitation[],
 ): { workout: WorkoutItem[]; adaptations: RoutineAdaptation[] } {
   const workout = generateTrackWorkout(exercises, track);
@@ -352,40 +379,47 @@ export function generateAdaptiveTrackWorkout(
   const exerciseById = new Map(exercises.map((exercise) => [exercise.id, exercise]));
   const usedIds = new Set(workout.map((item) => item.exerciseId));
   const adaptations: RoutineAdaptation[] = [];
+  const adaptationMap = new Map<string, { replacement: Exercise | null; conflicts: MovementRestriction[] }>();
+
   const adaptedWorkout = workout.flatMap((item) => {
     const exercise = exerciseById.get(item.exerciseId);
     if (!exercise) return [item];
     const conflicts = exerciseMovementRestrictions(exercise).filter((restriction) => restricted.has(restriction));
     if (!conflicts.length) return [item];
 
-    usedIds.delete(exercise.id);
-    const replacement = exercises
-      .filter((candidate) => candidate.id !== exercise.id)
-      .filter((candidate) => !usedIds.has(candidate.id))
-      .filter((candidate) => eligibleForPreference(candidate, track.equipment))
-      .filter((candidate) => (
-        exerciseMovementRestrictions(candidate).every((restriction) => !restricted.has(restriction))
-      ))
-      .map((candidate, index) => ({
-        candidate,
-        index,
-        score: replacementScore(candidate, exercise),
-      }))
-      .filter(({ score }) => score > 0)
-      .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.candidate;
+    let adaptation = adaptationMap.get(exercise.id);
+    if (!adaptation) {
+      usedIds.delete(exercise.id);
+      const replacement = exercises
+        .filter((candidate) => candidate.id !== exercise.id)
+        .filter((candidate) => !usedIds.has(candidate.id))
+        .filter((candidate) => eligibleForPreference(candidate, track.equipment))
+        .filter((candidate) => (
+          exerciseMovementRestrictions(candidate).every((restriction) => !restricted.has(restriction))
+        ))
+        .map((candidate, index) => ({
+          candidate,
+          index,
+          score: replacementScore(candidate, exercise),
+        }))
+        .filter(({ score }) => score > 0)
+        .sort((left, right) => right.score - left.score || left.index - right.index)[0]?.candidate ?? null;
 
-    adaptations.push({
-      excludedExerciseId: exercise.id,
-      replacementExerciseId: replacement?.id ?? null,
-      restrictions: conflicts,
-    });
-    if (!replacement) return [];
+      if (replacement) usedIds.add(replacement.id);
+      adaptation = { replacement, conflicts };
+      adaptationMap.set(exercise.id, adaptation);
+      adaptations.push({
+        excludedExerciseId: exercise.id,
+        replacementExerciseId: replacement?.id ?? null,
+        restrictions: conflicts,
+      });
+    }
 
-    usedIds.add(replacement.id);
+    if (!adaptation.replacement) return [];
     return [{
       ...item,
-      id: `${item.id ?? exercise.id}-adapted-${replacement.id}`,
-      exerciseId: replacement.id,
+      id: `${item.id ?? exercise.id}-adapted-${adaptation.replacement.id}`,
+      exerciseId: adaptation.replacement.id,
     }];
   });
 
