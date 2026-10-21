@@ -1,22 +1,32 @@
-# SDD-007 — Ejecución, historial y seguimiento
+# SDD-007 — Ejecución, historial, seguimiento y reportería
 
-2026-10-10 · Estado: **Borrador** · v1
-Origen: [Aunara/Codex · modelo no expuesto en este agente]
+2026-10-20 · Estado: **Borrador** · v2 (incorporación de reportería, tendencias y gráficas según orden del Operator)
+Origen: [Aunara/Antigravity] sobre borrador v1 de [Aunara/Codex]
 Entrega 2; depende del cierre local de SDD-006. Requiere diseño/rebaseline y aprobación nuevos.
 
 ## 1. El problema, en el idioma del Operator
 
 Una rutina planeada no prueba que se realizó. La persona necesita registrar cada serie, retomar una sesión interrumpida y consultar hechos comparables sin que editar la rutina cambie su historia ni que una sugerencia altere el plan sola.
 
+Además, los registros de series y sesiones no deben quedar como cifras aisladas en un formulario: la persona necesita comprender su evolución real en el tiempo mediante un módulo de reportería completo que muestre historial cronológico, tendencias de rendimiento por ejercicio y por grupo muscular, volumen acumulado, marcas personales y gráficas visuales claras, accesibles y optimizadas para móvil y escritorio.
+
 ## 2. Alcance y fuera de alcance
 
-Propuesto: sesión propia con inicio/pausa/reanudar/finalizar, registro por serie, prescripción congelada, precarga explícita de última sesión, timers de trabajo/descanso, historial y métricas con origen visible. Override fechado para mover una sesión, sin modificar plantilla semanal. Captura de esfuerzo/técnica/tolerancia opcional; inferencia clínica/progresión espera matriz aprobada.
+Propuesto:
+1. **Ejecución en vivo:** sesión propia con inicio/pausa/reanudar/finalizar, registro por serie, prescripción congelada, precarga explícita de última sesión, timers de trabajo/descanso independientes de la pestaña. Override fechado para mover una sesión, sin modificar plantilla semanal. Captura de esfuerzo/técnica/tolerancia opcional; inferencia clínica/progresión espera matriz aprobada.
+2. **Reportería, historial y analítica visual:**
+   - **Historial navegable:** visualización cronológica detallada por fecha, sesión y ejercicio, permitiendo contrastar desempeños pasados.
+   - **Tendencias y progreso:** evolución de carga máxima levantada, repeticiones efectivas y volumen de carga total ($series \times reps \times peso$) por ejercicio, grupo muscular y periodo (semana/mes/histórico).
+   - **Gráficas interactivas y visuales:** curvas de tendencia temporal de cargas y barras de volumen acumulado semanal renderizadas de forma nativa/ligera (SVG accesible con tokens de diseño AC | Setroc: Ink `#12151B`, Slate `#5A6473`, Mist `#DCE0E6`, Paper `#FAFAF8`, Cobalt `#2D5BFF`), sin dependencias externas pesadas ni telemetría invasiva.
+   - **Indicadores y marcas (PRs):** detección transparente de récords personales por ejercicio (mejor peso levantado, mayor volumen en una sesión) y consistencia semanal/mensual.
 
 Allowlist **tentativa, no ejecutable** hasta diseño y rebaseline:
 
 - Existentes: `src/App.tsx`, `src/styles.css`, `src/types.ts`, `src/components/WorkoutPanel.tsx`, `src/components/AppFlows.test.tsx`, `src/lib/workoutPrescription.ts`, `src/lib/workoutPrescription.test.ts`, `src/lib/cloudSnapshot.ts`, `src/lib/cloudSnapshot.test.ts`, `src/lib/exercises.test.ts` (solo compatibilidad de historial).
-- Nuevos propuestos: `src/lib/workoutSessions.ts`, `src/lib/workoutSessions.test.ts`, `src/lib/sessionTimers.ts`, `src/lib/sessionTimers.test.ts`, `src/components/WorkoutSessionPanel.tsx`, `src/components/WorkoutSessionPanel.test.tsx`, `src/components/ProgressPanel.tsx`, `src/components/ProgressPanel.test.tsx`.
-- Documentación: este SDD, `AUNARA_SOT/02-ESTADO-ACTUAL.md`, `AUNARA_SOT/PENDIENTES.md`, `AUNARA_SOT/03-HISTORIA-Y-BACKLOG.md`, `docs/product/2026-09-18-opengym-adoption-review.md`, `docs/product/2026-09-26-device-uat-matrix.md`, `docs/product/2026-08-25-feedback-work-plan.md`.
+- Nuevos propuestos:
+  - Motor de sesiones: `src/lib/workoutSessions.ts`, `src/lib/workoutSessions.test.ts`, `src/lib/sessionTimers.ts`, `src/lib/sessionTimers.test.ts`, `src/components/WorkoutSessionPanel.tsx`, `src/components/WorkoutSessionPanel.test.tsx`.
+  - Reportería y analítica visual: `src/lib/workoutAnalytics.ts`, `src/lib/workoutAnalytics.test.ts`, `src/components/ProgressPanel.tsx`, `src/components/ProgressPanel.test.tsx`, `src/components/TrendChart.tsx`, `src/components/TrendChart.test.tsx`.
+- Documentación: este SDD, `AUNARA_SOT/02-ESTADO-ACTUAL.md`, `AUNARA_SOT/PENDIENTES.md`, `AUNARA_SOT/03-HISTORIA-Y-BACKLOG.md`, `AUNARA_SOT/sdd/SDD-006-009-plan-entregas.md`, `docs/product/2026-09-18-opengym-adoption-review.md`, `docs/product/2026-09-26-device-uat-matrix.md`, `docs/product/2026-08-25-feedback-work-plan.md`.
 
 **NO-TOCAR:** fuentes/activos/textos de OpenGym; fuentes y medios de terceros; Auth/SMTP/DNS/producción, `.env*`, `supabase/`, hooks de sync/almacenamiento, cliente/transportes, workflows, dependencias y matriz clínica v0.1. No reasignar salud a coach, compartir/importar rutinas, app nativa, HealthKit/Health Connect, progresión/deload automáticos ni 1RM en onboarding. Persistencia que exija archivo excluido detiene el frente y requiere enmienda.
 
@@ -38,6 +48,15 @@ Entidades propuestas: plantilla, agenda fechada, sesión, rendimiento por ejerci
 Precarga muestra sesión/fecha fuente y permite editar; precargar jamás registra éxito. Sesión incompleta se recupera sin duplicar IDs tras recarga; finalización repetida es idempotente. Corrección de sesión cerrada requerirá política explícita de revisión/versionado, no sobrescritura oculta.
 
 Timers derivan de tiempo objetivo absoluto, no solo ticks UI; prueban segundo plano/retorno/cambio horario. Pantalla activa es opcional con degradación si no existe/permiso negado; no prometer continuidad de capacidad del navegador sin UAT real.
+
+### Módulo de reportería, tendencias y visualización gráfica
+- **Agregación matemática y analítica (`workoutAnalytics.ts`):** funciones puras de cálculo de volumen ($peso \times reps$), tonelaje total por sesión o periodo, mejor marca histórica por ejercicio y métricas derivadas transparentes (ej. fórmula Epley o Brzycki para estimación de fuerza relativa, claramente etiquetada como estimación matemática, no dictamen clínico).
+- **Tratamiento honesto de datos:** la falta de registro o semanas de inactividad no se dibujan como ceros que hunden artificialmente la tendencia de fuerza, ni se interpolan datos falsos; los gráficos reflejan vacíos/gaps temporales explícitos. Si un ejercicio tiene menos de 2 registros, se muestra estado vacío / histórico puntual sin forzar una línea de tendencia.
+- **Gráficas nativas (`TrendChart.tsx`):** implementación de visualización mediante SVG nativo responsive. Respeta la cuadrícula, tipografía Geist y tokens de diseño AC | Setroc (fondo Paper `#FAFAF8`, trazos Mist `#DCE0E6`, texto/ejes Slate `#5A6473` e Ink `#12151B`, línea de tendencia y barras de realce en Cobalt `#2D5BFF`). Interacción accesible por teclado y tooltips táctiles simples para consultar el valor exacto de cada punto en móvil y escritorio.
+- **Vistas en `ProgressPanel.tsx`:**
+  - **Apertura por defecto en Resumen (decisión Operator 2026-10-20):** panel general que sintetiza volumen acumulado, sesiones completadas / adherencia semanal, y marcas personales recientes.
+  - **Filtro temporal predeterminado y opciones (decisión Operator 2026-10-20):** inicia en 4 semanas (mes) por defecto; incluye selector de rango temporal con opciones: Semana, Mes, Trimestre, Semestre y Año.
+  - **Vista detallada por ejercicio:** selector secundario para inspeccionar la curva cronológica de carga y repeticiones de un ejercicio puntual en el periodo seleccionado.
 
 Resumen/progreso enlazan serie y sesión origen y definen denominador, unidades y cobertura. Vacío/faltantes no son cero ni tendencia. Evitar comparación de prescripciones incompatibles. Esfuerzo/técnica/dolor son autoinforme; no diagnóstico. Propuestas de progresión, si futura matriz permite, explican versión de regla/evidencia y requieren aceptación; dolor/técnica deteriorada y cobertura insuficiente bloquean propuesta. No adoptar umbrales de OpenGym.
 
@@ -65,6 +84,9 @@ Pérdida/duplicación por persistencia, crecimiento del snapshot y conflicto de 
 | CA07-06 | Override mueve solo fecha elegida y es reversible; plantilla y otras fechas idénticas. |
 | CA07-07 | Legacy export/round-trip preserva historia; cuenta B no lee sesión A; revocación no resucita salud. |
 | CA07-08 | No copia externa ni regla clínica no aprobada; propuesta nunca aplica sola y guardas bloquean datos no elegibles. |
+| CA07-09 | Módulo de reportería computa volumen, tonelaje y récords fidedignamente solo sobre series marcadas como completadas; series pendientes u omitidas se excluyen del cálculo. |
+| CA07-10 | Gráficas de tendencia representan fielmente el historial en el tiempo; semanas o días sin datos muestran gaps honestos sin inventar ceros ni extrapolar progresiones ficticias. |
+| CA07-11 | Componente visual `TrendChart` renderiza en SVG conforme a tokens AC \| Setroc y escala fluidamente en pantallas móviles (320px, 390px) y escritorio (1440px) sin desborde horizontal ni clipping en Chromium y WebKit. |
 
 Matriz: typecheck, suite completa, tests directorio, builds `/` y `/aunara/`/artifact; lint sin script registrado N/A. UI local real Chromium/WebKit desktop1440/mobile390, ES/EN, sesión/editor/progreso y vecinos. Negativos: doble guardar, serie pendiente sumada, prescripción mutada, clock/permiso negado, snapshot inválido, cruce de usuario y propuesta sin aprobación; rojo ante defecto y verde restaurado. UAT iPhone Safari/Android Chrome de bloqueo/segundo plano separada y manual; cuentas/sync reales solo por autorización. WebKit o matriz faltante bloquea aprobación.
 
@@ -74,7 +96,16 @@ Tras 006: rebaseline, prototipo de sesión con estados, contrato persistente/ver
 
 ## 9. Decisiones que necesita el Operator
 
-Modelo/estados, correcciones de sesiones cerradas, conflicto sync/límites, definición de adherencia/volumen, tolerancia timer y ubicación de progreso. Danny aprueba esfuerzo/umbrales/guardas antes de inferir; decisión jurídica aparte para cualquier reutilización. Sin estas decisiones sigue Borrador.
+- **Decidido por el Operator (2026-10-20):**
+  - Vista inicial: Resumen general de progreso.
+  - Ventana por defecto: 4 semanas (mes).
+  - Filtros temporales disponibles: Semana, Mes, Trimestre, Semestre y Año.
+- **Pendientes antes de código:**
+  - Modelo/estados de sesión en vivo (inicio/pausa/reanudar/completar).
+  - Política de corrección de sesiones cerradas (¿edición de registros pasados o inmutabilidad estricta?).
+  - Conflicto de sincronización y límites de payload.
+  - Tolerancia de timer en segundo plano.
+  - Validación metodológica con Danny (aprobación de esfuerzo/umbrales/guardas antes de inferir). Sin estas decisiones sigue Borrador.
 
 ## 10. Definición de terminado
 

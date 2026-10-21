@@ -21,6 +21,13 @@ describe("shared navigation", () => {
     expect(document.activeElement).toBe(hamburger);
     expect(screen.queryByRole("dialog")).toBeNull();
   });
+
+  it("renders the test version tag under the brand logo in both languages", () => {
+    const { rerender } = render(<NavigationMenu language="es" entries={[]} />);
+    expect(screen.getByText("versión de prueba 0.0.1")).toBeTruthy();
+    rerender(<NavigationMenu language="en" entries={[]} />);
+    expect(screen.getByText("test version 0.0.1")).toBeTruthy();
+  });
 });
 
 describe("header row and menu panel (SDD-012)", () => {

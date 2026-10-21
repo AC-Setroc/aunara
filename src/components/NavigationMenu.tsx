@@ -61,7 +61,10 @@ export function NavigationMenu({ language, entries, controls, panelContent, onTo
   );
   return <div className="shared-navigation">
     <button className="brand" type="button" aria-label={tr(language, "Aunara navigation", "Navegación de Aunara")} aria-expanded={open} aria-controls="aunara-navigation" onClick={(event) => toggle(event.currentTarget)}>
-      <img className="brand-lockup" src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" />
+      <div className="brand-lockup-wrapper">
+        <img className="brand-lockup" src={`${import.meta.env.BASE_URL}brand/aunara-training-systems.svg`} alt="Aunara Training Systems" />
+        <span className="brand-version-tag">{tr(language, "test version 0.0.1", "versión de prueba 0.0.1")}</span>
+      </div>
       <img className="brand-symbol" src={`${import.meta.env.BASE_URL}brand/aunara-symbol.svg`} alt="" aria-hidden="true" />
     </button>
     {controls}

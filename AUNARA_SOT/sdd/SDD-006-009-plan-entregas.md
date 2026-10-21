@@ -10,7 +10,7 @@ Actualización 2026-10-12 `[AUNARA/claude · modelo no expuesto]`: estado real d
 | Entrega | Resultado | Estado actual | Gate antes de código |
 | --- | --- | --- | --- |
 | [006](SDD-006-acceso-y-creacion-rutinas.md) | Acceso/home, menú, privacidad/instalación, móvil y rutina por miembro; integrar correcciones locales | PASS técnico local; entrega bloqueada | Resolver frontera/integración de dirty previo y verificar aislamiento antes de commit |
-| [007](SDD-007-ejecucion-y-seguimiento.md) | Sesiones por serie y seguimiento propio | Borrador | Cierre006, rebaseline, prototipo/contrato persistente/métricas, allowlist exacta; matriz Danny antes de progresión |
+| [007](SDD-007-ejecucion-y-seguimiento.md) | Sesiones por serie, seguimiento, historial, tendencias y reportería gráfica | Borrador | Cierre006, rebaseline, prototipo/contrato persistente/métricas, allowlist exacta; matriz Danny antes de progresión |
 | [008](SDD-008-nutricion-y-recursos-propios.md) | Creación/registro nutricional y piloto de recursos propios | Borrador | Cierre007, rebaseline, revisión nutricional; inventario derechos/piloto técnico aprobado antes de medios/lote |
 | [009](SDD-009-entrenador-invitaciones.md) | Registro autónomo→invitación→consentimiento y permisos aislados | Borrador | Producto personal/UAT, rebaseline, threat model/matriz permisos/backend exacto y aprobación independiente |
 
