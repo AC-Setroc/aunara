@@ -1,10 +1,19 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useState } from "react";
 import { WorkoutPanel } from "./WorkoutPanel";
 import type { Exercise, TrainingTrack, WorkoutItem } from "../types";
-afterEach(cleanup);
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date("2026-10-19T12:00:00Z")); // Monday
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+  cleanup();
+});
 const exercises = ["synthetic press", "synthetic push-up", "synthetic climber"].map((name, index) => ({
   id: `synthetic-${index}`, name, body_part: "chest", category: "chest", equipment: "body weight", target: "pectorals", muscle_group: "chest", secondary_muscles: [], instructions: { en: "Synthetic instruction" }, instruction_steps: { en: [] }, image: "synthetic.jpg", gif_url: "synthetic.gif", media_id: "synthetic", attribution: "Synthetic fixture", created_at: "2026-10-10",
 } as unknown as Exercise));
