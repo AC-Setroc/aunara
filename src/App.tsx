@@ -906,6 +906,20 @@ function App() {
     }
   }
 
+  function rejectTrackProposal() {
+    if (!trackProposal) return;
+    const blankTrack: TrainingTrack = {
+      ...trackProposal,
+      workout: [],
+      creationMode: "manual",
+      adaptations: [],
+    };
+    setTracks((current) => [...current, blankTrack]);
+    setActiveTrackId(blankTrack.id);
+    setTrackProposal(null);
+    showWorkout("edit");
+  }
+
   function acceptInitialProposal(openForEditing: boolean) {
     if (!initialProposal) return;
     if (readinessAssessment.level === "professional-review" || readinessAssessment.level === "setup") return;
@@ -920,9 +934,19 @@ function App() {
   }
 
   function rejectInitialProposal() {
+    if (!initialProposal) return;
+    const blankTrack: TrainingTrack = {
+      ...initialProposal,
+      workout: [],
+      creationMode: "manual",
+      adaptations: [],
+    };
+    setTracks([blankTrack]);
+    setActiveTrackId(blankTrack.id);
     setHealthProfile((current) => ({ ...current, initialRoutineDecision: "rejected" }));
     setTracksInitialized(true);
     setInitialProposal(null);
+    showWorkout("edit");
   }
 
   function editTrack(trackId: string, changes: Partial<TrainingTrack>) {
@@ -1304,7 +1328,7 @@ function App() {
           onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
           onAccept={() => acceptTrackProposal(false)}
           onEdit={() => acceptTrackProposal(true)}
-          onReject={() => setTrackProposal(null)}
+          onReject={rejectTrackProposal}
           onReviewHealth={() => showProfile()}
         />
       )}

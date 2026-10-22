@@ -1432,4 +1432,88 @@ describe("profile access", () => {
     expect(screen.getByRole("button", { name: "Listo" })).toBeTruthy();
     expect(screen.queryByText("Done")).toBeNull();
   });
+
+  it("creates a manual track directly via the Crear ruta button in Spanish", () => {
+    const onCreate = vi.fn();
+    render(<TrainingTracks
+      language="es"
+      tracks={[]}
+      activeTrackId=""
+      onOpen={vi.fn()}
+      onCreate={onCreate}
+      onGenerate={vi.fn()}
+      onDelete={vi.fn()}
+      onEdit={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Agregar ruta/ }));
+    fireEvent.change(screen.getByLabelText("Nombre de la rutina"), { target: { value: "Mi ruta personalizada" } });
+    fireEvent.click(screen.getByRole("button", { name: "Crear ruta" }));
+
+    expect(onCreate).toHaveBeenCalledWith(expect.objectContaining({
+      name: "Mi ruta personalizada",
+      creationMode: "manual",
+    }));
+  });
+
+  it("leaves the day structure and add block button ready when routine is empty in edit mode", () => {
+    render(<WorkoutPanel
+      language="es"
+      initialMode="edit"
+      items={[]}
+      exerciseMap={new Map([[exercise.id, exercise]])}
+      exercises={[exercise]}
+      track={{
+        ...track,
+        workout: [],
+        creationMode: "manual",
+        trainingDays: ["monday"],
+      }}
+      onClose={vi.fn()}
+      onUpdate={vi.fn()}
+      onAddExercise={vi.fn()}
+      onAddStructure={vi.fn()}
+      onRemove={vi.fn()}
+      onSwap={vi.fn()}
+      onClear={vi.fn()}
+      onGenerate={vi.fn()}
+      onOpenExercise={vi.fn()}
+      analysis={{ tone: "ready", headline: "Plan listo", points: [] }}
+      onOpenProfile={vi.fn()}
+    />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Cancelar" }));
+    expect(screen.getByText("No hay ejercicios planeados para este día todavía.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Agregar ejercicio o bloque/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Finalizar edición" })).toBeTruthy();
+  });
+
+  it("rejecting track proposal creates an empty manual track and opens it for editing", async () => {
+    localStorage.setItem("repbook-language", JSON.stringify("es"));
+    localStorage.setItem("repbook-health-profile", JSON.stringify({
+      ...healthProfile,
+      onboardingCompleted: true,
+      initialRoutineDecision: "rejected",
+    }));
+    localStorage.setItem("repbook-training-tracks-initialized", JSON.stringify(true));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue([exercise]),
+    }));
+    render(<App />);
+
+    fireEvent.click(await screen.findByRole("button", { name: /Ir a rutas de entrenamiento/ }));
+    await screen.findByRole("heading", { name: "Rutas de entrenamiento" });
+    fireEvent.click(screen.getByRole("button", { name: /Agregar ruta/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Crear ruta y sugerir rutina" }));
+
+    expect(await screen.findByRole("dialog", { name: "Revisá la rutina sugerida" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Rechazar propuesta" }));
+
+    expect(screen.queryByRole("dialog", { name: "Revisá la rutina sugerida" })).toBeNull();
+    const storedTracks = JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]");
+    expect(storedTracks).toHaveLength(1);
+    expect(storedTracks[0].creationMode).toBe("manual");
+    expect(storedTracks[0].workout).toEqual([]);
+  });
 });

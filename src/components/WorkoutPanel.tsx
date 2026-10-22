@@ -232,34 +232,38 @@ export function WorkoutPanel({
         </button>
       </div>
 
-      {items.length > 0 && (
-        <div className="workout-mode-actions">
-          {mode === "view" ? (
-            <>
+      <div className="workout-mode-actions">
+        {mode === "view" ? (
+          <>
+            {items.length > 0 && (
               <button className="is-primary" type="button" onClick={openSessionCheck}>
                 <Play size={16} /> {tr(language, "Start today’s workout", "Iniciar entrenamiento de hoy")}
               </button>
-              <button type="button" onClick={() => {
+            )}
+            <button
+              className={items.length > 0 ? "" : "is-primary"}
+              type="button"
+              onClick={() => {
                 setMode("edit");
                 setOpenDay(trainingDay);
                 setOpenBlockId(null);
                 setAddingToDay(null);
-              }}>
-                <Pencil size={16} /> {tr(language, "Edit routine", "Editar rutina")}
-              </button>
-            </>
-          ) : (
-            <button type="button" onClick={() => {
-              setMode("view");
-              setReplacingId(null);
-              setOpenBlockId(null);
-              setAddingToDay(null);
-            }}>
-              <ArrowLeft size={16} /> {tr(language, "Back to routine", "Volver a la rutina")}
+              }}
+            >
+              <Pencil size={16} /> {tr(language, "Edit routine", "Editar rutina")}
             </button>
-          )}
-        </div>
-      )}
+          </>
+        ) : (
+          <button type="button" onClick={() => {
+            setMode("view");
+            setReplacingId(null);
+            setOpenBlockId(null);
+            setAddingToDay(null);
+          }}>
+            <ArrowLeft size={16} /> {tr(language, "Back to routine", "Volver a la rutina")}
+          </button>
+        )}
+      </div>
 
       {sessionCheckOpen && (
         <div className="session-check-backdrop">
@@ -342,54 +346,71 @@ export function WorkoutPanel({
         </section>
       )}
 
-      {items.length === 0 ? (
+      {items.length === 0 && mode === "view" ? (
         <div className="empty-workout">
           <Dumbbell size={30} strokeWidth={1.5} />
           <h3>{tr(language, "This routine is empty.", "Esta rutina está vacía.")}</h3>
           {isManual ? (
             <>
               <p>{tr(language, "Build it exercise by exercise. Aunara will not add suggested movements to this manual route.", "Armala ejercicio por ejercicio. Aunara no agregará movimientos sugeridos a esta ruta manual.")}</p>
-              {!manualBuilderOpen && (
-                <button className="suggest-routine-button" type="button" onClick={() => {
+              <button
+                className="suggest-routine-button"
+                type="button"
+                onClick={() => {
                   setMode("edit");
                   setManualBuilderOpen(true);
-                }}>
-                  <Plus size={15} /> {tr(language, "Start creating", "Empezar a crear")}
-                </button>
-              )}
-              {manualBuilderOpen && (onAddExercise || onAddStructure) && (
-                <ExerciseAdder
-                  language={language}
-                  exercises={exercises}
-                  equipmentPreference={track.equipment}
-                  routeDays={routeDays}
-                  initialDay={trainingDay}
-                  showDayPicker={routeDays.length > 1}
-                  restrictedMovements={restrictedMovements}
-                  onAddExercise={onAddExercise}
-                  onAddStructure={(type, exerciseIds, targetDay, prescriptions) => {
-                    onAddStructure?.(type, exerciseIds, targetDay, prescriptions);
-                    setManualBuilderOpen(false);
-                    setAddingToDay(null);
-                    setOpenDay(targetDay);
-                  }}
-                  onOpenExercise={onOpenExercise}
-                  onFinish={() => {
-                    setManualBuilderOpen(false);
-                    setAddingToDay(null);
-                  }}
-                />
-              )}
+                }}
+              >
+                <Plus size={15} /> {tr(language, "Start creating", "Empezar a crear")}
+              </button>
             </>
           ) : (
             <>
               <p>{tr(language, "Start with a suggested routine, then adjust it movement by movement.", "Empezá con una rutina sugerida y ajustala movimiento por movimiento.")}</p>
-              <button className="suggest-routine-button" type="button" onClick={onGenerate}>
-                <RefreshCw size={15} /> {tr(language, "Suggest this routine", "Sugerir esta rutina")}
-              </button>
+              <div className="empty-workout-actions">
+                <button
+                  className="suggest-routine-button"
+                  type="button"
+                  onClick={onGenerate}
+                >
+                  <RefreshCw size={15} /> {tr(language, "Suggest this routine", "Sugerir esta rutina")}
+                </button>
+                <button
+                  className="suggest-routine-button is-secondary"
+                  type="button"
+                  onClick={() => {
+                    setMode("edit");
+                    setManualBuilderOpen(true);
+                  }}
+                >
+                  <Plus size={15} /> {tr(language, "Start creating", "Empezar a crear")}
+                </button>
+              </div>
             </>
           )}
         </div>
+      ) : manualBuilderOpen && items.length === 0 && (onAddExercise || onAddStructure) ? (
+        <ExerciseAdder
+          language={language}
+          exercises={exercises}
+          equipmentPreference={track.equipment}
+          routeDays={routeDays}
+          initialDay={trainingDay}
+          showDayPicker={routeDays.length > 1}
+          restrictedMovements={restrictedMovements}
+          onAddExercise={onAddExercise}
+          onAddStructure={(type, exerciseIds, targetDay, prescriptions) => {
+            onAddStructure?.(type, exerciseIds, targetDay, prescriptions);
+            setManualBuilderOpen(false);
+            setAddingToDay(null);
+            setOpenDay(targetDay);
+          }}
+          onOpenExercise={onOpenExercise}
+          onFinish={() => {
+            setManualBuilderOpen(false);
+            setAddingToDay(null);
+          }}
+        />
       ) : (
         <>
           <div className="workout-summary">
@@ -895,7 +916,6 @@ export function WorkoutPanel({
                 className="finish-day-button finish-edition-button is-primary"
                 type="button"
                 onClick={() => {
-                  setManualBuilderOpen(false);
                   setAddingToDay(null);
                   setOpenBlockId(null);
                   setMode("view");
@@ -903,9 +923,11 @@ export function WorkoutPanel({
               >
                 <Check size={18} /> {tr(language, "Finish editing", "Finalizar edición")}
               </button>
-              <button className="clear-button clear-workout-button" type="button" onClick={onClear}>
-                <Trash2 size={16} /> {tr(language, "Clear workout", "Vaciar entrenamiento")}
-              </button>
+              {items.length > 0 && (
+                <button className="clear-button clear-workout-button" type="button" onClick={onClear}>
+                  <Trash2 size={16} /> {tr(language, "Clear workout", "Vaciar entrenamiento")}
+                </button>
+              )}
             </div>
           )}
         </>

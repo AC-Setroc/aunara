@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, CalendarDays, Dumbbell, Pencil, Plus, RefreshCw, Trash2, Trophy, X } from "lucide-react";
+import { Activity, ArrowRight, CalendarDays, Check, Dumbbell, Pencil, Plus, RefreshCw, Trash2, Trophy, X } from "lucide-react";
 import { useState } from "react";
 import { WEEKDAYS } from "../lib/exercises";
 import { tr } from "../lib/i18n";
@@ -291,8 +291,7 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
     });
   }
 
-  function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function submitWithMode(mode: TrackCreationMode) {
     const input = {
       name: name.trim() || trackFocusLabel(focus, language),
       kind,
@@ -301,13 +300,18 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
       sessionMinutes,
       daysPerWeek: trainingDays.length,
       trainingDays,
-      creationMode,
+      creationMode: mode,
     };
     if (editing) {
       onSave?.(input);
       return;
     }
     onCreate(input);
+  }
+
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    submitWithMode(editing ? creationMode : "suggested");
   }
 
   return (
@@ -393,15 +397,28 @@ function TrackCreator({ language, onClose, onCreate, initialTrack, onSave }: Tra
           </div>
         </fieldset>
 
-        <button className="create-track-button" type="submit">
-          <Dumbbell size={18} /> {
-            editing
-              ? tr(language, "Save track changes", "Guardar cambios de la ruta")
-              : creationMode === "manual"
-                ? tr(language, "Create manual track", "Crear ruta manual")
-                : tr(language, "Create track & suggest routine", "Crear ruta y sugerir rutina")
-          }
-        </button>
+        {editing ? (
+          <button className="create-track-button" type="submit">
+            <Check size={18} /> {tr(language, "Save track changes", "Guardar cambios de la ruta")}
+          </button>
+        ) : (
+          <div className="track-creator-actions">
+            <button
+              className="track-action-button is-secondary"
+              type="button"
+              onClick={() => submitWithMode("manual")}
+            >
+              {tr(language, "Create manual track", "Crear ruta")}
+            </button>
+            <button
+              className="track-action-button is-primary"
+              type="button"
+              onClick={() => submitWithMode("suggested")}
+            >
+              <Dumbbell size={18} /> {tr(language, "Create track & suggest routine", "Crear ruta y sugerir rutina")}
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );
