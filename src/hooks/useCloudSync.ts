@@ -322,14 +322,35 @@ export function useCloudSync({
     store.load(user.id)
       .then(async (remoteValue) => {
         if (!active) return;
-        const isFirstLogin = (typeof localStorage !== "undefined" && localStorage.getItem("aunara-is-first-login") === "true")
-          || user.user_metadata?.onboarding_completed === false;
+        const remoteHasData = Boolean(
+          remoteValue && (
+            (Array.isArray(remoteValue.tracks) && remoteValue.tracks.length > 0)
+            || remoteValue.healthProfile?.onboardingCompleted === true
+            || Boolean(remoteValue.healthProfile?.initialRoutineDecision)
+          ),
+        );
+
+        const isFirstLogin = !remoteHasData && (
+          (typeof localStorage !== "undefined" && localStorage.getItem("aunara-is-first-login") === "true")
+          || user.user_metadata?.onboarding_completed === false
+        );
 
         let local = latestSnapshot.current;
         if (isFirstLogin) {
+          try {
+            localStorage.removeItem("aunara-is-first-login");
+          } catch {
+            // Ignore
+          }
           updateSyncDisabled(false);
           local = createEmptyUserSnapshot(latestSnapshot.current.language, user.user_metadata?.display_name ?? user.user_metadata?.name ?? latestSnapshot.current.profileName);
           local.healthProfile.onboardingCompleted = false;
+        } else if (typeof localStorage !== "undefined") {
+          try {
+            localStorage.removeItem("aunara-is-first-login");
+          } catch {
+            // Ignore
+          }
         }
         const policy = sensitiveDataPolicy(user);
         const remote = remoteValue && !isFirstLogin
@@ -673,6 +694,19 @@ export function useCloudSync({
 
   const signOut = useCallback(async () => {
     if (!client) return;
+    if (user && bootstrappedUserId.current === user.id) {
+      try {
+        const payload = outboundSnapshot(latestSnapshot.current, sensitiveDataPolicy(user));
+        const serialized = JSON.stringify(payload);
+        if (serialized !== lastSavedSnapshot.current) {
+          const store = createCloudStore(client as unknown as CloudStoreClient);
+          await store.save(user.id, payload);
+          lastSavedSnapshot.current = serialized;
+        }
+      } catch {
+        // Ignore save errors during sign out
+      }
+    }
     const { error } = await client.auth.signOut();
     if (error) {
       setStatus("error");
@@ -685,7 +719,7 @@ export function useCloudSync({
     onSignedOutRef.current?.();
     recoveryUserId.current = null;
     passwordRecoverySignalFor(client).clear();
-  }, [client]);
+  }, [client, user]);
 
   const recordHealthConsent = useCallback(async (
     nextStatus: HealthDataConsentStatus,
@@ -821,6 +855,11 @@ export function useCloudSync({
 
   const completeOnboarding = useCallback(async () => {
     if (!client || !user) return;
+    try {
+      localStorage.removeItem("aunara-is-first-login");
+    } catch {
+      // Ignore
+    }
     updateSyncDisabled(false);
     try {
       const { data, error } = await client.auth.updateUser({

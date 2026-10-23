@@ -760,4 +760,57 @@ describe("password account access", () => {
     expect(result.current.syncDisabled).toBe(false);
     expect(localStorage.getItem("aunara-sync-disabled")).toBeNull();
   });
+
+  it("does not wipe snapshot as first login when remote store already has user data", async () => {
+    localStorage.setItem("aunara-is-first-login", "true");
+    const remoteWithData = {
+      ...snapshot,
+      profileName: "Alejandro",
+      tracks: [
+        {
+          id: "track-persisted",
+          name: "Rutina Principal",
+          kind: "goal" as const,
+          focus: "strength" as const,
+          equipment: "any" as const,
+          sessionMinutes: 60,
+          daysPerWeek: 6,
+          trainingDays: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] as const,
+          workout: [],
+        },
+      ],
+      healthProfile: {
+        ...snapshot.healthProfile,
+        onboardingCompleted: true,
+        initialRoutineDecision: "rejected" as const,
+      },
+    };
+    load.mockResolvedValueOnce(remoteWithData);
+
+    const onRemote = vi.fn();
+    const authenticatedClient = {
+      ...testClient,
+      auth: {
+        ...testClient.auth,
+        getSession: vi.fn().mockResolvedValue({
+          data: { session: { user: { id: "user-existing", email: "alejo@example.com", user_metadata: {} } } },
+          error: null,
+        }),
+      },
+    } as unknown as NonNullable<typeof supabaseClient>;
+
+    const { result } = renderHook(() => useCloudSync({
+      snapshot,
+      onRemoteSnapshot: onRemote,
+      client: authenticatedClient,
+    }));
+
+    await waitFor(() => expect(result.current.status).toBe("synced"));
+    expect(localStorage.getItem("aunara-is-first-login")).toBeNull();
+    expect(onRemote).toHaveBeenCalledWith(expect.objectContaining({
+      profileName: "Alejandro",
+      tracks: expect.arrayContaining([expect.objectContaining({ id: "track-persisted" })]),
+      healthProfile: expect.objectContaining({ initialRoutineDecision: "rejected" }),
+    }));
+  });
 });

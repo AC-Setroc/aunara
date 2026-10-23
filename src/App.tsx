@@ -925,7 +925,17 @@ function App() {
     if (readinessAssessment.level === "professional-review" || readinessAssessment.level === "setup") return;
     setTracks([initialProposal]);
     setActiveTrackId(initialProposal.id);
-    setHealthProfile((current) => ({ ...current, initialRoutineDecision: "accepted" }));
+    setHealthProfile((current) => ({
+      ...current,
+      initialRoutineDecision: "accepted",
+      onboardingCompleted: true,
+    }));
+    try {
+      localStorage.removeItem("aunara-is-first-login");
+    } catch {
+      // Ignore
+    }
+    void cloud.completeOnboarding();
     setTracksInitialized(true);
     setInitialProposal(null);
     if (openForEditing) {
@@ -935,18 +945,21 @@ function App() {
 
   function rejectInitialProposal() {
     if (!initialProposal) return;
-    const blankTrack: TrainingTrack = {
-      ...initialProposal,
-      workout: [],
-      creationMode: "manual",
-      adaptations: [],
-    };
-    setTracks([blankTrack]);
-    setActiveTrackId(blankTrack.id);
-    setHealthProfile((current) => ({ ...current, initialRoutineDecision: "rejected" }));
+    setTracks([]);
+    setActiveTrackId("");
+    setHealthProfile((current) => ({
+      ...current,
+      initialRoutineDecision: "rejected",
+      onboardingCompleted: true,
+    }));
+    try {
+      localStorage.removeItem("aunara-is-first-login");
+    } catch {
+      // Ignore
+    }
+    void cloud.completeOnboarding();
     setTracksInitialized(true);
     setInitialProposal(null);
-    showWorkout("edit");
   }
 
   function editTrack(trackId: string, changes: Partial<TrainingTrack>) {

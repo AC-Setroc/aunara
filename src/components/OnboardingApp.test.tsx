@@ -105,4 +105,40 @@ describe("mandatory starting profile", () => {
       initialRoutineDecision: "accepted",
     });
   });
+
+  it("leaves 0 tracks and registers rejected decision when user rejects the initial proposal", async () => {
+    localStorage.setItem("repbook-language", JSON.stringify("es"));
+    localStorage.setItem("aunara-is-first-login", "true");
+    render(<App />);
+
+    const birthDate = `${new Date().getFullYear() - 36}-01-01`;
+    fireEvent.change(screen.getByLabelText("Fecha de nacimiento"), { target: { value: birthDate } });
+    fireEvent.change(screen.getByLabelText("Estatura en centímetros"), { target: { value: "180" } });
+    fireEvent.change(screen.getByLabelText("Peso actual en kilogramos"), { target: { value: "82" } });
+    fireEvent.change(screen.getByLabelText("Días de entrenamiento por semana"), { target: { value: "3" } });
+    fireEvent.change(screen.getByLabelText("Minutos por sesión"), { target: { value: "45" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /Revisé estas respuestas/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Guardar y continuar" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Conocé tu punto de partida" })).toBeNull();
+    });
+
+    expect(await screen.findByRole("dialog", { name: "Revisá tu primera rutina" })).toBeTruthy();
+    expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
+
+    fireEvent.click(screen.getByRole("button", { name: "Rechazar propuesta" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Revisá tu primera rutina" })).toBeNull();
+    });
+
+    expect(JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]")).toEqual([]);
+    expect(JSON.parse(localStorage.getItem("repbook-health-profile") ?? "{}")).toMatchObject({
+      initialRoutineDecision: "rejected",
+      onboardingCompleted: true,
+    });
+    expect(localStorage.getItem("aunara-is-first-login")).toBeNull();
+    expect(screen.queryByRole("region", { name: "Agregar ejercicios" })).toBeNull();
+  });
 });

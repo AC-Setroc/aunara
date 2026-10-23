@@ -1,8 +1,16 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-13. Origen de actualización: `[AUNARA/claude · modelo no expuesto]`, sobre las entradas previas de `[AUNARA/codex · modelo no expuesto]`.
+Fecha de actualización: 2026-10-23.
 
 ## Verificado
+
+### 2026-10-23 — Corrección de rechazo de propuesta inicial y persistencia en la nube
+
+- Al rechazar la propuesta inicial de rutina, la app respeta la decisión: la cuenta queda en 0 rutas, registra `onboardingCompleted: true` y `initialRoutineDecision: "rejected"`, limpia `aunara-is-first-login` y no abre forzadamente el editor de rutina.
+- En `useCloudSync`: si la cuenta en la nube ya contiene rutas o ya completó su bienvenida/decisión, nunca se reinicia el perfil como `isFirstLogin`.
+- En `signOut`: se asegura el guardado de cualquier cambio local pendiente en la nube antes de desconectar la sesión.
+- Pruebas automáticas: 390 pruebas pasando en verde (28 suites), build limpio.
+
 
 ### 2026-10-13 — SDD-012 (menú, cabecera, Salir en perfil, UAT13-22 y UAT13-06) APPROVED técnico e integrado en `dev` (`d381e52`)
 
