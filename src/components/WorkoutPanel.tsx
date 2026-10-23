@@ -395,14 +395,14 @@ export function WorkoutPanel({
           exercises={exercises}
           equipmentPreference={track.equipment}
           routeDays={routeDays}
-          initialDay={trainingDay}
+          initialDay={initialDay}
           showDayPicker={routeDays.length > 1}
           restrictedMovements={restrictedMovements}
           onAddExercise={onAddExercise}
           onAddStructure={(type, exerciseIds, targetDay, prescriptions) => {
             onAddStructure?.(type, exerciseIds, targetDay, prescriptions);
             setManualBuilderOpen(false);
-            setAddingToDay(null);
+            setAddingToDay(targetDay);
             setOpenDay(targetDay);
           }}
           onOpenExercise={onOpenExercise}
@@ -894,7 +894,8 @@ export function WorkoutPanel({
                           onAddExercise={onAddExercise}
                           onAddStructure={(type, exerciseIds, targetDay, prescriptions) => {
                             onAddStructure?.(type, exerciseIds, targetDay, prescriptions);
-                            setAddingToDay(null);
+                            setAddingToDay(targetDay);
+                            setOpenDay(targetDay);
                             setOpenBlockId(null);
                           }}
                           onOpenExercise={onOpenExercise}
@@ -970,7 +971,9 @@ function ExerciseAdder({
   const [selectedExercises, setSelectedExercises] = useState<Array<Exercise | null>>([null]);
   const [activeSlot, setActiveSlot] = useState(0);
   const [visibleCount, setVisibleCount] = useState(40);
-  const [selectedDay, setSelectedDay] = useState<Weekday>(initialDay ?? routeDays[0] ?? "monday");
+  const validInitialDay = initialDay && routeDays.includes(initialDay) ? initialDay : (routeDays[0] ?? "monday");
+  const [selectedDay, setSelectedDay] = useState<Weekday>(validInitialDay);
+  const [savedCount, setSavedCount] = useState(0);
   const dayLabel = (day: Weekday) => tr(language, ...DAY_LABELS[day]);
   const structureOption = WORKOUT_STRUCTURE_OPTIONS.find((option) => option.value === structureType);
   const slotCount = selectedExercises.length;
@@ -992,7 +995,10 @@ function ExerciseAdder({
   )) : [];
 
   useEffect(() => setVisibleCount(40), [activeQuery, activeSlot, structureType]);
-  useEffect(() => setSelectedDay(initialDay ?? routeDays[0] ?? "monday"), [initialDay, routeDays]);
+  useEffect(() => {
+    const validDay = initialDay && routeDays.includes(initialDay) ? initialDay : (routeDays[0] ?? "monday");
+    setSelectedDay(validDay);
+  }, [initialDay, routeDays]);
 
   function updatePrescription(index: number, changes: Partial<WorkoutItem>) {
     setPrescriptions((current) => current.map((value, slot) => slot === index ? { ...value, ...changes } : value));
@@ -1019,7 +1025,7 @@ function ExerciseAdder({
     setActiveSlot(index);
   }
 
-  function addSelectedStructure() {
+  function addSelectedStructure(finishAfter = false) {
     if (!structureType || selectedExercises.some((exercise) => !exercise) || workoutStructureSlotCount(structureType) !== selectedExercises.length || !prescriptions.every(isValidManualPrescription)) return;
     const exerciseIds = selectedExercises.flatMap((exercise) => exercise ? [exercise.id] : []);
     if (!onAddStructure) return;
@@ -1029,7 +1035,10 @@ function ExerciseAdder({
     setSelectedExercises([null]);
     setPrescriptions([{ sets: 3, reps: 10, prescriptionMode: "standard" }]);
     setStep(0);
-    onFinish?.();
+    setSavedCount((count) => count + 1);
+    if (finishAfter) {
+      onFinish?.();
+    }
   }
 
   return (
@@ -1038,6 +1047,11 @@ function ExerciseAdder({
         <div className="manual-adder-heading-top">
           <div>
             <span>{tr(language, "Structure → exercises → sets and technique", "Estructura → ejercicios → series y técnica")}</span>
+            {savedCount > 0 && (
+              <span className="manual-adder-saved-badge">
+                <Check size={13} /> {tr(language, "Movement saved", "Movimiento guardado")}
+              </span>
+            )}
           </div>
           {onFinish && (
             <button
@@ -1094,6 +1108,17 @@ function ExerciseAdder({
               </button>
             ))}
           </div>
+          {onFinish && (
+            <div className="manual-adder-actions">
+              <button
+                className="finish-day-button is-secondary"
+                type="button"
+                onClick={onFinish}
+              >
+                <Check size={16} /> {tr(language, "Finish day routine", "Finalizar rutina del día")}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -1307,7 +1332,7 @@ function ExerciseAdder({
               className="is-primary"
               type="button"
               disabled={!prescriptions.every(isValidManualPrescription)}
-              onClick={addSelectedStructure}
+              onClick={() => addSelectedStructure(false)}
             >
               {tr(language, "Save and continue", "Guardar y continuar")}
             </button>
@@ -1316,14 +1341,20 @@ function ExerciseAdder({
                 className="finish-day-button is-secondary"
                 type="button"
                 onClick={() => {
-                  if (prescriptions.every(isValidManualPrescription)) {
-                    addSelectedStructure();
+                  if (structureType && selectedExercises.every(Boolean) && prescriptions.every(isValidManualPrescription)) {
+                    addSelectedStructure(true);
+                  } else {
+                    onFinish();
                   }
-                  onFinish();
                 }}
               >
                 {tr(language, "Finish day routine", "Finalizar rutina del día")}
               </button>
+            )}
+            {!prescriptions.every(isValidManualPrescription) && (
+              <small className="manual-adder-hint">
+                {tr(language, "Enter 1–12 sets and 1–100 reps to continue.", "Ingresá entre 1 y 12 series y 1 y 100 repeticiones para continuar.")}
+              </small>
             )}
           </div>
         </div>

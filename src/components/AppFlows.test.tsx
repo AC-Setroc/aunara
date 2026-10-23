@@ -1516,4 +1516,49 @@ describe("profile access", () => {
     expect(storedTracks[0].creationMode).toBe("manual");
     expect(storedTracks[0].workout).toEqual([]);
   });
+
+  it("allows saving an exercise and continuing to add another exercise when building a manual routine", async () => {
+    localStorage.setItem("repbook-language", JSON.stringify("es"));
+    localStorage.setItem("repbook-health-profile", JSON.stringify({
+      ...healthProfile,
+      onboardingCompleted: true,
+      initialRoutineDecision: "rejected",
+    }));
+    localStorage.setItem("repbook-training-tracks-initialized", JSON.stringify(true));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      json: vi.fn().mockResolvedValue([exercise]),
+    }));
+    render(<App />);
+
+    fireEvent.click(await screen.findByRole("button", { name: /Ir a rutas de entrenamiento/ }));
+    await screen.findByRole("heading", { name: "Rutas de entrenamiento" });
+    fireEvent.click(screen.getByRole("button", { name: /Agregar ruta/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Crear ruta" }));
+
+    // WorkoutPanel opens directly in edit mode with ExerciseAdder
+    expect(await screen.findByRole("region", { name: "Agregar ejercicios" })).toBeTruthy();
+    expect(screen.getByText("Elegí una estructura de trabajo")).toBeTruthy();
+
+    // Select Monoserie
+    fireEvent.click(screen.getByRole("button", { name: "Monoserie" }));
+    fireEvent.click(screen.getByRole("button", { name: /como ejercicio 1/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Configurar series y repeticiones" }));
+
+    // Click "Guardar y continuar"
+    const saveButton = screen.getByRole("button", { name: "Guardar y continuar" });
+    fireEvent.click(saveButton);
+
+    // Workout now has 1 exercise stored
+    const updatedTracks = JSON.parse(localStorage.getItem("repbook-training-tracks") ?? "[]");
+    expect(updatedTracks[0].workout).toHaveLength(1);
+
+    // ExerciseAdder is still open to continue adding exercises!
+    expect(screen.getByRole("region", { name: "Agregar ejercicios" })).toBeTruthy();
+    expect(screen.getByText("Elegí una estructura de trabajo")).toBeTruthy();
+
+    // Click "Finalizar rutina del día" to close
+    fireEvent.click(screen.getByRole("button", { name: "Finalizar rutina del día" }));
+    expect(screen.queryByRole("region", { name: "Agregar ejercicios" })).toBeNull();
+  });
 });
