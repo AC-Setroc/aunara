@@ -5,14 +5,14 @@
     "url": "https://github.com/hasaneyldrm/exercises-dataset",
     "license": "MIT",
     "dataPath": "/data/exercises.json",
-    "exerciseCount": 1324
+    "exerciseCount": 1334
   },
   "languages": [
     "en",
     "es"
   ],
   "translationSummary": {
-    "curated": 1324,
+    "curated": 1334,
     "pending": 0
   },
   "exercises": [
@@ -112037,6 +112037,912 @@
         "mediaId": "bd5b860",
         "image": "images/0859-bd5b860.jpg",
         "animation": "videos/0859-bd5b860.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4001",
+      "canonicalKey": "cable face pull",
+      "name": {
+        "en": "Cable Face Pull",
+        "es": "Face pull en polea con cuerda"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "shoulders",
+          "en": "Shoulders",
+          "es": "Hombros"
+        },
+        "bodyPart": {
+          "key": "shoulders",
+          "en": "Shoulders",
+          "es": "Hombros"
+        },
+        "equipment": {
+          "key": "cable",
+          "en": "Cable",
+          "es": "Polea"
+        },
+        "target": {
+          "key": "delts",
+          "en": "Delts",
+          "es": "Deltoides"
+        },
+        "muscleGroup": {
+          "key": "shoulders",
+          "en": "Shoulders",
+          "es": "Hombros"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "trapezius",
+            "en": "Trapezius",
+            "es": "Trapecio"
+          },
+          {
+            "key": "upper back",
+            "en": "Upper Back",
+            "es": "Espalda superior"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "cable face pull",
+          "shoulders",
+          "cable",
+          "delts",
+          "trapezius",
+          "upper back"
+        ],
+        "es": [
+          "face pull en polea con cuerda",
+          "hombros",
+          "polea",
+          "deltoides",
+          "trapecio",
+          "espalda superior"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4001",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "ZfyAGhK",
+        "image": "images/0233-ZfyAGhK.jpg",
+        "animation": "videos/0233-ZfyAGhK.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4002",
+      "canonicalKey": "high knees in place",
+      "name": {
+        "en": "High Knees In Place",
+        "es": "Skipping en el sitio (rodillas altas)"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "cardio",
+          "en": "Cardio",
+          "es": "Cardio"
+        },
+        "bodyPart": {
+          "key": "cardio",
+          "en": "Cardio",
+          "es": "Cardio"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "cardiovascular system",
+          "en": "Cardiovascular System",
+          "es": "Sistema cardiovascular"
+        },
+        "muscleGroup": {
+          "key": "cardio",
+          "en": "Cardio",
+          "es": "Cardio"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "quadriceps",
+            "en": "Quadriceps",
+            "es": "Cuádriceps"
+          },
+          {
+            "key": "calves",
+            "en": "Calves",
+            "es": "Pantorrillas"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "high knees in place",
+          "cardio",
+          "body weight",
+          "cardiovascular system",
+          "quadriceps",
+          "calves"
+        ],
+        "es": [
+          "skipping en el sitio (rodillas altas)",
+          "cardio",
+          "peso corporal",
+          "sistema cardiovascular",
+          "cuádriceps",
+          "pantorrillas"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4002",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "oLrKqDH",
+        "image": "images/0685-oLrKqDH.jpg",
+        "animation": "videos/0685-oLrKqDH.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4003",
+      "canonicalKey": "front plank",
+      "name": {
+        "en": "Front Plank",
+        "es": "Plancha frontal estática en antebrazos"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "lower back",
+            "en": "Lower Back",
+            "es": "Zona lumbar"
+          },
+          {
+            "key": "shoulders",
+            "en": "Shoulders",
+            "es": "Hombros"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "front plank",
+          "waist",
+          "body weight",
+          "abs",
+          "glutes",
+          "lower back",
+          "shoulders"
+        ],
+        "es": [
+          "plancha frontal estática en antebrazos",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "glúteos",
+          "zona lumbar",
+          "hombros"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4003",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "VBAWRPG",
+        "image": "images/2135-VBAWRPG.jpg",
+        "animation": "videos/2135-VBAWRPG.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4004",
+      "canonicalKey": "plank jacks",
+      "name": {
+        "en": "Plank Jacks",
+        "es": "Saltos de tijera en plancha alta"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "abductors",
+            "en": "Abductors",
+            "es": "Abductores"
+          },
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "delts",
+            "en": "Delts",
+            "es": "Deltoides"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "plank jacks",
+          "waist",
+          "body weight",
+          "abs",
+          "abductors",
+          "glutes",
+          "delts"
+        ],
+        "es": [
+          "saltos de tijera en plancha alta",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "abductores",
+          "glúteos",
+          "deltoides"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4004",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "CosupLu",
+        "image": "images/0464-CosupLu.jpg",
+        "animation": "videos/0464-CosupLu.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4005",
+      "canonicalKey": "forearm plank jacks",
+      "name": {
+        "en": "Forearm Plank Jacks",
+        "es": "Saltos de tijera en plancha baja (en antebrazos)"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "abductors",
+            "en": "Abductors",
+            "es": "Abductores"
+          },
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "delts",
+            "en": "Delts",
+            "es": "Deltoides"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "forearm plank jacks",
+          "waist",
+          "body weight",
+          "abs",
+          "abductors",
+          "glutes",
+          "delts"
+        ],
+        "es": [
+          "saltos de tijera en plancha baja (en antebrazos)",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "abductores",
+          "glúteos",
+          "deltoides"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4005",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "VBAWRPG",
+        "image": "images/2135-VBAWRPG.jpg",
+        "animation": "videos/2135-VBAWRPG.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4006",
+      "canonicalKey": "spiderman plank",
+      "name": {
+        "en": "Spiderman Plank",
+        "es": "Plancha Spiderman con rodilla al codo"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "delts",
+            "en": "Delts",
+            "es": "Deltoides"
+          },
+          {
+            "key": "quadriceps",
+            "en": "Quadriceps",
+            "es": "Cuádriceps"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "spiderman plank",
+          "waist",
+          "body weight",
+          "abs",
+          "glutes",
+          "delts",
+          "quadriceps"
+        ],
+        "es": [
+          "plancha spiderman con rodilla al codo",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "glúteos",
+          "deltoides",
+          "cuádriceps"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4006",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "P9GFBME",
+        "image": "images/0778-P9GFBME.jpg",
+        "animation": "videos/0778-P9GFBME.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4007",
+      "canonicalKey": "superman plank",
+      "name": {
+        "en": "Superman Plank",
+        "es": "Plancha Superman en colchoneta"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "back",
+          "en": "Back",
+          "es": "Espalda"
+        },
+        "bodyPart": {
+          "key": "back",
+          "en": "Back",
+          "es": "Espalda"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "spine",
+          "en": "Spine",
+          "es": "Columna"
+        },
+        "muscleGroup": {
+          "key": "back",
+          "en": "Back",
+          "es": "Espalda"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "hamstrings",
+            "en": "Hamstrings",
+            "es": "Isquiotibiales"
+          },
+          {
+            "key": "abs",
+            "en": "Abs",
+            "es": "Abdominales"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "superman plank",
+          "back",
+          "body weight",
+          "spine",
+          "glutes",
+          "hamstrings",
+          "abs"
+        ],
+        "es": [
+          "plancha superman en colchoneta",
+          "espalda",
+          "peso corporal",
+          "columna",
+          "glúteos",
+          "isquiotibiales",
+          "abdominales"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4007",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "ANbbry2",
+        "image": "images/1352-ANbbry2.jpg",
+        "animation": "videos/1352-ANbbry2.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4008",
+      "canonicalKey": "dolphin plank",
+      "name": {
+        "en": "Dolphin Plank",
+        "es": "Plancha delfín con elevación de pelvis"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "delts",
+            "en": "Delts",
+            "es": "Deltoides"
+          },
+          {
+            "key": "hamstrings",
+            "en": "Hamstrings",
+            "es": "Isquiotibiales"
+          },
+          {
+            "key": "calves",
+            "en": "Calves",
+            "es": "Pantorrillas"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "dolphin plank",
+          "waist",
+          "body weight",
+          "abs",
+          "delts",
+          "hamstrings",
+          "calves"
+        ],
+        "es": [
+          "plancha delfín con elevación de pelvis",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "deltoides",
+          "isquiotibiales",
+          "pantorrillas"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4008",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "qcNN2FN",
+        "image": "images/0870-qcNN2FN.jpg",
+        "animation": "videos/0870-qcNN2FN.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4009",
+      "canonicalKey": "shuttle run with floor touch",
+      "name": {
+        "en": "Shuttle Run With Floor Touch",
+        "es": "Carrera de agilidad con toque de suelo (Recogiendo moneditas)"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "cardio",
+          "en": "Cardio",
+          "es": "Cardio"
+        },
+        "bodyPart": {
+          "key": "cardio",
+          "en": "Cardio",
+          "es": "Cardio"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "cardiovascular system",
+          "en": "Cardiovascular System",
+          "es": "Sistema cardiovascular"
+        },
+        "muscleGroup": {
+          "key": "cardio",
+          "en": "Cardio",
+          "es": "Cardio"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "quadriceps",
+            "en": "Quadriceps",
+            "es": "Cuádriceps"
+          },
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "calves",
+            "en": "Calves",
+            "es": "Pantorrillas"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "shuttle run with floor touch",
+          "cardio",
+          "body weight",
+          "cardiovascular system",
+          "quadriceps",
+          "glutes",
+          "calves"
+        ],
+        "es": [
+          "carrera de agilidad con toque de suelo (recogiendo moneditas)",
+          "cardio",
+          "peso corporal",
+          "sistema cardiovascular",
+          "cuádriceps",
+          "glúteos",
+          "pantorrillas"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4009",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "CcWEoWV",
+        "image": "images/3656-CcWEoWV.jpg",
+        "animation": "videos/3656-CcWEoWV.gif",
+        "attribution": "© Gym visual — https://gymvisual.com/"
+      },
+      "ownedMedia": {
+        "status": "not-started"
+      }
+    },
+    {
+      "id": "4010",
+      "canonicalKey": "step-up with knee raise",
+      "name": {
+        "en": "Step-up With Knee Raise",
+        "es": "Subida al step con elevación de rodilla alternada"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "bodyPart": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "glutes",
+          "en": "Glutes",
+          "es": "Glúteos"
+        },
+        "muscleGroup": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "quadriceps",
+            "en": "Quadriceps",
+            "es": "Cuádriceps"
+          },
+          {
+            "key": "calves",
+            "en": "Calves",
+            "es": "Pantorrillas"
+          },
+          {
+            "key": "hamstrings",
+            "en": "Hamstrings",
+            "es": "Isquiotibiales"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "step-up with knee raise",
+          "upper legs",
+          "body weight",
+          "glutes",
+          "quadriceps",
+          "calves",
+          "hamstrings"
+        ],
+        "es": [
+          "subida al step con elevación de rodilla alternada",
+          "muslos",
+          "peso corporal",
+          "glúteos",
+          "cuádriceps",
+          "pantorrillas",
+          "isquiotibiales"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4010",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "fNGumX0",
+        "image": "images/3672-fNGumX0.jpg",
+        "animation": "videos/3672-fNGumX0.gif",
         "attribution": "© Gym visual — https://gymvisual.com/"
       },
       "ownedMedia": {
