@@ -624,7 +624,7 @@ function App() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(`${import.meta.env.BASE_URL}data/exercises.json`, { signal: controller.signal })
+    fetch(`${import.meta.env.BASE_URL}data/exercises.json?v=2`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`Dataset request failed (${response.status})`);
         return response.json() as Promise<Exercise[]>;

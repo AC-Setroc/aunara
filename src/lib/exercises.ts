@@ -119,7 +119,8 @@ export function filterExercises(
       ...exercise.secondary_muscles.map(translatedTaxonomy),
     ].join(" "));
 
-    return haystack.includes(query);
+    const terms = query.split(/\s+/).filter(Boolean);
+    return terms.every((term) => haystack.includes(term));
   });
 }
 

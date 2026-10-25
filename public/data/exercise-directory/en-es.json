@@ -106860,7 +106860,7 @@
       "canonicalKey": "tuck crunch",
       "name": {
         "en": "Tuck Crunch",
-        "es": "Crunch agrupado (tuck crunch)"
+        "es": "Crunch agrupado / acordeones en colchoneta"
       },
       "nameTranslation": {
         "status": "curated",
@@ -106909,7 +106909,7 @@
           "hip flexors"
         ],
         "es": [
-          "crunch agrupado (tuck crunch)",
+          "crunch agrupado / acordeones en colchoneta",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -111186,7 +111186,7 @@
       "canonicalKey": "wheel rollerout",
       "name": {
         "en": "Wheel Rollerout",
-        "es": "Despliegue con rueda abdominal"
+        "es": "Despliegue con rueda abdominal / rodillo abdominal"
       },
       "nameTranslation": {
         "status": "curated",
@@ -111235,7 +111235,7 @@
           "lower back"
         ],
         "es": [
-          "despliegue con rueda abdominal",
+          "despliegue con rueda abdominal / rodillo abdominal",
           "zona media",
           "rueda abdominal",
           "abdominales",

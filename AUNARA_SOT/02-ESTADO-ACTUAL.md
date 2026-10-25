@@ -1,8 +1,16 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-23.
+Fecha de actualización: 2026-10-25.
 
 ## Verificado
+
+### 2026-10-25 — Actualización de catálogo de ejercicios, búsqueda multipalabra y ciclo de vida de caché (v2)
+
+- Service Worker actualizado a `aunara-project-shell-v2` con estrategia Network-First para `/data/`, garantizando que las actualizaciones del catálogo se sirvan de inmediato sin quedar retenidas por caché local antigua.
+- En `src/App.tsx`: bust de caché `?v=2` al cargar `exercises.json`.
+- En `src/lib/exercises.ts`: búsqueda multipalabra desacoplada (coincidencia de cada término independientemente del orden en nombre, taxonomía y sinónimos).
+- Incorporación de sinónimos comunes en español: «rodillo abdominal» y «acordeones en colchoneta».
+- Pruebas automáticas: 390 pruebas pasando en verde (28 suites), build limpio.
 
 ### 2026-10-23 — Corrección de rechazo de propuesta inicial y persistencia en la nube
 

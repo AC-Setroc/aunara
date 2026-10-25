@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "aunara-project-shell-";
-const CACHE_NAME = `${CACHE_PREFIX}v1`;
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const SCOPE = new URL(self.registration.scope);
 const APP_URL = SCOPE.href;
 const APP_SHELL = [
@@ -42,6 +42,21 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => caches.match(APP_URL)),
+    );
+    return;
+  }
+
+  if (url.pathname.includes("/data/")) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request)),
     );
     return;
   }
