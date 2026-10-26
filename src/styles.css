@@ -876,7 +876,7 @@ footer a { text-underline-offset: 3px; }
 .detail-media::before, .detail-media::after { content: ""; position: absolute; inset: 9%; border: 1px solid rgba(24,26,21,.4); border-radius: 50%; }
 .detail-media::after { inset: 21%; }
 .detail-media img { width: min(88%, 480px); aspect-ratio: 1; object-fit: contain; image-rendering: auto; mix-blend-mode: multiply; position: relative; z-index: 1; filter: contrast(1.04) drop-shadow(0 22px 18px rgba(24,26,21,.24)); }
-.detail-media a { position: absolute; bottom: 12px; left: 14px; z-index: 1; color: var(--muted); font: 600 9px/1 "Courier New", monospace; }
+.detail-media a, .detail-media-attribution { position: absolute; bottom: 12px; left: 14px; z-index: 1; color: var(--muted); font: 600 9px/1 "Courier New", monospace; }
 .detail-copy { padding: clamp(44px, 6vw, 80px) clamp(28px, 5vw, 70px) 40px; }
 .detail-back-button { margin: 0 0 18px; padding: 7px 0; display: inline-flex; align-items: center; gap: 7px; border: 0; border-bottom: 1px solid var(--ink); background: transparent; cursor: pointer; font-size: .72rem; font-weight: 800; }
 .detail-copy h2 { margin: 0 0 30px; font: 900 clamp(2.7rem, 5vw, 5.4rem)/0.86 "Arial Narrow", "Avenir Next Condensed", sans-serif; letter-spacing: -0.055em; text-transform: uppercase; }
@@ -922,13 +922,41 @@ footer a { text-underline-offset: 3px; }
 .workout-summary strong { font: 400 1.45rem/1 Baskerville, serif; }
 .workout-summary span { color: var(--muted); font-size: .7rem; }
 .workout-summary i { width: 1px; height: 20px; margin: 0 6px; background: var(--line); }
-.training-session-day { margin: 12px 0 4px; padding: 12px; display: grid; gap: 11px; border: 1px solid var(--ink); background: var(--white); }
-.training-session-day > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.training-session-day p { margin: 0; color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
-.training-session-day label { display: flex; flex-direction: column; align-items: stretch; gap: 8px; font-size: .85rem; font-weight: 600; margin-top: 6px; }
-.training-session-day label input { width: 100%; box-sizing: border-box; min-height: 42px; padding: 8px 12px; border: 1px solid var(--ink); border-radius: var(--radius-sm); font-family: inherit; font-size: .9rem; }
-.session-symptom-trigger { width: 100%; min-height: 36px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; font-size: .68rem; font-weight: 800; }
-.session-symptom-trigger:hover { border-color: var(--ink); color: var(--ink); }
+.training-session-day {
+  margin: 14px 0 10px;
+  padding: 16px 18px;
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-soft);
+}
+.training-session-day > div:first-child { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.training-session-day p { margin: 0; color: var(--muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.training-session-day strong { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.session-symptom-trigger {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.session-symptom-trigger:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: rgba(16, 36, 33, 0.03);
+}
 .session-check-backdrop {
   position: fixed;
   inset: 0;
@@ -1111,9 +1139,283 @@ footer a { text-underline-offset: 3px; }
 .workout-plan-summary > span { color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
 .workout-plan-summary strong { font-size: .78rem; }
 .workout-plan-summary small { color: var(--muted); font-size: .65rem; }
-.log-load-button { min-height: 34px; margin-top: 8px; padding: 0 10px; border: 1px solid var(--ink); background: var(--acid); cursor: pointer; font-size: .68rem; font-weight: 800; }
-.log-load-button:hover { background: var(--ink); color: var(--white); }
+.log-load-button {
+  min-height: 40px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--blue-600);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(22, 78, 223, 0.22);
+  transition: all 0.18s ease;
+}
+.log-load-button:hover {
+  background: var(--teal-950);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(16, 36, 33, 0.25);
+}
 .load-history-summary { margin-top: 7px; display: block; color: var(--muted); font-size: .62rem; }
+
+/* ==========================================================================
+   Training Execution Mode (Aunara Design System)
+   ========================================================================== */
+.training-blocks-wrapper {
+  display: grid;
+  gap: 24px;
+  margin-top: 18px;
+}
+.training-block-card {
+  display: grid;
+  gap: 12px;
+}
+.training-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 4px;
+}
+.training-block-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.training-block-items {
+  display: grid;
+  gap: 14px;
+}
+.training-exercise-card {
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 20px;
+  display: grid;
+  gap: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.training-exercise-card:hover {
+  border-color: color-mix(in srgb, var(--blue-600) 40%, var(--line));
+}
+.training-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.training-card-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+.training-set-order {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue-50);
+  color: var(--blue-600);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: -0.02em;
+}
+.training-exercise-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.training-exercise-target {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 0.74rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.training-demo-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.training-demo-pill:hover {
+  background: var(--ink);
+  color: var(--white);
+  border-color: var(--ink);
+}
+.training-coach-callout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--blue-50) 70%, white);
+  border-left: 3px solid var(--blue-600);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.coach-callout-icon {
+  flex: 0 0 auto;
+  color: var(--blue-600);
+}
+.training-plan-indicator {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.plan-tag-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+}
+.plan-tag-value {
+  color: var(--blue-600);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.training-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+.training-input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.training-input-field span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.training-input-field input {
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+  transition: all 0.15s ease;
+}
+.training-input-field input:focus {
+  border-color: var(--blue-600);
+  background: var(--white);
+  box-shadow: 0 0 0 3px var(--blue-50);
+}
+.training-inputs-grid .is-full-width {
+  grid-column: 1 / -1;
+}
+.training-effort-container {
+  display: grid;
+  gap: 7px;
+  padding-top: 4px;
+}
+.training-effort-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.training-effort-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.training-effort-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 80px;
+}
+.training-effort-pill:hover {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--paper) 70%, white);
+}
+.effort-pill-tag {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.effort-pill-sub {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.training-effort-pill.is-selected {
+  border-color: var(--blue-600);
+  background: var(--blue-600);
+  box-shadow: 0 2px 8px rgba(22, 78, 223, 0.25);
+}
+.training-effort-pill.is-selected .effort-pill-tag {
+  color: var(--white);
+}
+.training-effort-pill.is-selected .effort-pill-sub {
+  color: rgba(255, 255, 255, 0.9);
+}
+.training-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.training-card-history {
+  font-size: 0.76rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.training-card-history strong {
+  color: var(--ink);
+  font-weight: 600;
+}
 .stepper-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 17px; }
 .times { color: var(--muted); }
 .stepper { height: 38px; display: flex; align-items: center; border: 1px solid var(--line); background: var(--white); }

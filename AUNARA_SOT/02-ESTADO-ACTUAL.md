@@ -1,16 +1,37 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-25.
+Fecha de actualización: 2026-10-26.
 
 ## Verificado
 
-### 2026-10-25 — Actualización de catálogo de ejercicios, búsqueda multipalabra y ciclo de vida de caché (v2)
+### 2026-10-26 — Rediseño de ejecución de entrenamiento, selector de esfuerzo RPE, prescripción al fallo/peso corporal y blindaje de onboarding en la nube
 
-- Service Worker actualizado a `aunara-project-shell-v2` con estrategia Network-First para `/data/`, garantizando que las actualizaciones del catálogo se sirvan de inmediato sin quedar retenidas por caché local antigua.
-- En `src/App.tsx`: bust de caché `?v=2` al cargar `exercises.json`.
-- En `src/lib/exercises.ts`: búsqueda multipalabra desacoplada (coincidencia de cada término independientemente del orden en nombre, taxonomía y sinónimos).
-- Incorporación de sinónimos comunes en español: «rodillo abdominal» y «acordeones en colchoneta».
-- Pruebas automáticas: 390 pruebas pasando en verde (28 suites), build limpio.
+- **Blindaje definitivo contra repetición de propuesta de rutina inicial**:
+  - `useCloudSync` expone `isBootstrapped: Boolean(!user || bootstrappedUserId.current === user.id)`.
+  - En `src/App.tsx`: la generación de la propuesta inicial queda bloqueada si la cuenta está autenticada y aún no ha terminado de cargar su copia remota (`cloud.isBootstrapped === false || cloud.status === "syncing"`).
+  - Al recibir el snapshot remoto en `applyRemoteSnapshot`, si la cuenta ya tiene rutas (`tracks.length > 0`) o ya completó su onboarding/decisión, cualquier propuesta en pantalla se anula de inmediato (`setInitialProposal(null)`).
+  - `rejectInitialProposal` y `acceptInitialProposal` nunca vacían ni sobrescriben rutas preexistentes; filtran quirúrgicamente o añaden según corresponda.
+- **Rediseño completo de la pantalla de ejecución (`mode === "training"`) con diseño Aunara / AC Setroc**:
+  - Agrupación visual por Bloques (Bloque A · Circuito, Bloque B · Biserie, etc.), reflejando fielmente la estructura prescrita.
+  - Diseño de tarjetas elevadas (`var(--surface-solid)`, radios suaves `var(--radius-md)`, bordes sutiles `var(--line)` y sombras suaves).
+  - Eliminación total de fuentes y estilos crudos anteriores (`Arial Narrow`, `Courier New`, `border-radius: 0`, fondos ácidos fosforescentes).
+  - Llamado destacado para la indicación técnica del entrenador (`item.notes`) mediante componente `training-coach-callout`.
+  - Botón de registro de serie con tokens de marca Cobalt / Ink (`var(--blue-600)`), y acceso directo a la animación y técnica con botón `Ver técnica`.
+- **Prescripción y registro coherente con el tipo de ejercicio (al fallo y peso corporal)**:
+  - Detección inteligente de ejercicios al fallo técnico (ej. Flexiones de pecho en Bloque A) y peso corporal (acordeones, planchas, escaladores, jumping jacks).
+  - En ejercicios al fallo: el plan muestra `${sets} × Fallo técnico`, el campo principal solicita «Repeticiones logradas al fallo» y la carga en kg pasa a ser lastre opcional.
+  - En ejercicios de abdomen/peso corporal: se solicita «Repeticiones realizadas», eliminando la imposición incoherente de carga en kg para crunches o planchas.
+  - En ejercicios por tiempo (planchas estáticas, skipping): se solicita «Tiempo sostenido (segundos)».
+- **Selector de nivel de esfuerzo (RPE / RIR)**:
+  - Selector interactivo de píldoras por ejercicio: `RPE 7` (3 en recámara), `RPE 8` (2 en recámara), `RPE 9` (1 en recámara), y `Fallo técnico` (0 en recámara).
+  - Persistencia del esfuerzo y las repeticiones completadas en `WorkoutItem` y `WorkoutLoadEntry` para historial de carga.
+- **Visualización íntegra del catálogo (aparición de ejercicio #4011 en Bloque B)**:
+  - Garantía de que `#4011` («Plancha dinámica: Tijera y salto al frente») y todos los 11 ejercicios propios están incluidos en los bundles de producción sin saltos en la numeración (05 → 06 → 07).
+- **Pruebas y suites de verificación**:
+  - `npm run typecheck`: 0 errores.
+  - `npm test`: 390/390 pruebas pasando en verde (28 suites).
+  - Pruebas Node de guardas, cliente y Service Worker: 31/31 pasando en verde.
+  - `npm run build` y validación de cliente Pages: 76 archivos en allowlist, 100% aprobado.
 
 ### 2026-10-23 — Corrección de rechazo de propuesta inicial y persistencia en la nube
 

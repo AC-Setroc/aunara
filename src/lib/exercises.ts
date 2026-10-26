@@ -16,6 +16,12 @@ export const DATASET_COMMIT = "7455efae41b330c265e7cd4b78dfa848e7ce5ebd";
 const MEDIA_ROOT = `https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/${DATASET_COMMIT}`;
 
 export function mediaUrl(path: string): string {
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("/")) {
+    return path;
+  }
+  if (path.startsWith("exercise-art/")) {
+    return `${import.meta.env.BASE_URL}${path}`;
+  }
   return `${MEDIA_ROOT}/${path}`;
 }
 
@@ -484,6 +490,8 @@ export function logWorkoutLoad(
       loadKg: item.loadKg ?? null,
       loadNote: item.loadNote,
       setPlan: item.setPlan ?? `${item.sets} × ${item.reps}`,
+      effort: item.effort,
+      repsCompleted: item.repsCompleted,
     };
     return { ...item, loadHistory: [...(item.loadHistory ?? []), entry] };
   });

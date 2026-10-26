@@ -34,6 +34,7 @@ export interface CloudAccessState {
   passwordRecoveryState?: "requested" | "ready" | null;
   healthDataConsent?: HealthDataConsentStatus | null;
   syncDisabled?: boolean;
+  isBootstrapped?: boolean;
   onboardingCompleted?: boolean;
 }
 

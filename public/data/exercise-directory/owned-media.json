@@ -1,1 +1,68 @@
-{}
+{
+  "4001": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/cable-face-pull-aunara-v1.gif",
+    "poster": "exercise-art/pilot/cable-face-pull-aunara-v1.jpg",
+    "version": 1
+  },
+  "4002": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/high-knees-aunara-v1.gif",
+    "poster": "exercise-art/pilot/high-knees-aunara-v1.jpg",
+    "version": 1
+  },
+  "4003": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/front-plank-aunara-v1.gif",
+    "poster": "exercise-art/pilot/front-plank-aunara-v1.jpg",
+    "version": 1
+  },
+  "4004": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/plank-jacks-aunara-v1.gif",
+    "poster": "exercise-art/pilot/plank-jacks-aunara-v1.jpg",
+    "version": 2
+  },
+  "4005": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/forearm-plank-jacks-aunara-v1.gif",
+    "poster": "exercise-art/pilot/forearm-plank-jacks-aunara-v1.jpg",
+    "version": 1
+  },
+  "4006": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/spiderman-plank-aunara-v1.gif",
+    "poster": "exercise-art/pilot/spiderman-plank-aunara-v1.jpg",
+    "version": 1
+  },
+  "4007": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/superman-plank-aunara-v1.gif",
+    "poster": "exercise-art/pilot/superman-plank-aunara-v1.jpg",
+    "version": 1
+  },
+  "4008": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/dolphin-plank-aunara-v1.gif",
+    "poster": "exercise-art/pilot/dolphin-plank-aunara-v1.jpg",
+    "version": 1
+  },
+  "4009": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/shuttle-run-aunara-v1.gif",
+    "poster": "exercise-art/pilot/shuttle-run-aunara-v1.jpg",
+    "version": 1
+  },
+  "4010": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/step-up-knee-raise-aunara-v1.gif",
+    "poster": "exercise-art/pilot/step-up-knee-raise-aunara-v1.jpg",
+    "version": 1
+  },
+  "4011": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.gif",
+    "poster": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.jpg",
+    "version": 1
+  }
+}

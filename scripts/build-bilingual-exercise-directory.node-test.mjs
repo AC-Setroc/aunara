@@ -106,5 +106,7 @@ test("covers every source exercise and every taxonomy term in the real dataset",
   assert.equal(new Set(directory.exercises.map((entry) => entry.id)).size, exercises.length);
   assert.equal(directory.translationSummary.curated + directory.translationSummary.pending, exercises.length);
   assert.ok(directory.exercises.every((entry) => entry.taxonomy.equipment.es.length > 0));
-  assert.ok(directory.exercises.every((entry) => entry.ownedMedia.status === "not-started"));
+  const readyMedia = directory.exercises.filter((entry) => entry.ownedMedia.status === "ready");
+  assert.equal(readyMedia.length, Object.keys(ownedMediaByExerciseId).length);
+  assert.ok(directory.exercises.every((entry) => ["not-started", "ready"].includes(entry.ownedMedia.status)));
 });

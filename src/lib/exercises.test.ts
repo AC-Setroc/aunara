@@ -196,6 +196,8 @@ describe("exercise helpers", () => {
 
   it("builds pinned source media URLs and formats labels", () => {
     expect(mediaUrl("images/a.jpg")).toContain("/7455efae41b330c265e7cd4b78dfa848e7ce5ebd/images/a.jpg");
+    expect(mediaUrl("exercise-art/pilot/push-up-v1.webp")).toContain("exercise-art/pilot/push-up-v1.webp");
+    expect(mediaUrl("https://example.com/demo.gif")).toBe("https://example.com/demo.gif");
     expect(titleCase("upper arms")).toBe("Upper Arms");
   });
 

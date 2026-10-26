@@ -5,14 +5,14 @@
     "url": "https://github.com/hasaneyldrm/exercises-dataset",
     "license": "MIT",
     "dataPath": "/data/exercises.json",
-    "exerciseCount": 1334
+    "exerciseCount": 1335
   },
   "languages": [
     "en",
     "es"
   ],
   "translationSummary": {
-    "curated": 1334,
+    "curated": 1335,
     "pending": 0
   },
   "exercises": [
@@ -21,7 +21,7 @@
       "canonicalKey": "3/4 sit-up",
       "name": {
         "en": "3/4 Sit-up",
-        "es": "Sit-up 3/4"
+        "es": "Abdominal a tres cuartos (sit-up 3/4)"
       },
       "nameTranslation": {
         "status": "curated",
@@ -76,7 +76,7 @@
           "lower back"
         ],
         "es": [
-          "sit-up 3/4",
+          "abdominal a tres cuartos (sit-up 3/4)",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -1027,7 +1027,7 @@
       "canonicalKey": "arms overhead full sit-up (male)",
       "name": {
         "en": "Arms Overhead Full Sit-up (male)",
-        "es": "Sit-up completo con brazos sobre la cabeza"
+        "es": "Abdominal completo con brazos sobre la cabeza"
       },
       "nameTranslation": {
         "status": "curated",
@@ -1082,7 +1082,7 @@
           "lower back"
         ],
         "es": [
-          "sit-up completo con brazos sobre la cabeza",
+          "abdominal completo con brazos sobre la cabeza",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -2437,7 +2437,7 @@
       "canonicalKey": "assisted sit-up",
       "name": {
         "en": "Assisted Sit-up",
-        "es": "Sit-up asistido"
+        "es": "Abdominal asistido"
       },
       "nameTranslation": {
         "status": "curated",
@@ -2486,7 +2486,7 @@
           "hip flexors"
         ],
         "es": [
-          "sit-up asistido",
+          "abdominal asistido",
           "zona media",
           "asistido",
           "abdominales",
@@ -4909,7 +4909,7 @@
       "canonicalKey": "band jack knife sit-up",
       "name": {
         "en": "Band Jack Knife Sit-up",
-        "es": "Sit-up navaja con banda"
+        "es": "Abdominal navaja con banda"
       },
       "nameTranslation": {
         "status": "curated",
@@ -4958,7 +4958,7 @@
           "hip flexors"
         ],
         "es": [
-          "sit-up navaja con banda",
+          "abdominal navaja con banda",
           "zona media",
           "banda",
           "abdominales",
@@ -5823,7 +5823,7 @@
       "canonicalKey": "band push sit-up",
       "name": {
         "en": "Band Push Sit-up",
-        "es": "Sit-up con empuje con banda"
+        "es": "Abdominal con empuje con banda"
       },
       "nameTranslation": {
         "status": "curated",
@@ -5878,7 +5878,7 @@
           "chest"
         ],
         "es": [
-          "sit-up con empuje con banda",
+          "abdominal con empuje con banda",
           "zona media",
           "banda",
           "abdominales",
@@ -13742,7 +13742,7 @@
       "canonicalKey": "barbell press sit-up",
       "name": {
         "en": "Barbell Press Sit-up",
-        "es": "Sit-up con press de barra"
+        "es": "Abdominal con press de barra"
       },
       "nameTranslation": {
         "status": "curated",
@@ -13797,7 +13797,7 @@
           "chest"
         ],
         "es": [
-          "sit-up con press de barra",
+          "abdominal con press de barra",
           "zona media",
           "barra",
           "abdominales",
@@ -38605,7 +38605,7 @@
       "canonicalKey": "decline sit-up",
       "name": {
         "en": "Decline Sit-up",
-        "es": "Sit-up en banco declinado"
+        "es": "Abdominal en banco declinado"
       },
       "nameTranslation": {
         "status": "curated",
@@ -38660,7 +38660,7 @@
           "lower back"
         ],
         "es": [
-          "sit-up en banco declinado",
+          "abdominal en banco declinado",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -68928,7 +68928,7 @@
       "canonicalKey": "half sit-up (male)",
       "name": {
         "en": "Half Sit-up (male)",
-        "es": "Medio sit-up"
+        "es": "Medio abdominal (sit-up parcial)"
       },
       "nameTranslation": {
         "status": "curated",
@@ -68977,7 +68977,7 @@
           "hip flexors"
         ],
         "es": [
-          "medio sit-up",
+          "medio abdominal (sit-up parcial)",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -71463,7 +71463,7 @@
       "canonicalKey": "incline twisting sit-up",
       "name": {
         "en": "Incline Twisting Sit-up",
-        "es": "Sit-up inclinado con giro"
+        "es": "Abdominal inclinado con rotación"
       },
       "nameTranslation": {
         "status": "curated",
@@ -71512,7 +71512,7 @@
           "obliques"
         ],
         "es": [
-          "sit-up inclinado con giro",
+          "abdominal inclinado con rotación",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -72681,7 +72681,7 @@
       "canonicalKey": "jackknife sit-up",
       "name": {
         "en": "Jackknife Sit-up",
-        "es": "Navaja abdominal (jackknife sit-up)"
+        "es": "Navaja abdominal (jackknife)"
       },
       "nameTranslation": {
         "status": "curated",
@@ -72730,7 +72730,7 @@
           "hip flexors"
         ],
         "es": [
-          "navaja abdominal (jackknife sit-up)",
+          "navaja abdominal (jackknife)",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -72759,7 +72759,7 @@
       "canonicalKey": "janda sit-up",
       "name": {
         "en": "Janda Sit-up",
-        "es": "Sit-up Janda"
+        "es": "Abdominal Janda"
       },
       "nameTranslation": {
         "status": "curated",
@@ -72814,7 +72814,7 @@
           "lower back"
         ],
         "es": [
-          "sit-up janda",
+          "abdominal janda",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -88855,7 +88855,7 @@
       "canonicalKey": "prisoner half sit-up (male)",
       "name": {
         "en": "Prisoner Half Sit-up (male)",
-        "es": "Medio sit-up estilo prisionero"
+        "es": "Medio abdominal estilo prisionero"
       },
       "nameTranslation": {
         "status": "curated",
@@ -88904,7 +88904,7 @@
           "hip flexors"
         ],
         "es": [
-          "medio sit-up estilo prisionero",
+          "medio abdominal estilo prisionero",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -90695,7 +90695,7 @@
       "canonicalKey": "quarter sit-up",
       "name": {
         "en": "Quarter Sit-up",
-        "es": "Sit-up a un cuarto de rango"
+        "es": "Abdominal a un cuarto de rango"
       },
       "nameTranslation": {
         "status": "curated",
@@ -90744,7 +90744,7 @@
           "hip flexors"
         ],
         "es": [
-          "sit-up a un cuarto de rango",
+          "abdominal a un cuarto de rango",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -96997,7 +96997,7 @@
       "canonicalKey": "sit-up v. 2",
       "name": {
         "en": "Sit-up V. 2",
-        "es": "Sit-up abdominal (v2)"
+        "es": "Abdominal clásico en el suelo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -97046,7 +97046,7 @@
           "hip flexors"
         ],
         "es": [
-          "sit-up abdominal (v2)",
+          "abdominal clásico en el suelo",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -97075,7 +97075,7 @@
       "canonicalKey": "sit-up with arms on chest",
       "name": {
         "en": "Sit-up With Arms On Chest",
-        "es": "Sit-up con brazos cruzados sobre el pecho"
+        "es": "Abdominal con brazos cruzados sobre el pecho"
       },
       "nameTranslation": {
         "status": "curated",
@@ -97124,7 +97124,7 @@
           "hip flexors"
         ],
         "es": [
-          "sit-up con brazos cruzados sobre el pecho",
+          "abdominal con brazos cruzados sobre el pecho",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -108510,7 +108510,7 @@
       "canonicalKey": "weighted decline sit-up",
       "name": {
         "en": "Weighted Decline Sit-up",
-        "es": "Sit-up declinado con peso"
+        "es": "Abdominal declinado con peso"
       },
       "nameTranslation": {
         "status": "curated",
@@ -108565,7 +108565,7 @@
           "lower back"
         ],
         "es": [
-          "sit-up declinado con peso",
+          "abdominal declinado con peso",
           "zona media",
           "con carga",
           "abdominales",
@@ -112120,12 +112120,15 @@
       },
       "legacyMedia": {
         "mediaId": "ZfyAGhK",
-        "image": "images/0233-ZfyAGhK.jpg",
-        "animation": "videos/0233-ZfyAGhK.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/cable-face-pull-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/cable-face-pull-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/cable-face-pull-aunara-v1.gif",
+        "poster": "exercise-art/pilot/cable-face-pull-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112205,12 +112208,15 @@
       },
       "legacyMedia": {
         "mediaId": "oLrKqDH",
-        "image": "images/0685-oLrKqDH.jpg",
-        "animation": "videos/0685-oLrKqDH.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/high-knees-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/high-knees-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/high-knees-aunara-v1.gif",
+        "poster": "exercise-art/pilot/high-knees-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112297,12 +112303,15 @@
       },
       "legacyMedia": {
         "mediaId": "VBAWRPG",
-        "image": "images/2135-VBAWRPG.jpg",
-        "animation": "videos/2135-VBAWRPG.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/front-plank-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/front-plank-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/front-plank-aunara-v1.gif",
+        "poster": "exercise-art/pilot/front-plank-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112388,13 +112397,16 @@
         ]
       },
       "legacyMedia": {
-        "mediaId": "CosupLu",
-        "image": "images/0464-CosupLu.jpg",
-        "animation": "videos/0464-CosupLu.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "mediaId": "plank-jacks-aunara-v1",
+        "image": "exercise-art/pilot/plank-jacks-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/plank-jacks-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/plank-jacks-aunara-v1.gif",
+        "poster": "exercise-art/pilot/plank-jacks-aunara-v1.jpg",
+        "version": 2
       }
     },
     {
@@ -112481,12 +112493,15 @@
       },
       "legacyMedia": {
         "mediaId": "VBAWRPG",
-        "image": "images/2135-VBAWRPG.jpg",
-        "animation": "videos/2135-VBAWRPG.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/forearm-plank-jacks-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/forearm-plank-jacks-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/forearm-plank-jacks-aunara-v1.gif",
+        "poster": "exercise-art/pilot/forearm-plank-jacks-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112573,12 +112588,15 @@
       },
       "legacyMedia": {
         "mediaId": "P9GFBME",
-        "image": "images/0778-P9GFBME.jpg",
-        "animation": "videos/0778-P9GFBME.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/spiderman-plank-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/spiderman-plank-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/spiderman-plank-aunara-v1.gif",
+        "poster": "exercise-art/pilot/spiderman-plank-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112665,12 +112683,15 @@
       },
       "legacyMedia": {
         "mediaId": "ANbbry2",
-        "image": "images/1352-ANbbry2.jpg",
-        "animation": "videos/1352-ANbbry2.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/superman-plank-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/superman-plank-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/superman-plank-aunara-v1.gif",
+        "poster": "exercise-art/pilot/superman-plank-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112757,12 +112778,15 @@
       },
       "legacyMedia": {
         "mediaId": "qcNN2FN",
-        "image": "images/0870-qcNN2FN.jpg",
-        "animation": "videos/0870-qcNN2FN.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/dolphin-plank-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/dolphin-plank-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/dolphin-plank-aunara-v1.gif",
+        "poster": "exercise-art/pilot/dolphin-plank-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112849,12 +112873,15 @@
       },
       "legacyMedia": {
         "mediaId": "CcWEoWV",
-        "image": "images/3656-CcWEoWV.jpg",
-        "animation": "videos/3656-CcWEoWV.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/shuttle-run-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/shuttle-run-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/shuttle-run-aunara-v1.gif",
+        "poster": "exercise-art/pilot/shuttle-run-aunara-v1.jpg",
+        "version": 1
       }
     },
     {
@@ -112941,12 +112968,117 @@
       },
       "legacyMedia": {
         "mediaId": "fNGumX0",
-        "image": "images/3672-fNGumX0.jpg",
-        "animation": "videos/3672-fNGumX0.gif",
-        "attribution": "© Gym visual — https://gymvisual.com/"
+        "image": "exercise-art/pilot/step-up-knee-raise-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/step-up-knee-raise-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
       },
       "ownedMedia": {
-        "status": "not-started"
+        "status": "ready",
+        "animation": "exercise-art/pilot/step-up-knee-raise-aunara-v1.gif",
+        "poster": "exercise-art/pilot/step-up-knee-raise-aunara-v1.jpg",
+        "version": 1
+      }
+    },
+    {
+      "id": "4011",
+      "canonicalKey": "plank jack to in-and-out tuck",
+      "name": {
+        "en": "Plank Jack To In-and-out Tuck",
+        "es": "Plancha dinámica: Tijera y salto al frente (abre, cierra, adelante y atrás)"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "quadriceps",
+            "en": "Quadriceps",
+            "es": "Cuádriceps"
+          },
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "calves",
+            "en": "Calves",
+            "es": "Pantorrillas"
+          },
+          {
+            "key": "shoulders",
+            "en": "Shoulders",
+            "es": "Hombros"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "plank jack to in-and-out tuck",
+          "waist",
+          "body weight",
+          "abs",
+          "quadriceps",
+          "glutes",
+          "calves",
+          "shoulders"
+        ],
+        "es": [
+          "plancha dinámica: tijera y salto al frente (abre, cierra, adelante y atrás)",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "cuádriceps",
+          "glúteos",
+          "pantorrillas",
+          "hombros"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4011",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "plank-jack-tuck-combo-aunara-v1",
+        "image": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
+      },
+      "ownedMedia": {
+        "status": "ready",
+        "animation": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.gif",
+        "poster": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.jpg",
+        "version": 1
       }
     }
   ]

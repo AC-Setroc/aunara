@@ -68,9 +68,13 @@ export function ExerciseDetail({
 
         <div className="detail-media">
           <img src={mediaUrl(exercise.gif_url)} alt={`${tr(language, "Animated demonstration of", "Demostración animada de")} ${displayName}`} />
-          <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">
-            © Gym visual
-          </a>
+          {exercise.attribution?.toLowerCase().includes("gym visual") || (!exercise.attribution && !exercise.gif_url.startsWith("exercise-art/")) ? (
+            <a href="https://gymvisual.com/" target="_blank" rel="noreferrer">
+              © Gym visual
+            </a>
+          ) : (
+            <span className="detail-media-attribution">{exercise.attribution || "© Aunara Training Systems"}</span>
+          )}
         </div>
 
         <div className="detail-copy">

@@ -887,6 +887,7 @@ export function useCloudSync({
     passwordRecoveryState,
     healthDataConsent: consentStatusFromUser(user),
     syncDisabled,
+    isBootstrapped: !user || bootstrappedUserId.current === user.id,
     onboardingCompleted: isOnboardingCompleted(user),
     deleteStoredData,
     deleteAccount,

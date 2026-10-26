@@ -46,7 +46,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (url.pathname.includes("/data/")) {
+  if (url.pathname.includes("/data/") || url.pathname.includes("/exercise-art/")) {
     event.respondWith(
       fetch(request)
         .then((response) => {

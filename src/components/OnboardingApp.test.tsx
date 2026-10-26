@@ -10,6 +10,7 @@ vi.mock("../hooks/useCloudSync", () => ({
     configured: true,
     email: "new-athlete@example.com",
     status: "synced",
+    isBootstrapped: true,
     healthDataConsent: "granted",
     get onboardingCompleted() { return mockOnboardingCompleted; },
     completeOnboarding: vi.fn().mockImplementation(() => {

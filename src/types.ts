@@ -44,6 +44,8 @@ export interface WorkoutItem {
   loadNote?: string;
   notes?: string;
   loadHistory?: WorkoutLoadEntry[];
+  effort?: string;
+  repsCompleted?: number | string | null;
 }
 
 export type WorkoutPrescriptionMode = "standard" | "special";
@@ -128,6 +130,8 @@ export interface WorkoutLoadEntry {
   loadKg: number | null;
   loadNote?: string;
   setPlan: string;
+  effort?: string;
+  repsCompleted?: number | string | null;
 }
 
 export type TrackKind = "goal" | "sport";

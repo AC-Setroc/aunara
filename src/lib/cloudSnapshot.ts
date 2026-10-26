@@ -104,6 +104,8 @@ function isWorkoutItem(value: unknown): boolean {
     && (value.loadKg === undefined || isNullableNumber(value.loadKg))
     && (value.loadNote === undefined || typeof value.loadNote === "string")
     && (value.notes === undefined || typeof value.notes === "string")
+    && (value.effort === undefined || typeof value.effort === "string")
+    && (value.repsCompleted === undefined || isNullableNumber(value.repsCompleted) || typeof value.repsCompleted === "string")
     && (value.loadHistory === undefined || (
       Array.isArray(value.loadHistory)
       && value.loadHistory.every((entry) => (
@@ -113,6 +115,8 @@ function isWorkoutItem(value: unknown): boolean {
         && isNullableNumber(entry.loadKg)
         && (entry.loadNote === undefined || typeof entry.loadNote === "string")
         && typeof entry.setPlan === "string"
+        && (entry.effort === undefined || typeof entry.effort === "string")
+        && (entry.repsCompleted === undefined || isNullableNumber(entry.repsCompleted) || typeof entry.repsCompleted === "string")
       ))
     ));
 }

@@ -13,6 +13,7 @@ import {
   Plus,
   RefreshCw,
   Search,
+  Sparkles,
   Trash2,
   UserRound,
   X,
@@ -147,6 +148,66 @@ function groupItemsIntoBlocks(dayItems: WorkoutItem[]): RoutineBlock[] {
     });
   }
   return blocks;
+}
+
+const EFFORT_OPTIONS = [
+  { value: "RPE 7", label: "RPE 7", descEn: "3 in reserve", descEs: "3 en recámara" },
+  { value: "RPE 8", label: "RPE 8", descEn: "2 in reserve", descEs: "2 en recámara" },
+  { value: "RPE 9", label: "RPE 9", descEn: "1 in reserve", descEs: "1 en recámara" },
+  { value: "Fallo técnico", label: "Fallo", descEn: "0 in reserve (failure)", descEs: "Fallo técnico (0 en rec.)" },
+];
+
+function getExerciseLoggingType(item: WorkoutItem, exercise?: Exercise, language: LanguageCode = "es") {
+  const notesLower = (item.notes ?? "").toLowerCase();
+  const setPlanLower = (item.setPlan ?? "").toLowerCase();
+  const isFailure = notesLower.includes("fallo") || setPlanLower.includes("fallo");
+
+  const isTimed = notesLower.includes("minuto") || notesLower.includes("segundo")
+    || setPlanLower.includes("min") || setPlanLower.includes("seg") || setPlanLower.includes("s");
+
+  const equipment = exercise?.equipment?.toLowerCase() ?? "";
+  const isBodyweight = equipment === "body weight" || equipment === "assisted" || !equipment;
+
+  let defaultPlan = item.setPlan;
+  if (!defaultPlan) {
+    if (isFailure) {
+      defaultPlan = `${item.sets} × ${tr(language, "Technical failure", "Fallo técnico")}`;
+    } else if (notesLower.includes("1 minuto")) {
+      defaultPlan = `${item.sets} × 1 min`;
+    } else if (notesLower.includes("30 segundos")) {
+      defaultPlan = `${item.sets} × 30 seg`;
+    } else {
+      defaultPlan = `${item.sets} × ${item.reps}`;
+    }
+  }
+
+  let primaryMetricLabel = tr(language, "Load (kg)", "Carga (kg)");
+  let primaryMetricUnit = "kg";
+  let hasExternalLoad = true;
+
+  if (isFailure) {
+    primaryMetricLabel = tr(language, "Reps to failure", "Reps logradas al fallo");
+    primaryMetricUnit = "reps";
+    hasExternalLoad = false;
+  } else if (isTimed) {
+    primaryMetricLabel = tr(language, "Time (seconds)", "Tiempo (segundos)");
+    primaryMetricUnit = "seg";
+    hasExternalLoad = false;
+  } else if (isBodyweight) {
+    primaryMetricLabel = tr(language, "Reps completed", "Repeticiones realizadas");
+    primaryMetricUnit = "reps";
+    hasExternalLoad = false;
+  }
+
+  return {
+    isFailure,
+    isTimed,
+    isBodyweight,
+    defaultPlan,
+    primaryMetricLabel,
+    primaryMetricUnit,
+    hasExternalLoad,
+  };
 }
 
 export function WorkoutPanel({
@@ -457,94 +518,209 @@ export function WorkoutPanel({
               <span>{tr(language, "Choose another route day or edit the routine.", "Elegí otro día de la ruta o editá la rutina.")}</span>
             </div>
           ) : mode === "training" ? (
-            <ol className={`workout-list is-${mode}`}>
-              {visibleItems.map((item, index) => {
-                const exercise = exerciseMap.get(item.exerciseId);
-                if (!exercise) return null;
-                const itemId = item.id ?? item.exerciseId;
-                const exerciseName = exerciseDisplayName(exercise, language);
+            <div className="training-blocks-wrapper">
+              {(() => {
+                const blocks = groupItemsIntoBlocks(visibleItems);
+                let itemIndex = 0;
 
-                return (
-                  <li key={itemId}>
-                    <span className="set-order">{String(index + 1).padStart(2, "0")}</span>
-                    <div className="workout-item-copy">
-                      {item.structure && item.structure.size > 1 && (
-                        <span className="workout-structure-tag">
-                          {workoutStructureLabel(item.structure.type, language)} · {item.structure.position + 1}/{item.structure.size}
-                        </span>
-                      )}
-                      <h3>{exerciseName}</h3>
-                      <p>{exerciseTaxonomyLabel(exercise.target, language)}</p>
-                      {isExerciseNamePending(exercise, language) && <small className="translation-pending">Nombre en inglés · traducción pendiente</small>}
+                return blocks.map((block, blockIdx) => {
+                  const blockLetter = String.fromCharCode(65 + blockIdx);
 
-                      <div className="workout-prescription-grid training-entry-grid">
-                        <label>
-                          <span>{tr(language, "Sets completed", "Series realizadas")}</span>
-                          <input
-                            aria-label={`${tr(language, "Set plan for", "Plan de series para")} ${exerciseName}`}
-                            value={item.setPlan ?? `${item.sets} × ${item.reps}`}
-                            onChange={(event) => onUpdateItem?.(itemId, { setPlan: event.target.value })}
-                          />
-                        </label>
-                        <label>
-                          <span>{tr(language, "Load (kg)", "Carga (kg)")}</span>
-                          <input
-                            aria-label={`${tr(language, "Load in kilograms for", "Carga en kilogramos para")} ${exerciseName}`}
-                            type="number"
-                            min={0}
-                            step={0.5}
-                            value={item.loadKg ?? ""}
-                            onFocus={(event) => event.target.select()}
-                            onChange={(event) => {
-                              const clean = event.target.value.replace(/^0+(?=\d)/, "");
-                              const numStr = clean.replace(",", ".");
-                              event.target.value = clean;
-                              onUpdateItem?.(itemId, {
-                                loadKg: numStr === "" ? null : Number(numStr),
-                              });
-                            }}
-                          />
-                        </label>
-                        <label className="is-wide">
-                          <span>{tr(language, "Session note", "Nota de la sesión")}</span>
-                          <input
-                            aria-label={`${tr(language, "Load note for", "Nota de carga para")} ${exerciseName}`}
-                            value={item.loadNote ?? ""}
-                            placeholder={tr(language, "e.g. effort, tempo or equipment used", "ej. esfuerzo, tempo o equipo usado")}
-                            onChange={(event) => onUpdateItem?.(itemId, { loadNote: event.target.value })}
-                          />
-                        </label>
+                  return (
+                    <section key={block.id} className="training-block-card" aria-label={`${tr(language, "Block", "Bloque")} ${blockLetter}`}>
+                      <div className="training-block-header">
+                        <div className="training-block-header-left">
+                          <span className="routine-block-order-badge">
+                            {tr(language, `Block ${blockLetter}`, `Bloque ${blockLetter}`)}
+                          </span>
+                          {block.items.length > 1 && (
+                            <span className="routine-structure-badge">
+                              {workoutStructureLabel(block.type, language)} ({block.items.length} {tr(language, "exercises", "ejercicios")})
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <button
-                        className="log-load-button"
-                        type="button"
-                        onClick={() => onLogLoad?.(itemId)}
-                        aria-label={`${tr(language, "Log today’s load for", "Registrar la carga de hoy para")} ${exerciseName}`}
-                      >
-                        {tr(language, "Log today’s load", "Registrar carga de hoy")}
-                      </button>
 
-                      {item.loadHistory?.length ? (
-                        <small className="load-history-summary">
-                          {tr(language, "Last logged load", "Última carga registrada")}: {item.loadHistory.at(-1)?.loadKg ?? "—"} kg · {item.loadHistory.at(-1)?.setPlan}
-                        </small>
-                      ) : null}
+                      <div className="training-block-items">
+                        {block.items.map((item) => {
+                          itemIndex += 1;
+                          const currentNumber = itemIndex;
+                          const exercise = exerciseMap.get(item.exerciseId);
+                          const itemId = item.id ?? item.exerciseId;
+                          const exerciseName = exercise ? exerciseDisplayName(exercise, language) : (item.notes ?? `Ejercicio #${item.exerciseId}`);
+                          const loggingType = getExerciseLoggingType(item, exercise, language);
 
-                      <div className="workout-item-actions">
-                        <button
-                          className="demo-trigger"
-                          type="button"
-                          onClick={() => onOpenExercise(exercise)}
-                          aria-label={`${tr(language, "View", "Ver")} ${exerciseName} ${tr(language, "demo and steps", "demostración y pasos")}`}
-                        >
-                          <Play size={13} /> {tr(language, "View demo & steps", "Ver demostración y pasos")}
-                        </button>
+                          return (
+                            <article key={itemId} className="training-exercise-card">
+                              <div className="training-card-header">
+                                <div className="training-card-title-group">
+                                  <span className="training-set-order">{String(currentNumber).padStart(2, "0")}</span>
+                                  <div>
+                                    <h3 className="training-exercise-title">{exerciseName}</h3>
+                                    {exercise && (
+                                      <span className="training-exercise-target">{exerciseTaxonomyLabel(exercise.target, language)}</span>
+                                    )}
+                                    {exercise && isExerciseNamePending(exercise, language) && (
+                                      <small className="translation-pending">Nombre en inglés · traducción pendiente</small>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="training-card-header-actions">
+                                  {exercise && (
+                                    <button
+                                      className="training-demo-pill"
+                                      type="button"
+                                      onClick={() => onOpenExercise(exercise)}
+                                      aria-label={`${tr(language, "View", "Ver")} ${exerciseName} ${tr(language, "demo and steps", "demostración y pasos")}`}
+                                    >
+                                      <Play size={13} /> {tr(language, "View demo & steps", "Ver demostración y pasos")}
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+
+                              {item.notes && (
+                                <div className="training-coach-callout">
+                                  <Sparkles size={14} className="coach-callout-icon" />
+                                  <span>{item.notes}</span>
+                                </div>
+                              )}
+
+                              <div className="training-plan-indicator">
+                                <span className="plan-tag-label">{tr(language, "Target plan:", "Plan objetivo:")}</span>
+                                <strong className="plan-tag-value">{item.setPlan ?? loggingType.defaultPlan}</strong>
+                              </div>
+
+                              <div className="training-inputs-grid">
+                                <label className="training-input-field">
+                                  <span>{tr(language, "Sets completed", "Series realizadas")}</span>
+                                  <input
+                                    aria-label={`${tr(language, "Set plan for", "Plan de series para")} ${exerciseName}`}
+                                    value={item.setPlan ?? loggingType.defaultPlan}
+                                    onChange={(event) => onUpdateItem?.(itemId, { setPlan: event.target.value })}
+                                  />
+                                </label>
+
+                                {!loggingType.hasExternalLoad ? (
+                                  <label className="training-input-field">
+                                    <span>{loggingType.primaryMetricLabel}</span>
+                                    <input
+                                      aria-label={`${loggingType.primaryMetricLabel} ${exerciseName}`}
+                                      type="number"
+                                      min={0}
+                                      placeholder={loggingType.isFailure ? "Fallo" : String(item.reps || (loggingType.isTimed ? 60 : 15))}
+                                      value={item.repsCompleted ?? ""}
+                                      onFocus={(e) => e.target.select()}
+                                      onChange={(e) => {
+                                        const clean = e.target.value.replace(/^0+(?=\d)/, "");
+                                        onUpdateItem?.(itemId, { repsCompleted: clean === "" ? null : Number(clean) });
+                                      }}
+                                    />
+                                  </label>
+                                ) : (
+                                  <label className="training-input-field">
+                                    <span>{tr(language, "Reps completed", "Repeticiones realizadas")}</span>
+                                    <input
+                                      aria-label={`${tr(language, "Reps completed for", "Repeticiones realizadas para")} ${exerciseName}`}
+                                      type="number"
+                                      min={0}
+                                      placeholder={String(item.reps || 8)}
+                                      value={item.repsCompleted ?? ""}
+                                      onFocus={(e) => e.target.select()}
+                                      onChange={(e) => {
+                                        const clean = e.target.value.replace(/^0+(?=\d)/, "");
+                                        onUpdateItem?.(itemId, { repsCompleted: clean === "" ? null : Number(clean) });
+                                      }}
+                                    />
+                                  </label>
+                                )}
+
+                                <label className="training-input-field">
+                                  <span>{loggingType.hasExternalLoad ? tr(language, "Load (kg)", "Carga (kg)") : tr(language, "Ballast (kg, opt.)", "Lastre (kg, opcional)")}</span>
+                                  <input
+                                    aria-label={`${tr(language, "Load in kilograms for", "Carga en kilogramos para")} ${exerciseName}`}
+                                    type="number"
+                                    min={0}
+                                    step={0.5}
+                                    placeholder="0"
+                                    value={item.loadKg ?? ""}
+                                    onFocus={(event) => event.target.select()}
+                                    onChange={(event) => {
+                                      const clean = event.target.value.replace(/^0+(?=\d)/, "");
+                                      const numStr = clean.replace(",", ".");
+                                      event.target.value = clean;
+                                      onUpdateItem?.(itemId, {
+                                        loadKg: numStr === "" ? null : Number(numStr),
+                                      });
+                                    }}
+                                  />
+                                </label>
+
+                                <label className="training-input-field is-full-width">
+                                  <span>{tr(language, "Session note", "Nota de la sesión")}</span>
+                                  <input
+                                    aria-label={`${tr(language, "Load note for", "Nota de carga para")} ${exerciseName}`}
+                                    value={item.loadNote ?? ""}
+                                    placeholder={tr(language, "e.g. effort, tempo or equipment used", "ej. esfuerzo, tempo o equipo usado")}
+                                    onChange={(event) => onUpdateItem?.(itemId, { loadNote: event.target.value })}
+                                  />
+                                </label>
+                              </div>
+
+                              <div className="training-effort-container">
+                                <span className="training-effort-label">{tr(language, "Effort / RPE:", "Nivel de esfuerzo:")}</span>
+                                <div className="training-effort-pills" role="group" aria-label={tr(language, "Effort selector", "Selector de esfuerzo")}>
+                                  {EFFORT_OPTIONS.map((opt) => {
+                                    const isSelected = item.effort === opt.value || (loggingType.isFailure && !item.effort && opt.value === "Fallo técnico");
+                                    return (
+                                      <button
+                                        key={opt.value}
+                                        type="button"
+                                        className={`training-effort-pill ${isSelected ? "is-selected" : ""}`}
+                                        onClick={() => onUpdateItem?.(itemId, { effort: isSelected ? undefined : opt.value })}
+                                        title={language === "es" ? opt.descEs : opt.descEn}
+                                      >
+                                        <span className="effort-pill-tag">{opt.label}</span>
+                                        <span className="effort-pill-sub">{language === "es" ? opt.descEs : opt.descEn}</span>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+
+                              <div className="training-card-footer">
+                                <button
+                                  className="log-load-button"
+                                  type="button"
+                                  onClick={() => onLogLoad?.(itemId)}
+                                  aria-label={`${tr(language, "Log today’s load for", "Registrar la carga de hoy para")} ${exerciseName}`}
+                                >
+                                  <Check size={15} /> {tr(language, "Log today’s load", "Registrar carga de hoy")}
+                                </button>
+
+                                {item.loadHistory?.length ? (
+                                  <div className="training-card-history">
+                                    <span>{tr(language, "Last logged load", "Última carga registrada")}:</span>
+                                    <strong>
+                                      {[
+                                        item.loadHistory.at(-1)?.loadKg != null ? `${item.loadHistory.at(-1)?.loadKg} kg` : null,
+                                        item.loadHistory.at(-1)?.repsCompleted != null ? `${item.loadHistory.at(-1)?.repsCompleted} reps` : null,
+                                        item.loadHistory.at(-1)?.effort ?? null,
+                                        item.loadHistory.at(-1)?.setPlan,
+                                      ].filter(Boolean).join(" · ")}
+                                    </strong>
+                                  </div>
+                                ) : null}
+                              </div>
+                            </article>
+                          );
+                        })}
                       </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
+                    </section>
+                  );
+                });
+              })()}
+            </div>
           ) : (
             <div className="routine-days-container">
               {routeDays.map((day) => {

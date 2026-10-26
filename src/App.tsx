@@ -352,6 +352,10 @@ function App() {
     setHealthProfile(snapshot.healthProfile);
     setCheckIns(snapshot.checkIns);
     setTracksInitialized(snapshot.tracksInitialized ?? snapshot.tracks.length > 0);
+    if (snapshot.tracks.length > 0 || snapshot.healthProfile?.initialRoutineDecision || snapshot.healthProfile?.onboardingCompleted) {
+      setInitialProposal(null);
+      setTrackProposal(null);
+    }
   }, [
     setActiveTrackId,
     setCheckIns,
@@ -361,6 +365,8 @@ function App() {
     setProfileName,
     setTracks,
     setTracksInitialized,
+    setInitialProposal,
+    setTrackProposal,
   ]);
 
   const clearSignedOutProfile = useCallback(() => {
@@ -682,15 +688,28 @@ function App() {
   const filtersActive = Boolean(query || bodyPart || equipment || favoritesOnly || libraryEquipmentPreference !== "mixed");
 
   useEffect(() => {
-    if (!canUseTraining || !exercises.length || healthProfile.initialRoutineDecision || initialProposal) return;
-
     // A pre-existing routine counts as an accepted first route. This avoids
     // interrupting established users while repairing the new-account flow.
-    if (tracks.length) {
-      setHealthProfile((current) => ({ ...current, initialRoutineDecision: "accepted" }));
-      if (!tracksInitialized) setTracksInitialized(true);
+    if (tracks.length > 0) {
+      if (!healthProfile.initialRoutineDecision || !tracksInitialized) {
+        setHealthProfile((current) => ({
+          ...current,
+          initialRoutineDecision: current.initialRoutineDecision ?? "accepted",
+        }));
+        if (!tracksInitialized) setTracksInitialized(true);
+      }
+      if (initialProposal) setInitialProposal(null);
       return;
     }
+
+    if (
+      !canUseTraining
+      || !exercises.length
+      || healthProfile.initialRoutineDecision
+      || initialProposal
+      || tracksInitialized
+      || (cloud.email && (cloud.isBootstrapped === false || cloud.status === "syncing"))
+    ) return;
 
     const primaryFocus = profileGoals(healthProfile)[0];
     if (!primaryFocus) return;
@@ -720,7 +739,7 @@ function App() {
       workout: generated.workout,
       adaptations: generated.adaptations,
     });
-  }, [canUseTraining, exercises, healthProfile.equipmentPreference, healthProfile.goals, healthProfile.initialRoutineDecision, healthProfile.limitations, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
+  }, [canUseTraining, cloud.email, cloud.isBootstrapped, cloud.onboardingCompleted, cloud.status, exercises, healthProfile.equipmentPreference, healthProfile.goals, healthProfile.initialRoutineDecision, healthProfile.limitations, healthProfile.primaryGoal, healthProfile.sessionMinutes, healthProfile.trainingDaysPerWeek, initialProposal, language, legacyWorkout, setHealthProfile, setTracksInitialized, tracks.length, tracksInitialized]);
 
   useEffect(() => {
     if (tracks.length && !tracks.some((track) => track.id === activeTrackId)) {
@@ -923,7 +942,7 @@ function App() {
   function acceptInitialProposal(openForEditing: boolean) {
     if (!initialProposal) return;
     if (readinessAssessment.level === "professional-review" || readinessAssessment.level === "setup") return;
-    setTracks([initialProposal]);
+    setTracks((current) => current.some((t) => t.id === initialProposal.id) ? current : (current.length === 0 ? [initialProposal] : [...current, initialProposal]));
     setActiveTrackId(initialProposal.id);
     setHealthProfile((current) => ({
       ...current,
@@ -945,8 +964,8 @@ function App() {
 
   function rejectInitialProposal() {
     if (!initialProposal) return;
-    setTracks([]);
-    setActiveTrackId("");
+    setTracks((current) => current.filter((track) => track.id !== initialProposal.id));
+    setActiveTrackId((current) => (current === initialProposal.id ? (tracks.find((t) => t.id !== initialProposal.id)?.id ?? "") : current));
     setHealthProfile((current) => ({
       ...current,
       initialRoutineDecision: "rejected",
