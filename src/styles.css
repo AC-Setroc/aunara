@@ -1231,6 +1231,24 @@ footer a { text-underline-offset: 3px; }
   font-size: 0.85rem;
   letter-spacing: -0.02em;
 }
+.training-exercise-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.training-card-logged-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(19, 115, 51, 0.1);
+  color: #137333;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
 .training-exercise-title {
   margin: 0;
   font-size: 1.05rem;
@@ -1415,6 +1433,59 @@ footer a { text-underline-offset: 3px; }
 .training-card-history strong {
   color: var(--ink);
   font-weight: 600;
+}
+.log-load-button.is-logged {
+  background: rgba(19, 115, 51, 0.08);
+  color: #137333;
+  border-color: #137333;
+}
+.training-finish-bar {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: center;
+}
+.training-finish-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  background: var(--cobalt, #2D5BFF);
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(45, 91, 255, 0.25);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.training-finish-button:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+.workout-mode-actions button.is-completed-action {
+  background: #137333;
+  border-color: #137333;
+  color: #ffffff;
+}
+.workout-mode-actions button.is-in-progress-action {
+  background: var(--cobalt, #2D5BFF);
+  border-color: var(--cobalt, #2D5BFF);
+  color: #ffffff;
+}
+.mobile-workout.is-completed {
+  background: #137333 !important;
+  box-shadow: 0 14px 35px rgba(19, 115, 51, 0.35) !important;
+}
+.mobile-workout.is-in-progress {
+  background: var(--cobalt, #2D5BFF) !important;
+  box-shadow: 0 14px 35px rgba(45, 91, 255, 0.35) !important;
 }
 .stepper-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 17px; }
 .times { color: var(--muted); }

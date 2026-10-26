@@ -1,5 +1,6 @@
-import { mkdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { createServer } from "node:http";
+import { mkdirSync, readFileSync, existsSync, statSync } from "node:fs";
+import { dirname, join, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -317,29 +318,227 @@ async function runUATForEngine(engineName, engine) {
       logFail("9. Logo centrado", "No se encontró el elemento .footer-brand img");
     }
 
+    // 10. Superficie real: Ejecución de entrenamiento, selector de esfuerzo y estados del botón
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const weekdays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const currentDay = weekdays[new Date().getDay()];
+
+    await page.evaluate(({ day, todayDate }) => {
+      const sampleRoutine = [
+        {
+          id: "item-pushup",
+          exerciseId: "0025",
+          day: day,
+          sets: 3,
+          reps: 15,
+          notes: "Push-up al fallo técnico",
+          setPlan: "3 × Fallo técnico",
+          loadHistory: [],
+        },
+        {
+          id: "item-plank",
+          exerciseId: "4003",
+          day: day,
+          sets: 3,
+          reps: 60,
+          notes: "Plancha frontal 1 minuto",
+          setPlan: "3 × 1 min",
+          loadHistory: [],
+        },
+        {
+          id: "item-bench",
+          exerciseId: "0047",
+          day: day,
+          sets: 4,
+          reps: 8,
+          notes: "Press banca plano",
+          setPlan: "4 × 8",
+          loadKg: 60,
+          loadHistory: [],
+        },
+      ];
+      const mockTrack = {
+        id: "uat-track-routine",
+        name: "Ruta de Fuerza UAT",
+        kind: "goal",
+        focus: "strength",
+        equipment: "mixed",
+        sessionMinutes: 50,
+        daysPerWeek: 3,
+        trainingDays: [day],
+        workout: sampleRoutine,
+      };
+      const mockSession = {
+        access_token: "mock-token",
+        token_type: "bearer",
+        expires_in: 3600,
+        expires_at: 9999999999,
+        refresh_token: "mock-refresh",
+        user: {
+          id: "mock-user-1",
+          aud: "authenticated",
+          role: "authenticated",
+          email: "alejandro@ac-setroc.com",
+          email_confirmed_at: "2026-10-20T00:00:00.000Z",
+          app_metadata: { provider: "email", providers: ["email"] },
+          user_metadata: {
+            name: "Alejandro Cortés",
+            health_data_consent: "granted",
+            onboarding_completed: true,
+          }
+        }
+      };
+      localStorage.setItem("sb-mrkqtajrzrhsdbfomkpz-auth-token", JSON.stringify(mockSession));
+      localStorage.setItem("repbook-training-tracks-initialized", JSON.stringify(true));
+      localStorage.setItem("repbook-training-tracks", JSON.stringify([mockTrack]));
+      localStorage.setItem("repbook-active-track", "uat-track-routine");
+      localStorage.setItem("repbook-health-profile", JSON.stringify({
+        age: 30, gender: "male", experience: "intermediate", equipmentPreference: "mixed", onboardingCompleted: true
+      }));
+    }, { day: currentDay, todayDate: todayStr });
+
+    await page.reload({ waitUntil: "networkidle" });
+    await page.waitForTimeout(600);
+
+    // Abrir entrenamiento desde mobile floating button
+    const mobileBtn = await page.waitForSelector(".mobile-workout", { timeout: 3000 });
+    await mobileBtn.click();
+    await page.waitForTimeout(400);
+
+    // 10a. Botón inicial: "Iniciar entrenamiento de hoy"
+    const startWorkoutBtn = await page.$(".workout-mode-actions button.is-primary:has-text('Iniciar entrenamiento de hoy')");
+    if (startWorkoutBtn) {
+      logPass("10a. Botón Iniciar entrenamiento de hoy", "Muestra 'Iniciar entrenamiento de hoy' cuando no hay registro previo");
+    } else {
+      logFail("10a. Botón Iniciar entrenamiento de hoy", "No se encontró el botón de inicio");
+    }
+
+    // Iniciar entrenamiento (pasar session check)
+    if (startWorkoutBtn) {
+      await startWorkoutBtn.click();
+      await page.waitForTimeout(300);
+      const readyBtn = await page.$(".session-check-actions button.is-primary, button:has-text('Aceptar')");
+      if (readyBtn) {
+        await readyBtn.click();
+        await page.waitForTimeout(400);
+      }
+    }
+
+    // 10b. Modo entrenamiento: Bloques y campos contextuales
+    const trainingCards = await page.$$(".training-exercise-card");
+    if (trainingCards.length >= 2) {
+      logPass("10b. Tarjetas de entrenamiento con nuevo diseño", `Renderizadas ${trainingCards.length} tarjetas con estilo coherente y bloques`);
+    } else {
+      logFail("10b. Tarjetas de entrenamiento con nuevo diseño", `Se encontraron solo ${trainingCards.length} tarjetas`);
+    }
+
+    // Verificar selector de esfuerzo (RPE / Fallo)
+    const effortPills = await page.$$(".training-effort-pill");
+    if (effortPills.length >= 4) {
+      logPass("10c. Selector de esfuerzo RPE / Fallo", `Renderizadas ${effortPills.length} opciones de esfuerzo (RPE 7, 8, 9, Fallo técnico)`);
+    } else {
+      logFail("10c. Selector de esfuerzo RPE / Fallo", `Solo se encontraron ${effortPills.length} pastillas de esfuerzo`);
+    }
+
+    // Capturar pantalla de entrenamiento
+    await page.screenshot({ path: join(evidenceDir, `${engineName}-09-training-mode-cards.png`) });
+
+    // 10d. Registrar un ejercicio y verificar badge "Registrado hoy" y botón "Continuar entrenamiento"
+    const firstLogBtn = await page.$(".training-exercise-card:first-child .log-load-button");
+    if (firstLogBtn) {
+      await firstLogBtn.click();
+      await page.waitForTimeout(400);
+
+      const loggedBadge = await page.$(".training-card-logged-badge");
+      if (loggedBadge) {
+        logPass("10d. Badge Registrado hoy", "Al registrar la carga aparece la insignia 'Registrado hoy' en la tarjeta");
+      } else {
+        logFail("10d. Badge Registrado hoy", "No apareció la insignia 'Registrado hoy'");
+      }
+
+      // Volver a rutina (modo view)
+      const backBtn = await page.$("button:has-text('Volver a la rutina')");
+      if (backBtn) {
+        await backBtn.click();
+        await page.waitForTimeout(400);
+
+        const continueBtn = await page.$(".workout-mode-actions button:has-text('Continuar entrenamiento de hoy')");
+        if (continueBtn) {
+          const txt = await continueBtn.textContent();
+          logPass("10e. Estado en progreso", `El botón cambió dinámicamente a '${txt?.trim()}'`);
+        } else {
+          logFail("10e. Estado en progreso", "No se encontró el botón 'Continuar entrenamiento de hoy'");
+        }
+      }
+    }
+
+    await page.screenshot({ path: join(evidenceDir, `${engineName}-10-workout-in-progress.png`) });
+
   } catch (error) {
     console.error(`Error durante la ejecución en ${engineName}:`, error);
     logFail("Ejecución UAT", error.message);
   } finally {
     // Limpieza de datos de prueba
-    await page.evaluate(() => localStorage.clear());
-    await context.close();
-    await browser.close();
+    if (page && !page.isClosed()) {
+      await page.evaluate(() => localStorage.clear()).catch(() => {});
+    }
+    if (context) await context.close().catch(() => {});
+    if (browser) await browser.close().catch(() => {});
   }
 
   return results;
+}
+
+const MIME_TYPES = {
+  ".html": "text/html",
+  ".js": "application/javascript",
+  ".mjs": "application/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".webp": "image/webp",
+};
+
+function createStaticServer(clientDir, port) {
+  const server = createServer((req, res) => {
+    const urlPath = (req.url || "/").split("?")[0];
+    let filePath = join(clientDir, urlPath === "/" ? "index.html" : urlPath);
+    if (!existsSync(filePath) || statSync(filePath).isDirectory()) {
+      filePath = join(clientDir, "index.html");
+    }
+    try {
+      const content = readFileSync(filePath);
+      const ext = extname(filePath);
+      res.writeHead(200, { "Content-Type": MIME_TYPES[ext] || "application/octet-stream" });
+      res.end(content);
+    } catch {
+      res.writeHead(404);
+      res.end();
+    }
+  });
+  return new Promise((resolve) => server.listen(port, "127.0.0.1", () => resolve(server)));
 }
 
 async function main() {
   console.log("=== INICIANDO PROTOCOLO UAT EN SUPERFICIE REAL ===");
   console.log(`Destino: ${SERVER_URL}`);
 
-  const webkitResults = await runUATForEngine("webkit", webkit);
-  const chromiumResults = await runUATForEngine("chromium", chromium);
+  const server = await createStaticServer(join(rootDir, "dist", "client"), 5174);
 
-  console.log("\n=== RESUMEN FINAL DE UAT ===");
-  console.log(`WebKit (Safari iOS): ${webkitResults.filter(r => r.status === "PASS").length}/${webkitResults.length} aprobados.`);
-  console.log(`Chromium (Chrome): ${chromiumResults.filter(r => r.status === "PASS").length}/${chromiumResults.length} aprobados.`);
+  try {
+    const webkitResults = await runUATForEngine("webkit", webkit);
+    const chromiumResults = await runUATForEngine("chromium", chromium);
+
+    console.log("\n=== RESUMEN FINAL DE UAT ===");
+    console.log(`WebKit (Safari iOS): ${webkitResults.filter(r => r.status === "PASS").length}/${webkitResults.length} aprobados.`);
+    console.log(`Chromium (Chrome): ${chromiumResults.filter(r => r.status === "PASS").length}/${chromiumResults.length} aprobados.`);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
 }
 
 main().catch(console.error);

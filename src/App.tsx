@@ -1,12 +1,14 @@
 import {
   ArrowDown,
   BookOpen,
+  Check,
   Cloud,
   CloudOff,
   Dumbbell,
   Heart,
   House,
   Languages,
+  Play,
   Search,
   SlidersHorizontal,
   UserRound,
@@ -47,6 +49,7 @@ import {
   uniqueSorted,
   updateWorkoutItem,
   WEEKDAYS,
+  JAVASCRIPT_WEEKDAYS,
 } from "./lib/exercises";
 import { getInstallGuide, type InstallGuide } from "./lib/install";
 import { tr } from "./lib/i18n";
@@ -450,14 +453,21 @@ function App() {
   const previousEmail = useRef(cloud.email);
   useEffect(() => {
     if (previousEmail.current !== cloud.email) {
-      // A recovery callback can supply the new session and recovery readiness
-      // together. Its password form has priority over the normal home landing.
-      setAccessOpen(cloud.passwordRecoveryState === "ready");
-      setProfileOpen(false);
-      setWorkoutOpen(false);
-      setSelectedExercise(null);
-      setAssignmentExercise(null);
-      setAppSection("home");
+      if (!previousEmail.current && cloud.email) {
+        // Initial session restore or login:
+        // Close access dialog if it was open (unless in password recovery mode).
+        // Preserve active workout if the user was already in training.
+        setAccessOpen(cloud.passwordRecoveryState === "ready");
+        setProfileOpen(false);
+      } else {
+        // User switched account or signed out:
+        setAccessOpen(cloud.passwordRecoveryState === "ready");
+        setProfileOpen(false);
+        setWorkoutOpen(false);
+        setSelectedExercise(null);
+        setAssignmentExercise(null);
+        setAppSection("home");
+      }
       previousEmail.current = cloud.email;
     }
   }, [cloud.email, cloud.passwordRecoveryState]);
@@ -494,7 +504,10 @@ function App() {
     };
   }, []);
 
+  const activeScreenRestored = useRef(false);
   useEffect(() => {
+    if (activeScreenRestored.current) return;
+    activeScreenRestored.current = true;
     try {
       const saved = localStorage.getItem("aunara-active-screen");
       if (saved) {
@@ -514,15 +527,11 @@ function App() {
         if (parsed.accessMode === "create" || parsed.accessMode === "sign-in" || parsed.accessMode === "help") {
           setAccessMode(parsed.accessMode);
         }
-        if (parsed.selectedExerciseId) {
-          const ex = exercises.find((item) => item.id === parsed.selectedExerciseId);
-          if (ex) setSelectedExercise(ex);
-        }
       }
     } catch {
       // Ignore
     }
-  }, [exercises, setActiveTrackId]);
+  }, [setActiveTrackId]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !window.history) return;
@@ -647,6 +656,14 @@ function App() {
   const activeTrack = tracks.find((track) => track.id === activeTrackId) ?? tracks[0];
   const latestCheckIn = checkIns[0];
   const workout = activeTrack?.workout ?? [];
+  const todayCalendarWeekday = JAVASCRIPT_WEEKDAYS[new Date().getDay()];
+  const todayDateStr = new Date().toISOString().slice(0, 10);
+  const todayWorkoutItems = workout.filter((item) => (item.day ?? "monday") === todayCalendarWeekday);
+  const todayLoggedCount = todayWorkoutItems.filter((item) =>
+    item.loadHistory?.some((entry) => entry.date === todayDateStr)
+  ).length;
+  const isTodayWorkoutCompleted = todayWorkoutItems.length > 0 && todayLoggedCount === todayWorkoutItems.length;
+  const isTodayWorkoutInProgress = todayLoggedCount > 0 && !isTodayWorkoutCompleted;
   const workoutIds = useMemo(() => new Set(tracks.flatMap((track) => (track.workout ?? []).map((item) => item.exerciseId))), [tracks]);
   const exerciseMap = useMemo(() => new Map(exercises.map((exercise) => [exercise.id, exercise])), [exercises]);
   const preferenceFilteredExercises = useMemo(
@@ -1379,11 +1396,37 @@ function App() {
         </div>
       </footer>
 
-      {canUseTraining && <button className="mobile-workout" type="button" onClick={() => {
-        showWorkout("view");
-      }}>
-        <Dumbbell size={19} /> {activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")} <strong>{workout.length}</strong>
-      </button>}
+      {canUseTraining && (
+        <button
+          className={`mobile-workout ${isTodayWorkoutCompleted ? "is-completed" : isTodayWorkoutInProgress ? "is-in-progress" : ""}`}
+          type="button"
+          onClick={() => {
+            if (isTodayWorkoutInProgress) {
+              showWorkout("training");
+            } else {
+              showWorkout("view");
+            }
+          }}
+        >
+          {isTodayWorkoutCompleted ? (
+            <>
+              <Check size={19} /> {tr(language, "Today’s workout completed", "Entrenamiento de hoy completado")}
+            </>
+          ) : isTodayWorkoutInProgress ? (
+            <>
+              <Play size={19} /> {tr(
+                language,
+                `Continue workout (${todayLoggedCount}/${todayWorkoutItems.length})`,
+                `Continuar entrenamiento (${todayLoggedCount}/${todayWorkoutItems.length})`
+              )}
+            </>
+          ) : (
+            <>
+              <Dumbbell size={19} /> {activeTrack?.name ?? tr(language, "Today’s workout", "Entrenamiento de hoy")} <strong>{workout.length}</strong>
+            </>
+          )}
+        </button>
+      )}
 
       {canUseTraining && selectedExercise && (
         <ExerciseDetail

@@ -166,7 +166,7 @@ function getExerciseLoggingType(item: WorkoutItem, exercise?: Exercise, language
     || setPlanLower.includes("min") || setPlanLower.includes("seg") || setPlanLower.includes("s");
 
   const equipment = exercise?.equipment?.toLowerCase() ?? "";
-  const isBodyweight = equipment === "body weight" || equipment === "assisted" || !equipment;
+  const isBodyweight = equipment === "body weight" || equipment === "assisted" || equipment === "wheel roller" || !equipment;
 
   let defaultPlan = item.setPlan;
   if (!defaultPlan) {
@@ -181,14 +181,14 @@ function getExerciseLoggingType(item: WorkoutItem, exercise?: Exercise, language
     }
   }
 
-  let primaryMetricLabel = tr(language, "Load (kg)", "Carga (kg)");
-  let primaryMetricUnit = "kg";
+  let primaryMetricLabel = tr(language, "Reps completed", "Repeticiones realizadas");
+  let primaryMetricUnit = "reps";
   let hasExternalLoad = true;
 
   if (isFailure) {
     primaryMetricLabel = tr(language, "Reps to failure", "Reps logradas al fallo");
     primaryMetricUnit = "reps";
-    hasExternalLoad = false;
+    hasExternalLoad = !isBodyweight;
   } else if (isTimed) {
     primaryMetricLabel = tr(language, "Time (seconds)", "Tiempo (segundos)");
     primaryMetricUnit = "seg";
@@ -265,6 +265,14 @@ export function WorkoutPanel({
     ? orderedItems.filter((item) => (item.day ?? "monday") === trainingDay)
     : orderedItems;
 
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const trainingDayItems = items.filter((item) => (item.day ?? "monday") === trainingDay);
+  const dayLoggedCount = trainingDayItems.filter((item) =>
+    item.loadHistory?.some((entry) => entry.date === todayDate)
+  ).length;
+  const isDayCompleted = trainingDayItems.length > 0 && dayLoggedCount === trainingDayItems.length;
+  const isDayInProgress = dayLoggedCount > 0 && !isDayCompleted;
+
   function openSessionCheck() {
     setSessionSymptoms({ warningSymptom: false, movementConcern: false });
     setSessionStop(false);
@@ -297,9 +305,31 @@ export function WorkoutPanel({
         {mode === "view" ? (
           <>
             {items.length > 0 && (
-              <button className="is-primary" type="button" onClick={openSessionCheck}>
-                <Play size={16} /> {tr(language, "Start today’s workout", "Iniciar entrenamiento de hoy")}
-              </button>
+              isDayCompleted ? (
+                <button
+                  className="is-primary is-completed-action"
+                  type="button"
+                  onClick={() => setMode("training")}
+                >
+                  <Check size={16} /> {tr(language, "Today’s workout completed", "Entrenamiento de hoy completado")}
+                </button>
+              ) : isDayInProgress ? (
+                <button
+                  className="is-primary is-in-progress-action"
+                  type="button"
+                  onClick={() => setMode("training")}
+                >
+                  <Play size={16} /> {tr(
+                    language,
+                    `Continue today’s workout (${dayLoggedCount}/${trainingDayItems.length})`,
+                    `Continuar entrenamiento de hoy (${dayLoggedCount}/${trainingDayItems.length})`
+                  )}
+                </button>
+              ) : (
+                <button className="is-primary" type="button" onClick={openSessionCheck}>
+                  <Play size={16} /> {tr(language, "Start today’s workout", "Iniciar entrenamiento de hoy")}
+                </button>
+              )
             )}
             <button
               className={items.length > 0 ? "" : "is-primary"}
@@ -549,14 +579,22 @@ export function WorkoutPanel({
                           const itemId = item.id ?? item.exerciseId;
                           const exerciseName = exercise ? exerciseDisplayName(exercise, language) : (item.notes ?? `Ejercicio #${item.exerciseId}`);
                           const loggingType = getExerciseLoggingType(item, exercise, language);
+                          const isLoggedToday = item.loadHistory?.some((entry) => entry.date === todayDate);
 
                           return (
-                            <article key={itemId} className="training-exercise-card">
+                            <article key={itemId} className={`training-exercise-card ${isLoggedToday ? "is-logged-card" : ""}`}>
                               <div className="training-card-header">
                                 <div className="training-card-title-group">
                                   <span className="training-set-order">{String(currentNumber).padStart(2, "0")}</span>
                                   <div>
-                                    <h3 className="training-exercise-title">{exerciseName}</h3>
+                                    <div className="training-exercise-title-row">
+                                      <h3 className="training-exercise-title">{exerciseName}</h3>
+                                      {isLoggedToday && (
+                                        <span className="training-card-logged-badge">
+                                          <Check size={12} /> {tr(language, "Logged today", "Registrado hoy")}
+                                        </span>
+                                      )}
+                                    </div>
                                     {exercise && (
                                       <span className="training-exercise-target">{exerciseTaxonomyLabel(exercise.target, language)}</span>
                                     )}
@@ -601,39 +639,21 @@ export function WorkoutPanel({
                                   />
                                 </label>
 
-                                {!loggingType.hasExternalLoad ? (
-                                  <label className="training-input-field">
-                                    <span>{loggingType.primaryMetricLabel}</span>
-                                    <input
-                                      aria-label={`${loggingType.primaryMetricLabel} ${exerciseName}`}
-                                      type="number"
-                                      min={0}
-                                      placeholder={loggingType.isFailure ? "Fallo" : String(item.reps || (loggingType.isTimed ? 60 : 15))}
-                                      value={item.repsCompleted ?? ""}
-                                      onFocus={(e) => e.target.select()}
-                                      onChange={(e) => {
-                                        const clean = e.target.value.replace(/^0+(?=\d)/, "");
-                                        onUpdateItem?.(itemId, { repsCompleted: clean === "" ? null : Number(clean) });
-                                      }}
-                                    />
-                                  </label>
-                                ) : (
-                                  <label className="training-input-field">
-                                    <span>{tr(language, "Reps completed", "Repeticiones realizadas")}</span>
-                                    <input
-                                      aria-label={`${tr(language, "Reps completed for", "Repeticiones realizadas para")} ${exerciseName}`}
-                                      type="number"
-                                      min={0}
-                                      placeholder={String(item.reps || 8)}
-                                      value={item.repsCompleted ?? ""}
-                                      onFocus={(e) => e.target.select()}
-                                      onChange={(e) => {
-                                        const clean = e.target.value.replace(/^0+(?=\d)/, "");
-                                        onUpdateItem?.(itemId, { repsCompleted: clean === "" ? null : Number(clean) });
-                                      }}
-                                    />
-                                  </label>
-                                )}
+                                <label className="training-input-field">
+                                  <span>{loggingType.primaryMetricLabel}</span>
+                                  <input
+                                    aria-label={`${loggingType.primaryMetricLabel} ${exerciseName}`}
+                                    type="number"
+                                    min={0}
+                                    placeholder={loggingType.isFailure ? "Fallo" : String(item.reps || (loggingType.isTimed ? 60 : 15))}
+                                    value={item.repsCompleted ?? ""}
+                                    onFocus={(e) => e.target.select()}
+                                    onChange={(e) => {
+                                      const clean = e.target.value.replace(/^0+(?=\d)/, "");
+                                      onUpdateItem?.(itemId, { repsCompleted: clean === "" ? null : Number(clean) });
+                                    }}
+                                  />
+                                </label>
 
                                 <label className="training-input-field">
                                   <span>{loggingType.hasExternalLoad ? tr(language, "Load (kg)", "Carga (kg)") : tr(language, "Ballast (kg, opt.)", "Lastre (kg, opcional)")}</span>
@@ -690,12 +710,12 @@ export function WorkoutPanel({
 
                               <div className="training-card-footer">
                                 <button
-                                  className="log-load-button"
+                                  className={`log-load-button ${isLoggedToday ? "is-logged" : ""}`}
                                   type="button"
                                   onClick={() => onLogLoad?.(itemId)}
                                   aria-label={`${tr(language, "Log today’s load for", "Registrar la carga de hoy para")} ${exerciseName}`}
                                 >
-                                  <Check size={15} /> {tr(language, "Log today’s load", "Registrar carga de hoy")}
+                                  <Check size={15} /> {isLoggedToday ? tr(language, "Update today’s log", "Actualizar registro de hoy") : tr(language, "Log today’s load", "Registrar carga de hoy")}
                                 </button>
 
                                 {item.loadHistory?.length ? (
@@ -720,6 +740,15 @@ export function WorkoutPanel({
                   );
                 });
               })()}
+              <div className="training-finish-bar">
+                <button
+                  type="button"
+                  className="training-finish-button"
+                  onClick={() => setMode("view")}
+                >
+                  <Check size={18} /> {tr(language, "Finish today’s workout", "Finalizar entrenamiento de hoy")}
+                </button>
+              </div>
             </div>
           ) : (
             <div className="routine-days-container">

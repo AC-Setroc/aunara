@@ -259,6 +259,16 @@ export const WEEKDAYS: Weekday[] = [
   "sunday",
 ];
 
+export const JAVASCRIPT_WEEKDAYS: Weekday[] = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
 export function generateTrackWorkout(
   exercises: Exercise[],
   track: { focus: string; equipment: string; daysPerWeek?: number; trainingDays?: Weekday[]; dailyExerciseCount?: number },
