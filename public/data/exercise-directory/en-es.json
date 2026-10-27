@@ -82602,7 +82602,7 @@
       "canonicalKey": "lever seated hip adduction",
       "name": {
         "en": "Lever Seated Hip Adduction",
-        "es": "Aducción de cadera sentado en máquina"
+        "es": "Máquina de aductor sentado (aducción de cadera)"
       },
       "nameTranslation": {
         "status": "curated",
@@ -82657,7 +82657,7 @@
           "glutes"
         ],
         "es": [
-          "aducción de cadera sentado en máquina",
+          "máquina de aductor sentado (aducción de cadera)",
           "muslos",
           "máquina de palancas",
           "aductores",
@@ -112889,7 +112889,7 @@
       "canonicalKey": "step-up with knee raise",
       "name": {
         "en": "Step-up With Knee Raise",
-        "es": "Subida al step con elevación de rodilla alternada"
+        "es": "Paso en el step con rodilla arriba"
       },
       "nameTranslation": {
         "status": "curated",
@@ -112950,7 +112950,7 @@
           "hamstrings"
         ],
         "es": [
-          "subida al step con elevación de rodilla alternada",
+          "paso en el step con rodilla arriba",
           "muslos",
           "peso corporal",
           "glúteos",

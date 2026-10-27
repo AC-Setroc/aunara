@@ -92,10 +92,10 @@ workout.push(
 // ==========================================
 // Bloque A: 3 series
 // 1. Sentadilla en Smith: 8 reps
-// 2. En el step: elevación de rodilla alternada hasta 30 reps (#4010)
+// 2. Paso en el step con rodilla arriba (#4010): hasta 30 reps
 workout.push(
   makeItem({ exerciseId: "3281", day: "tuesday", sets: 3, reps: 8, structureId: "tue-block-a", structureType: "biset", position: 0, size: 2, notes: "Sentadilla en Smith" }),
-  makeItem({ exerciseId: "4010", day: "tuesday", sets: 3, reps: 30, repetitionCount: "total", structureId: "tue-block-a", structureType: "biset", position: 1, size: 2, notes: "Subida al step con elevación de rodilla alternada (30 reps)" })
+  makeItem({ exerciseId: "4010", day: "tuesday", sets: 3, reps: 30, repetitionCount: "total", structureId: "tue-block-a", structureType: "biset", position: 1, size: 2, notes: "Paso en el step con rodilla arriba (30 reps)" })
 );
 
 // Bloque B: 3 series
@@ -108,10 +108,10 @@ workout.push(
 
 // Bloque C: 3 series
 // 1. Sentadilla sumo en Hack: 8 reps con buen peso
-// 2. En el step: subo, subo, bajo, bajo (15 derecha + 15 izquierda)
+// 2. Paso en el step con rodilla arriba (#4010): 30 reps (15 der + 15 izq)
 workout.push(
   makeItem({ exerciseId: "0755", day: "tuesday", sets: 3, reps: 8, structureId: "tue-block-c", structureType: "biset", position: 0, size: 2, notes: "Sentadilla sumo en Hack con buen peso" }),
-  makeItem({ exerciseId: "3672", day: "tuesday", sets: 3, reps: 30, structureId: "tue-block-c", structureType: "biset", position: 1, size: 2, notes: "En el step: subo subo bajo bajo (15 der + 15 izq)" })
+  makeItem({ exerciseId: "4010", day: "tuesday", sets: 3, reps: 30, repetitionCount: "total", structureId: "tue-block-c", structureType: "biset", position: 1, size: 2, notes: "Paso en el step con rodilla arriba (15 der + 15 izq)" })
 );
 
 // Bloque D: 3 series
@@ -123,12 +123,12 @@ workout.push(
 );
 
 // Bloque E: 3 series
-// 1. Máquina de aductor: 12–15 reps con buen peso
+// 1. Máquina de aductor sentado (#0598): 12–15 reps con buen peso
 // 2. Militares: 20 reps
 // 3. Pantorrilla: 10 reps
 // 4. Plancha: 1 minuto (#4003)
 workout.push(
-  makeItem({ exerciseId: "1712", day: "tuesday", sets: 3, reps: 15, structureId: "tue-block-e", structureType: "circuit", position: 0, size: 4, notes: "Máquina de aductor (12–15 reps con buen peso)" }),
+  makeItem({ exerciseId: "0598", day: "tuesday", sets: 3, reps: 15, structureId: "tue-block-e", structureType: "circuit", position: 0, size: 4, notes: "Máquina de aductor (12–15 reps con buen peso)" }),
   makeItem({ exerciseId: "3224", day: "tuesday", sets: 3, reps: 20, structureId: "tue-block-e", structureType: "circuit", position: 1, size: 4, notes: "Militares (jumping jacks)" }),
   makeItem({ exerciseId: "1373", day: "tuesday", sets: 3, reps: 10, structureId: "tue-block-e", structureType: "circuit", position: 2, size: 4, notes: "Pantorrilla de pie (10 reps)" }),
   makeItem({ exerciseId: "4003", day: "tuesday", sets: 3, reps: 60, structureId: "tue-block-e", structureType: "circuit", position: 3, size: 4, notes: "Plancha frontal estática (1 minuto)" })
@@ -346,10 +346,10 @@ workout.push(
 // ==========================================
 // Bloque A: 3 series
 // 1. Sentadilla en Smith: 8 reps
-// 2. En el step: elevación de rodilla alternada hasta 30 reps (#4010)
+// 2. Paso en el step con rodilla arriba (#4010): hasta 30 reps
 workout.push(
   makeItem({ exerciseId: "3281", day: "saturday", sets: 3, reps: 8, structureId: "sat-block-a", structureType: "biset", position: 0, size: 2, notes: "Sentadilla en Smith" }),
-  makeItem({ exerciseId: "4010", day: "saturday", sets: 3, reps: 30, repetitionCount: "total", structureId: "sat-block-a", structureType: "biset", position: 1, size: 2, notes: "En el step: elevación de rodilla alternada hasta 30 reps" })
+  makeItem({ exerciseId: "4010", day: "saturday", sets: 3, reps: 30, repetitionCount: "total", structureId: "sat-block-a", structureType: "biset", position: 1, size: 2, notes: "Paso en el step con rodilla arriba (30 reps)" })
 );
 
 // Bloque B: 3 series
@@ -362,10 +362,10 @@ workout.push(
 
 // Bloque C: 3 series
 // 1. Sentadilla sumo en Hack: 8 reps con buen peso
-// 2. En el step: subo subo bajo bajo (15 derecha + 15 izquierda)
+// 2. Paso en el step con rodilla arriba (#4010): 30 reps (15 der + 15 izq)
 workout.push(
   makeItem({ exerciseId: "0755", day: "saturday", sets: 3, reps: 8, structureId: "sat-block-c", structureType: "biset", position: 0, size: 2, notes: "Sentadilla sumo en Hack con buen peso" }),
-  makeItem({ exerciseId: "3672", day: "saturday", sets: 3, reps: 30, structureId: "sat-block-c", structureType: "biset", position: 1, size: 2, notes: "En el step: subo subo bajo bajo (15 der + 15 izq)" })
+  makeItem({ exerciseId: "4010", day: "saturday", sets: 3, reps: 30, repetitionCount: "total", structureId: "sat-block-c", structureType: "biset", position: 1, size: 2, notes: "Paso en el step con rodilla arriba (15 der + 15 izq)" })
 );
 
 // Bloque D: 3 series
@@ -377,12 +377,12 @@ workout.push(
 );
 
 // Bloque E: 3 series
-// 1. Máquina de aductor: 12–15 reps con buen peso
+// 1. Máquina de aductor sentado (#0598): 12–15 reps con buen peso
 // 2. Militares: 20 reps
 // 3. Pantorrilla: 10 reps
 // 4. Plancha (#4003): 1 minuto
 workout.push(
-  makeItem({ exerciseId: "1712", day: "saturday", sets: 3, reps: 15, structureId: "sat-block-e", structureType: "circuit", position: 0, size: 4, notes: "Máquina de aductor (12–15 reps con buen peso)" }),
+  makeItem({ exerciseId: "0598", day: "saturday", sets: 3, reps: 15, structureId: "sat-block-e", structureType: "circuit", position: 0, size: 4, notes: "Máquina de aductor (12–15 reps con buen peso)" }),
   makeItem({ exerciseId: "3224", day: "saturday", sets: 3, reps: 20, structureId: "sat-block-e", structureType: "circuit", position: 1, size: 4, notes: "Militares (20 reps)" }),
   makeItem({ exerciseId: "1373", day: "saturday", sets: 3, reps: 10, structureId: "sat-block-e", structureType: "circuit", position: 2, size: 4, notes: "Pantorrilla (10 reps)" }),
   makeItem({ exerciseId: "4003", day: "saturday", sets: 3, reps: 60, structureId: "sat-block-e", structureType: "circuit", position: 3, size: 4, notes: "Plancha frontal estática (1 minuto)" })

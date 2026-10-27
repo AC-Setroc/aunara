@@ -1,8 +1,28 @@
 # Estado actual — Aunara
 
-Fecha de actualización: 2026-10-26.
+Fecha de actualización: 2026-10-27.
 
 ## Verificado
+
+### 2026-10-27 — Corrección de prescripción de ejercicios en Rutina Principal (Step con rodilla arriba y Máquina de aductor)
+
+- **Corrección de ejercicio en Bloque C (Martes y Sábado)**:
+  - Reemplazo de `#3672` («Paso adelante y atrás» en suelo) por `#4010` («Paso en el step con rodilla arriba» / `step-up with knee raise`).
+  - Animación vinculada correctamente a `exercise-art/pilot/step-up-knee-raise-aunara-v1.gif`.
+  - Nota de prescripción actualizada a `Paso en el step con rodilla arriba (15 der + 15 izq)`.
+- **Corrección de ejercicio en Bloque E (Martes y Sábado)**:
+  - Reemplazo de `#1712` («Estiramiento asistido de aductores en decúbito lateral») por `#0598` («Máquina de aductor sentado (aducción de cadera)» / `lever seated hip adduction`).
+  - Equipo clasificado como `leverage machine` (máquina de palancas/carga externa), solicitando «Carga (kg)» en la tabla Tap-to-Log en vez de lastre corporal opcional.
+  - Animación y video vinculados directamente a la ejecución en máquina sentada cerrando contra las placas.
+- **Catálogo bilingüe sincronizado**:
+  - `name-overrides.es.json` y `en-es.json` actualizados con nombres curados canónicos:
+    - `step-up with knee raise` → «Paso en el step con rodilla arriba».
+    - `lever seated hip adduction` → «Máquina de aductor sentado (aducción de cadera)».
+  - 1335/1335 ejercicios del directorio validados con `check:exercise-directory`.
+- **Script SQL de base de datos regenerado**:
+  - `scripts/generate-alejo-routine-sql.mjs` y `supabase/montar-rutina-principal-alejo.sql` regenerados con los IDs correctos.
+- **Servidor local activo para UAT**:
+  - Servidor Vite en ejecución en `http://localhost:5173/` y en red local `http://192.168.80.19:5173/`.
 
 ### 2026-10-26 — SDD-007 Enmienda 1: Registro estructurado serie a serie («Tap-to-Log») y taxonomía de fatiga para analítica BI
 
