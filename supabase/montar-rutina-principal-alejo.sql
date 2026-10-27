@@ -81,5 +81,15 @@ BEGIN
   ON CONFLICT (user_id) 
   DO UPDATE SET payload = EXCLUDED.payload;
 
+  -- 4. Asegurar metadatos en auth.users para evitar cualquier reaparición de onboarding o consentimiento
+  UPDATE auth.users
+  SET raw_user_meta_data = COALESCE(raw_user_meta_data, '{}'::jsonb) || jsonb_build_object(
+    'onboarding_completed', true,
+    'onboarding_completed_at', now()::text,
+    'health_data_consent', 'granted',
+    'health_data_consent_at', now()::text
+  )
+  WHERE id = v_user_id;
+
   RAISE NOTICE 'Rutina Principal montada con éxito para alejandro@ac-setroc.com (6 días, % ejercicios).', jsonb_array_length(v_track->'workout');
 END $$;

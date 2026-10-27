@@ -282,3 +282,186 @@ describe("independent manual prescriptions", () => {
     expect(setsInput.value).toBe("4");
   });
 });
+
+describe("Tap-to-Log structured series tracking (SDD-007 Enmienda 1)", () => {
+  const trainingItem: WorkoutItem = {
+    id: "monday-press",
+    exerciseId: exercises[0].id,
+    day: "monday",
+    sets: 3,
+    reps: 8,
+    loadKg: 50,
+    repsCompleted: 8,
+    effort: "RPE 8",
+    loadHistory: [
+      {
+        id: "entry-1",
+        date: "2026-10-12",
+        setPlan: "3 × 8",
+        loadKg: 50,
+        repsCompleted: 7,
+        effort: "RPE 9",
+        setsDetail: [
+          { setNumber: 1, targetReps: 8, actualReps: 8, loadKg: 50, completed: true },
+          { setNumber: 2, targetReps: 8, actualReps: 8, loadKg: 50, completed: true },
+          { setNumber: 3, targetReps: 8, actualReps: 7, loadKg: 50, completed: true, limiterTag: "muscular-failure" },
+        ],
+      },
+    ],
+  };
+
+  it("renders series table and formatted history summary with setsDetail", () => {
+    render(
+      <WorkoutPanel
+        language="es"
+        initialMode="training"
+        items={[trainingItem]}
+        exercises={exercises}
+        exerciseMap={new Map(exercises.map((ex) => [ex.id, ex]))}
+        track={{
+          id: "track-1",
+          name: "Ruta 1",
+          kind: "goal",
+          focus: "strength",
+          equipment: "mixed",
+          sessionMinutes: 45,
+          daysPerWeek: 1,
+          trainingDays: ["monday"],
+          creationMode: "manual",
+          workout: [trainingItem],
+        }}
+        onClose={vi.fn()}
+        onUpdate={vi.fn()}
+        onUpdateItem={vi.fn()}
+        onRemove={vi.fn()}
+        onSwap={vi.fn()}
+        onClear={vi.fn()}
+        onGenerate={vi.fn()}
+        onOpenExercise={vi.fn()}
+        onOpenProfile={vi.fn()}
+        analysis={{ tone: "ready", headline: "Headline", points: [] }}
+      />
+    );
+
+    // Checks header columns
+    expect(screen.getByText("Serie")).toBeTruthy();
+    expect(screen.getByText("Objetivo")).toBeTruthy();
+    expect(screen.getByText("Lastre (kg)")).toBeTruthy();
+    expect(screen.getByText("Repeticiones realizadas")).toBeTruthy();
+    expect(screen.getByText("Listo")).toBeTruthy();
+
+    // Checks 3 series rows
+    expect(screen.getByText("S1")).toBeTruthy();
+    expect(screen.getByText("S2")).toBeTruthy();
+    expect(screen.getByText("S3")).toBeTruthy();
+
+    // Checks formatted history
+    expect(screen.getByText(/50 kg máx · 8\/8\/7 reps · RPE 9/)).toBeTruthy();
+  });
+
+  it("allows marking a set as completed and adding/removing series", () => {
+    const onUpdateItem = vi.fn();
+    render(
+      <WorkoutPanel
+        language="es"
+        initialMode="training"
+        items={[trainingItem]}
+        exercises={exercises}
+        exerciseMap={new Map(exercises.map((ex) => [ex.id, ex]))}
+        track={{
+          id: "track-1",
+          name: "Ruta 1",
+          kind: "goal",
+          focus: "strength",
+          equipment: "mixed",
+          sessionMinutes: 45,
+          daysPerWeek: 1,
+          trainingDays: ["monday"],
+          creationMode: "manual",
+          workout: [trainingItem],
+        }}
+        onClose={vi.fn()}
+        onUpdate={vi.fn()}
+        onUpdateItem={onUpdateItem}
+        onRemove={vi.fn()}
+        onSwap={vi.fn()}
+        onClear={vi.fn()}
+        onGenerate={vi.fn()}
+        onOpenExercise={vi.fn()}
+        onOpenProfile={vi.fn()}
+        analysis={{ tone: "ready", headline: "Headline", points: [] }}
+      />
+    );
+
+    // Mark set 1 as completed
+    const markBtn = screen.getByRole("button", { name: /Marcar serie 1 synthetic press/i });
+    fireEvent.click(markBtn);
+
+    expect(onUpdateItem).toHaveBeenCalledWith(
+      "monday-press",
+      expect.objectContaining({
+        currentSetsDetail: expect.arrayContaining([
+          expect.objectContaining({ setNumber: 1, completed: true }),
+        ]),
+      })
+    );
+
+    // Add a set
+    const addSetBtn = screen.getByRole("button", { name: "Agregar serie" });
+    fireEvent.click(addSetBtn);
+    expect(onUpdateItem).toHaveBeenCalledWith(
+      "monday-press",
+      expect.objectContaining({
+        sets: 4,
+      })
+    );
+  });
+
+  it("allows selecting a fatigue limiter tag for analytic tracking", () => {
+    const onUpdateItem = vi.fn();
+    render(
+      <WorkoutPanel
+        language="es"
+        initialMode="training"
+        items={[trainingItem]}
+        exercises={exercises}
+        exerciseMap={new Map(exercises.map((ex) => [ex.id, ex]))}
+        track={{
+          id: "track-1",
+          name: "Ruta 1",
+          kind: "goal",
+          focus: "strength",
+          equipment: "mixed",
+          sessionMinutes: 45,
+          daysPerWeek: 1,
+          trainingDays: ["monday"],
+          creationMode: "manual",
+          workout: [trainingItem],
+        }}
+        onClose={vi.fn()}
+        onUpdate={vi.fn()}
+        onUpdateItem={onUpdateItem}
+        onRemove={vi.fn()}
+        onSwap={vi.fn()}
+        onClear={vi.fn()}
+        onGenerate={vi.fn()}
+        onOpenExercise={vi.fn()}
+        onOpenProfile={vi.fn()}
+        analysis={{ tone: "ready", headline: "Headline", points: [] }}
+      />
+    );
+
+    // Click on "Fallo muscular" chip
+    const muscleChip = screen.getByRole("button", { name: /Fallo muscular/i });
+    fireEvent.click(muscleChip);
+
+    expect(onUpdateItem).toHaveBeenCalledWith(
+      "monday-press",
+      expect.objectContaining({
+        currentSetsDetail: expect.arrayContaining([
+          expect.objectContaining({ limiterTag: "muscular-failure" }),
+        ]),
+      })
+    );
+  });
+});

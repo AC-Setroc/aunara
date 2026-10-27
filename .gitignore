@@ -5,3 +5,5 @@ outputs
 .DS_Store
 *.local
 AUNARA_SOT/reference/
+AUNARA_SOT/uat-runs/
+graphify-out/

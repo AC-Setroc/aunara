@@ -494,16 +494,43 @@ export function logWorkoutLoad(
 ): WorkoutItem[] {
   return workout.map((item) => {
     if (!matchesWorkoutItem(item, itemId)) return item;
+
+    let consolidatedLoadKg = item.loadKg ?? null;
+    let consolidatedReps = item.repsCompleted;
+
+    if (item.currentSetsDetail && item.currentSetsDetail.length > 0) {
+      const completedSets = item.currentSetsDetail.filter((s) => s.completed);
+      const targetSets = completedSets.length > 0 ? completedSets : item.currentSetsDetail;
+      const validLoads = targetSets
+        .map((s) => s.loadKg)
+        .filter((k): k is number => k !== null && k !== undefined);
+      if (validLoads.length > 0) {
+        consolidatedLoadKg = Math.max(...validLoads);
+      }
+      const validReps = targetSets
+        .map((s) => s.actualReps)
+        .filter((r): r is number => r !== null && r !== undefined);
+      if (validReps.length > 0) {
+        consolidatedReps = validReps[validReps.length - 1];
+      }
+    }
+
     const entry = {
       id: `${itemId}-${date}-${item.loadHistory?.length ?? 0}`,
       date,
-      loadKg: item.loadKg ?? null,
+      loadKg: consolidatedLoadKg,
       loadNote: item.loadNote,
       setPlan: item.setPlan ?? `${item.sets} × ${item.reps}`,
       effort: item.effort,
-      repsCompleted: item.repsCompleted,
+      repsCompleted: consolidatedReps,
+      ...(item.currentSetsDetail?.length ? { setsDetail: item.currentSetsDetail } : {}),
     };
-    return { ...item, loadHistory: [...(item.loadHistory ?? []), entry] };
+    return {
+      ...item,
+      loadKg: consolidatedLoadKg,
+      repsCompleted: consolidatedReps,
+      loadHistory: [...(item.loadHistory ?? []), entry],
+    };
   });
 }
 

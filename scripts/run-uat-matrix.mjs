@@ -440,20 +440,82 @@ async function runUATForEngine(engineName, engine) {
       logFail("10c. Selector de esfuerzo RPE / Fallo", `Solo se encontraron ${effortPills.length} pastillas de esfuerzo`);
     }
 
-    // Capturar pantalla de entrenamiento
+    // 10d. Tabla de series Tap-to-Log interactiva
+    const cards = await page.$$(".training-exercise-card");
+    const firstCard = cards[0];
+    const setRowsInitial = firstCard ? await firstCard.$$(".training-set-row") : [];
+    if (setRowsInitial.length === 3) {
+      logPass("10d. Tabla de series Tap-to-Log", `Renderizadas ${setRowsInitial.length} filas de series en la tarjeta 1`);
+    } else {
+      logFail("10d. Tabla de series Tap-to-Log", `Se esperaban 3 filas pero se encontraron ${setRowsInitial.length}`);
+    }
+
+    // 10e. Stepper de series (+ Serie / - Serie)
+    const addSetBtn = firstCard ? await firstCard.$("button[aria-label='Agregar serie']") : null;
+    const removeSetBtn = firstCard ? await firstCard.$("button[aria-label='Quitar serie']") : null;
+    if (addSetBtn && removeSetBtn) {
+      await addSetBtn.click();
+      await page.waitForTimeout(300);
+      const rowsAfterAdd = await firstCard.$$(".training-set-row");
+      await removeSetBtn.click();
+      await page.waitForTimeout(300);
+      const rowsAfterRemove = await firstCard.$$(".training-set-row");
+
+      if (rowsAfterAdd.length === 4 && rowsAfterRemove.length === 3) {
+        logPass("10e. Stepper de series dinámico", "Añade serie a 4 y reduce a 3 correctamente con botones + y -");
+      } else {
+        logFail("10e. Stepper de series dinámico", `Falló conteo: tras agregar=${rowsAfterAdd.length}, tras quitar=${rowsAfterRemove.length}`);
+      }
+    } else {
+      logFail("10e. Stepper de series dinámico", "No se encontraron los botones del stepper de series");
+    }
+
+    // 10f. Confirmación 1 toque Tap-to-Log
+    const checkBtn1 = firstCard ? await firstCard.$(".training-set-row:first-child .training-set-check-btn") : null;
+    if (checkBtn1) {
+      await checkBtn1.click();
+      await page.waitForTimeout(300);
+      const isCompleted = await page.evaluate(el => el.classList.contains("is-completed"), checkBtn1);
+      if (isCompleted) {
+        logPass("10f. Confirmación 1 toque Tap-to-Log", "El botón [✓] marcó la serie 1 como completada con feedback visual");
+      } else {
+        logFail("10f. Confirmación 1 toque Tap-to-Log", "La serie 1 no obtuvo clase .is-completed al hacer clic");
+      }
+    } else {
+      logFail("10f. Confirmación 1 toque Tap-to-Log", "No se encontró el botón [✓] en la serie 1");
+    }
+
+    // 10g. Asignación de factor limitante / fatiga (Taxonomía BI)
+    const muscleChip = firstCard ? await firstCard.$(".training-limiter-chip:has-text('Fallo muscular')") : null;
+    if (muscleChip) {
+      await muscleChip.click();
+      await page.waitForTimeout(300);
+      const isChipSelected = await page.evaluate(el => el.classList.contains("is-selected"), muscleChip);
+      const limiterBadge = firstCard ? await firstCard.$(".set-limiter-badge") : null;
+      if (isChipSelected && limiterBadge) {
+        logPass("10g. Factor limitante de fatiga BI", "Chip 'Fallo muscular' seleccionado e insignia asignada a la serie");
+      } else {
+        logFail("10g. Factor limitante de fatiga BI", `Chip seleccionado=${isChipSelected}, insignia presente=${Boolean(limiterBadge)}`);
+      }
+    } else {
+      logFail("10g. Factor limitante de fatiga BI", "No se encontró el chip 'Fallo muscular'");
+    }
+
+    // Capturar pantalla de entrenamiento con Tap-to-Log y fatiga
     await page.screenshot({ path: join(evidenceDir, `${engineName}-09-training-mode-cards.png`) });
 
-    // 10d. Registrar un ejercicio y verificar badge "Registrado hoy" y botón "Continuar entrenamiento"
-    const firstLogBtn = await page.$(".training-exercise-card:first-child .log-load-button");
+    // 10h. Registrar un ejercicio y verificar badge "Registrado hoy" y resumen de historial
+    const firstLogBtn = firstCard ? await firstCard.$(".log-load-button") : null;
     if (firstLogBtn) {
       await firstLogBtn.click();
       await page.waitForTimeout(400);
 
-      const loggedBadge = await page.$(".training-card-logged-badge");
-      if (loggedBadge) {
-        logPass("10d. Badge Registrado hoy", "Al registrar la carga aparece la insignia 'Registrado hoy' en la tarjeta");
+      const loggedBadge = firstCard ? await firstCard.$(".training-card-logged-badge") : null;
+      const historySummary = firstCard ? await firstCard.$eval(".training-card-history", el => el.textContent).catch(() => null) : null;
+      if (loggedBadge && historySummary) {
+        logPass("10h. Registro completado con historial", `Insignia 'Registrado hoy' presente e historial formateado: "${historySummary.trim()}"`);
       } else {
-        logFail("10d. Badge Registrado hoy", "No apareció la insignia 'Registrado hoy'");
+        logFail("10h. Registro completado con historial", `loggedBadge=${Boolean(loggedBadge)}, historySummary=${historySummary}`);
       }
 
       // Volver a rutina (modo view)
@@ -465,14 +527,65 @@ async function runUATForEngine(engineName, engine) {
         const continueBtn = await page.$(".workout-mode-actions button:has-text('Continuar entrenamiento de hoy')");
         if (continueBtn) {
           const txt = await continueBtn.textContent();
-          logPass("10e. Estado en progreso", `El botón cambió dinámicamente a '${txt?.trim()}'`);
+          logPass("10i. Estado en progreso (1/3)", `El botón cambió dinámicamente a '${txt?.trim()}'`);
         } else {
-          logFail("10e. Estado en progreso", "No se encontró el botón 'Continuar entrenamiento de hoy'");
+          logFail("10i. Estado en progreso (1/3)", "No se encontró el botón 'Continuar entrenamiento de hoy'");
         }
       }
     }
 
     await page.screenshot({ path: join(evidenceDir, `${engineName}-10-workout-in-progress.png`) });
+
+    // 10j. Completar todos los ejercicios y verificar estado completado
+    const continueWorkoutBtn = await page.$(".workout-mode-actions button:has-text('Continuar entrenamiento de hoy')");
+    if (continueWorkoutBtn) {
+      await continueWorkoutBtn.click();
+      await page.waitForTimeout(400);
+
+      const allCards = await page.$$(".training-exercise-card");
+      if (allCards.length >= 3) {
+        // Registrar ejercicio 2
+        const logBtn2 = await allCards[1].$(".log-load-button");
+        if (logBtn2) {
+          await logBtn2.click();
+          await page.waitForTimeout(400);
+        }
+        // Registrar ejercicio 3
+        const logBtn3 = await allCards[2].$(".log-load-button");
+        if (logBtn3) {
+          await logBtn3.click();
+          await page.waitForTimeout(400);
+        }
+      }
+
+      // Volver a la rutina
+      const backBtn = await page.$("button:has-text('Volver a la rutina')");
+      if (backBtn) {
+        await backBtn.click();
+        await page.waitForTimeout(400);
+
+        const completedActionBtn = await page.$(".workout-mode-actions button.is-completed-action");
+        const completedBtnText = completedActionBtn ? await completedActionBtn.textContent() : null;
+        const startBtnExists = await page.$(".workout-mode-actions button:has-text('Iniciar entrenamiento de hoy')");
+
+        if (completedActionBtn && !startBtnExists) {
+          logPass("10j. Entrenamiento completado sin botón de inicio repetido", `El botón muestra '${completedBtnText?.trim()}' y NO vuelve a aparecer 'Iniciar entrenamiento de hoy'`);
+        } else {
+          logFail("10j. Entrenamiento completado sin botón de inicio repetido", `completedAction=${Boolean(completedActionBtn)}, startBtnReappeared=${Boolean(startBtnExists)}`);
+        }
+
+        // Verificar botón flotante móvil al pie
+        const mobileFloatingBtn = await page.$(".mobile-workout");
+        const mobileFloatingText = mobileFloatingBtn ? await mobileFloatingBtn.textContent() : null;
+        if (mobileFloatingText && mobileFloatingText.includes("Entrenamiento de hoy completado")) {
+          logPass("10k. Botón flotante móvil completado", `El botón flotante muestra '${mobileFloatingText.trim()}'`);
+        } else {
+          logFail("10k. Botón flotante móvil completado", `Texto en botón flotante: '${mobileFloatingText}'`);
+        }
+      }
+    }
+
+    await page.screenshot({ path: join(evidenceDir, `${engineName}-11-workout-completed-state.png`) });
 
   } catch (error) {
     console.error(`Error durante la ejecución en ${engineName}:`, error);

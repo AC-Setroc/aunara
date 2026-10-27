@@ -43,6 +43,8 @@ import type {
   TrainingTrack,
   Weekday,
   WorkoutItem,
+  WorkoutLimiterTag,
+  WorkoutSetDetail,
   WorkoutStructureType,
   WorkoutTechniqueBlock,
   WorkTargetType,
@@ -156,6 +158,41 @@ const EFFORT_OPTIONS = [
   { value: "RPE 9", label: "RPE 9", descEn: "1 in reserve", descEs: "1 en recámara" },
   { value: "Fallo técnico", label: "Fallo", descEn: "0 in reserve (failure)", descEs: "Fallo técnico (0 en rec.)" },
 ];
+
+const LIMITER_OPTIONS: { value: WorkoutLimiterTag; labelEs: string; labelEn: string; icon: string }[] = [
+  { value: "muscular-failure", labelEs: "Fallo muscular", labelEn: "Muscular failure", icon: "💪" },
+  { value: "cardiovascular", labelEs: "Falta de aire", labelEn: "Out of breath", icon: "🫁" },
+  { value: "joint-discomfort", labelEs: "Molestia articular", labelEn: "Joint discomfort", icon: "⚠️" },
+  { value: "excessive-load", labelEs: "Carga alta", labelEn: "Heavy load", icon: "🏋️" },
+  { value: "time-constraint", labelEs: "Falta de tiempo", labelEn: "Time constraint", icon: "⏱️" },
+];
+
+function getSetsForExercise(
+  item: WorkoutItem,
+  loggingType: ReturnType<typeof getExerciseLoggingType>,
+): WorkoutSetDetail[] {
+  if (item.currentSetsDetail && item.currentSetsDetail.length > 0) {
+    return item.currentSetsDetail;
+  }
+  const count = item.sets && item.sets > 0 ? item.sets : 3;
+  const targetReps = item.reps || (loggingType.isTimed ? 60 : (loggingType.isFailure ? 10 : 10));
+  const defaultLoad = item.loadKg ?? item.loadHistory?.at(-1)?.loadKg ?? null;
+  const defaultReps = item.repsCompleted != null
+    ? (typeof item.repsCompleted === "number" ? item.repsCompleted : Number(item.repsCompleted) || targetReps)
+    : (loggingType.isFailure ? null : targetReps);
+
+  const initialSets: WorkoutSetDetail[] = [];
+  for (let i = 1; i <= count; i++) {
+    initialSets.push({
+      setNumber: i,
+      targetReps,
+      actualReps: defaultReps,
+      loadKg: defaultLoad,
+      completed: false,
+    });
+  }
+  return initialSets;
+}
 
 function getExerciseLoggingType(item: WorkoutItem, exercise?: Exercise, language: LanguageCode = "es") {
   const notesLower = (item.notes ?? "").toLowerCase();
@@ -581,6 +618,26 @@ export function WorkoutPanel({
                           const loggingType = getExerciseLoggingType(item, exercise, language);
                           const isLoggedToday = item.loadHistory?.some((entry) => entry.date === todayDate);
 
+                          const sets = getSetsForExercise(item, loggingType);
+
+                          const updateSets = (newSets: WorkoutSetDetail[]) => {
+                            const validLoads = newSets
+                              .map((s) => s.loadKg)
+                              .filter((k): k is number => k != null && !isNaN(k));
+                            const maxLoad = validLoads.length > 0 ? Math.max(...validLoads) : null;
+                            const completedSets = newSets.filter((s) => s.completed);
+                            const lastCompleted = completedSets.at(-1) ?? newSets[0];
+                            const lastReps = lastCompleted?.actualReps ?? null;
+
+                            onUpdateItem?.(itemId, {
+                              currentSetsDetail: newSets,
+                              loadKg: maxLoad,
+                              repsCompleted: lastReps,
+                              sets: newSets.length,
+                              setPlan: `${newSets.length} × ${item.reps || (loggingType.isTimed ? 60 : 10)}`,
+                            });
+                          };
+
                           return (
                             <article key={itemId} className={`training-exercise-card ${isLoggedToday ? "is-logged-card" : ""}`}>
                               <div className="training-card-header">
@@ -624,68 +681,208 @@ export function WorkoutPanel({
                                 </div>
                               )}
 
-                              <div className="training-plan-indicator">
-                                <span className="plan-tag-label">{tr(language, "Target plan:", "Plan objetivo:")}</span>
-                                <strong className="plan-tag-value">{item.setPlan ?? loggingType.defaultPlan}</strong>
+                              <div className="training-plan-row">
+                                <div className="training-plan-indicator">
+                                  <span className="plan-tag-label">{tr(language, "Target plan:", "Plan objetivo:")}</span>
+                                  <strong className="plan-tag-value">{item.setPlan ?? loggingType.defaultPlan}</strong>
+                                </div>
+                                <div className="training-sets-actions">
+                                  <button
+                                    type="button"
+                                    className="training-set-stepper-btn"
+                                    onClick={() => {
+                                      if (sets.length > 1) {
+                                        const updated = sets.slice(0, -1);
+                                        updateSets(updated);
+                                      }
+                                    }}
+                                    disabled={sets.length <= 1}
+                                    aria-label={tr(language, "Remove set", "Quitar serie")}
+                                    title={tr(language, "Remove set", "Quitar serie")}
+                                  >
+                                    <Minus size={13} />
+                                  </button>
+                                  <span className="training-set-count-label">{sets.length} {tr(language, "sets", "series")}</span>
+                                  <button
+                                    type="button"
+                                    className="training-set-stepper-btn"
+                                    onClick={() => {
+                                      const last = sets.at(-1);
+                                      const nextSetNum = sets.length + 1;
+                                      const newSet: WorkoutSetDetail = {
+                                        setNumber: nextSetNum,
+                                        targetReps: last?.targetReps ?? item.reps ?? 10,
+                                        actualReps: last?.actualReps ?? last?.targetReps ?? item.reps ?? 10,
+                                        loadKg: last?.loadKg ?? null,
+                                        completed: false,
+                                      };
+                                      updateSets([...sets, newSet]);
+                                    }}
+                                    aria-label={tr(language, "Add set", "Agregar serie")}
+                                    title={tr(language, "Add set", "Agregar serie")}
+                                  >
+                                    <Plus size={13} />
+                                  </button>
+                                </div>
                               </div>
 
-                              <div className="training-inputs-grid">
-                                <label className="training-input-field">
-                                  <span>{tr(language, "Sets completed", "Series realizadas")}</span>
-                                  <input
-                                    aria-label={`${tr(language, "Set plan for", "Plan de series para")} ${exerciseName}`}
-                                    value={item.setPlan ?? loggingType.defaultPlan}
-                                    onChange={(event) => onUpdateItem?.(itemId, { setPlan: event.target.value })}
-                                  />
-                                </label>
+                              <div className="training-sets-table-container">
+                                <table className="training-sets-table">
+                                  <thead>
+                                    <tr>
+                                      <th className="th-set">{tr(language, "Set", "Serie")}</th>
+                                      <th className="th-target">{tr(language, "Target", "Objetivo")}</th>
+                                      <th className="th-load">{loggingType.hasExternalLoad ? tr(language, "Load (kg)", "Carga (kg)") : tr(language, "Ballast (kg)", "Lastre (kg)")}</th>
+                                      <th className="th-reps">{loggingType.primaryMetricLabel}</th>
+                                      <th className="th-action">{tr(language, "Done", "Listo")}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {sets.map((set, idx) => {
+                                      const isFirst = idx === 0;
+                                      const targetDisplay = loggingType.isFailure
+                                        ? "Fallo"
+                                        : set.targetReps != null
+                                          ? `${set.targetReps} ${loggingType.isTimed ? "s" : "reps"}`
+                                          : (item.reps ? `${item.reps} reps` : "-");
+                                      const limiterObj = LIMITER_OPTIONS.find((l) => l.value === set.limiterTag);
 
-                                <label className="training-input-field">
-                                  <span>{loggingType.primaryMetricLabel}</span>
-                                  <input
-                                    aria-label={`${loggingType.primaryMetricLabel} ${exerciseName}`}
-                                    type="number"
-                                    min={0}
-                                    placeholder={loggingType.isFailure ? "Fallo" : String(item.reps || (loggingType.isTimed ? 60 : 15))}
-                                    value={item.repsCompleted ?? ""}
-                                    onFocus={(e) => e.target.select()}
-                                    onChange={(e) => {
-                                      const clean = e.target.value.replace(/^0+(?=\d)/, "");
-                                      onUpdateItem?.(itemId, { repsCompleted: clean === "" ? null : Number(clean) });
-                                    }}
-                                  />
-                                </label>
-
-                                <label className="training-input-field">
-                                  <span>{loggingType.hasExternalLoad ? tr(language, "Load (kg)", "Carga (kg)") : tr(language, "Ballast (kg, opt.)", "Lastre (kg, opcional)")}</span>
-                                  <input
-                                    aria-label={`${tr(language, "Load in kilograms for", "Carga en kilogramos para")} ${exerciseName}`}
-                                    type="number"
-                                    min={0}
-                                    step={0.5}
-                                    placeholder="0"
-                                    value={item.loadKg ?? ""}
-                                    onFocus={(event) => event.target.select()}
-                                    onChange={(event) => {
-                                      const clean = event.target.value.replace(/^0+(?=\d)/, "");
-                                      const numStr = clean.replace(",", ".");
-                                      event.target.value = clean;
-                                      onUpdateItem?.(itemId, {
-                                        loadKg: numStr === "" ? null : Number(numStr),
-                                      });
-                                    }}
-                                  />
-                                </label>
-
-                                <label className="training-input-field is-full-width">
-                                  <span>{tr(language, "Session note", "Nota de la sesión")}</span>
-                                  <input
-                                    aria-label={`${tr(language, "Load note for", "Nota de carga para")} ${exerciseName}`}
-                                    value={item.loadNote ?? ""}
-                                    placeholder={tr(language, "e.g. effort, tempo or equipment used", "ej. esfuerzo, tempo o equipo usado")}
-                                    onChange={(event) => onUpdateItem?.(itemId, { loadNote: event.target.value })}
-                                  />
-                                </label>
+                                      return (
+                                        <tr key={set.setNumber} className={`training-set-row ${set.completed ? "is-completed" : ""}`}>
+                                          <td className="td-set">
+                                            <span className="set-badge">S{set.setNumber}</span>
+                                          </td>
+                                          <td className="td-target">
+                                            <span className="target-badge">{targetDisplay}</span>
+                                          </td>
+                                          <td className="td-load">
+                                            <input
+                                              aria-label={isFirst
+                                                ? `${tr(language, "Load in kilograms for", "Carga en kilogramos para")} ${exerciseName}`
+                                                : `${tr(language, "Load for set", "Carga para serie")} ${set.setNumber} ${exerciseName}`}
+                                              type="number"
+                                              min={0}
+                                              step={0.5}
+                                              placeholder="0"
+                                              value={set.loadKg ?? ""}
+                                              onFocus={(e) => e.target.select()}
+                                              onChange={(e) => {
+                                                const clean = e.target.value.replace(/^0+(?=\d)/, "");
+                                                const numStr = clean.replace(",", ".");
+                                                const newLoad = numStr === "" ? null : Number(numStr);
+                                                const updated = sets.map((s, i) => i === idx ? { ...s, loadKg: newLoad } : s);
+                                                updateSets(updated);
+                                              }}
+                                            />
+                                          </td>
+                                          <td className="td-reps">
+                                            <input
+                                              aria-label={isFirst
+                                                ? `${loggingType.primaryMetricLabel} ${exerciseName}`
+                                                : `${loggingType.primaryMetricLabel} ${set.setNumber} ${exerciseName}`}
+                                              type="number"
+                                              min={0}
+                                              placeholder={loggingType.isFailure ? "Fallo" : String(set.targetReps ?? item.reps ?? (loggingType.isTimed ? 60 : 10))}
+                                              value={set.actualReps ?? ""}
+                                              onFocus={(e) => e.target.select()}
+                                              onChange={(e) => {
+                                                const clean = e.target.value.replace(/^0+(?=\d)/, "");
+                                                const newReps = clean === "" ? null : Number(clean);
+                                                const updated = sets.map((s, i) => i === idx ? { ...s, actualReps: newReps } : s);
+                                                updateSets(updated);
+                                              }}
+                                            />
+                                            {limiterObj && (
+                                              <span className="set-limiter-badge" title={language === "es" ? limiterObj.labelEs : limiterObj.labelEn}>
+                                                {limiterObj.icon} {language === "es" ? limiterObj.labelEs : limiterObj.labelEn}
+                                              </span>
+                                            )}
+                                          </td>
+                                          <td className="td-action">
+                                            <button
+                                              type="button"
+                                              className={`training-set-check-btn ${set.completed ? "is-completed" : ""}`}
+                                              aria-label={`${tr(language, "Mark set", "Marcar serie")} ${set.setNumber} ${exerciseName} ${set.completed ? tr(language, "as pending", "como pendiente") : tr(language, "as completed", "como completada")}`}
+                                              onClick={() => {
+                                                const targetRepsFallback = set.targetReps ?? item.reps ?? (loggingType.isTimed ? 60 : 10);
+                                                const prevLoad = idx > 0 ? sets[idx - 1]?.loadKg : item.loadKg;
+                                                const updated = sets.map((s, i) => {
+                                                  if (i === idx) {
+                                                    const willBeCompleted = !s.completed;
+                                                    return {
+                                                      ...s,
+                                                      completed: willBeCompleted,
+                                                      actualReps: willBeCompleted && s.actualReps == null ? targetRepsFallback : s.actualReps,
+                                                      loadKg: willBeCompleted && s.loadKg == null && prevLoad != null ? prevLoad : s.loadKg,
+                                                    };
+                                                  }
+                                                  return s;
+                                                });
+                                                updateSets(updated);
+                                              }}
+                                            >
+                                              <Check size={14} />
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                  </tbody>
+                                </table>
                               </div>
+
+                              <div className="training-limiters-section">
+                                <div className="training-limiters-header">
+                                  <span className="training-limiters-title">
+                                    {tr(language, "Limiting factor (optional):", "Factor limitante (opcional):")}
+                                  </span>
+                                </div>
+                                <div className="training-limiter-chips" role="group" aria-label={tr(language, "Fatigue taxonomy chips", "Chips de taxonomía de fatiga")}>
+                                  {LIMITER_OPTIONS.map((opt) => {
+                                    const isSelected = sets.some((s) => s.limiterTag === opt.value);
+                                    return (
+                                      <button
+                                        key={opt.value}
+                                        type="button"
+                                        className={`training-limiter-chip ${isSelected ? "is-selected" : ""}`}
+                                        onClick={() => {
+                                          const targetSetIndex = sets.findIndex(
+                                            (s) => s.completed && s.targetReps != null && s.actualReps != null && s.actualReps < s.targetReps
+                                          );
+                                          const completedIndex = sets.map((s) => s.completed).lastIndexOf(true);
+                                          const indexToTag = targetSetIndex >= 0
+                                            ? targetSetIndex
+                                            : (completedIndex >= 0 ? completedIndex : sets.length - 1);
+
+                                          const updated = sets.map((s, idx) => {
+                                            if (idx === indexToTag) {
+                                              return {
+                                                ...s,
+                                                limiterTag: s.limiterTag === opt.value ? undefined : opt.value,
+                                              };
+                                            }
+                                            return s;
+                                          });
+                                          updateSets(updated);
+                                        }}
+                                      >
+                                        <span className="limiter-icon">{opt.icon}</span>
+                                        <span className="limiter-label">{language === "es" ? opt.labelEs : opt.labelEn}</span>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+
+                              <label className="training-input-field is-full-width">
+                                <span>{tr(language, "Session note", "Nota de la sesión")}</span>
+                                <input
+                                  aria-label={`${tr(language, "Load note for", "Nota de carga para")} ${exerciseName}`}
+                                  value={item.loadNote ?? ""}
+                                  placeholder={tr(language, "e.g. effort, tempo or equipment used", "ej. esfuerzo, tempo o equipo usado")}
+                                  onChange={(event) => onUpdateItem?.(itemId, { loadNote: event.target.value })}
+                                />
+                              </label>
 
                               <div className="training-effort-container">
                                 <span className="training-effort-label">{tr(language, "Effort / RPE:", "Nivel de esfuerzo:")}</span>
@@ -722,12 +919,35 @@ export function WorkoutPanel({
                                   <div className="training-card-history">
                                     <span>{tr(language, "Last logged load", "Última carga registrada")}:</span>
                                     <strong>
-                                      {[
-                                        item.loadHistory.at(-1)?.loadKg != null ? `${item.loadHistory.at(-1)?.loadKg} kg` : null,
-                                        item.loadHistory.at(-1)?.repsCompleted != null ? `${item.loadHistory.at(-1)?.repsCompleted} reps` : null,
-                                        item.loadHistory.at(-1)?.effort ?? null,
-                                        item.loadHistory.at(-1)?.setPlan,
-                                      ].filter(Boolean).join(" · ")}
+                                      {(() => {
+                                        const lastEntry = item.loadHistory.at(-1);
+                                        if (!lastEntry) return null;
+                                        if (lastEntry.setsDetail && lastEntry.setsDetail.length > 0) {
+                                          const completedSets = lastEntry.setsDetail.filter(
+                                            (s) => s.completed || (s.actualReps != null && s.actualReps > 0)
+                                          );
+                                          const activeSets = completedSets.length > 0 ? completedSets : lastEntry.setsDetail;
+                                          const repsList = activeSets
+                                            .map((s) => s.actualReps)
+                                            .filter((r): r is number => r != null);
+                                          const repsDisplay = repsList.length > 0
+                                            ? `${repsList.join("/")} reps`
+                                            : (lastEntry.repsCompleted != null ? `${lastEntry.repsCompleted} reps` : null);
+
+                                          return [
+                                            lastEntry.loadKg != null ? `${lastEntry.loadKg} kg máx` : null,
+                                            repsDisplay,
+                                            lastEntry.effort ?? null,
+                                            lastEntry.loadNote ?? null,
+                                          ].filter(Boolean).join(" · ");
+                                        }
+                                        return [
+                                          lastEntry.loadKg != null ? `${lastEntry.loadKg} kg` : null,
+                                          lastEntry.repsCompleted != null ? `${lastEntry.repsCompleted} reps` : null,
+                                          lastEntry.effort ?? null,
+                                          lastEntry.setPlan,
+                                        ].filter(Boolean).join(" · ");
+                                      })()}
                                     </strong>
                                   </div>
                                 ) : null}

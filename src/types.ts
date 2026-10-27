@@ -46,6 +46,7 @@ export interface WorkoutItem {
   loadHistory?: WorkoutLoadEntry[];
   effort?: string;
   repsCompleted?: number | string | null;
+  currentSetsDetail?: WorkoutSetDetail[];
 }
 
 export type WorkoutPrescriptionMode = "standard" | "special";
@@ -124,6 +125,23 @@ export type Weekday =
   | "saturday"
   | "sunday";
 
+export type WorkoutLimiterTag =
+  | "muscular-failure"
+  | "cardiovascular"
+  | "joint-discomfort"
+  | "excessive-load"
+  | "time-constraint";
+
+export interface WorkoutSetDetail {
+  setNumber: number;
+  targetReps: number;
+  actualReps: number | null;
+  loadKg: number | null;
+  completed: boolean;
+  rpe?: string;
+  limiterTag?: WorkoutLimiterTag;
+}
+
 export interface WorkoutLoadEntry {
   id: string;
   date: string;
@@ -132,6 +150,7 @@ export interface WorkoutLoadEntry {
   setPlan: string;
   effort?: string;
   repsCompleted?: number | string | null;
+  setsDetail?: WorkoutSetDetail[];
 }
 
 export type TrackKind = "goal" | "sport";

@@ -3,6 +3,8 @@ import type {
   LanguageCode,
   TrainingTrack,
   WeeklyCheckIn,
+  WorkoutItem,
+  WorkoutLoadEntry,
 } from "../types";
 import { GENERAL_GOALS, SPORT_FOCUSES } from "../types";
 import { stripSensitiveHealthData } from "./privacy";
@@ -106,6 +108,10 @@ function isWorkoutItem(value: unknown): boolean {
     && (value.notes === undefined || typeof value.notes === "string")
     && (value.effort === undefined || typeof value.effort === "string")
     && (value.repsCompleted === undefined || isNullableNumber(value.repsCompleted) || typeof value.repsCompleted === "string")
+    && (value.currentSetsDetail === undefined || (
+      Array.isArray(value.currentSetsDetail)
+      && value.currentSetsDetail.every((set) => isRecord(set) && typeof set.setNumber === "number")
+    ))
     && (value.loadHistory === undefined || (
       Array.isArray(value.loadHistory)
       && value.loadHistory.every((entry) => (
@@ -117,6 +123,10 @@ function isWorkoutItem(value: unknown): boolean {
         && typeof entry.setPlan === "string"
         && (entry.effort === undefined || typeof entry.effort === "string")
         && (entry.repsCompleted === undefined || isNullableNumber(entry.repsCompleted) || typeof entry.repsCompleted === "string")
+        && (entry.setsDetail === undefined || (
+          Array.isArray(entry.setsDetail)
+          && entry.setsDetail.every((set) => isRecord(set) && typeof set.setNumber === "number")
+        ))
       ))
     ));
 }
@@ -319,6 +329,39 @@ export function outboundSnapshot(snapshot: RepbookCloudSnapshot, policy: Sensiti
   return policy.consentGranted ? snapshot : withholdSensitiveData(snapshot);
 }
 
+function mergeTrackWorkout(remoteWorkout: WorkoutItem[], localWorkout: WorkoutItem[]): WorkoutItem[] {
+  const localById = new Map(localWorkout.map((item) => [item.id ?? item.exerciseId, item]));
+  const localByExDay = new Map(localWorkout.map((item) => [`${item.exerciseId}-${item.day ?? "monday"}`, item]));
+
+  return remoteWorkout.map((remoteItem) => {
+    const local = localById.get(remoteItem.id ?? remoteItem.exerciseId)
+      ?? localByExDay.get(`${remoteItem.exerciseId}-${remoteItem.day ?? "monday"}`);
+    if (!local) return remoteItem;
+
+    const localHistory = local.loadHistory ?? [];
+    const remoteHistory = remoteItem.loadHistory ?? [];
+
+    const seenIds = new Set(remoteHistory.map((h: WorkoutLoadEntry) => h.id));
+    const mergedHistory = [...remoteHistory];
+    for (const h of localHistory) {
+      if (!seenIds.has(h.id)) {
+        seenIds.add(h.id);
+        mergedHistory.push(h);
+      }
+    }
+
+    return {
+      ...remoteItem,
+      loadHistory: mergedHistory.length ? mergedHistory : undefined,
+      loadKg: remoteItem.loadKg ?? local.loadKg,
+      repsCompleted: remoteItem.repsCompleted ?? local.repsCompleted,
+      loadNote: remoteItem.loadNote ?? local.loadNote,
+      effort: remoteItem.effort ?? local.effort,
+      currentSetsDetail: remoteItem.currentSetsDetail ?? local.currentSetsDetail,
+    };
+  });
+}
+
 export function reconcileTracks(localTracks: TrainingTrack[], remoteTracks: TrainingTrack[]): TrainingTrack[] {
   if (!remoteTracks || !remoteTracks.length) return localTracks ?? [];
   if (!localTracks || !localTracks.length) return remoteTracks;
@@ -334,21 +377,18 @@ export function reconcileTracks(localTracks: TrainingTrack[], remoteTracks: Trai
       const remoteIds = new Set((remoteTrack.workout ?? []).map((item) => item.id ?? item.exerciseId));
       const unsyncedLocalItems = (localTrack.workout ?? []).filter((item) => !remoteIds.has(item.id ?? item.exerciseId));
 
-      if (unsyncedLocalItems.length === 0 && (!localTrack.trainingDays || localTrack.trainingDays.every((d) => remoteTrack.trainingDays?.includes(d)))) {
-        reconciled.push(remoteTrack);
-      } else {
-        const combinedWorkout = unsyncedLocalItems.length > 0
-          ? [...(remoteTrack.workout ?? []), ...unsyncedLocalItems]
-          : (remoteTrack.workout ?? []);
-        const usedDays = combinedWorkout.map((w) => w.day ?? "monday");
-        const trainingDays = Array.from(new Set([...(remoteTrack.trainingDays ?? localTrack.trainingDays ?? []), ...usedDays]));
-        reconciled.push({
-          ...remoteTrack,
-          trainingDays,
-          workout: combinedWorkout,
-          dayLabels: { ...(remoteTrack.dayLabels ?? {}), ...(localTrack.dayLabels ?? {}) },
-        });
-      }
+      const mergedWorkout = mergeTrackWorkout(remoteTrack.workout ?? [], localTrack.workout ?? []);
+      const combinedWorkout = unsyncedLocalItems.length > 0
+        ? [...mergedWorkout, ...unsyncedLocalItems]
+        : mergedWorkout;
+      const usedDays = combinedWorkout.map((w) => w.day ?? "monday");
+      const trainingDays = Array.from(new Set([...(remoteTrack.trainingDays ?? localTrack.trainingDays ?? []), ...usedDays]));
+      reconciled.push({
+        ...remoteTrack,
+        trainingDays,
+        workout: combinedWorkout,
+        dayLabels: { ...(remoteTrack.dayLabels ?? {}), ...(localTrack.dayLabels ?? {}) },
+      });
       remoteTrackMap.delete(localTrack.id);
     }
   }

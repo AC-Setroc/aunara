@@ -4,6 +4,27 @@ Fecha de actualización: 2026-10-26.
 
 ## Verificado
 
+### 2026-10-26 — SDD-007 Enmienda 1: Registro estructurado serie a serie («Tap-to-Log») y taxonomía de fatiga para analítica BI
+
+- **Tabla de series Tap-to-Log interactiva en modo entrenamiento (`mode === "training"`)**:
+  - Tabla de series con columnas: Serie (`S1`, `S2`, ...), Objetivo (`reps`/`tiempo`/`fallo`), Carga/Lastre (kg), Repeticiones realizadas, y botón de confirmación rápida en un toque `[✓]`.
+  - Confirmación inmediata con 1 toque: al presionar `[✓]`, se auto-completan las repeticiones objetivo si estaban vacías, y se hereda la carga de la serie anterior si no fue modificada.
+  - Stepper de gestión de series (`+ Serie`, `- Serie`) para ajustar dinámicamente de 3 a 2, 4 o más series sin alterar la lógica de negocio ni romper la prescripción base.
+- **Taxonomía cerrada de fatiga para analítica BI (`limiter_tag`)**:
+  - Chips interactivos con los 5 factores cerrados de fatiga: `muscular-failure` (💪 Fallo muscular), `cardiovascular` (🫁 Falta de aire), `joint-discomfort` (⚠️ Molestia articular), `excessive-load` (🏋️ Carga alta), y `time-constraint` (⏱️ Falta de tiempo).
+  - Asignación inteligente: al seleccionar un chip, se vincula automáticamente a la serie que presentó desviación o fallo técnico, mostrando una insignia clara (`set-limiter-badge`).
+  - Permite al futuro motor BI correlacionar caídas de rendimiento con causas biológicas/mecánicas objetivas sin depender de procesamiento NLP frágil de texto libre.
+- **Compatibilidad total y retrocompatibilidad**:
+  - `WorkoutLoadEntry` extendido aditivamente con `setsDetail?: WorkoutSetDetail[]`.
+  - `WorkoutItem` extendido aditivamente con `currentSetsDetail?: WorkoutSetDetail[]`.
+  - Reconciliación de snapshots en la nube (`cloudSnapshot.ts`) con función aditiva `mergeTrackWorkout` que preserva el historial local de cargas.
+  - El resumen de historial de carga formatea `setsDetail` si existe (`50 kg máx · 8, 8, 7 reps · RPE 9`), y mantiene el formato clásico si no contiene detalle por series.
+- **Pruebas y suites de verificación**:
+  - `npm run typecheck`: 0 errores.
+  - `npm test`: 393/393 pruebas pasando en verde (28 suites).
+  - 3 nuevas pruebas unitarias en `src/components/WorkoutPanel.test.tsx` verificando renderizado de tabla, adición/remoción de series, confirmación Tap-to-Log y asignación de taxonomía de fatiga.
+  - `npm run build`: bundle de producción generado con éxito (0 errores).
+
 ### 2026-10-26 — Rediseño de ejecución de entrenamiento, selector de esfuerzo RPE, prescripción al fallo/peso corporal y blindaje de onboarding en la nube
 
 - **Blindaje definitivo contra repetición de propuesta de rutina inicial**:
