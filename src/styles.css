@@ -1505,23 +1505,28 @@ footer a { text-underline-offset: 3px; }
   letter-spacing: 0.04em;
 }
 .training-limiter-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  width: 100%;
 }
 .training-limiter-chip {
-  display: inline-flex;
+  grid-column: span 2;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 11px;
-  border-radius: 999px;
+  justify-content: center;
+  text-align: center;
+  padding: 8px 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--paper);
-  font-size: 0.74rem;
+  font-size: 0.76rem;
+  line-height: 1.25;
   font-weight: 600;
   color: var(--ink);
   cursor: pointer;
   transition: all 0.15s ease;
+  min-height: 38px;
 }
 .training-limiter-chip:hover {
   border-color: var(--blue-600);
@@ -1534,9 +1539,9 @@ footer a { text-underline-offset: 3px; }
   font-weight: 700;
   box-shadow: 0 1px 4px rgba(249, 115, 22, 0.2);
 }
-.training-limiter-chip .limiter-icon {
-  font-size: 0.85rem;
-  line-height: 1;
+.training-limiter-chip:nth-child(4),
+.training-limiter-chip:nth-child(5) {
+  grid-column: span 3;
 }
 .training-inputs-grid {
   display: grid;

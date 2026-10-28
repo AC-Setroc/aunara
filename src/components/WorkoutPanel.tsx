@@ -159,12 +159,12 @@ const EFFORT_OPTIONS = [
   { value: "Fallo técnico", label: "Fallo", descEn: "0 in reserve (failure)", descEs: "Fallo técnico (0 en rec.)" },
 ];
 
-const LIMITER_OPTIONS: { value: WorkoutLimiterTag; labelEs: string; labelEn: string; icon: string }[] = [
-  { value: "muscular-failure", labelEs: "Fallo muscular", labelEn: "Muscular failure", icon: "💪" },
-  { value: "cardiovascular", labelEs: "Falta de aire", labelEn: "Out of breath", icon: "🫁" },
-  { value: "joint-discomfort", labelEs: "Molestia articular", labelEn: "Joint discomfort", icon: "⚠️" },
-  { value: "excessive-load", labelEs: "Carga alta", labelEn: "Heavy load", icon: "🏋️" },
-  { value: "time-constraint", labelEs: "Falta de tiempo", labelEn: "Time constraint", icon: "⏱️" },
+const LIMITER_OPTIONS: { value: WorkoutLimiterTag; labelEs: string; labelEn: string }[] = [
+  { value: "muscular-failure", labelEs: "Fallo muscular", labelEn: "Muscular failure" },
+  { value: "cardiovascular", labelEs: "Falta de aire", labelEn: "Out of breath" },
+  { value: "joint-discomfort", labelEs: "Molestia articular", labelEn: "Joint discomfort" },
+  { value: "excessive-load", labelEs: "Carga alta", labelEn: "Heavy load" },
+  { value: "time-constraint", labelEs: "Falta de tiempo", labelEn: "Time constraint" },
 ];
 
 function getSetsForExercise(
@@ -794,7 +794,7 @@ export function WorkoutPanel({
                                             />
                                             {limiterObj && (
                                               <span className="set-limiter-badge" title={language === "es" ? limiterObj.labelEs : limiterObj.labelEn}>
-                                                {limiterObj.icon} {language === "es" ? limiterObj.labelEs : limiterObj.labelEn}
+                                                {language === "es" ? limiterObj.labelEs : limiterObj.labelEn}
                                               </span>
                                             )}
                                           </td>
@@ -866,7 +866,6 @@ export function WorkoutPanel({
                                           updateSets(updated);
                                         }}
                                       >
-                                        <span className="limiter-icon">{opt.icon}</span>
                                         <span className="limiter-label">{language === "es" ? opt.labelEs : opt.labelEn}</span>
                                       </button>
                                     );
