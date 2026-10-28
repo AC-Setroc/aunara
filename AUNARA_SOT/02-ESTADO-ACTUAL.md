@@ -17,7 +17,8 @@ Fecha de actualización: 2026-10-27.
 - **Catálogo bilingüe sincronizado**:
   - `name-overrides.es.json` y `en-es.json` actualizados con nombres curados canónicos:
     - `step-up with knee raise` → «Paso en el step con rodilla arriba».
-    - `lever seated hip adduction` → «Máquina de aductor sentado (aducción de cadera)».
+    - `lever seated hip adduction` → «Máquina de aductor sentado».
+  - Depuración integral de nombres en español (100% lectura limpia sin paréntesis ni términos en inglés): limpieza sistemática de los 91 ejercicios del catálogo que contenían términos en inglés entre paréntesis (ej. `(sit-up 3/4)`, `(pec deck)`, `(reverse fly)`, etc.) o nombres invertidos, dejando denominaciones pulidas y puras en español (`Abdominal a tres cuartos`, `Aperturas sentado en máquina`, `Máquina de aductor sentado`, etc.).
   - 1335/1335 ejercicios del directorio validados con `check:exercise-directory`.
 - **Script SQL de base de datos regenerado**:
   - `scripts/generate-alejo-routine-sql.mjs` y `supabase/montar-rutina-principal-alejo.sql` regenerados con los IDs correctos.

@@ -21,7 +21,7 @@
       "canonicalKey": "3/4 sit-up",
       "name": {
         "en": "3/4 Sit-up",
-        "es": "Abdominal a tres cuartos (sit-up 3/4)"
+        "es": "Abdominal a tres cuartos"
       },
       "nameTranslation": {
         "status": "curated",
@@ -76,7 +76,7 @@
           "lower back"
         ],
         "es": [
-          "abdominal a tres cuartos (sit-up 3/4)",
+          "abdominal a tres cuartos",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -1112,7 +1112,7 @@
       "canonicalKey": "assisted chest dip (kneeling)",
       "name": {
         "en": "Assisted Chest Dip (kneeling)",
-        "es": "Fondos de pecho asistidos en máquina (de rodillas)"
+        "es": "Fondos de pecho asistidos de rodillas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -1167,7 +1167,7 @@
           "shoulders"
         ],
         "es": [
-          "fondos de pecho asistidos en máquina (de rodillas)",
+          "fondos de pecho asistidos de rodillas",
           "pecho",
           "máquina de palancas",
           "pectorales",
@@ -2685,7 +2685,7 @@
       "canonicalKey": "assisted standing triceps extension (with towel)",
       "name": {
         "en": "Assisted Standing Triceps Extension (with Towel)",
-        "es": "Extensión asistida de tríceps de pie (con toalla)"
+        "es": "Extensión asistida de tríceps con toalla"
       },
       "nameTranslation": {
         "status": "curated",
@@ -2734,7 +2734,7 @@
           "shoulders"
         ],
         "es": [
-          "extensión asistida de tríceps de pie (con toalla)",
+          "extensión asistida de tríceps con toalla",
           "brazos",
           "asistido",
           "tríceps",
@@ -2763,7 +2763,7 @@
       "canonicalKey": "assisted triceps dip (kneeling)",
       "name": {
         "en": "Assisted Triceps Dip (kneeling)",
-        "es": "Fondos de tríceps asistidos en máquina (de rodillas)"
+        "es": "Fondos de tríceps asistidos de rodillas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -2818,7 +2818,7 @@
           "shoulders"
         ],
         "es": [
-          "fondos de tríceps asistidos en máquina (de rodillas)",
+          "fondos de tríceps asistidos de rodillas",
           "brazos",
           "máquina de palancas",
           "tríceps",
@@ -2848,7 +2848,7 @@
       "canonicalKey": "assisted wide-grip chest dip (kneeling)",
       "name": {
         "en": "Assisted Wide-grip Chest Dip (kneeling)",
-        "es": "Fondos de pecho asistidos con agarre ancho (de rodillas)"
+        "es": "Fondos de pecho asistidos con agarre ancho de rodillas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -2903,7 +2903,7 @@
           "shoulders"
         ],
         "es": [
-          "fondos de pecho asistidos con agarre ancho (de rodillas)",
+          "fondos de pecho asistidos con agarre ancho de rodillas",
           "pecho",
           "máquina de palancas",
           "pectorales",
@@ -7591,7 +7591,7 @@
       "canonicalKey": "band two legs calf raise - (band under both legs) v. 2",
       "name": {
         "en": "Band Two Legs Calf Raise - (band Under Both Legs) V. 2",
-        "es": "Elevación de talones con banda bajo ambos pies (v2)"
+        "es": "Elevación de talones con banda bajo ambos pies v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -7646,7 +7646,7 @@
           "feet"
         ],
         "es": [
-          "elevación de talones con banda bajo ambos pies (v2)",
+          "elevación de talones con banda bajo ambos pies v. 2",
           "piernas",
           "banda",
           "pantorrillas",
@@ -10366,7 +10366,7 @@
       "canonicalKey": "barbell full squat (side pov)",
       "name": {
         "en": "Barbell Full Squat (side Pov)",
-        "es": "Sentadilla profunda con barra (vista lateral)"
+        "es": "Sentadilla profunda con barra"
       },
       "nameTranslation": {
         "status": "curated",
@@ -10433,7 +10433,7 @@
           "core"
         ],
         "es": [
-          "sentadilla profunda con barra (vista lateral)",
+          "sentadilla profunda con barra",
           "muslos",
           "barra",
           "glúteos",
@@ -13586,7 +13586,7 @@
       "canonicalKey": "barbell pin presses",
       "name": {
         "en": "Barbell Pin Presses",
-        "es": "Press desde soportes con barra (Pin Press)"
+        "es": "Press desde soportes con barra"
       },
       "nameTranslation": {
         "status": "curated",
@@ -13635,7 +13635,7 @@
           "shoulders"
         ],
         "es": [
-          "press desde soportes con barra (pin press)",
+          "press desde soportes con barra",
           "brazos",
           "barra",
           "tríceps",
@@ -14436,7 +14436,7 @@
       "canonicalKey": "barbell rear lunge v. 2",
       "name": {
         "en": "Barbell Rear Lunge V. 2",
-        "es": "Zancada hacia atrás con barra (v2)"
+        "es": "Zancada hacia atrás con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -14497,7 +14497,7 @@
           "calves"
         ],
         "es": [
-          "zancada hacia atrás con barra (v2)",
+          "zancada hacia atrás con barra v. 2",
           "muslos",
           "barra",
           "glúteos",
@@ -14528,7 +14528,7 @@
       "canonicalKey": "barbell revers wrist curl v. 2",
       "name": {
         "en": "Barbell Revers Wrist Curl V. 2",
-        "es": "Curl de muñeca invertido con barra (v2)"
+        "es": "Curl de muñeca invertido con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -14583,7 +14583,7 @@
           "brachialis"
         ],
         "es": [
-          "curl de muñeca invertido con barra (v2)",
+          "curl de muñeca invertido con barra v. 2",
           "antebrazos",
           "barra",
           "bíceps",
@@ -16503,7 +16503,7 @@
       "canonicalKey": "barbell side bent v. 2",
       "name": {
         "en": "Barbell Side Bent V. 2",
-        "es": "Flexión lateral de tronco con barra (v2)"
+        "es": "Flexión lateral de tronco con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -16558,7 +16558,7 @@
           "lower back"
         ],
         "es": [
-          "flexión lateral de tronco con barra (v2)",
+          "flexión lateral de tronco con barra v. 2",
           "zona media",
           "barra",
           "abdominales",
@@ -16680,7 +16680,7 @@
       "canonicalKey": "barbell side split squat v. 2",
       "name": {
         "en": "Barbell Side Split Squat V. 2",
-        "es": "Sentadilla lateral split con barra (v2)"
+        "es": "Sentadilla lateral split con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -16741,7 +16741,7 @@
           "calves"
         ],
         "es": [
-          "sentadilla lateral split con barra (v2)",
+          "sentadilla lateral split con barra v. 2",
           "muslos",
           "barra",
           "cuádriceps",
@@ -17289,7 +17289,7 @@
       "canonicalKey": "barbell split squat v. 2",
       "name": {
         "en": "Barbell Split Squat V. 2",
-        "es": "Sentadilla split con barra (v2)"
+        "es": "Sentadilla split con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -17350,7 +17350,7 @@
           "calves"
         ],
         "es": [
-          "sentadilla split con barra (v2)",
+          "sentadilla split con barra v. 2",
           "muslos",
           "barra",
           "cuádriceps",
@@ -19427,7 +19427,7 @@
       "canonicalKey": "barbell upright row v. 2",
       "name": {
         "en": "Barbell Upright Row V. 2",
-        "es": "Remo al mentón con barra (v2)"
+        "es": "Remo al mentón con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -19482,7 +19482,7 @@
           "biceps"
         ],
         "es": [
-          "remo al mentón con barra (v2)",
+          "remo al mentón con barra v. 2",
           "hombros",
           "barra",
           "deltoides",
@@ -19512,7 +19512,7 @@
       "canonicalKey": "barbell upright row v. 3",
       "name": {
         "en": "Barbell Upright Row V. 3",
-        "es": "Remo al mentón con barra (v3)"
+        "es": "Remo al mentón con barra v. 3"
       },
       "nameTranslation": {
         "status": "curated",
@@ -19567,7 +19567,7 @@
           "biceps"
         ],
         "es": [
-          "remo al mentón con barra (v3)",
+          "remo al mentón con barra v. 3",
           "hombros",
           "barra",
           "deltoides",
@@ -20028,7 +20028,7 @@
       "canonicalKey": "barbell wrist curl v. 2",
       "name": {
         "en": "Barbell Wrist Curl V. 2",
-        "es": "Curl de muñeca con barra (v2)"
+        "es": "Curl de muñeca con barra v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -20083,7 +20083,7 @@
           "brachialis"
         ],
         "es": [
-          "curl de muñeca con barra (v2)",
+          "curl de muñeca con barra v. 2",
           "antebrazos",
           "barra",
           "bíceps",
@@ -22414,7 +22414,7 @@
       "canonicalKey": "bottoms-up",
       "name": {
         "en": "Bottoms-up",
-        "es": "Elevación de pelvis tumbado (Bottoms-up)"
+        "es": "Elevación de pelvis tumbado"
       },
       "nameTranslation": {
         "status": "curated",
@@ -22469,7 +22469,7 @@
           "hip flexors"
         ],
         "es": [
-          "elevación de pelvis tumbado (bottoms-up)",
+          "elevación de pelvis tumbado",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -22803,7 +22803,7 @@
       "canonicalKey": "butt-ups",
       "name": {
         "en": "Butt-ups",
-        "es": "Elevación de cadera en plancha (Butt-ups)"
+        "es": "Elevación de cadera en plancha"
       },
       "nameTranslation": {
         "status": "curated",
@@ -22858,7 +22858,7 @@
           "lower back"
         ],
         "es": [
-          "elevación de cadera en plancha (butt-ups)",
+          "elevación de cadera en plancha",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -26905,7 +26905,7 @@
       "canonicalKey": "cable lying triceps extension v. 2",
       "name": {
         "en": "Cable Lying Triceps Extension V. 2",
-        "es": "Extensión de tríceps tumbado en polea (v2)"
+        "es": "Extensión de tríceps tumbado en polea v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -26954,7 +26954,7 @@
           "shoulders"
         ],
         "es": [
-          "extensión de tríceps tumbado en polea (v2)",
+          "extensión de tríceps tumbado en polea v. 2",
           "brazos",
           "polea",
           "tríceps",
@@ -57141,7 +57141,7 @@
       "canonicalKey": "dumbbell seated one leg calf raise - hammer grip",
       "name": {
         "en": "Dumbbell Seated One Leg Calf Raise - Hammer Grip",
-        "es": "Elevación de pantorrilla a una pierna sentado con mancuerna (agarre neutro)"
+        "es": "Elevación de pantorrilla a una pierna con agarre neutro"
       },
       "nameTranslation": {
         "status": "curated",
@@ -57196,7 +57196,7 @@
           "glutes"
         ],
         "es": [
-          "elevación de pantorrilla a una pierna sentado con mancuerna (agarre neutro)",
+          "elevación de pantorrilla a una pierna con agarre neutro",
           "piernas",
           "mancuerna",
           "pantorrillas",
@@ -57226,7 +57226,7 @@
       "canonicalKey": "dumbbell seated one leg calf raise - palm up",
       "name": {
         "en": "Dumbbell Seated One Leg Calf Raise - Palm Up",
-        "es": "Elevación de pantorrilla a una pierna sentado con mancuerna (agarre supino)"
+        "es": "Elevación de pantorrilla a una pierna con agarre supino"
       },
       "nameTranslation": {
         "status": "curated",
@@ -57281,7 +57281,7 @@
           "glutes"
         ],
         "es": [
-          "elevación de pantorrilla a una pierna sentado con mancuerna (agarre supino)",
+          "elevación de pantorrilla a una pierna con agarre supino",
           "piernas",
           "mancuerna",
           "pantorrillas",
@@ -57714,7 +57714,7 @@
       "canonicalKey": "dumbbell seated shoulder press (parallel grip)",
       "name": {
         "en": "Dumbbell Seated Shoulder Press (parallel Grip)",
-        "es": "Press de hombros sentado con mancuernas (agarre neutro)"
+        "es": "Press de hombros sentado con agarre neutro"
       },
       "nameTranslation": {
         "status": "curated",
@@ -57769,7 +57769,7 @@
           "upper back"
         ],
         "es": [
-          "press de hombros sentado con mancuernas (agarre neutro)",
+          "press de hombros sentado con agarre neutro",
           "hombros",
           "mancuerna",
           "deltoides",
@@ -61965,7 +61965,7 @@
       "canonicalKey": "dumbbell upright row (back pov)",
       "name": {
         "en": "Dumbbell Upright Row (back Pov)",
-        "es": "Remo al mentón con mancuernas (vista posterior)"
+        "es": "Remo al mentón con mancuernas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -62020,7 +62020,7 @@
           "biceps"
         ],
         "es": [
-          "remo al mentón con mancuernas (vista posterior)",
+          "remo al mentón con mancuernas",
           "hombros",
           "mancuerna",
           "deltoides",
@@ -63552,7 +63552,7 @@
       "canonicalKey": "exercise ball hug",
       "name": {
         "en": "Exercise Ball Hug",
-        "es": "Abrazo a fitball (estiramiento de espalda)"
+        "es": "Estiramiento de espalda abrazando balón suizo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -63607,7 +63607,7 @@
           "chest"
         ],
         "es": [
-          "abrazo a fitball (estiramiento de espalda)",
+          "estiramiento de espalda abrazando balón suizo",
           "espalda",
           "fitball",
           "columna",
@@ -63722,7 +63722,7 @@
       "canonicalKey": "exercise ball lower back stretch (pyramid)",
       "name": {
         "en": "Exercise Ball Lower Back Stretch (pyramid)",
-        "es": "Estiramiento lumbar en fitball (pirámide)"
+        "es": "Estiramiento lumbar en balón suizo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -63777,7 +63777,7 @@
           "hamstrings"
         ],
         "es": [
-          "estiramiento lumbar en fitball (pirámide)",
+          "estiramiento lumbar en balón suizo",
           "espalda",
           "fitball",
           "dorsales",
@@ -66839,7 +66839,7 @@
       "canonicalKey": "flexion leg sit up (bent knee)",
       "name": {
         "en": "Flexion Leg Sit Up (bent Knee)",
-        "es": "Sit-up con flexión de piernas (rodillas dobladas)"
+        "es": "Abdominal con flexión de piernas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -66888,7 +66888,7 @@
           "hip flexors"
         ],
         "es": [
-          "sit-up con flexión de piernas (rodillas dobladas)",
+          "abdominal con flexión de piernas",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -67087,7 +67087,7 @@
       "canonicalKey": "flutter kicks",
       "name": {
         "en": "Flutter Kicks",
-        "es": "Aleteo de piernas (flutter kicks)"
+        "es": "Aleteo de piernas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -67142,7 +67142,7 @@
           "lower abs"
         ],
         "es": [
-          "aleteo de piernas (flutter kicks)",
+          "aleteo de piernas",
           "muslos",
           "peso corporal",
           "glúteos",
@@ -67526,7 +67526,7 @@
       "canonicalKey": "frog planche",
       "name": {
         "en": "Frog Planche",
-        "es": "Plancha de rana (frog planche)"
+        "es": "Plancha de rana"
       },
       "nameTranslation": {
         "status": "curated",
@@ -67587,7 +67587,7 @@
           "triceps"
         ],
         "es": [
-          "plancha de rana (frog planche)",
+          "plancha de rana",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -67880,7 +67880,7 @@
       "canonicalKey": "full maltese",
       "name": {
         "en": "Full Maltese",
-        "es": "Maltesa completa (maltese)"
+        "es": "Maltesa completa"
       },
       "nameTranslation": {
         "status": "curated",
@@ -67935,7 +67935,7 @@
           "chest"
         ],
         "es": [
-          "maltesa completa (maltese)",
+          "maltesa completa",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -68411,7 +68411,7 @@
       "canonicalKey": "glute-ham raise",
       "name": {
         "en": "Glute-ham Raise",
-        "es": "Elevación glúteo-femoral (glute-ham raise)"
+        "es": "Elevación glúteo-femoral"
       },
       "nameTranslation": {
         "status": "curated",
@@ -68466,7 +68466,7 @@
           "lower back"
         ],
         "es": [
-          "elevación glúteo-femoral (glute-ham raise)",
+          "elevación glúteo-femoral",
           "muslos",
           "peso corporal",
           "isquiotibiales",
@@ -68928,7 +68928,7 @@
       "canonicalKey": "half sit-up (male)",
       "name": {
         "en": "Half Sit-up (male)",
-        "es": "Medio abdominal (sit-up parcial)"
+        "es": "Medio abdominal"
       },
       "nameTranslation": {
         "status": "curated",
@@ -68977,7 +68977,7 @@
           "hip flexors"
         ],
         "es": [
-          "medio abdominal (sit-up parcial)",
+          "medio abdominal",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -69352,7 +69352,7 @@
       "canonicalKey": "handstand",
       "name": {
         "en": "Handstand",
-        "es": "Pino estático (handstand)"
+        "es": "Pino estático"
       },
       "nameTranslation": {
         "status": "curated",
@@ -69407,7 +69407,7 @@
           "core"
         ],
         "es": [
-          "pino estático (handstand)",
+          "pino estático",
           "brazos",
           "peso corporal",
           "tríceps",
@@ -69437,7 +69437,7 @@
       "canonicalKey": "handstand push-up",
       "name": {
         "en": "Handstand Push-up",
-        "es": "Flexiones de pino (handstand push-up)"
+        "es": "Flexiones en pino"
       },
       "nameTranslation": {
         "status": "curated",
@@ -69498,7 +69498,7 @@
           "core"
         ],
         "es": [
-          "flexiones de pino (handstand push-up)",
+          "flexiones en pino",
           "brazos",
           "peso corporal",
           "tríceps",
@@ -70613,7 +70613,7 @@
       "canonicalKey": "impossible dips",
       "name": {
         "en": "Impossible Dips",
-        "es": "Fondos imposibles (impossible dips)"
+        "es": "Fondos imposibles"
       },
       "nameTranslation": {
         "status": "curated",
@@ -70668,7 +70668,7 @@
           "shoulders"
         ],
         "es": [
-          "fondos imposibles (impossible dips)",
+          "fondos imposibles",
           "brazos",
           "peso corporal",
           "tríceps",
@@ -70698,7 +70698,7 @@
       "canonicalKey": "inchworm",
       "name": {
         "en": "Inchworm",
-        "es": "Caminata del gusano (inchworm)"
+        "es": "Caminata del gusano"
       },
       "nameTranslation": {
         "status": "curated",
@@ -70753,7 +70753,7 @@
           "hamstrings"
         ],
         "es": [
-          "caminata del gusano (inchworm)",
+          "caminata del gusano",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -70783,7 +70783,7 @@
       "canonicalKey": "inchworm v. 2",
       "name": {
         "en": "Inchworm V. 2",
-        "es": "Caminata del gusano (inchworm) v. 2"
+        "es": "Caminata del gusano v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -70838,7 +70838,7 @@
           "hamstrings"
         ],
         "es": [
-          "caminata del gusano (inchworm) v. 2",
+          "caminata del gusano v. 2",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -72681,7 +72681,7 @@
       "canonicalKey": "jackknife sit-up",
       "name": {
         "en": "Jackknife Sit-up",
-        "es": "Navaja abdominal (jackknife)"
+        "es": "Navaja abdominal"
       },
       "nameTranslation": {
         "status": "curated",
@@ -72730,7 +72730,7 @@
           "hip flexors"
         ],
         "es": [
-          "navaja abdominal (jackknife)",
+          "navaja abdominal",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -73820,7 +73820,7 @@
       "canonicalKey": "kettlebell bottoms up clean from the hang position",
       "name": {
         "en": "Kettlebell Bottoms Up Clean From The Hang Position",
-        "es": "Cargada invertida (bottoms-up) desde posición colgante con pesa rusa"
+        "es": "Cargada invertida desde posición colgante con pesa rusa"
       },
       "nameTranslation": {
         "status": "curated",
@@ -73875,7 +73875,7 @@
           "shoulders"
         ],
         "es": [
-          "cargada invertida (bottoms-up) desde posición colgante con pesa rusa",
+          "cargada invertida desde posición colgante con pesa rusa",
           "brazos",
           "pesa rusa",
           "bíceps",
@@ -74160,7 +74160,7 @@
       "canonicalKey": "kettlebell double snatch",
       "name": {
         "en": "Kettlebell Double Snatch",
-        "es": "Doble arrancada (snatch) con pesas rusas"
+        "es": "Doble arrancada con pesas rusas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -74221,7 +74221,7 @@
           "core"
         ],
         "es": [
-          "doble arrancada (snatch) con pesas rusas",
+          "doble arrancada con pesas rusas",
           "hombros",
           "pesa rusa",
           "deltoides",
@@ -75045,7 +75045,7 @@
       "canonicalKey": "kettlebell one arm jerk",
       "name": {
         "en": "Kettlebell One Arm Jerk",
-        "es": "Envión (jerk) a un brazo con pesa rusa"
+        "es": "Envión a un brazo con pesa rusa"
       },
       "nameTranslation": {
         "status": "curated",
@@ -75100,7 +75100,7 @@
           "core"
         ],
         "es": [
-          "envión (jerk) a un brazo con pesa rusa",
+          "envión a un brazo con pesa rusa",
           "hombros",
           "pesa rusa",
           "deltoides",
@@ -75385,7 +75385,7 @@
       "canonicalKey": "kettlebell one arm snatch",
       "name": {
         "en": "Kettlebell One Arm Snatch",
-        "es": "Arrancada (snatch) a un brazo con pesa rusa"
+        "es": "Arrancada a un brazo con pesa rusa"
       },
       "nameTranslation": {
         "status": "curated",
@@ -75446,7 +75446,7 @@
           "core"
         ],
         "es": [
-          "arrancada (snatch) a un brazo con pesa rusa",
+          "arrancada a un brazo con pesa rusa",
           "hombros",
           "pesa rusa",
           "deltoides",
@@ -76702,7 +76702,7 @@
       "canonicalKey": "kick out sit",
       "name": {
         "en": "Kick Out Sit",
-        "es": "Patada de salida sentado (sit out)"
+        "es": "Patada de salida sentado"
       },
       "nameTranslation": {
         "status": "curated",
@@ -76757,7 +76757,7 @@
           "glutes"
         ],
         "es": [
-          "patada de salida sentado (sit out)",
+          "patada de salida sentado",
           "muslos",
           "peso corporal",
           "isquiotibiales",
@@ -76787,7 +76787,7 @@
       "canonicalKey": "kipping muscle up",
       "name": {
         "en": "Kipping Muscle Up",
-        "es": "Muscle-up con balanceo (kipping)"
+        "es": "Muscle-up con balanceo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -76854,7 +76854,7 @@
           "core"
         ],
         "es": [
-          "muscle-up con balanceo (kipping)",
+          "muscle-up con balanceo",
           "espalda",
           "peso corporal",
           "dorsales",
@@ -77729,7 +77729,7 @@
       "canonicalKey": "lean planche",
       "name": {
         "en": "Lean Planche",
-        "es": "Inclinación en plancha (planche lean)"
+        "es": "Inclinación en plancha"
       },
       "nameTranslation": {
         "status": "curated",
@@ -77790,7 +77790,7 @@
           "triceps"
         ],
         "es": [
-          "inclinación en plancha (planche lean)",
+          "inclinación en plancha",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -77821,7 +77821,7 @@
       "canonicalKey": "left hook. boxing",
       "name": {
         "en": "Left Hook. Boxing",
-        "es": "Gancho de izquierda (boxeo)"
+        "es": "Gancho de izquierda de boxeo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -77882,7 +77882,7 @@
           "forearms"
         ],
         "es": [
-          "gancho de izquierda (boxeo)",
+          "gancho de izquierda de boxeo",
           "hombros",
           "peso corporal",
           "deltoides",
@@ -82347,7 +82347,7 @@
       "canonicalKey": "lever seated fly",
       "name": {
         "en": "Lever Seated Fly",
-        "es": "Aperturas sentado en máquina (pec deck)"
+        "es": "Aperturas sentado en máquina"
       },
       "nameTranslation": {
         "status": "curated",
@@ -82402,7 +82402,7 @@
           "trapezius"
         ],
         "es": [
-          "aperturas sentado en máquina (pec deck)",
+          "aperturas sentado en máquina",
           "pecho",
           "máquina de palancas",
           "pectorales",
@@ -82602,7 +82602,7 @@
       "canonicalKey": "lever seated hip adduction",
       "name": {
         "en": "Lever Seated Hip Adduction",
-        "es": "Máquina de aductor sentado (aducción de cadera)"
+        "es": "Máquina de aductor sentado"
       },
       "nameTranslation": {
         "status": "curated",
@@ -82657,7 +82657,7 @@
           "glutes"
         ],
         "es": [
-          "máquina de aductor sentado (aducción de cadera)",
+          "máquina de aductor sentado",
           "muslos",
           "máquina de palancas",
           "aductores",
@@ -82843,7 +82843,7 @@
       "canonicalKey": "lever seated reverse fly",
       "name": {
         "en": "Lever Seated Reverse Fly",
-        "es": "Pájaros sentado en máquina (reverse fly)"
+        "es": "Pájaros sentado en máquina"
       },
       "nameTranslation": {
         "status": "curated",
@@ -82898,7 +82898,7 @@
           "rhomboids"
         ],
         "es": [
-          "pájaros sentado en máquina (reverse fly)",
+          "pájaros sentado en máquina",
           "hombros",
           "máquina de palancas",
           "deltoides",
@@ -82928,7 +82928,7 @@
       "canonicalKey": "lever seated reverse fly (parallel grip)",
       "name": {
         "en": "Lever Seated Reverse Fly (parallel Grip)",
-        "es": "Pájaros sentado en máquina (agarre neutro)"
+        "es": "Pájaros sentado en máquina con agarre neutro"
       },
       "nameTranslation": {
         "status": "curated",
@@ -82983,7 +82983,7 @@
           "rhomboids"
         ],
         "es": [
-          "pájaros sentado en máquina (agarre neutro)",
+          "pájaros sentado en máquina con agarre neutro",
           "hombros",
           "máquina de palancas",
           "deltoides",
@@ -83275,7 +83275,7 @@
       "canonicalKey": "lever shoulder press v. 2",
       "name": {
         "en": "Lever Shoulder Press V. 2",
-        "es": "Press de hombros en máquina de palanca (v2)"
+        "es": "Press de hombros en máquina de palanca v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -83330,7 +83330,7 @@
           "chest"
         ],
         "es": [
-          "press de hombros en máquina de palanca (v2)",
+          "press de hombros en máquina de palanca v. 2",
           "hombros",
           "máquina de palancas",
           "deltoides",
@@ -83360,7 +83360,7 @@
       "canonicalKey": "lever shoulder press v. 3",
       "name": {
         "en": "Lever Shoulder Press V. 3",
-        "es": "Press de hombros en máquina de palanca (v3)"
+        "es": "Press de hombros en máquina de palanca v. 3"
       },
       "nameTranslation": {
         "status": "curated",
@@ -83415,7 +83415,7 @@
           "chest"
         ],
         "es": [
-          "press de hombros en máquina de palanca (v3)",
+          "press de hombros en máquina de palanca v. 3",
           "hombros",
           "máquina de palancas",
           "deltoides",
@@ -85570,7 +85570,7 @@
       "canonicalKey": "medicine ball overhead slam",
       "name": {
         "en": "Medicine Ball Overhead Slam",
-        "es": "Lanzamiento explosivo al suelo con balón medicinal (slam)"
+        "es": "Lanzamiento explosivo al suelo con balón medicinal"
       },
       "nameTranslation": {
         "status": "curated",
@@ -85625,7 +85625,7 @@
           "core"
         ],
         "es": [
-          "lanzamiento explosivo al suelo con balón medicinal (slam)",
+          "lanzamiento explosivo al suelo con balón medicinal",
           "espalda",
           "balón medicinal",
           "espalda superior",
@@ -86008,7 +86008,7 @@
       "canonicalKey": "monster walk",
       "name": {
         "en": "Monster Walk",
-        "es": "Paso de monstruo (monster walk) con banda"
+        "es": "Paso de monstruo con banda"
       },
       "nameTranslation": {
         "status": "curated",
@@ -86063,7 +86063,7 @@
           "quadriceps"
         ],
         "es": [
-          "paso de monstruo (monster walk) con banda",
+          "paso de monstruo con banda",
           "muslos",
           "peso corporal",
           "glúteos",
@@ -86624,7 +86624,7 @@
       "canonicalKey": "oblique crunch v. 2",
       "name": {
         "en": "Oblique Crunch V. 2",
-        "es": "Crunch oblicuo (v2)"
+        "es": "Crunch oblicuo v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -86673,7 +86673,7 @@
           "obliques"
         ],
         "es": [
-          "crunch oblicuo (v2)",
+          "crunch oblicuo v. 2",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -88671,7 +88671,7 @@
       "canonicalKey": "power clean",
       "name": {
         "en": "Power Clean",
-        "es": "Power clean (cargada de potencia)"
+        "es": "Cargada de potencia"
       },
       "nameTranslation": {
         "status": "curated",
@@ -88732,7 +88732,7 @@
           "calves"
         ],
         "es": [
-          "power clean (cargada de potencia)",
+          "cargada de potencia",
           "muslos",
           "barra",
           "isquiotibiales",
@@ -89988,7 +89988,7 @@
       "canonicalKey": "push-up (wall) v. 2",
       "name": {
         "en": "Push-up (wall) V. 2",
-        "es": "Flexión contra la pared (v2)"
+        "es": "Flexión contra la pared v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -90043,7 +90043,7 @@
           "shoulders"
         ],
         "es": [
-          "flexión contra la pared (v2)",
+          "flexión contra la pared v. 2",
           "pecho",
           "peso corporal",
           "pectorales",
@@ -90773,7 +90773,7 @@
       "canonicalKey": "quick feet v. 2",
       "name": {
         "en": "Quick Feet V. 2",
-        "es": "Pies rápidos de agilidad (v2)"
+        "es": "Pies rápidos de agilidad v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -90828,7 +90828,7 @@
           "hamstrings"
         ],
         "es": [
-          "pies rápidos de agilidad (v2)",
+          "pies rápidos de agilidad v. 2",
           "muslos",
           "peso corporal",
           "cuádriceps",
@@ -91205,7 +91205,7 @@
       "canonicalKey": "reclining big toe pose with rope",
       "name": {
         "en": "Reclining Big Toe Pose With Rope",
-        "es": "Postura reclinada del dedo gordo con cuerda (supta padangusthasana)"
+        "es": "Postura reclinada del dedo gordo con cuerda"
       },
       "nameTranslation": {
         "status": "curated",
@@ -91260,7 +91260,7 @@
           "glutes"
         ],
         "es": [
-          "postura reclinada del dedo gordo con cuerda (supta padangusthasana)",
+          "postura reclinada del dedo gordo con cuerda",
           "muslos",
           "cuerda",
           "isquiotibiales",
@@ -92119,7 +92119,7 @@
       "canonicalKey": "reverse grip pull-up",
       "name": {
         "en": "Reverse Grip Pull-up",
-        "es": "Dominada con agarre supino (chin-up)"
+        "es": "Dominada con agarre supino"
       },
       "nameTranslation": {
         "status": "curated",
@@ -92174,7 +92174,7 @@
           "forearms"
         ],
         "es": [
-          "dominada con agarre supino (chin-up)",
+          "dominada con agarre supino",
           "espalda",
           "peso corporal",
           "dorsales",
@@ -92721,7 +92721,7 @@
       "canonicalKey": "roller back stretch",
       "name": {
         "en": "Roller Back Stretch",
-        "es": "Estiramiento de espalda sobre rodillo (foam roller)"
+        "es": "Estiramiento de espalda sobre rodillo de espuma"
       },
       "nameTranslation": {
         "status": "curated",
@@ -92776,7 +92776,7 @@
           "glutes"
         ],
         "es": [
-          "estiramiento de espalda sobre rodillo (foam roller)",
+          "estiramiento de espalda sobre rodillo de espuma",
           "espalda",
           "rodillo",
           "columna",
@@ -92806,7 +92806,7 @@
       "canonicalKey": "roller body saw",
       "name": {
         "en": "Roller Body Saw",
-        "es": "Sierra corporal sobre rodillo de espuma (body saw)"
+        "es": "Sierra corporal sobre rodillo de espuma"
       },
       "nameTranslation": {
         "status": "curated",
@@ -92867,7 +92867,7 @@
           "core"
         ],
         "es": [
-          "sierra corporal sobre rodillo de espuma (body saw)",
+          "sierra corporal sobre rodillo de espuma",
           "zona media",
           "rodillo",
           "abdominales",
@@ -93761,7 +93761,7 @@
       "canonicalKey": "russian twist",
       "name": {
         "en": "Russian Twist",
-        "es": "Giro ruso (Russian twist)"
+        "es": "Giro ruso"
       },
       "nameTranslation": {
         "status": "curated",
@@ -93810,7 +93810,7 @@
           "obliques"
         ],
         "es": [
-          "giro ruso (russian twist)",
+          "giro ruso",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -94668,7 +94668,7 @@
       "canonicalKey": "seated wide angle pose sequence",
       "name": {
         "en": "Seated Wide Angle Pose Sequence",
-        "es": "Secuencia de ángulo abierto sentado (upavistha konasana)"
+        "es": "Secuencia de ángulo abierto sentado"
       },
       "nameTranslation": {
         "status": "curated",
@@ -94723,7 +94723,7 @@
           "calves"
         ],
         "es": [
-          "secuencia de ángulo abierto sentado (upavistha konasana)",
+          "secuencia de ángulo abierto sentado",
           "muslos",
           "peso corporal",
           "isquiotibiales",
@@ -95532,7 +95532,7 @@
       "canonicalKey": "side bridge v. 2",
       "name": {
         "en": "Side Bridge V. 2",
-        "es": "Puente lateral (v2)"
+        "es": "Puente lateral v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -95587,7 +95587,7 @@
           "glutes"
         ],
         "es": [
-          "puente lateral (v2)",
+          "puente lateral v. 2",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -96820,7 +96820,7 @@
       "canonicalKey": "single leg squat (pistol) male",
       "name": {
         "en": "Single Leg Squat (pistol) Male",
-        "es": "Sentadilla pistola (pistol squat) a una pierna"
+        "es": "Sentadilla pistola a una pierna"
       },
       "nameTranslation": {
         "status": "curated",
@@ -96881,7 +96881,7 @@
           "calves"
         ],
         "es": [
-          "sentadilla pistola (pistol squat) a una pierna",
+          "sentadilla pistola a una pierna",
           "muslos",
           "peso corporal",
           "glúteos",
@@ -97153,7 +97153,7 @@
       "canonicalKey": "skater hops",
       "name": {
         "en": "Skater Hops",
-        "es": "Saltos de patinador (skater hops)"
+        "es": "Saltos de patinador"
       },
       "nameTranslation": {
         "status": "curated",
@@ -97220,7 +97220,7 @@
           "calves"
         ],
         "es": [
-          "saltos de patinador (skater hops)",
+          "saltos de patinador",
           "cardio",
           "peso corporal",
           "sistema cardiovascular",
@@ -97252,7 +97252,7 @@
       "canonicalKey": "ski ergometer",
       "name": {
         "en": "Ski Ergometer",
-        "es": "Esquí en ergómetro (SkiErg)"
+        "es": "Esquí en máquina de polea alta"
       },
       "nameTranslation": {
         "status": "curated",
@@ -97307,7 +97307,7 @@
           "forearms"
         ],
         "es": [
-          "esquí en ergómetro (skierg)",
+          "esquí en máquina de polea alta",
           "brazos",
           "máquina skierg",
           "tríceps",
@@ -97783,7 +97783,7 @@
       "canonicalKey": "sled 45в° leg press (back pov)",
       "name": {
         "en": "Sled 45в° Leg Press (back Pov)",
-        "es": "Prensa de piernas a 45° en trineo (vista posterior)"
+        "es": "Prensa de piernas a 45° en trineo v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -97844,7 +97844,7 @@
           "calves"
         ],
         "es": [
-          "prensa de piernas a 45° en trineo (vista posterior)",
+          "prensa de piernas a 45° en trineo v. 2",
           "muslos",
           "trineo de empuje",
           "glúteos",
@@ -97875,7 +97875,7 @@
       "canonicalKey": "sled 45° leg press (side pov)",
       "name": {
         "en": "Sled 45° Leg Press (side Pov)",
-        "es": "Prensa de piernas a 45° en trineo (vista lateral)"
+        "es": "Prensa de piernas a 45° en trineo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -97936,7 +97936,7 @@
           "calves"
         ],
         "es": [
-          "prensa de piernas a 45° en trineo (vista lateral)",
+          "prensa de piernas a 45° en trineo",
           "muslos",
           "trineo de empuje",
           "glúteos",
@@ -98675,7 +98675,7 @@
       "canonicalKey": "sledge hammer",
       "name": {
         "en": "Sledge Hammer",
-        "es": "Golpes con mazo (sledgehammer slam)"
+        "es": "Golpes con mazo sobre neumático"
       },
       "nameTranslation": {
         "status": "curated",
@@ -98730,7 +98730,7 @@
           "shoulders"
         ],
         "es": [
-          "golpes con mazo (sledgehammer slam)",
+          "golpes con mazo sobre neumático",
           "zona media",
           "martillo",
           "abdominales",
@@ -102873,7 +102873,7 @@
       "canonicalKey": "snatch pull",
       "name": {
         "en": "Snatch Pull",
-        "es": "Tirón de arrancada (snatch pull)"
+        "es": "Tirón de arrancada"
       },
       "nameTranslation": {
         "status": "curated",
@@ -102934,7 +102934,7 @@
           "calves"
         ],
         "es": [
-          "tirón de arrancada (snatch pull)",
+          "tirón de arrancada",
           "muslos",
           "barra",
           "cuádriceps",
@@ -103050,7 +103050,7 @@
       "canonicalKey": "sphinx",
       "name": {
         "en": "Sphinx",
-        "es": "Postura de la esfinge (sphinx pose)"
+        "es": "Postura de la esfinge"
       },
       "nameTranslation": {
         "status": "curated",
@@ -103105,7 +103105,7 @@
           "hamstrings"
         ],
         "es": [
-          "postura de la esfinge (sphinx pose)",
+          "postura de la esfinge",
           "espalda",
           "peso corporal",
           "columna",
@@ -103135,7 +103135,7 @@
       "canonicalKey": "spider crawl push up",
       "name": {
         "en": "Spider Crawl Push Up",
-        "es": "Flexión con paso de araña (spider crawl)"
+        "es": "Flexión con paso de araña"
       },
       "nameTranslation": {
         "status": "curated",
@@ -103196,7 +103196,7 @@
           "shoulders"
         ],
         "es": [
-          "flexión con paso de araña (spider crawl)",
+          "flexión con paso de araña",
           "muslos",
           "peso corporal",
           "glúteos",
@@ -103397,7 +103397,7 @@
       "canonicalKey": "split squats",
       "name": {
         "en": "Split Squats",
-        "es": "Sentadilla dividida (split squat)"
+        "es": "Sentadilla dividida"
       },
       "nameTranslation": {
         "status": "curated",
@@ -103458,7 +103458,7 @@
           "calves"
         ],
         "es": [
-          "sentadilla dividida (split squat)",
+          "sentadilla dividida",
           "muslos",
           "peso corporal",
           "cuádriceps",
@@ -104955,7 +104955,7 @@
       "canonicalKey": "stationary bike run v. 3",
       "name": {
         "en": "Stationary Bike Run V. 3",
-        "es": "Entrenamiento en bicicleta estática (v3)"
+        "es": "Entrenamiento en bicicleta estática v. 3"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105016,7 +105016,7 @@
           "calves"
         ],
         "es": [
-          "entrenamiento en bicicleta estática (v3)",
+          "entrenamiento en bicicleta estática v. 3",
           "cardio",
           "bicicleta estática",
           "sistema cardiovascular",
@@ -105139,7 +105139,7 @@
       "canonicalKey": "straddle maltese",
       "name": {
         "en": "Straddle Maltese",
-        "es": "Maltese en piernas abiertas (gimnasia)"
+        "es": "Maltesa con piernas abiertas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105194,7 +105194,7 @@
           "chest"
         ],
         "es": [
-          "maltese en piernas abiertas (gimnasia)",
+          "maltesa con piernas abiertas",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -105224,7 +105224,7 @@
       "canonicalKey": "straddle planche",
       "name": {
         "en": "Straddle Planche",
-        "es": "Planche con piernas abiertas (straddle planche)"
+        "es": "Plancha con piernas abiertas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105285,7 +105285,7 @@
           "chest"
         ],
         "es": [
-          "planche con piernas abiertas (straddle planche)",
+          "plancha con piernas abiertas",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -105486,7 +105486,7 @@
       "canonicalKey": "suspended abdominal fallout",
       "name": {
         "en": "Suspended Abdominal Fallout",
-        "es": "Fallout abdominal en suspensión (TRX)"
+        "es": "Extensión abdominal en suspensión"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105541,7 +105541,7 @@
           "hip flexors"
         ],
         "es": [
-          "fallout abdominal en suspensión (trx)",
+          "extensión abdominal en suspensión",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -105571,7 +105571,7 @@
       "canonicalKey": "suspended push-up",
       "name": {
         "en": "Suspended Push-up",
-        "es": "Flexión en suspensión (TRX)"
+        "es": "Flexión en suspensión"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105632,7 +105632,7 @@
           "core"
         ],
         "es": [
-          "flexión en suspensión (trx)",
+          "flexión en suspensión",
           "pecho",
           "peso corporal",
           "pectorales",
@@ -105663,7 +105663,7 @@
       "canonicalKey": "suspended reverse crunch",
       "name": {
         "en": "Suspended Reverse Crunch",
-        "es": "Crunch inverso en suspensión (TRX)"
+        "es": "Crunch inverso en suspensión"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105712,7 +105712,7 @@
           "hip flexors"
         ],
         "es": [
-          "crunch inverso en suspensión (trx)",
+          "crunch inverso en suspensión",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -105741,7 +105741,7 @@
       "canonicalKey": "suspended row",
       "name": {
         "en": "Suspended Row",
-        "es": "Remo en suspensión (TRX)"
+        "es": "Remo en suspensión"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105796,7 +105796,7 @@
           "shoulders"
         ],
         "es": [
-          "remo en suspensión (trx)",
+          "remo en suspensión",
           "espalda",
           "peso corporal",
           "espalda superior",
@@ -105826,7 +105826,7 @@
       "canonicalKey": "suspended split squat",
       "name": {
         "en": "Suspended Split Squat",
-        "es": "Sentadilla búlgara en suspensión (TRX)"
+        "es": "Sentadilla búlgara en suspensión"
       },
       "nameTranslation": {
         "status": "curated",
@@ -105887,7 +105887,7 @@
           "calves"
         ],
         "es": [
-          "sentadilla búlgara en suspensión (trx)",
+          "sentadilla búlgara en suspensión",
           "muslos",
           "peso corporal",
           "cuádriceps",
@@ -106272,7 +106272,7 @@
       "canonicalKey": "trap bar deadlift",
       "name": {
         "en": "Trap Bar Deadlift",
-        "es": "Peso muerto con barra hexagonal (trap bar)"
+        "es": "Peso muerto con barra hexagonal"
       },
       "nameTranslation": {
         "status": "curated",
@@ -106333,7 +106333,7 @@
           "lower back"
         ],
         "es": [
-          "peso muerto con barra hexagonal (trap bar)",
+          "peso muerto con barra hexagonal",
           "muslos",
           "barra hexagonal",
           "glúteos",
@@ -107448,7 +107448,7 @@
       "canonicalKey": "upward facing dog",
       "name": {
         "en": "Upward Facing Dog",
-        "es": "Perro hacia arriba (urdhva mukha svanasana)"
+        "es": "Postura del perro hacia arriba"
       },
       "nameTranslation": {
         "status": "curated",
@@ -107503,7 +107503,7 @@
           "chest"
         ],
         "es": [
-          "perro hacia arriba (urdhva mukha svanasana)",
+          "postura del perro hacia arriba",
           "espalda",
           "peso corporal",
           "columna",
@@ -108071,7 +108071,7 @@
       "canonicalKey": "walking on stepmill",
       "name": {
         "en": "Walking On Stepmill",
-        "es": "Caminata en escalera mecánica (stepmill)"
+        "es": "Caminata en escalera mecánica"
       },
       "nameTranslation": {
         "status": "curated",
@@ -108138,7 +108138,7 @@
           "calves"
         ],
         "es": [
-          "caminata en escalera mecánica (stepmill)",
+          "caminata en escalera mecánica",
           "cardio",
           "máquina escaladora",
           "sistema cardiovascular",
@@ -109990,7 +109990,7 @@
       "canonicalKey": "weighted russian twist v. 2",
       "name": {
         "en": "Weighted Russian Twist V. 2",
-        "es": "Giro ruso con peso (v2)"
+        "es": "Giro ruso con peso v. 2"
       },
       "nameTranslation": {
         "status": "curated",
@@ -110045,7 +110045,7 @@
           "lower back"
         ],
         "es": [
-          "giro ruso con peso (v2)",
+          "giro ruso con peso v. 2",
           "zona media",
           "con carga",
           "abdominales",
@@ -111964,7 +111964,7 @@
       "canonicalKey": "wrist rollerer",
       "name": {
         "en": "Wrist Rollerer",
-        "es": "Enrollamiento de muñeca con peso (wrist roller)"
+        "es": "Enrollamiento de muñeca con peso"
       },
       "nameTranslation": {
         "status": "curated",
@@ -112019,7 +112019,7 @@
           "triceps"
         ],
         "es": [
-          "enrollamiento de muñeca con peso (wrist roller)",
+          "enrollamiento de muñeca con peso",
           "antebrazos",
           "con carga",
           "bíceps",
@@ -112136,7 +112136,7 @@
       "canonicalKey": "high knees in place",
       "name": {
         "en": "High Knees In Place",
-        "es": "Skipping en el sitio (rodillas altas)"
+        "es": "Skipping en el sitio con rodillas altas"
       },
       "nameTranslation": {
         "status": "curated",
@@ -112191,7 +112191,7 @@
           "calves"
         ],
         "es": [
-          "skipping en el sitio (rodillas altas)",
+          "skipping en el sitio con rodillas altas",
           "cardio",
           "peso corporal",
           "sistema cardiovascular",
@@ -112414,7 +112414,7 @@
       "canonicalKey": "forearm plank jacks",
       "name": {
         "en": "Forearm Plank Jacks",
-        "es": "Saltos de tijera en plancha baja (en antebrazos)"
+        "es": "Saltos de tijera en plancha sobre antebrazos"
       },
       "nameTranslation": {
         "status": "curated",
@@ -112475,7 +112475,7 @@
           "delts"
         ],
         "es": [
-          "saltos de tijera en plancha baja (en antebrazos)",
+          "saltos de tijera en plancha sobre antebrazos",
           "zona media",
           "peso corporal",
           "abdominales",
@@ -112794,7 +112794,7 @@
       "canonicalKey": "shuttle run with floor touch",
       "name": {
         "en": "Shuttle Run With Floor Touch",
-        "es": "Carrera de agilidad con toque de suelo (Recogiendo moneditas)"
+        "es": "Carrera de agilidad con toque de suelo"
       },
       "nameTranslation": {
         "status": "curated",
@@ -112855,7 +112855,7 @@
           "calves"
         ],
         "es": [
-          "carrera de agilidad con toque de suelo (recogiendo moneditas)",
+          "carrera de agilidad con toque de suelo",
           "cardio",
           "peso corporal",
           "sistema cardiovascular",
@@ -112984,7 +112984,7 @@
       "canonicalKey": "plank jack to in-and-out tuck",
       "name": {
         "en": "Plank Jack To In-and-out Tuck",
-        "es": "Plancha dinámica: Tijera y salto al frente (abre, cierra, adelante y atrás)"
+        "es": "Plancha dinámica: Tijera y salto al frente"
       },
       "nameTranslation": {
         "status": "curated",
@@ -113051,7 +113051,7 @@
           "shoulders"
         ],
         "es": [
-          "plancha dinámica: tijera y salto al frente (abre, cierra, adelante y atrás)",
+          "plancha dinámica: tijera y salto al frente",
           "zona media",
           "peso corporal",
           "abdominales",
