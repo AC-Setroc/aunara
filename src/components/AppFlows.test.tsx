@@ -1562,3 +1562,71 @@ describe("profile access", () => {
     expect(screen.queryByRole("region", { name: "Agregar ejercicios" })).toBeNull();
   });
 });
+
+describe("BI analytics and progress integration", () => {
+  it("allows opening BI Progress from navigation menu and exploring tabs", async () => {
+    localStorage.clear();
+    localStorage.setItem("aunara-app-language", "es");
+    localStorage.setItem(
+      "repbook-training-tracks",
+      JSON.stringify([
+        {
+          id: "track-bi",
+          name: "Ruta de Fuerza Alejo",
+          kind: "goal",
+          focus: "strength",
+          equipment: "any",
+          sessionMinutes: 60,
+          daysPerWeek: 3,
+          workout: [
+            {
+              id: "item-1",
+              exerciseId: "0025",
+              sets: 3,
+              reps: 8,
+              loadHistory: [
+                {
+                  id: "h1",
+                  date: "2026-10-26",
+                  loadKg: 60,
+                  setPlan: "3 × 8",
+                  setsDetail: [
+                    { setNumber: 1, targetReps: 8, actualReps: 8, loadKg: 60, completed: true },
+                    { setNumber: 2, targetReps: 8, actualReps: 8, loadKg: 60, completed: true },
+                    { setNumber: 3, targetReps: 8, actualReps: 8, loadKg: 60, completed: true, limiterTag: "muscular-failure" },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ])
+    );
+
+    render(<App />);
+
+    // Open navigation menu
+    const menuBtn = screen.getByRole("button", { name: /abrir navegación/i });
+    fireEvent.click(menuBtn);
+
+    // Click "Progreso y BI"
+    const biLink = screen.getByRole("button", { name: /progreso y bi/i });
+    fireEvent.click(biLink);
+
+    // Verify ProgressPanel is open
+    expect(screen.getByRole("complementary", { name: /progreso y analítica bi/i })).toBeTruthy();
+    expect(screen.getAllByText(/Ruta de Fuerza Alejo/).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Volumen acumulado/i)).toBeTruthy();
+
+    // Switch to Fatigue Audit tab
+    const fatigueTab = screen.getByRole("tab", { name: /auditoría de fatiga/i });
+    fireEvent.click(fatigueTab);
+    expect(screen.getByText(/Auditoría de Fatiga y Limitantes/i)).toBeTruthy();
+
+    // Close panel
+    const closeBtn = screen.getByRole("button", { name: /cerrar analítica bi/i });
+    fireEvent.click(closeBtn);
+    expect(screen.queryByRole("complementary", { name: /progreso y analítica bi/i })).toBeNull();
+  });
+});
+

@@ -71,7 +71,7 @@ workout.push(
 // 2. Vuelos laterales sentado: 8 reps
 // 3. Burpees completos: 10 reps
 workout.push(
-  makeItem({ exerciseId: "1456", day: "monday", sets: 3, reps: 8, structureId: "mon-block-d", structureType: "circuit", position: 0, size: 3, notes: "Press militar con barra" }),
+  makeItem({ exerciseId: "0290", day: "monday", sets: 3, reps: 8, structureId: "mon-block-d", structureType: "circuit", position: 0, size: 3, notes: "Press de hombros sentado en banco con mancuernas (8 reps)" }),
   makeItem({ exerciseId: "0396", day: "monday", sets: 3, reps: 8, structureId: "mon-block-d", structureType: "circuit", position: 1, size: 3, notes: "Vuelos laterales sentado con mancuernas" }),
   makeItem({ exerciseId: "1160", day: "monday", sets: 3, reps: 10, structureId: "mon-block-d", structureType: "circuit", position: 2, size: 3, notes: "Burpees completos" })
 );
@@ -110,7 +110,7 @@ workout.push(
 // 1. Sentadilla sumo en Hack: 8 reps con buen peso
 // 2. Paso en el step con rodilla arriba (#4010): 30 reps (15 der + 15 izq)
 workout.push(
-  makeItem({ exerciseId: "0755", day: "tuesday", sets: 3, reps: 8, structureId: "tue-block-c", structureType: "biset", position: 0, size: 2, notes: "Sentadilla sumo en Hack con buen peso" }),
+  makeItem({ exerciseId: "4013", day: "tuesday", sets: 3, reps: 8, structureId: "tue-block-c", structureType: "biset", position: 0, size: 2, notes: "Sentadilla sumo en hack en trineo con buen peso (8 reps)" }),
   makeItem({ exerciseId: "4010", day: "tuesday", sets: 3, reps: 30, repetitionCount: "total", structureId: "tue-block-c", structureType: "biset", position: 1, size: 2, notes: "Paso en el step con rodilla arriba (15 der + 15 izq)" })
 );
 
@@ -149,21 +149,21 @@ workout.push(
 );
 
 // Bloque B: 3 series
-// 1. Remo en máquina Hammer: 8 reps con buen peso
+// 1. Remo en máquina Hammer a dos brazos al tiempo: 8 reps
 // 2. Planchas Spiderman (#4006): 20 reps
 // 3. Plancha antebrazos abrir y cerrar piernas (#4005): 20 reps
 workout.push(
-  makeItem({ exerciseId: "0571", day: "wednesday", sets: 3, reps: 8, structureId: "wed-block-b", structureType: "circuit", position: 0, size: 3, notes: "Remo en máquina Hammer con buen peso" }),
+  makeItem({ exerciseId: "0588", day: "wednesday", sets: 3, reps: 8, structureId: "wed-block-b", structureType: "circuit", position: 0, size: 3, notes: "Remo en máquina Hammer a dos brazos al tiempo (8 reps)" }),
   makeItem({ exerciseId: "4006", day: "wednesday", sets: 3, reps: 20, structureId: "wed-block-b", structureType: "circuit", position: 1, size: 3, notes: "Plancha Spiderman en colchoneta (20 reps)" }),
   makeItem({ exerciseId: "4005", day: "wednesday", sets: 3, reps: 20, structureId: "wed-block-b", structureType: "circuit", position: 2, size: 3, notes: "Plancha antebrazos abrir y cerrar piernas (20 reps)" })
 );
 
 // Bloque C: 3 series
-// 1. Remo pullover: 8 reps
+// 1. Remo pullover en polea brazos extendidos hacia la cadera: 8 reps
 // 2. Plancha subir y bajar pelvis (#4008): 20 reps
 // 3. Plancha dinámica tijera y salto al frente (#4011): 15 reps
 workout.push(
-  makeItem({ exerciseId: "1316", day: "wednesday", sets: 3, reps: 8, structureId: "wed-block-c", structureType: "circuit", position: 0, size: 3, notes: "Remo pullover (8 reps)" }),
+  makeItem({ exerciseId: "0238", day: "wednesday", sets: 3, reps: 8, structureId: "wed-block-c", structureType: "circuit", position: 0, size: 3, notes: "Jalón en polea con brazos rectos hacia la cadera / pullover (8 reps)" }),
   makeItem({ exerciseId: "4008", day: "wednesday", sets: 3, reps: 20, structureId: "wed-block-c", structureType: "circuit", position: 1, size: 3, notes: "Plancha subir y bajar pelvis / delfín (20 reps)" }),
   makeItem({ exerciseId: "4011", day: "wednesday", sets: 3, reps: 15, structureId: "wed-block-c", structureType: "circuit", position: 2, size: 3, notes: "Plancha dinámica tijera y salto al frente (15 reps)" })
 );
@@ -179,16 +179,16 @@ workout.push(
 );
 
 // Bloque E: 7 series
-// 1. En polea curl de bíceps: 8 reps con buen peso
+// 1. En polea curl con agarre cerrado: 8 reps con buen peso
 workout.push(
-  makeItem({ exerciseId: "0868", day: "wednesday", sets: 7, reps: 8, structureId: "wed-block-e", structureType: "single", position: 0, size: 1, notes: "Curl de bíceps en polea con buen peso (7 series × 8 reps)" })
+  makeItem({ exerciseId: "1630", day: "wednesday", sets: 7, reps: 8, structureId: "wed-block-e", structureType: "single", position: 0, size: 1, notes: "Curl con agarre cerrado en polea (7 series × 8 reps)" })
 );
 
 // Bloque F: 3 series
-// 1. Curl martillo simultáneo: 8 reps
+// 1. Curl martillo de pie, brazos simultáneos: 8 reps
 // 2. Boca arriba piernas extendidas tocar pies: 20 reps (en la #20 sostener 10s)
 workout.push(
-  makeItem({ exerciseId: "1648", day: "wednesday", sets: 3, reps: 8, structureId: "wed-block-f", structureType: "biset", position: 0, size: 2, notes: "Curl martillo ambos brazos simultáneamente (8 reps)" }),
+  makeItem({ exerciseId: "0313", day: "wednesday", sets: 3, reps: 8, structureId: "wed-block-f", structureType: "biset", position: 0, size: 2, notes: "Curl martillo con mancuernas de pie, brazos simultáneos (8 reps)" }),
   makeItem({ exerciseId: "0507", day: "wednesday", sets: 3, reps: 20, structureId: "wed-block-f", structureType: "biset", position: 1, size: 2, notes: "Piernas extendidas arriba tocar pies (20 reps; en la #20 sostener 10s)" })
 );
 
@@ -205,7 +205,7 @@ workout.push(
 // 2. Lumbares en colchoneta: 25 reps
 // 3. Skipping en el puesto (#4002): 30 segundos
 workout.push(
-  makeItem({ exerciseId: "0047", day: "wednesday", sets: 3, reps: 21, structureId: "wed-block-h", structureType: "circuit", position: 0, size: 3, notes: "21 de bíceps con barra (7 abajo-mitad + 7 mitad-arriba + 7 completas)" }),
+  makeItem({ exerciseId: "0031", day: "wednesday", sets: 3, reps: 21, structureId: "wed-block-h", structureType: "circuit", position: 0, size: 3, notes: "21 de bíceps con barra (7 abajo-mitad + 7 mitad-arriba + 7 completas)" }),
   makeItem({ exerciseId: "1352", day: "wednesday", sets: 3, reps: 25, structureId: "wed-block-h", structureType: "circuit", position: 1, size: 3, notes: "Lumbares acostado boca abajo en colchoneta (25 reps)" }),
   makeItem({ exerciseId: "4002", day: "wednesday", sets: 3, reps: 30, structureId: "wed-block-h", structureType: "circuit", position: 2, size: 3, notes: "Skipping en el puesto (30 segundos)" })
 );
@@ -215,21 +215,21 @@ workout.push(
 // JUEVES (Pierna posterior, glúteo y core)
 // ==========================================
 // Bloque A: 3 series
-// 1. Tijera búlgara: 8 reps por cada pierna
+// 1. Sentadilla búlgara: 8 reps por cada pierna
 // 2. Plancha Spiderman (#4006): 20 reps
 // 3. Plancha sobre antebrazos abrir y cerrar piernas (#4005): 20 reps
 workout.push(
-  makeItem({ exerciseId: "1001", day: "thursday", sets: 3, reps: 8, repetitionCount: "per-side", structureId: "thu-block-a", structureType: "circuit", position: 0, size: 3, notes: "Tijera búlgara (8 reps por pierna)" }),
+  makeItem({ exerciseId: "0410", day: "thursday", sets: 3, reps: 8, repetitionCount: "per-side", structureId: "thu-block-a", structureType: "circuit", position: 0, size: 3, notes: "Sentadilla búlgara con mancuernas (8 reps por pierna)" }),
   makeItem({ exerciseId: "4006", day: "thursday", sets: 3, reps: 20, structureId: "thu-block-a", structureType: "circuit", position: 1, size: 3, notes: "Plancha Spiderman (20 reps)" }),
   makeItem({ exerciseId: "4005", day: "thursday", sets: 3, reps: 20, structureId: "thu-block-a", structureType: "circuit", position: 2, size: 3, notes: "Plancha sobre antebrazos abrir y cerrar piernas (20 reps)" })
 );
 
 // Bloque B: 3 series
-// 1. Hip thrust: 8 reps
+// 1. Hip thrust con barra en banco: 8 reps
 // 2. Plancha (#4003): 1 minuto
 // 3. Escaladores: 30 reps
 workout.push(
-  makeItem({ exerciseId: "3236", day: "thursday", sets: 3, reps: 8, structureId: "thu-block-b", structureType: "circuit", position: 0, size: 3, notes: "Hip thrust (8 reps)" }),
+  makeItem({ exerciseId: "4014", day: "thursday", sets: 3, reps: 8, structureId: "thu-block-b", structureType: "circuit", position: 0, size: 3, notes: "Hip thrust con barra en banco (8 reps)" }),
   makeItem({ exerciseId: "4003", day: "thursday", sets: 3, reps: 60, structureId: "thu-block-b", structureType: "circuit", position: 1, size: 3, notes: "Plancha frontal estática (1 minuto)" }),
   makeItem({ exerciseId: "0630", day: "thursday", sets: 3, reps: 30, structureId: "thu-block-b", structureType: "circuit", position: 2, size: 3, notes: "Escaladores (30 reps)" })
 );
@@ -259,9 +259,9 @@ workout.push(
 // 2. Acordeones en colchoneta: 25 reps
 // 3. Tocar con mano pie contrario en plancha: 30 reps
 workout.push(
-  makeItem({ exerciseId: "1427", day: "thursday", sets: 3, reps: 10, structureId: "thu-block-e", structureType: "circuit", position: 0, size: 3, notes: "Máquina de abductor (8–12 reps)" }),
+  makeItem({ exerciseId: "0597", day: "thursday", sets: 3, reps: 10, structureId: "thu-block-e", structureType: "circuit", position: 0, size: 3, notes: "Máquina de abductor sentado (8–12 reps)" }),
   makeItem({ exerciseId: "0871", day: "thursday", sets: 3, reps: 25, structureId: "thu-block-e", structureType: "circuit", position: 1, size: 3, notes: "Acordeones en colchoneta (25 reps)" }),
-  makeItem({ exerciseId: "0664", day: "thursday", sets: 3, reps: 30, repetitionCount: "total", structureId: "thu-block-e", structureType: "circuit", position: 2, size: 3, notes: "En plancha tocar mano con pie contrario alternadamente (30 reps)" })
+  makeItem({ exerciseId: "4012", day: "thursday", sets: 3, reps: 30, repetitionCount: "total", structureId: "thu-block-e", structureType: "circuit", position: 2, size: 3, notes: "Plancha con toque cruzado mano a pie (30 reps)" })
 );
 
 // Bloque F: 3 series
@@ -299,7 +299,7 @@ workout.push(
 workout.push(
   makeItem({ exerciseId: "0406", day: "friday", sets: 3, reps: 8, structureId: "fri-block-c", structureType: "circuit", position: 0, size: 3, notes: "Trapecio con mancuernas — encogimiento de hombros (8 reps con buen peso)" }),
   makeItem({ exerciseId: "3224", day: "friday", sets: 3, reps: 20, structureId: "fri-block-c", structureType: "circuit", position: 1, size: 3, notes: "Militares (20 reps)" }),
-  makeItem({ exerciseId: "0870", day: "friday", sets: 3, reps: 20, structureId: "fri-block-c", structureType: "circuit", position: 2, size: 3, notes: "Elevación de piernas en colchoneta (20 reps; en la #20 sostener a 45° durante 10s)" })
+  makeItem({ exerciseId: "0865", day: "friday", sets: 3, reps: 20, structureId: "fri-block-c", structureType: "circuit", position: 2, size: 3, notes: "Elevación de piernas y cadera tumbado en colchoneta (20 reps; en la #20 sostener a 45° durante 10s)" })
 );
 
 // Bloque D: 3 series
@@ -307,7 +307,7 @@ workout.push(
 // 2. Recogiendo moneditas (#4009): 5 veces ida y vuelta
 // 3. Exprimidas: 30 reps (en la #30 sostener 10s)
 workout.push(
-  makeItem({ exerciseId: "0215", day: "friday", sets: 3, reps: 8, repetitionCount: "per-side", structureId: "fri-block-d", structureType: "circuit", position: 0, size: 3, notes: "Elevación lateral de hombros en polea agarre individual (8 reps por brazo)" }),
+  makeItem({ exerciseId: "0192", day: "friday", sets: 3, reps: 8, repetitionCount: "per-side", structureId: "fri-block-d", structureType: "circuit", position: 0, size: 3, notes: "Elevación lateral en polea a un brazo (8 reps por brazo)" }),
   makeItem({ exerciseId: "4009", day: "friday", sets: 3, reps: 5, structureId: "fri-block-d", structureType: "circuit", position: 1, size: 3, notes: "Recogiendo moneditas (5 veces ida y vuelta)" }),
   makeItem({ exerciseId: "0871", day: "friday", sets: 3, reps: 30, structureId: "fri-block-d", structureType: "circuit", position: 2, size: 3, notes: "Exprimidas en colchoneta (30 reps; en la #30 sostener arriba 10s)" })
 );
@@ -317,7 +317,7 @@ workout.push(
 // 2. Skipping en el puesto (#4002): 30 segundos
 // 3. Bicicletas abdominales: 30 reps
 workout.push(
-  makeItem({ exerciseId: "0041", day: "friday", sets: 3, reps: 8, structureId: "fri-block-e", structureType: "circuit", position: 0, size: 3, notes: "Elevación frontal de hombros en polea/barra agarre invertido (8 reps)" }),
+  makeItem({ exerciseId: "0162", day: "friday", sets: 3, reps: 8, structureId: "fri-block-e", structureType: "circuit", position: 0, size: 3, notes: "Elevaciones frontales en polea (8 reps)" }),
   makeItem({ exerciseId: "4002", day: "friday", sets: 3, reps: 30, structureId: "fri-block-e", structureType: "circuit", position: 1, size: 3, notes: "Skipping en el puesto (30 segundos)" }),
   makeItem({ exerciseId: "0003", day: "friday", sets: 3, reps: 30, structureId: "fri-block-e", structureType: "circuit", position: 2, size: 3, notes: "Bicicletas abdominales en colchoneta (30 reps)" })
 );
@@ -364,7 +364,7 @@ workout.push(
 // 1. Sentadilla sumo en Hack: 8 reps con buen peso
 // 2. Paso en el step con rodilla arriba (#4010): 30 reps (15 der + 15 izq)
 workout.push(
-  makeItem({ exerciseId: "0755", day: "saturday", sets: 3, reps: 8, structureId: "sat-block-c", structureType: "biset", position: 0, size: 2, notes: "Sentadilla sumo en Hack con buen peso" }),
+  makeItem({ exerciseId: "4013", day: "saturday", sets: 3, reps: 8, structureId: "sat-block-c", structureType: "biset", position: 0, size: 2, notes: "Sentadilla sumo en hack en trineo con buen peso (8 reps)" }),
   makeItem({ exerciseId: "4010", day: "saturday", sets: 3, reps: 30, repetitionCount: "total", structureId: "sat-block-c", structureType: "biset", position: 1, size: 2, notes: "Paso en el step con rodilla arriba (15 der + 15 izq)" })
 );
 

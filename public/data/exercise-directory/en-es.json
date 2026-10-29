@@ -5,14 +5,14 @@
     "url": "https://github.com/hasaneyldrm/exercises-dataset",
     "license": "MIT",
     "dataPath": "/data/exercises.json",
-    "exerciseCount": 1335
+    "exerciseCount": 1338
   },
   "languages": [
     "en",
     "es"
   ],
   "translationSummary": {
-    "curated": 1335,
+    "curated": 1338,
     "pending": 0
   },
   "exercises": [
@@ -113078,6 +113078,305 @@
         "status": "ready",
         "animation": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.gif",
         "poster": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.jpg",
+        "version": 1
+      }
+    },
+    {
+      "id": "4012",
+      "canonicalKey": "plank with opposite toe touch",
+      "name": {
+        "en": "Plank With Opposite Toe Touch",
+        "es": "Plancha con toque cruzado mano a pie"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "bodyPart": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "equipment": {
+          "key": "body weight",
+          "en": "Body Weight",
+          "es": "Peso corporal"
+        },
+        "target": {
+          "key": "abs",
+          "en": "Abs",
+          "es": "Abdominales"
+        },
+        "muscleGroup": {
+          "key": "waist",
+          "en": "Waist",
+          "es": "Zona media"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "delts",
+            "en": "Delts",
+            "es": "Deltoides"
+          },
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "hamstrings",
+            "en": "Hamstrings",
+            "es": "Isquiotibiales"
+          },
+          {
+            "key": "obliques",
+            "en": "Obliques",
+            "es": "Oblicuos"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "plank with opposite toe touch",
+          "waist",
+          "body weight",
+          "abs",
+          "delts",
+          "glutes",
+          "hamstrings",
+          "obliques"
+        ],
+        "es": [
+          "plancha con toque cruzado mano a pie",
+          "zona media",
+          "peso corporal",
+          "abdominales",
+          "deltoides",
+          "glúteos",
+          "isquiotibiales",
+          "oblicuos"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4012",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "plank-opposite-toe-touch-aunara-v1",
+        "image": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
+      },
+      "ownedMedia": {
+        "status": "ready",
+        "animation": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.gif",
+        "poster": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.jpg",
+        "version": 1
+      }
+    },
+    {
+      "id": "4013",
+      "canonicalKey": "sled hack squat (sumo stance)",
+      "name": {
+        "en": "Sled Hack Squat (sumo Stance)",
+        "es": "Sentadilla sumo en hack en trineo"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "bodyPart": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "equipment": {
+          "key": "sled machine",
+          "en": "Sled Machine",
+          "es": "Trineo de empuje"
+        },
+        "target": {
+          "key": "quads",
+          "en": "Quads",
+          "es": "Cuádriceps"
+        },
+        "muscleGroup": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "glutes",
+            "en": "Glutes",
+            "es": "Glúteos"
+          },
+          {
+            "key": "adductors",
+            "en": "Adductors",
+            "es": "Aductores"
+          },
+          {
+            "key": "hamstrings",
+            "en": "Hamstrings",
+            "es": "Isquiotibiales"
+          },
+          {
+            "key": "calves",
+            "en": "Calves",
+            "es": "Pantorrillas"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "sled hack squat (sumo stance)",
+          "upper legs",
+          "sled machine",
+          "quads",
+          "glutes",
+          "adductors",
+          "hamstrings",
+          "calves"
+        ],
+        "es": [
+          "sentadilla sumo en hack en trineo",
+          "muslos",
+          "trineo de empuje",
+          "cuádriceps",
+          "glúteos",
+          "aductores",
+          "isquiotibiales",
+          "pantorrillas"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4013",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "sled-hack-squat-sumo-aunara-v1",
+        "image": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
+      },
+      "ownedMedia": {
+        "status": "ready",
+        "animation": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.gif",
+        "poster": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.jpg",
+        "version": 1
+      }
+    },
+    {
+      "id": "4014",
+      "canonicalKey": "barbell hip thrust",
+      "name": {
+        "en": "Barbell Hip Thrust",
+        "es": "Hip thrust con barra en banco"
+      },
+      "nameTranslation": {
+        "status": "curated",
+        "source": "aunara-override"
+      },
+      "taxonomy": {
+        "category": {
+          "key": "glutes",
+          "en": "Glutes",
+          "es": "Glúteos"
+        },
+        "bodyPart": {
+          "key": "upper legs",
+          "en": "Upper Legs",
+          "es": "Muslos"
+        },
+        "equipment": {
+          "key": "barbell",
+          "en": "Barbell",
+          "es": "Barra"
+        },
+        "target": {
+          "key": "glutes",
+          "en": "Glutes",
+          "es": "Glúteos"
+        },
+        "muscleGroup": {
+          "key": "glutes",
+          "en": "Glutes",
+          "es": "Glúteos"
+        },
+        "secondaryMuscles": [
+          {
+            "key": "hamstrings",
+            "en": "Hamstrings",
+            "es": "Isquiotibiales"
+          },
+          {
+            "key": "quads",
+            "en": "Quads",
+            "es": "Cuádriceps"
+          },
+          {
+            "key": "abs",
+            "en": "Abs",
+            "es": "Abdominales"
+          }
+        ]
+      },
+      "searchAliases": {
+        "en": [
+          "barbell hip thrust",
+          "glutes",
+          "upper legs",
+          "barbell",
+          "hamstrings",
+          "quads",
+          "abs"
+        ],
+        "es": [
+          "hip thrust con barra en banco",
+          "glúteos",
+          "muslos",
+          "barra",
+          "isquiotibiales",
+          "cuádriceps",
+          "abdominales"
+        ]
+      },
+      "contentReference": {
+        "datasetId": "4014",
+        "languages": [
+          "en",
+          "es"
+        ]
+      },
+      "legacyMedia": {
+        "mediaId": "barbell-hip-thrust-aunara-v1",
+        "image": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.jpg",
+        "animation": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.gif",
+        "attribution": "© Aunara Training Systems"
+      },
+      "ownedMedia": {
+        "status": "ready",
+        "animation": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.gif",
+        "poster": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.jpg",
         "version": 1
       }
     }

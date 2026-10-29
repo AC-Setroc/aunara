@@ -1,9 +1,9 @@
-import { AlertTriangle, Dumbbell, Pencil, ShieldCheck, UserRound, X } from "lucide-react";
-import { exerciseDisplayName, WEEKDAYS } from "../lib/exercises";
+import { AlertTriangle, Clock, Dumbbell, Info, Pencil, ShieldCheck, UserRound, X } from "lucide-react";
+import { exerciseDisplayName, generateAdaptiveTrackWorkout, WEEKDAYS } from "../lib/exercises";
 import { techniqueLabel, repetitionCountSuffix, workTargetLabel } from "../lib/workoutPrescription";
 import { tr } from "../lib/i18n";
 import type { ExerciseReadinessAssessment } from "../lib/wellness";
-import type { Exercise, LanguageCode, MovementRestriction, TrainingTrack } from "../types";
+import type { Exercise, LanguageCode, MovementRestriction, TrainingLimitation, TrainingTrack, Weekday } from "../types";
 import { trackFocusLabel } from "./TrainingTracks";
 
 interface InitialRoutineProposalProps {
@@ -11,6 +11,8 @@ interface InitialRoutineProposalProps {
   variant?: "initial" | "track";
   track: TrainingTrack;
   exerciseMap: Map<string, Exercise>;
+  exercises?: Exercise[];
+  limitations?: TrainingLimitation[];
   healthNotes?: string;
   readiness?: ExerciseReadinessAssessment;
   onOpenExercise: (exercise: Exercise) => void;
@@ -18,6 +20,7 @@ interface InitialRoutineProposalProps {
   onEdit: () => void;
   onReject: () => void;
   onReviewHealth?: () => void;
+  onUpdateProposal?: (updatedTrack: TrainingTrack) => void;
 }
 
 const RESTRICTION_LABELS: Record<MovementRestriction, [string, string]> = {
@@ -31,11 +34,30 @@ const RESTRICTION_LABELS: Record<MovementRestriction, [string, string]> = {
   "single-leg-balance": ["single-leg balance", "equilibrio a una pierna"],
 };
 
+function hasExcessiveConsecutiveDays(trainingDays: Weekday[], threshold = 4): boolean {
+  if (trainingDays.length < threshold) return false;
+  const allDays: Weekday[] = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  const daySet = new Set(trainingDays);
+  const circular = [...allDays, ...allDays];
+  let consecutive = 0;
+  for (const day of circular) {
+    if (daySet.has(day)) {
+      consecutive += 1;
+      if (consecutive >= threshold) return true;
+    } else {
+      consecutive = 0;
+    }
+  }
+  return false;
+}
+
 export function InitialRoutineProposal({
   language,
   variant = "initial",
   track,
   exerciseMap,
+  exercises,
+  limitations = [],
   healthNotes = "",
   readiness = { level: "ready", reasons: [] },
   onOpenExercise,
@@ -43,16 +65,94 @@ export function InitialRoutineProposal({
   onEdit,
   onReject,
   onReviewHealth,
+  onUpdateProposal,
 }: InitialRoutineProposalProps) {
   const isInitial = variant === "initial";
   const heading = isInitial
     ? tr(language, "Review your first routine", "Revisá tu primera rutina")
     : tr(language, "Review suggested routine", "Revisá la rutina sugerida");
   const blocked = readiness.level === "professional-review" || readiness.level === "setup";
-  const days = WEEKDAYS.filter((day) => track.trainingDays?.includes(day) || track.workout.some((item) => (item.day ?? "monday") === day));
+  const trainingDays = track.trainingDays && track.trainingDays.length > 0
+    ? track.trainingDays
+    : WEEKDAYS.slice(0, Math.max(1, track.daysPerWeek));
+  const days = WEEKDAYS.filter((day) => trainingDays.includes(day) || track.workout.some((item) => (item.day ?? "monday") === day));
   if (!days.length) days.push(...WEEKDAYS.slice(0, Math.max(1, track.daysPerWeek)));
   const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const dayNamesEs = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+  const dayShortEn = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const dayShortEs = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+
+  const hasConsecutiveWarning = hasExcessiveConsecutiveDays(trainingDays, 4);
+
+  const handleDaysCountSelect = (count: number) => {
+    let newDays = [...trainingDays];
+    if (count !== newDays.length) {
+      if (count < newDays.length) {
+        newDays = newDays.slice(0, count);
+      } else {
+        const remaining = WEEKDAYS.filter((d) => !newDays.includes(d));
+        newDays = [...newDays, ...remaining.slice(0, count - newDays.length)];
+      }
+    }
+
+    let updatedWorkout = track.workout;
+    let updatedAdaptations = track.adaptations ?? [];
+    if (exercises && exercises.length > 0) {
+      const generated = generateAdaptiveTrackWorkout(
+        exercises,
+        { ...track, daysPerWeek: count, trainingDays: newDays },
+        limitations
+      );
+      updatedWorkout = generated.workout;
+      updatedAdaptations = generated.adaptations;
+    }
+
+    onUpdateProposal?.({
+      ...track,
+      daysPerWeek: count,
+      trainingDays: newDays,
+      workout: updatedWorkout,
+      adaptations: updatedAdaptations,
+    });
+  };
+
+  const handleSessionMinutesSelect = (minutes: number) => {
+    onUpdateProposal?.({
+      ...track,
+      sessionMinutes: minutes,
+    });
+  };
+
+  const handleDayToggle = (day: Weekday) => {
+    let newDays: Weekday[];
+    if (trainingDays.includes(day)) {
+      if (trainingDays.length <= 1) return;
+      newDays = trainingDays.filter((d) => d !== day);
+    } else {
+      newDays = [...trainingDays, day];
+    }
+
+    let updatedWorkout = track.workout;
+    let updatedAdaptations = track.adaptations ?? [];
+    if (exercises && exercises.length > 0) {
+      const generated = generateAdaptiveTrackWorkout(
+        exercises,
+        { ...track, daysPerWeek: newDays.length, trainingDays: newDays },
+        limitations
+      );
+      updatedWorkout = generated.workout;
+      updatedAdaptations = generated.adaptations;
+    }
+
+    onUpdateProposal?.({
+      ...track,
+      daysPerWeek: newDays.length,
+      trainingDays: newDays,
+      workout: updatedWorkout,
+      adaptations: updatedAdaptations,
+    });
+  };
+
   return (
     <div className="initial-proposal-backdrop">
       <section
@@ -78,6 +178,74 @@ export function InitialRoutineProposal({
             "Usamos tu objetivo, equipo disponible, frecuencia semanal y tiempo por sesión para preparar este punto de partida. No se guarda hasta que elijás.",
           )}
         </p>
+
+        <div className="proposal-live-tune">
+          <div className="tune-row">
+            <span className="tune-label">{tr(language, "Frequency (days per week):", "Frecuencia (días por semana):")}</span>
+            <div className="tune-pills" role="group" aria-label={tr(language, "Weekly frequency selector", "Selector de frecuencia semanal")}>
+              {[2, 3, 4, 5, 6, 7].map((num) => (
+                <button
+                  key={num}
+                  type="button"
+                  className={`tune-pill ${track.daysPerWeek === num ? "is-selected" : ""}`}
+                  onClick={() => handleDaysCountSelect(num)}
+                >
+                  {num}d
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="tune-row">
+            <span className="tune-label">{tr(language, "Session duration:", "Duración por sesión:")}</span>
+            <div className="tune-pills" role="group" aria-label={tr(language, "Session duration selector", "Selector de duración")}>
+              {[30, 45, 60, 75, 90].map((mins) => (
+                <button
+                  key={mins}
+                  type="button"
+                  className={`tune-pill ${track.sessionMinutes === mins ? "is-selected" : ""}`}
+                  onClick={() => handleSessionMinutesSelect(mins)}
+                >
+                  <Clock size={12} /> {mins} min
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {track.daysPerWeek < 7 && (
+            <div className="tune-row">
+              <span className="tune-label">{tr(language, "Training days (tap to move or toggle):", "Días de entreno (toca para mover o alternar):")}</span>
+              <div className="tune-pills" role="group" aria-label={tr(language, "Day distribution selector", "Distribución de días")}>
+                {WEEKDAYS.map((day, idx) => {
+                  const isDaySelected = trainingDays.includes(day);
+                  return (
+                    <button
+                      key={day}
+                      type="button"
+                      className={`tune-pill day-pill ${isDaySelected ? "is-selected" : ""}`}
+                      onClick={() => handleDayToggle(day)}
+                    >
+                      {tr(language, dayShortEn[idx], dayShortEs[idx])}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {hasConsecutiveWarning && (
+            <div className="proposal-consecutive-alert" role="status">
+              <Info size={16} />
+              <span>
+                {tr(
+                  language,
+                  "Suggestion: 4 or more consecutive training days may reduce recovery quality. We suggest spacing rest days, though the final choice is yours.",
+                  "Sugerencia: 4 o más días de entrenamiento consecutivos pueden sobrecargar la recuperación. Te sugerimos intercalar descansos, pero la palabra final es tuya."
+                )}
+              </span>
+            </div>
+          )}
+        </div>
 
         <div className="initial-proposal-summary">
           <div><span>{tr(language, "Goal", "Objetivo")}</span><strong>{trackFocusLabel(track.focus, language)}</strong></div>

@@ -93,6 +93,33 @@ export function exerciseTaxonomyLabel(value: string, language: LanguageCode): st
   return language === "es" ? translatedTaxonomy(value) : titleCase(value);
 }
 
+function getExerciseMatchRelevance(exercise: Exercise, query: string): number {
+  const normQuery = normalize(query);
+  const esName = normalize(spanishExerciseNames[exercise.name as keyof typeof spanishExerciseNames] ?? "");
+  const enName = normalize(exercise.name);
+  const targetEs = normalize(translatedTaxonomy(exercise.target));
+  const targetEn = normalize(exercise.target);
+  const bodyPartEs = normalize(translatedTaxonomy(exercise.body_part));
+  const bodyPartEn = normalize(exercise.body_part);
+  const categoryEs = normalize(translatedTaxonomy(exercise.category));
+
+  let score = 0;
+  if (esName.startsWith(normQuery) || enName.startsWith(normQuery)) score += 100;
+  else if (esName.includes(normQuery) || enName.includes(normQuery)) score += 70;
+
+  if (targetEs === normQuery || targetEn === normQuery || bodyPartEs === normQuery || bodyPartEn === normQuery) score += 90;
+  else if (targetEs.includes(normQuery) || targetEn.includes(normQuery) || bodyPartEs.includes(normQuery) || bodyPartEn.includes(normQuery) || categoryEs.includes(normQuery)) score += 50;
+
+  const secondaryMatches = exercise.secondary_muscles.some((m) => {
+    const mNorm = normalize(m);
+    const mTr = normalize(translatedTaxonomy(m));
+    return mNorm.includes(normQuery) || mTr.includes(normQuery);
+  });
+  if (secondaryMatches) score += 10;
+
+  return score;
+}
+
 export function filterExercises(
   exercises: Exercise[],
   filters: ExerciseFilters,
@@ -100,7 +127,7 @@ export function filterExercises(
   const query = normalize(filters.query);
   const regionIntent = bodyRegionIntent(query);
 
-  return exercises.filter((exercise) => {
+  const matched = exercises.filter((exercise) => {
     if (filters.equipmentPreference === "bodyweight" && !isEquipmentFreeExercise(exercise)) return false;
     if (filters.bodyPart && exercise.body_part !== filters.bodyPart) return false;
     if (filters.equipment && exercise.equipment !== filters.equipment) return false;
@@ -128,6 +155,10 @@ export function filterExercises(
     const terms = query.split(/\s+/).filter(Boolean);
     return terms.every((term) => haystack.includes(term));
   });
+
+  if (!query || regionIntent) return matched;
+
+  return matched.sort((a, b) => getExerciseMatchRelevance(b, query) - getExerciseMatchRelevance(a, query));
 }
 
 export function uniqueSorted(exercises: Exercise[], key: keyof Exercise): string[] {

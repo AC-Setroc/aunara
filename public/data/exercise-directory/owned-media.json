@@ -64,5 +64,23 @@
     "animation": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.gif",
     "poster": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.jpg",
     "version": 1
+  },
+  "4012": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.gif",
+    "poster": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.jpg",
+    "version": 1
+  },
+  "4013": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.gif",
+    "poster": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.jpg",
+    "version": 1
+  },
+  "4014": {
+    "status": "ready",
+    "animation": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.gif",
+    "poster": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.jpg",
+    "version": 1
   }
 }

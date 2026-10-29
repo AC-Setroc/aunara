@@ -29,6 +29,7 @@ import { StorageNotice } from "./components/StorageNotice";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { OnboardingPanel, profileGoals } from "./components/OnboardingPanel";
 import { ProfilePanel } from "./components/ProfilePanel";
+import { ProgressPanel } from "./components/ProgressPanel";
 import { TrainingTracks, type NewTrackInput } from "./components/TrainingTracks";
 import { WorkoutPanel } from "./components/WorkoutPanel";
 import { useCloudSync } from "./hooks/useCloudSync";
@@ -142,6 +143,7 @@ function App() {
   const [workoutOpen, setWorkoutOpen] = useState(false);
   const [workoutPanelMode, setWorkoutPanelMode] = useState<WorkoutPanelMode>("view");
   const [profileOpen, setProfileOpen] = useState(false);
+  const [progressOpen, setProgressOpen] = useState(false);
   const [accessOpen, setAccessOpen] = useState(() => {
     try {
       return Boolean(localStorage.getItem("aunara-pending-verification"));
@@ -228,6 +230,28 @@ function App() {
   const closeProfile = useCallback(() => {
     setProfileOpen(false);
     if (typeof window !== "undefined" && window.history.state?.overlay === "profile") {
+      try {
+        window.history.back();
+      } catch {
+        // Ignore
+      }
+    }
+  }, []);
+
+  const showProgress = useCallback(() => {
+    if (typeof window !== "undefined") {
+      try {
+        window.history.pushState({ aunara: true, section: appSection, overlay: "progress" }, "");
+      } catch {
+        // Ignore
+      }
+    }
+    setProgressOpen(true);
+  }, [appSection]);
+
+  const closeProgress = useCallback(() => {
+    setProgressOpen(false);
+    if (typeof window !== "undefined" && window.history.state?.overlay === "progress") {
       try {
         window.history.back();
       } catch {
@@ -516,6 +540,7 @@ function App() {
           setAppSection(parsed.appSection);
         }
         if (typeof parsed.profileOpen === "boolean") setProfileOpen(parsed.profileOpen);
+        if (typeof parsed.progressOpen === "boolean") setProgressOpen(parsed.progressOpen);
         if (typeof parsed.workoutOpen === "boolean") setWorkoutOpen(parsed.workoutOpen);
         if (parsed.workoutPanelMode === "view" || parsed.workoutPanelMode === "edit" || parsed.workoutPanelMode === "training") {
           setWorkoutPanelMode(parsed.workoutPanelMode);
@@ -565,6 +590,7 @@ function App() {
         setSelectedExercise(null);
         setWorkoutOpen(false);
         setProfileOpen(false);
+        setProgressOpen(false);
         setAccessOpen(false);
         setAppSection("home");
         return;
@@ -582,6 +608,7 @@ function App() {
         if (state.overlay !== "exercise") setSelectedExercise(null);
         if (state.overlay !== "workout") setWorkoutOpen(false);
         if (state.overlay !== "profile") setProfileOpen(false);
+        if (state.overlay !== "progress") setProgressOpen(false);
         if (state.overlay !== "access") setAccessOpen(false);
         if (state.section) setAppSection(state.section);
       }
@@ -596,6 +623,7 @@ function App() {
   const activeScreenRef = useRef({
     appSection,
     profileOpen,
+    progressOpen,
     workoutOpen,
     workoutPanelMode,
     activeTrackId,
@@ -607,6 +635,7 @@ function App() {
     activeScreenRef.current = {
       appSection,
       profileOpen,
+      progressOpen,
       workoutOpen,
       workoutPanelMode,
       activeTrackId,
@@ -614,7 +643,7 @@ function App() {
       accessMode,
       selectedExerciseId: selectedExercise?.id ?? null,
     };
-  }, [appSection, profileOpen, workoutOpen, workoutPanelMode, activeTrackId, accessOpen, accessMode, selectedExercise]);
+  }, [appSection, profileOpen, progressOpen, workoutOpen, workoutPanelMode, activeTrackId, accessOpen, accessMode, selectedExercise]);
 
   useEffect(() => {
     const handleSave = () => {
@@ -1121,6 +1150,12 @@ function App() {
                   navigateToSection("routes");
                 },
               },
+              {
+                label: tr(language, "Progress / BI", "Progreso y BI"),
+                action: () => {
+                  showProgress();
+                },
+              },
             ] : []),
             { label: cloud.email ? tr(language, "Account / privacy", "Cuenta / privacidad") : tr(language, "Login / create account", "Ingresar / crear cuenta"), action: () => showAccess("sign-in") },
             ...(installGuide !== "installed" ? [{ label: tr(language, "Help / installation", "Ayuda / instalación"), action: () => showAccess("help") }] : []),
@@ -1356,6 +1391,8 @@ function App() {
           language={language}
           track={initialProposal}
           exerciseMap={exerciseMap}
+          exercises={exercises}
+          limitations={healthProfile.limitations ?? []}
           healthNotes={healthProfile.healthNotes}
           readiness={readinessAssessment}
           onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
@@ -1363,6 +1400,7 @@ function App() {
           onEdit={() => acceptInitialProposal(true)}
           onReject={rejectInitialProposal}
           onReviewHealth={() => showProfile()}
+          onUpdateProposal={(updated) => setInitialProposal(updated)}
         />
       )}
 
@@ -1372,6 +1410,8 @@ function App() {
           variant="track"
           track={trackProposal}
           exerciseMap={exerciseMap}
+          exercises={exercises}
+          limitations={healthProfile.limitations ?? []}
           healthNotes={healthProfile.healthNotes}
           readiness={readinessAssessment}
           onOpenExercise={(exercise) => openExercise(exercise, "proposal")}
@@ -1379,6 +1419,7 @@ function App() {
           onEdit={() => acceptTrackProposal(true)}
           onReject={rejectTrackProposal}
           onReviewHealth={() => showProfile()}
+          onUpdateProposal={(updated) => setTrackProposal(updated)}
         />
       )}
 
@@ -1479,6 +1520,9 @@ function App() {
               closeWorkout();
               showProfile();
             }}
+            onOpenProgress={() => {
+              showProgress();
+            }}
             restrictedMovements={restrictedMovements}
           />
         </>
@@ -1512,6 +1556,25 @@ function App() {
             }
           }}
         />
+      )}
+
+      {canUseTraining && progressOpen && (
+        <>
+          <button
+            className="panel-backdrop"
+            type="button"
+            onClick={closeProgress}
+            aria-label={tr(language, "Dismiss BI analytics backdrop", "Cerrar fondo de analítica BI")}
+          />
+          <ProgressPanel
+            language={language}
+            tracks={tracks}
+            activeTrack={activeTrack}
+            exerciseMap={exerciseMap}
+            onClose={closeProgress}
+            onSelectTrack={selectTrack}
+          />
+        </>
       )}
 
       {accessOpen && (

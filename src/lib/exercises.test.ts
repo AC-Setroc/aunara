@@ -163,6 +163,35 @@ describe("exercise helpers", () => {
     expect(results.map((exercise) => exercise.id)).toEqual(["0002"]);
   });
 
+  it("prioritizes primary target and body part matches over incidental secondary muscle matches", () => {
+    const latPulldown = {
+      ...baseExercise,
+      id: "lat-1",
+      name: "cable lat pulldown",
+      target: "lats",
+      body_part: "back",
+      secondary_muscles: ["biceps"],
+    };
+    const hangingLegRaise = {
+      ...baseExercise,
+      id: "abs-1",
+      name: "hanging leg raise",
+      target: "abs",
+      body_part: "waist",
+      secondary_muscles: ["back", "shoulders"],
+    };
+
+    const results = filterExercises([hangingLegRaise, latPulldown], {
+      query: "back",
+      bodyPart: "",
+      equipment: "",
+      favoritesOnly: false,
+      favoriteIds: new Set(),
+    });
+
+    expect(results.map((e) => e.id)).toEqual(["lat-1", "abs-1"]);
+  });
+
   it("combines body-part, equipment, and favorites filters", () => {
     const results = filterExercises([baseExercise, squat], {
       query: "",

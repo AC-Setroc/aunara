@@ -51,15 +51,78 @@ export function workTargetLabel(block: WorkoutWorkBlock, language: LanguageCode)
 }
 
 export const WORKOUT_STRUCTURE_OPTIONS: LocalizedOption<WorkoutStructureType>[] = [
-  { value: "single", label: ["Single set", "Monoserie"] },
-  { value: "superset", label: ["Superset", "Superserie"] },
-  { value: "biset", label: ["Bi-set", "Biserie"] },
-  { value: "triset", label: ["Tri-set", "Triserie"] },
-  { value: "giant-set", label: ["Giant set", "Serie gigante"] },
-  { value: "pre-exhaustion", label: ["Pre-exhaustion", "Preagotamiento"] },
-  { value: "post-exhaustion", label: ["Post-exhaustion", "Postagotamiento"] },
-  { value: "circuit", label: ["Circuit", "Circuito"] },
-  { value: "contrast-complex", label: ["Contrast / complex", "Contraste / complex training"] },
+  {
+    value: "single",
+    label: ["Single set", "Monoserie"],
+    description: [
+      "1 exercise executed with complete rest between sets. Standard foundational method.",
+      "1 ejercicio individual con descanso completo entre series. Estructura clásica y controlada.",
+    ],
+  },
+  {
+    value: "superset",
+    label: ["Superset", "Superserie"],
+    description: [
+      "2 exercises for opposing muscles (e.g. chest and back) without rest in between.",
+      "2 ejercicios para grupos musculares opuestos (ej. pecho y espalda) combinados sin pausa.",
+    ],
+  },
+  {
+    value: "biset",
+    label: ["Bi-set", "Biserie"],
+    description: [
+      "2 exercises for the same muscle group executed consecutively without rest.",
+      "2 ejercicios para el mismo grupo muscular ejecutados uno tras otro sin pausa.",
+    ],
+  },
+  {
+    value: "triset",
+    label: ["Tri-set", "Triserie"],
+    description: [
+      "3 exercises performed in sequence with minimal or no rest in between.",
+      "3 ejercicios ejecutados en secuencia continua con mínima o nula pausa intermedia.",
+    ],
+  },
+  {
+    value: "giant-set",
+    label: ["Giant set", "Serie gigante"],
+    description: [
+      "4 or more exercises performed sequentially for high density and metabolic output.",
+      "4 o más ejercicios consecutivos para el mismo grupo o zona con alta densidad metabólica.",
+    ],
+  },
+  {
+    value: "pre-exhaustion",
+    label: ["Pre-exhaustion", "Preagotamiento"],
+    description: [
+      "1 isolation exercise followed immediately by 1 compound movement for the target muscle.",
+      "1 ejercicio de aislamiento seguido de inmediato por 1 ejercicio multiarticular compuesto.",
+    ],
+  },
+  {
+    value: "post-exhaustion",
+    label: ["Post-exhaustion", "Postagotamiento"],
+    description: [
+      "1 heavy compound exercise followed immediately by 1 isolation movement to finish.",
+      "1 ejercicio compuesto pesado seguido de inmediato por 1 ejercicio de aislamiento final.",
+    ],
+  },
+  {
+    value: "circuit",
+    label: ["Circuit", "Circuito"],
+    description: [
+      "Series of varied exercises performed in continuous rotation with rest only after each round.",
+      "Cadena de ejercicios variados en rotación continua con descanso al terminar la ronda completa.",
+    ],
+  },
+  {
+    value: "contrast-complex",
+    label: ["Contrast / complex", "Contraste / complex training"],
+    description: [
+      "Heavy strength exercise paired immediately with an explosive or plyometric movement.",
+      "Ejercicio de fuerza máxima o submáxima combinado de inmediato con un movimiento explosivo.",
+    ],
+  },
 ];
 
 export const SPECIAL_TECHNIQUE_OPTIONS: LocalizedOption<SpecialTechniqueKind>[] = [

@@ -2,6 +2,7 @@ import {
   Activity,
   AlertTriangle,
   ArrowLeft,
+  BarChart2,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -73,6 +74,7 @@ interface WorkoutPanelProps {
   onOpenExercise: (exercise: Exercise) => void;
   analysis: RoutineAnalysis;
   onOpenProfile: () => void;
+  onOpenProgress?: () => void;
   restrictedMovements?: MovementRestriction[];
 }
 
@@ -268,6 +270,7 @@ export function WorkoutPanel({
   onOpenExercise,
   analysis,
   onOpenProfile,
+  onOpenProgress,
   restrictedMovements = [],
 }: WorkoutPanelProps) {
   const [mode, setMode] = useState<WorkoutPanelMode>(initialMode);
@@ -380,6 +383,15 @@ export function WorkoutPanel({
             >
               <Pencil size={16} /> {tr(language, "Edit routine", "Editar rutina")}
             </button>
+            {onOpenProgress && (
+              <button
+                className="workout-bi-btn"
+                type="button"
+                onClick={onOpenProgress}
+              >
+                <BarChart2 size={16} /> {tr(language, "BI Progress", "Progreso BI")}
+              </button>
+            )}
           </>
         ) : (
           <button type="button" onClick={() => {
@@ -616,9 +628,30 @@ export function WorkoutPanel({
                           const itemId = item.id ?? item.exerciseId;
                           const exerciseName = exercise ? exerciseDisplayName(exercise, language) : (item.notes ?? `Ejercicio #${item.exerciseId}`);
                           const loggingType = getExerciseLoggingType(item, exercise, language);
-                          const isLoggedToday = item.loadHistory?.some((entry) => entry.date === todayDate);
+                          const todayEntries = item.loadHistory?.filter((entry) => entry.date === todayDate) ?? [];
+                          const isLoggedToday = todayEntries.length > 0;
+                          const lastTodayEntry = todayEntries.at(-1);
 
                           const sets = getSetsForExercise(item, loggingType);
+                          const hasMuscularFailure = sets.some((s) => s.limiterTag === "muscular-failure");
+
+                          const isDirty = (() => {
+                            if (!isLoggedToday || !lastTodayEntry) return true;
+                            if ((item.loadNote ?? "").trim() !== (lastTodayEntry.loadNote ?? "").trim()) return true;
+                            const currentEffort = item.effort ?? (hasMuscularFailure ? "Fallo técnico" : undefined);
+                            if (currentEffort !== lastTodayEntry.effort) return true;
+                            const savedSets = lastTodayEntry.setsDetail ?? [];
+                            if (sets.length !== savedSets.length) return true;
+                            for (let i = 0; i < sets.length; i++) {
+                              const cur = sets[i];
+                              const sav = savedSets[i];
+                              if (cur.actualReps !== sav.actualReps) return true;
+                              if (cur.loadKg !== sav.loadKg) return true;
+                              if (cur.completed !== sav.completed) return true;
+                              if (cur.limiterTag !== sav.limiterTag) return true;
+                            }
+                            return false;
+                          })();
 
                           const updateSets = (newSets: WorkoutSetDetail[]) => {
                             const validLoads = newSets
@@ -846,24 +879,33 @@ export function WorkoutPanel({
                                         type="button"
                                         className={`training-limiter-chip ${isSelected ? "is-selected" : ""}`}
                                         onClick={() => {
-                                          const targetSetIndex = sets.findIndex(
-                                            (s) => s.completed && s.targetReps != null && s.actualReps != null && s.actualReps < s.targetReps
-                                          );
+                                          const missedIndices = sets
+                                            .map((s, idx) => (s.completed && s.targetReps != null && s.actualReps != null && s.actualReps < s.targetReps ? idx : -1))
+                                            .filter((idx) => idx !== -1);
+
                                           const completedIndex = sets.map((s) => s.completed).lastIndexOf(true);
-                                          const indexToTag = targetSetIndex >= 0
-                                            ? targetSetIndex
-                                            : (completedIndex >= 0 ? completedIndex : sets.length - 1);
+                                          const fallbackIndex = completedIndex >= 0 ? completedIndex : sets.length - 1;
+                                          const indicesToTag = missedIndices.length > 0 ? missedIndices : [fallbackIndex];
+
+                                          const allAlreadyTagged = indicesToTag.every((idx) => sets[idx]?.limiterTag === opt.value);
 
                                           const updated = sets.map((s, idx) => {
-                                            if (idx === indexToTag) {
+                                            if (indicesToTag.includes(idx)) {
                                               return {
                                                 ...s,
-                                                limiterTag: s.limiterTag === opt.value ? undefined : opt.value,
+                                                limiterTag: allAlreadyTagged ? undefined : opt.value,
                                               };
                                             }
                                             return s;
                                           });
                                           updateSets(updated);
+
+                                          const willHaveMuscularFailure = updated.some((s) => s.limiterTag === "muscular-failure");
+                                          if (willHaveMuscularFailure) {
+                                            onUpdateItem?.(itemId, { effort: "Fallo técnico" });
+                                          } else if (allAlreadyTagged && opt.value === "muscular-failure" && item.effort === "Fallo técnico") {
+                                            onUpdateItem?.(itemId, { effort: undefined });
+                                          }
                                         }}
                                       >
                                         <span className="limiter-label">{language === "es" ? opt.labelEs : opt.labelEn}</span>
@@ -887,14 +929,23 @@ export function WorkoutPanel({
                                 <span className="training-effort-label">{tr(language, "Effort / RPE:", "Nivel de esfuerzo:")}</span>
                                 <div className="training-effort-pills" role="group" aria-label={tr(language, "Effort selector", "Selector de esfuerzo")}>
                                   {EFFORT_OPTIONS.map((opt) => {
-                                    const isSelected = item.effort === opt.value || (loggingType.isFailure && !item.effort && opt.value === "Fallo técnico");
+                                    const isSelected = item.effort === opt.value
+                                      || (hasMuscularFailure && opt.value === "Fallo técnico")
+                                      || (loggingType.isFailure && !item.effort && opt.value === "Fallo técnico");
+                                    const isBlockedByFailure = hasMuscularFailure && opt.value !== "Fallo técnico";
                                     return (
                                       <button
                                         key={opt.value}
                                         type="button"
-                                        className={`training-effort-pill ${isSelected ? "is-selected" : ""}`}
-                                        onClick={() => onUpdateItem?.(itemId, { effort: isSelected ? undefined : opt.value })}
-                                        title={language === "es" ? opt.descEs : opt.descEn}
+                                        disabled={isBlockedByFailure}
+                                        className={`training-effort-pill ${isSelected ? "is-selected" : ""} ${isBlockedByFailure ? "is-disabled" : ""}`}
+                                        onClick={() => {
+                                          if (isBlockedByFailure) return;
+                                          onUpdateItem?.(itemId, { effort: isSelected ? undefined : opt.value });
+                                        }}
+                                        title={isBlockedByFailure
+                                          ? tr(language, "Locked to Technical Failure because a set reached muscular failure", "Fijado en Fallo técnico porque registraste fallo muscular en las series")
+                                          : (language === "es" ? opt.descEs : opt.descEn)}
                                       >
                                         <span className="effort-pill-tag">{opt.label}</span>
                                         <span className="effort-pill-sub">{language === "es" ? opt.descEs : opt.descEn}</span>
@@ -906,8 +957,9 @@ export function WorkoutPanel({
 
                               <div className="training-card-footer">
                                 <button
-                                  className={`log-load-button ${isLoggedToday ? "is-logged" : ""}`}
+                                  className={`log-load-button ${isLoggedToday ? "is-logged" : ""} ${isLoggedToday && !isDirty ? "is-unchanged" : ""}`}
                                   type="button"
+                                  disabled={isLoggedToday && !isDirty}
                                   onClick={() => onLogLoad?.(itemId)}
                                   aria-label={`${tr(language, "Log today’s load for", "Registrar la carga de hoy para")} ${exerciseName}`}
                                 >
@@ -1518,6 +1570,8 @@ function ExerciseAdder({
               <button
                 key={option.value}
                 type="button"
+                className="structure-choice-btn"
+                aria-label={localizedOptionLabel(option, language)}
                 onClick={() => {
                   const count = workoutStructureSlotCount(option.value);
                   setStructureType(option.value);
@@ -1528,7 +1582,12 @@ function ExerciseAdder({
                   setStep(1);
                 }}
               >
-                {localizedOptionLabel(option, language)}
+                <strong className="structure-choice-title">{localizedOptionLabel(option, language)}</strong>
+                {option.description && (
+                  <span className="structure-choice-desc">
+                    {language === "es" ? option.description[1] : option.description[0]}
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -1561,8 +1620,9 @@ function ExerciseAdder({
           <div className="structure-slots">
             {Array.from({ length: slotCount }, (_, index) => {
               const selectedExercise = selectedExercises[index];
+              const isSlotActive = activeSlot === index;
               return (
-                <section className={`structure-slot ${activeSlot === index ? "is-active" : ""}`} key={index}>
+                <section className={`structure-slot ${isSlotActive ? "is-active" : ""}`} key={index}>
                   <label className="manual-exercise-search">
                     <span>{String(index + 1).padStart(2, "0")}</span>
                     <Search size={17} />
@@ -1581,6 +1641,49 @@ function ExerciseAdder({
                       <Play size={13} /> {tr(language, "View preview", "Ver preview")}
                     </button>
                   )}
+
+                  {isSlotActive && !selectedExercise && (
+                    <div className="manual-exercise-results slot-inline-results">
+                      <p className="exercise-result-count">
+                        {matches.length.toLocaleString()} {tr(language, "matching movements", "movimientos encontrados")}
+                      </p>
+                      {matches.length ? matches.slice(0, visibleCount).map((exercise) => {
+                        const exerciseName = exerciseDisplayName(exercise, language);
+                        return (
+                          <article key={exercise.id}>
+                            <button
+                              className="manual-exercise-preview"
+                              type="button"
+                              aria-label={`${tr(language, "View", "Ver")} ${exerciseName} ${tr(language, "demo and steps", "demostración y pasos")}`}
+                              onClick={() => onOpenExercise(exercise)}
+                            >
+                              <span>
+                                <strong>{exerciseName}</strong>
+                                <small>{exerciseTaxonomyLabel(exercise.target, language)} · {exerciseTaxonomyLabel(exercise.category, language)} · {exerciseTaxonomyLabel(exercise.equipment, language)}</small>
+                                {isExerciseNamePending(exercise, language) && <small className="translation-pending">Nombre en inglés · traducción pendiente</small>}
+                              </span>
+                              <Play size={14} aria-hidden="true" />
+                            </button>
+                            <button
+                              className="manual-exercise-add"
+                              type="button"
+                              aria-label={`${tr(language, "Select", "Seleccionar")} ${exerciseName} ${tr(language, "as exercise", "como ejercicio")} ${activeSlot + 1}`}
+                              onClick={() => chooseExercise(exercise, activeSlot)}
+                            >
+                              <Plus size={15} /> {tr(language, "Select", "Seleccionar")}
+                            </button>
+                          </article>
+                        );
+                      }) : (
+                        <p>{tr(language, "No exercises match that search.", "No hay ejercicios que coincidan con esa búsqueda.")}</p>
+                      )}
+                      {visibleCount < matches.length && (
+                        <button className="manual-results-more" type="button" onClick={() => setVisibleCount((current) => current + 40)}>
+                          {tr(language, "Show 40 more", "Mostrar 40 más")} · {matches.length - visibleCount} {tr(language, "remaining", "restantes")}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </section>
               );
             })}
@@ -1592,49 +1695,6 @@ function ExerciseAdder({
               "Exercises matching your saved movement restrictions are hidden here. Review your health profile to change this filter.",
               "Acá se ocultan los ejercicios que coinciden con tus restricciones guardadas. Revisá tu perfil de salud para cambiar este filtro.",
             )}</p>
-          )}
-
-          {!selectedExercises[activeSlot] && (
-            <div className="manual-exercise-results">
-              <p className="exercise-result-count">
-                {matches.length.toLocaleString()} {tr(language, "matching movements", "movimientos encontrados")}
-              </p>
-              {matches.length ? matches.slice(0, visibleCount).map((exercise) => {
-                const exerciseName = exerciseDisplayName(exercise, language);
-                return (
-                  <article key={exercise.id}>
-                    <button
-                      className="manual-exercise-preview"
-                      type="button"
-                      aria-label={`${tr(language, "View", "Ver")} ${exerciseName} ${tr(language, "demo and steps", "demostración y pasos")}`}
-                      onClick={() => onOpenExercise(exercise)}
-                    >
-                      <span>
-                        <strong>{exerciseName}</strong>
-                        <small>{exerciseTaxonomyLabel(exercise.target, language)} · {exerciseTaxonomyLabel(exercise.category, language)} · {exerciseTaxonomyLabel(exercise.equipment, language)}</small>
-                        {isExerciseNamePending(exercise, language) && <small className="translation-pending">Nombre en inglés · traducción pendiente</small>}
-                      </span>
-                      <Play size={14} aria-hidden="true" />
-                    </button>
-                    <button
-                      className="manual-exercise-add"
-                      type="button"
-                      aria-label={`${tr(language, "Select", "Seleccionar")} ${exerciseName} ${tr(language, "as exercise", "como ejercicio")} ${activeSlot + 1}`}
-                      onClick={() => chooseExercise(exercise, activeSlot)}
-                    >
-                      <Plus size={15} /> {tr(language, "Select", "Seleccionar")}
-                    </button>
-                  </article>
-                );
-              }) : (
-                <p>{tr(language, "No exercises match that search.", "No hay ejercicios que coincidan con esa búsqueda.")}</p>
-              )}
-              {visibleCount < matches.length && (
-                <button className="manual-results-more" type="button" onClick={() => setVisibleCount((current) => current + 40)}>
-                  {tr(language, "Show 40 more", "Mostrar 40 más")} · {matches.length - visibleCount} {tr(language, "remaining", "restantes")}
-                </button>
-              )}
-            </div>
           )}
 
           <button

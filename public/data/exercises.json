@@ -147021,5 +147021,316 @@
     "gif_url": "exercise-art/pilot/plank-jack-tuck-combo-aunara-v1.gif",
     "attribution": "© Aunara Training Systems",
     "created_at": "2026-10-25T16:00:00.000Z"
+  },
+  {
+    "id": "4012",
+    "name": "plank with opposite toe touch",
+    "category": "waist",
+    "body_part": "waist",
+    "equipment": "body weight",
+    "instructions": {
+      "en": "Start in a solid high plank with hands under shoulders and feet hip-width apart. Push hips up and back into a pike or inverted V position while reaching your right hand across underneath your torso to touch your left toe or shin. Return smoothly to a neutral high plank, then repeat on the opposite side reaching left hand to right toe. Continue alternating in a steady rhythm.",
+      "es": "Comienza en una plancha alta sólida con las manos bajo los hombros y los pies al ancho de cadera. Eleva la cadera hacia arriba y atrás formando una V invertida mientras llevas la mano derecha diagonalmente por debajo del torso a tocar la punta o espinilla del pie izquierdo. Regresa con control a la plancha horizontal neutra y repite inmediatamente con el lado contrario (mano izquierda a pie derecho). Continúa alternando de forma fluida.",
+      "it": "Inizia in una solida posizione di plank alto. Solleva i fianchi formando una V rovesciata mentre allunghi la mano destra per toccare la punta del piede sinistro. Ritorna in plank e ripeti con la mano sinistra verso il piede destro.",
+      "tr": "Elleriniz omuzların altında olacak şekilde yüksek plank pozisyonunda başlayın. Kalçanızı yukarı iterek ters V oluşturun ve sağ elinizle sol ayak ucunuza dokunun. Başlangıç pozisyonuna dönüp diğer tarafla tekrarlayın.",
+      "ru": "Начните в позиции высокой планки. Поднимите таз вверх в перевернутую V и потянитесь правой рукой к носку левой ноги. Вернитесь в планку и повторите левой рукой к правому носку.",
+      "zh": "从高位平板支撑姿势开始。抬起臀部成倒V形，同时用右手触碰左脚脚尖。回到平板支撑并换左手触碰右脚脚尖，交替进行。",
+      "hi": "हाई प्लैंक पोजीशन से शुरुआत करें। कूल्हों को ऊपर उठाकर उल्टे V आकार में लाएं और दाहिने हाथ से बाएं पैर के अंगूठे को छुएं। वापस प्लैंक में आकर दूसरी तरफ दोहराएं।",
+      "pl": "Rozpocznij w pozycji wysokiej deski. Unieś biodra w górę do odwróconego V i sięgnij prawą dłonią do lewej stopy. Wróć do deski i powtórz lewą ręką do prawej stopy.",
+      "ko": "하이 플랭크 자세에서 시작합니다. 엉덩이를 들어 올려 역V자를 만들며 오른손으로 왼발 발끝을 터치합니다. 다시 플랭크로 돌아와 반대쪽도 반복합니다.",
+      "fr": "Commencez en planche haute. Montez le bassin en V inversé tout en tendant la main droite pour toucher la pointe du pied gauche. Revenez en planche et répétez avec la main gauche vers le pied droit."
+    },
+    "instruction_steps": {
+      "en": [
+        "Set up in a high plank with wrists directly beneath shoulders and core braced.",
+        "Engage your abdominals and drive your hips upward into an inverted V position.",
+        "Reach your right hand diagonally across to touch your left toe or ankle.",
+        "Lower hips back to the flat high plank position with control.",
+        "Repeat the movement reaching your left hand across to touch your right toe, alternating sides."
+      ],
+      "es": [
+        "Colócate en plancha alta con las muñecas bajo los hombros y el abdomen firme.",
+        "Activa el core y eleva la cadera hacia arriba formando una pirámide o V invertida.",
+        "Despega la mano derecha y cruza diagonalmente hasta tocar la punta del pie izquierdo.",
+        "Baja la cadera con control para regresar a la plancha recta horizontal.",
+        "Repite el movimiento cruzando la mano izquierda hacia el pie derecho, alternando ambos lados."
+      ],
+      "it": [
+        "Inizia in plank alto con le mani sotto le spalle.",
+        "Solleva il bacino in V rovesciata.",
+        "Tocca la punta del piede sinistro con la mano destra.",
+        "Ritorna alla posizione di plank orizzontale.",
+        "Ripeti toccando il piede destro con la mano sinistra."
+      ],
+      "tr": [
+        "Yüksek plank pozisyonunda başlayın.",
+        "Kalçanızı yukarı iterek ters V pozisyonu alın.",
+        "Sağ elinizle sol ayağınıza uzanın.",
+        "Kontrollü şekilde yüksek planka dönün.",
+        "Sol elinizle sağ ayağınıza uzanarak tekrarlayın."
+      ],
+      "ru": [
+        "Встаньте в высокую планку с руками под плечами.",
+        "Поднимите бедра вверх в форме перевернутой буквы V.",
+        "Дотянитесь правой рукой до левого носка.",
+        "Плавно вернитесь в исходную планку.",
+        "Повторите движение левой рукой к правому носку."
+      ],
+      "zh": [
+        "以双手撑地的高位平板姿势开始。",
+        "臀部上推，形成倒V字形姿势。",
+        "右手对角线伸出触碰左脚脚尖。",
+        "平稳回落至高位平板姿势。",
+        "换左手触碰右脚脚尖，两侧交替。"
+      ],
+      "hi": [
+        "कंधों के नीचे हाथों के साथ हाई प्लैंक में शुरुआत करें।",
+        "कूल्हों को ऊपर उठाकर उल्टा V आकार बनाएं।",
+        "दाहिने हाथ से बाएं पैर के अंगूठे को छुएं।",
+        "नियंत्रण के साथ वापस हाई प्लैंक में आएं।",
+        "बाएं हाथ से दाहिने पैर को छूकर दोहराएं।"
+      ],
+      "pl": [
+        "Zacznij w wysokiej desce z dłońmi pod barkami.",
+        "Unieś biodra w górę do odwróconego V.",
+        "Sięgnij prawą dłonią do lewej stopy.",
+        "Opuść biodra do pozycji wyjściowej deski.",
+        "Powtórz sięgając lewą ręką do prawej stopy."
+      ],
+      "ko": [
+        "어깨 아래에 손을 짚고 하이 플랭크 자세를 취합니다.",
+        "코어에 힘을 주고 엉덩이를 들어 올려 역V자를 만듭니다.",
+        "오른손을 대각선으로 뻗어 왼발 발끝을 터치합니다.",
+        "통제하며 평평한 플랭크 자세로 돌아옵니다.",
+        "왼손으로 오른발을 터치하며 교대로 반복합니다."
+      ],
+      "fr": [
+        "Placez-vous en planche haute, mains sous les épaules.",
+        "Montez les hanches vers le haut en V inversé.",
+        "Touchez le pied gauche avec votre main droite.",
+        "Revenez en planche haute avec contrôle.",
+        "Répétez en touchant le pied droit avec la main gauche."
+      ]
+    },
+    "muscle_group": "waist",
+    "secondary_muscles": [
+      "delts",
+      "glutes",
+      "hamstrings",
+      "obliques"
+    ],
+    "target": "abs",
+    "media_id": "plank-opposite-toe-touch-aunara-v1",
+    "image": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.jpg",
+    "gif_url": "exercise-art/pilot/plank-opposite-toe-touch-aunara-v1.gif",
+    "attribution": "© Aunara Training Systems",
+    "created_at": "2026-10-28T16:00:00.000Z"
+  },
+  {
+    "id": "4013",
+    "name": "sled hack squat (sumo stance)",
+    "category": "upper legs",
+    "body_part": "upper legs",
+    "equipment": "sled machine",
+    "instructions": {
+      "en": "Position your back and lumbar region firmly against the padded backrest of the 45-degree hack squat machine, shoulders secured beneath the upper pads. Place your feet high and wide on the footplate in a sumo stance (distinctly wider than shoulder-width) with toes angled outward at 40-45 degrees. Disengage safety catches. Slowly descend by bending your knees outward along the trajectory of your toes until your thighs are parallel to the platform. Press powerfully through your heels to return to the top position without locking knees forcefully.",
+      "es": "Apoya la espalda y zona lumbar con firmeza en el respaldo de la máquina hack a 45°, encajando los hombros bajo las almohadillas superiores. Coloca los pies en la parte alta de la plataforma con apertura ancha estilo sumo (claramente más ancha que los hombros) y puntas rotadas hacia afuera a 40-45°. Libera los seguros. Desciende de forma controlada abriendo las rodillas hacia afuera en la misma dirección de las puntas de los pies hasta que los muslos queden paralelos a la plataforma. Empuja con fuerza desde los talones para subir a la posición inicial sin bloquear las rodillas con brusquedad.",
+      "it": "Posiziona la schiena contro lo schienale della hack squat. Metti i piedi larghi in posizione sumo con le punte aperte. Scendi piegando le ginocchia verso lesterno e spingi attraverso i talloni per risalire.",
+      "tr": "Sırtınızı hack squat makinesine yaslayın. Ayaklarınızı omuz genişliğinden açık sumo pozisyonunda yerleştirin. Dizleri dışa açarak kontrollü şekilde inin ve topuklardan iterek kalkın.",
+      "ru": "Прижмите спину к спинке гакк-тренажера. Поставьте стопы широко в позиции сумо с развернутыми носками. Опуститесь, разводя колени по линии носков, и мощно выжмите платформу пятками.",
+      "zh": "背部紧贴45度哈克深蹲机靠背。双脚宽距站立于踏板上呈相扑姿态，脚尖朝外。屈膝沿脚尖方向缓慢下蹲，然后脚后跟发力推起至起始位置。",
+      "hi": "हैक स्क्वाट मशीन पर पीठ टिकाएं। पैरों को चौड़े सूमो रुख में रखें और पंजे बाहर की ओर हों। घुटनों को मोड़कर नीचे जाएं और एड़ियों से धक्का देकर वापस ऊपर आएं।",
+      "pl": "Oprzyj plecy o oparcie maszyny do przysiadów hacken. Ustaw stopy szeroko w pozycji sumo. Schodź kontrolując ruch, kolana kierując na zewnątrz, i wypchnij ciężar z pięt.",
+      "ko": "핵 스쿼트 등받이에 등을 밀착합니다. 발을 어깨너비보다 넓은 스모 스탠스로 두고 발끝을 벌립니다. 무릎을 바깥쪽으로 벌리며 내려갔다가 뒤꿈치로 밀어 올라옵니다.",
+      "fr": "Placez votre dos contre le dossier de la hack squat. Écartez largement les pieds en position sumo, pointes ouvertes. Descendez en ouvrant les genoux puis poussez sur les talons pour remonter."
+    },
+    "instruction_steps": {
+      "en": [
+        "Rest shoulders under pads and press entire back firmly into the backrest.",
+        "Position feet wide on the upper footplate with toes pointing outward at 40-45 degrees.",
+        "Release safety bars and inhale as you lower the sled with controlled tempo.",
+        "Descend until knees are bent to approximately 90 degrees, opening knees outwards.",
+        "Exhale and drive hard through the heels to extend hips and knees back to start."
+      ],
+      "es": [
+        "Encaja los hombros bajo las almohadillas y apoya la espalda completamente contra el respaldo.",
+        "Ubica los pies con apertura ancha sumo en la plataforma, con las puntas abiertas hacia afuera.",
+        "Libera los seguros e inhala mientras desciendes el trineo a ritmo controlado.",
+        "Baja hasta que los muslos queden paralelos a la plataforma, abriendo las rodillas hacia afuera.",
+        "Exhala y empuja potentemente desde los talones para extender caderas y piernas hasta el inicio."
+      ],
+      "it": [
+        "Appoggia le spalle sotto i cuscinetti e la schiena allo schienale.",
+        "Posiziona i piedi larghi in posizione sumo con punte allinfuori.",
+        "Sblocca i fermi e scendi con controllo.",
+        "Raggiungi i 90 gradi con le ginocchia aperte.",
+        "Spingi sui talloni per tornare in alto."
+      ],
+      "tr": [
+        "Omuzları yastıkların altına yerleştirin ve sırtı dayayın.",
+        "Ayakları sumo duruşunda genişçe platforma yerleştirin.",
+        "Güvenlik kilitlerini açıp kontrollüce çömelin.",
+        "Dizler 90 derece olana kadar inin.",
+        "Topuklardan kuvvet alarak yukarı itin."
+      ],
+      "ru": [
+        "Упритесь плечами в упоры, прижмите спину к спинке.",
+        "Поставьте стопы широко в позиции сумо с разворотом носков.",
+        "Снимите фиксаторы и плавно опуститесь.",
+        "Опуститесь до угла 90 градусов в коленях.",
+        "Выжмите платформу пятками в исходное положение."
+      ],
+      "zh": [
+        "双肩抵住靠垫，背部紧贴机身靠背。",
+        "双脚在踏板上呈相扑宽距站姿，脚尖外展。",
+        "松开安全把手，控制速度缓慢下蹲。",
+        "下蹲至膝盖呈90度，膝盖与脚尖方向一致。",
+        "脚跟发力推起恢复初始站姿。"
+      ],
+      "hi": [
+        "कंधों को पैड के नीचे रखें और पीठ पूरी तरह टिकाएं।",
+        "पैरों को चौड़े सूमो रुख में रखें।",
+        "सुरक्षा लॉक खोलें और धीरे-धीरे नीचे जाएं।",
+        "घुटनों के 90 डिग्री मुड़ने तक नीचे जाएं।",
+        "एड़ियों से धक्का देकर ऊपर उठें।"
+      ],
+      "pl": [
+        "Oprzyj barki pod poduszkami i dociśnij plecy do oparcia.",
+        "Ustaw stopy w szerokim rozkroku sumo.",
+        "Zwolnij blokadę i kontroluj opuszczanie.",
+        "Zejdź do kąta 90 stopni w kolanach.",
+        "Wyciśnij ciężar z pięt do góry."
+      ],
+      "ko": [
+        "어깨를 패드에 맞추고 등을 완전히 기댑니다.",
+        "발을 넓은 스모 스탠스로 위치시키고 발끝을 벌립니다.",
+        "안전 바를 풀고 천천히 내려갑니다.",
+        "무릎이 90도가 될 때까지 깊게 내려갑니다.",
+        "발뒤꿈치로 밀어 올려 시작 자세로 복귀합니다."
+      ],
+      "fr": [
+        "Caler les épaules sous les coussins et plaquer le dos.",
+        "Placer les pieds largement écartés en position sumo.",
+        "Déverrouiller les sécurités et descendre sous contrôle.",
+        "Fléchir les genoux à 90 degrés.",
+        "Pousser fort sur les talons pour remonter."
+      ]
+    },
+    "muscle_group": "upper legs",
+    "secondary_muscles": [
+      "glutes",
+      "adductors",
+      "hamstrings",
+      "calves"
+    ],
+    "target": "quads",
+    "media_id": "sled-hack-squat-sumo-aunara-v1",
+    "image": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.jpg",
+    "gif_url": "exercise-art/pilot/sled-hack-squat-sumo-aunara-v1.gif",
+    "attribution": "© Aunara Training Systems",
+    "created_at": "2026-10-28T16:00:00.000Z"
+  },
+  {
+    "id": "4014",
+    "name": "barbell hip thrust",
+    "category": "glutes",
+    "body_part": "upper legs",
+    "equipment": "barbell",
+    "instructions": {
+      "en": "Sit on the floor with your upper back (lower shoulder blades) resting against the edge of a flat bench. Place a padded barbell directly over your hip crease. Plant your feet flat on the ground shoulder-width apart, knees bent at roughly 90 degrees when elevated. Drive through your heels and extend your hips upward until your torso, hips, and thighs form a straight horizontal tabletop line. Keep your chin slightly tucked looking forward and pause with a powerful glute contraction at the top. Lower hips down with control and repeat.",
+      "es": "Siéntate en el suelo con la parte media/alta de la espalda (borde inferior de las escápulas) apoyada contra el borde de un banco plano. Coloca una barra con acolchado protector directamente sobre el pliegue de la cadera. Apoya los pies firmemente en el suelo al ancho de hombros, con las rodillas a 90° al elevar la pelvis. Empuja con fuerza desde los talones y extiende la cadera hacia arriba hasta que el torso, la pelvis y los muslos formen una línea horizontal recta paralela al suelo. Mantén la barbilla ligeramente recogida mirando al frente y aprieta fuertemente los glúteos arriba por un instante. Desciende con control y repite.",
+      "it": "Siediti a terra appoggiando le scapole al bordo di una panca. Posiziona il bilanciere imbottito sul bacino e spingi sui talloni fino a distendere completamente le anche, contraendo i glutei in alto.",
+      "tr": "Sırtınızı düz bir sehpanın kenarına yaslayarak yere oturun. Yastıklı barı kalça kıvrımına yerleştirin ve topuklardan iterek kalçanızı yukarı kaldırıp glute kaslarını sıkın.",
+      "ru": "Сядьте на пол, упираясь лопатками в край скамьи. Положите штангу с мягким валиком на сгиб бедер. Мощным движением пяток вытолкните таз вверх до параллели с полом, максимально сжав ягодицы.",
+      "zh": "背靠平凳边缘坐在地上，将带保护垫的杠铃置于髋部折痕处。双脚平踏地面，脚跟发力向上推起髋部，使身体呈水平桌面状态，顶峰收缩臀大肌，受控下落。",
+      "hi": "पीठ को बेंच के किनारे टिकाकर फर्श पर बैठें। पैडेड बारबेल को कूल्हों पर रखें और एड़ियों से धक्का देकर कूल्हों को ऊपर उठाएं और ग्लूट्स को कसें।",
+      "pl": "Usiądź na podłodze opierając łopatki o brzeg ławki. Połóż sztangę na biodrach i wypchnij biodra w górę z pięt, mocno napinając pośladki w szczycie ruchu.",
+      "ko": "평평한 벤치 가장자리에 견갑골을 대고 바닥에 앉습니다. 패드가 달린 바벨을 골반에 올리고 뒤꿈치로 밀어 올려 엉덩이를 천장 쪽으로 곧게 펴며 수축합니다.",
+      "fr": "Asseyez-vous au sol le haut du dos contre un banc. Placez la barre protégée sur les hanches et poussez sur les talons pour monter le bassin à lhorizontale en contractant les fessiers."
+    },
+    "instruction_steps": {
+      "en": [
+        "Sit on the floor with upper back braced against the bench edge and bar over your hips.",
+        "Position feet flat, shoulder-width apart, ensuring shins will be vertical at the top.",
+        "Drive hard through the heels and squeeze glutes to elevate hips.",
+        "Achieve full hip lockout forming a horizontal line from shoulders to knees with chin tucked.",
+        "Lower hips with control to just above the floor before launching the next rep."
+      ],
+      "es": [
+        "Siéntate en el suelo con la espalda media apoyada en el banco y la barra sobre la cadera.",
+        "Coloca los pies firmes al ancho de hombros, verificando que las tibias queden verticales arriba.",
+        "Empuja fuertemente desde los talones y contrae los glúteos para elevar la pelvis.",
+        "Alcanza el bloqueo horizontal completo formando una línea recta de hombros a rodillas.",
+        "Baja la cadera con control manteniendo la tensión antes de iniciar la siguiente repetición."
+      ],
+      "it": [
+        "Appoggia le scapole alla panca con il bilanciere sulle anche.",
+        "Posiziona i piedi a terra alla larghezza delle spalle.",
+        "Spingi sui talloni per sollevare il bacino.",
+        "Raggiungi la completa estensione con i glutei contratti.",
+        "Abbassa i fianchi con controllo e ripeti."
+      ],
+      "tr": [
+        "Sırtınızı sehpaya dayayıp barı kalçanıza yerleştirin.",
+        "Ayaklarınızı omuz genişliğinde yere basın.",
+        "Topuklardan kuvvet alarak kalçanızı yukarı kaldırın.",
+        "Tepe noktada kalçayı tam kilitleyip sıkın.",
+        "Kontrollüce aşağı inip hareketi tekrarlayın."
+      ],
+      "ru": [
+        "Обопритесь лопатками о скамью, штанга лежит на бедрах.",
+        "Поставьте стопы на ширине плеч.",
+        "Толкните таз вверх силой пяток и ягодиц.",
+        "Зафиксируйте верхнюю точку в одну прямую линию.",
+        "Плавно опустите таз вниз."
+      ],
+      "zh": [
+        "上背部抵住训练凳边缘，杠铃平置于髋部折痕处。",
+        "双脚与肩同宽踩实地面，确保顶峰时小腿垂直于地面。",
+        "后脚跟发力推起髋部，臀肌强烈收缩。",
+        "达到肩膀至膝盖呈水平直线的完全锁定状态。",
+        "控制速度下放髋部，然后进行下一次推举。"
+      ],
+      "hi": [
+        "पीठ को बेंच पर टिकाएं और बारबेल को कूल्हों पर रखें।",
+        "पैरों को कंधे की चौड़ाई पर रखें।",
+        "एड़ियों से धक्का देकर कूल्हों को ऊपर उठाएं।",
+        "शीर्ष पर कूल्हों को पूरी तरह सीधा करें।",
+        "नियंत्रण के साथ नीचे आएं।"
+      ],
+      "pl": [
+        "Oprzyj górną część pleców o ławkę, sztanga na biodrach.",
+        "Ustaw stopy płasko na szerokość barków.",
+        "Wypchnij biodra w górę z pięt, napinając pośladki.",
+        "Uzyskaj pełny wyprost w linii barki-kolana.",
+        "Opuść biodra powoli kontrolując ruch."
+      ],
+      "ko": [
+        "상체 등 부분을 벤치 모서리에 대고 바벨을 골반에 둡니다.",
+        "발을 어깨너비로 평평하게 두고 정강이가 수직이 되게 합니다.",
+        "뒤꿈치로 힘차게 밀어 둔근을 수축하며 골반을 들어 올립니다.",
+        "어깨부터 무릎까지 일직선이 되도록 완전히 펴줍니다.",
+        "통제하며 천천히 골반을 내립니다."
+      ],
+      "fr": [
+        "Placer le haut du dos contre le banc et la barre sur les hanches.",
+        "Pieds bien à plat, écartés de la largeur des épaules.",
+        "Pousser sur les talons et serrer les fessiers pour monter.",
+        "Atteindre le verrouillage horizontal complet.",
+        "Redescendre les hanches sous contrôle."
+      ]
+    },
+    "muscle_group": "glutes",
+    "secondary_muscles": [
+      "hamstrings",
+      "quads",
+      "abs"
+    ],
+    "target": "glutes",
+    "media_id": "barbell-hip-thrust-aunara-v1",
+    "image": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.jpg",
+    "gif_url": "exercise-art/pilot/barbell-hip-thrust-aunara-v1.gif",
+    "attribution": "© Aunara Training Systems",
+    "created_at": "2026-10-28T16:00:00.000Z"
   }
 ]
